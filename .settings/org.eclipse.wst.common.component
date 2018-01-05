@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+            
+    
+    <wb-module deploy-name="mongows">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+                        
+        
+        <dependent-module archiveName="mongo-java-driver-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/mongo-java-driver-3.6.0.jar">
+                                    
+            
+            <dependency-type>uses</dependency-type>
+                                
+        
+        </dependent-module>
+                
+        <dependent-module archiveName="jena-arq-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-arq-3.6.0.jar">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+        <dependent-module archiveName="gson-2.6.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/gson-2.6.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                        
+        
+        <property name="context-root" value="mongows"/>
+                        
+        
+        <property name="java-output-path" value="/mongows/build/classes"/>
+                    
+    
+    </wb-module>
+        
+
+</project-modules>

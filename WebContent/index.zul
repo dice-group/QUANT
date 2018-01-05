@@ -1,0 +1,72 @@
+<?page title="Dataset Curator" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Dataset Curator" width="100%" border="normal" apply="org.zkoss.mongodb.controller.SimpleQuestionController">
+
+	<listbox id="questions" multiple="true" mold="paging" rows="1"  pageSize="1" >
+		<auxhead>
+		  <auxheader rowspan="2" class="topic" align="center">SPARQL</auxheader>		
+          <auxheader rowspan="2" class="topic" align="center">DB Version</auxheader>
+          <auxheader colspan="2" class="topic" align="center">Source of Answer</auxheader>		
+          <auxheader rowspan="2" class="topic" align="center">Out of Scope</auxheader> 
+        </auxhead>
+        
+		<listhead sizable="true">
+			<listheader label="SPARQL" align="center" />
+			<listheader label="File" align="center"/>
+			
+		</listhead>
+		
+	</listbox>
+	<groupbox>
+		<caption label="Details" />
+		<grid>
+		    	
+        <columns sizable="true">
+            <column  width="25%"/>
+            <column width="75%"/>
+        </columns>
+        <rows>
+        <row>
+                <label value="ID:"/>
+                <textbox id="id" rows="1" width="99%"/>
+            </row>
+            <row>
+                <label value="Language:"/>
+                <textbox id="language" rows="1" width="99%"/>
+            </row>
+            <row>
+                <label value="Question:"/>
+                <textbox id="strquestion" rows="1" width="99%"/>
+            </row>
+            <row>
+                <label value="Keywords:"/>
+                <textbox id="keyword" rows="1" width="99%"/>
+            </row>
+            <row>
+                <label value="Version of Dataset:"/>
+                <textbox rows="1" width="99%"/>
+            </row>                             
+       		<row>
+    			<label value="Answer Type:"/>
+            	<textbox id="answertype" rows="1" width="99%"/>
+            </row>
+            <row>
+            	<label value="Aggregation"/>
+            	<textbox id="aggregation" rows="1" width="99%"/>
+            </row>
+            <row>
+            	<label value="only Dbo"/>
+            	<textbox id="onlydbo" rows="1" width="99%"/>
+            </row>  
+            <row>
+            	<label value="Hybrid"/>
+            	<textbox id="hybrid" rows="1" width="99%"/>
+            </row>     
+    	</rows>
+    </grid>
+    
+		<button id="update" label="Update" />
+		<button id="delete" label="Delete" />
+	</groupbox>
+</window>
+</zk>
