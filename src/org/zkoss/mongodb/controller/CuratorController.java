@@ -18,6 +18,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
+import org.zkoss.sparql.Query;
 
 public class CuratorController extends GenericForwardComposer {
 private static final long serialVersionUID = 4084521215385235831L;
@@ -41,30 +42,6 @@ private static final long serialVersionUID = 4084521215385235831L;
 		curator.setModel(new ListModelList(curatorDao.findAll()));
 		curator.setItemRenderer(new ListitemRenderer() {
 			public void render(Listitem item, Object data) throws Exception {
-				Questions datasets = (Questions) data;
-				item.setValue(datasets);
-				String vars = datasets.getAnswers().get(0).getHead().getVars().get(0).toString();
-				if (vars=="uri") {
-				new Listcell(datasets.getQuery().getSparql()).setParent(item);	
-				new Listcell("").setParent(item);
-				new Listcell("").setParent(item);
-				new Listcell(datasets.getAnswers().get(0).getResults().getBindings().get(0).getUri().getValue()).setParent(item);
-				new Listcell("").setParent(item);
-				}
-				if (vars=="c") {
-					new Listcell(datasets.getQuery().getSparql()).setParent(item);	
-					new Listcell("").setParent(item);
-					new Listcell("").setParent(item);
-					new Listcell(datasets.getAnswers().get(0).getResults().getBindings().get(0).getC().getValue()).setParent(item);
-					new Listcell("").setParent(item);
-			    }
-				if (vars=="string") {
-					new Listcell(datasets.getQuery().getSparql()).setParent(item);	
-					new Listcell("").setParent(item);
-					new Listcell("").setParent(item);
-					new Listcell(datasets.getAnswers().get(0).getResults().getBindings().get(0).getString().getValue()).setParent(item);
-					new Listcell("").setParent(item);
-					}
 			}
 
 			@Override
@@ -86,9 +63,13 @@ private static final long serialVersionUID = 4084521215385235831L;
 					ansString = datasets.getAnswers().get(0).getResults().getBindings().get(0).getString().getValue().toString();
 				}
 				
+				String strQuery = datasets.getQuery().getSparql();
+				Query querySparql = new Query();
+				String resultAnswer = querySparql.getQuery(strQuery);
+				
 				new Listcell(datasets.getQuery().getSparql()).setParent(item);	
 				new Listcell("").setParent(item);
-				new Listcell("").setParent(item);
+				new Listcell(resultAnswer).setParent(item);
 				new Listcell(ansString).setParent(item);
 				new Listcell("").setParent(item);
 				
