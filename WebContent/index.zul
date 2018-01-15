@@ -1,8 +1,8 @@
 <?page title="Dataset Curator" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Dataset Curator" width="100%" border="normal" apply="org.zkoss.mongodb.controller.SimpleQuestionController">
+<window title="Dataset Curator" width="100%" border="normal" apply="org.zkoss.mongodb.controller.CuratorController">
 
-	<listbox id="questions" multiple="true" mold="paging" rows="1"  pageSize="1" >
+	<listbox id="curator" multiple="true" mold="paging" rows="1"  pageSize="1" >
 		<auxhead>
 		  <auxheader rowspan="2" class="topic" align="center">SPARQL</auxheader>		
           <auxheader rowspan="2" class="topic" align="center">DB Version</auxheader>
@@ -44,7 +44,7 @@
             </row>
             <row>
                 <label value="Version of Dataset:"/>
-                <textbox rows="1" width="99%"/>
+                <textbox id="datasetversion" rows="1" width="99%"/>
             </row>                             
        		<row>
     			<label value="Answer Type:"/>
