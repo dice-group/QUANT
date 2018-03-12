@@ -1,143 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+        
+    <wb-module deploy-name="webqald">
                 
-    
-    
-    <wb-module deploy-name="mongows">
-                                
-        
-        
-        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                                
-        
-        
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                                
-        
-        
-        <dependent-module archiveName="mongo-java-driver-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/mongo-java-driver-3.6.0.jar">
-                                                
-            
-            
-            <dependency-type>uses</dependency-type>
-                                            
-        
-        
-        </dependent-module>
-                        
-        
-        <dependent-module archiveName="jena-arq-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-arq-3.6.0.jar">
-                                    
-            
-            <dependency-type>uses</dependency-type>
-                                
-        
-        </dependent-module>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                 
-        <dependent-module archiveName="gson-2.6.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/gson-2.6.2.jar">
-                        
-            <dependency-type>uses</dependency-type>
-                    
-        </dependent-module>
-        <dependent-module archiveName="jena-dboe-index-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-dboe-index-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-rdfconnection-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-rdfconnection-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-core-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-core-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-shaded-guava-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-shaded-guava-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-dboe-trans-data-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-dboe-trans-data-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-dboe-base-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-dboe-base-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-cmds-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-cmds-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-iri-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-iri-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-tdb-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-tdb-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-dboe-transaction-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-dboe-transaction-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-tdb2-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-tdb2-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jena-base-3.6.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jena-base-3.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="libthrift-0.9.3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/libthrift-0.9.3.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-annotations-2.9.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jackson-annotations-2.9.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-databind-2.9.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jackson-databind-2.9.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-csv-1.5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/commons-csv-1.5.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="httpcore-4.4.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/httpcore-4.4.6.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-codec-1.11.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/commons-codec-1.11.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="httpclient-cache-4.5.3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/httpclient-cache-4.5.3.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-lang3-3.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/commons-lang3-3.4.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="collection-0.7.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/collection-0.7.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="xercesImpl-2.11.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/xercesImpl-2.11.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-io-2.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/commons-io-2.6.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-cli-1.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/commons-cli-1.4.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-core-2.9.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jackson-core-2.9.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="xml-apis-1.4.01.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/xml-apis-1.4.01.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="httpclient-4.5.3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/httpclient-4.5.3.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jcl-over-slf4j-1.7.25.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jcl-over-slf4j-1.7.25.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jsonld-java-0.11.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Ria Hari Gusmita/Downloads/apache-jena-3.6.0/apache-jena-3.6.0/lib/jsonld-java-0.11.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-                                
-        
-        
-        <property name="context-root" value="mongows"/>
-                                
-        
-        
-        <property name="java-output-path" value="/mongows/build/classes"/>
-                            
-    
-    
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+                
+        <wb-resource deploy-path="/" source-path="/WebContent"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+                
+        <property name="context-root" value="webqald"/>
+                
+        <property name="java-output-path" value="/webqald/target/classes"/>
+            
     </wb-module>
-            
-
-
+    
 </project-modules>
