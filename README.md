@@ -1,2 +1,2 @@
 # QALD Curator 
-This is a tool to do analysis on question answering over linked data (QALD) dataset and do correction for those that discovered as the incorrect ones.
+This tool helps to define a SPARQL of a question so that it can be run against a given SPARQL endpoint and produce a semantically correct result set.
