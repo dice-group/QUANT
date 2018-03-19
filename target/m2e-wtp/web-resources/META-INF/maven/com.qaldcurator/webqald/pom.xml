@@ -1,0 +1,199 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.qaldcurator</groupId>
+  <artifactId>webqald</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>webqald Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <!--  define properties -->
+  <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>4.3.2.RELEASE</spring.version>
+        <spring.security.core.version>3.1.4.RELEASE</spring.security.core.version>
+        <junit.version>4.12</junit.version>
+        <servlet.version>3.1.0</servlet.version>
+        <servlet.version>3.0.1</servlet.version>
+        <jackson.library>2.7.5</jackson.library>
+        <jena.version>3.0.0</jena.version>
+        <java-rdfa.version>0.4.2</java-rdfa.version>
+  </properties>
+  
+  <!-- Repositories -->
+  <repositories>
+  <repository>
+			<id>org.springframework.data</id>
+			<name>Spring Data Common Core</name>
+			<url>https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core</url>
+		</repository>
+		<repository>
+			<id>maven.aksw.internal</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/internal</url>
+		</repository>
+		<repository>
+			<id>maven.aksw.snapshots</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/snapshots</url>
+		</repository>
+	</repositories>
+  <dependencies>
+  	<!-- Junit -->
+  	<dependency>
+    	<groupId>junit</groupId>
+      	<artifactId>junit</artifactId>
+      	<version>${junit.version}</version>
+      	<scope>test</scope>
+    </dependency>
+    <!--Servlet-Api -->
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${servlet.version}</version>
+    </dependency>
+    <dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
+    <!-- Spring Framework Dependencies -->
+    <dependency>
+    	<groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+     <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+    <!-- Spring Security Dependencies-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.core.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.core.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.core.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.core.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    
+    
+    	<!-- Logging -->
+		<dependency>
+	    	<groupId>commons-logging</groupId>
+	    	<artifactId>commons-logging</artifactId>
+	    	<version>1.2</version>
+		</dependency>
+    	
+    	<!-- Spring Mongodb  -->
+    	<dependency>
+        	<groupId>org.springframework.data</groupId>
+        	<artifactId>spring-data-mongodb</artifactId>
+        	<version>2.0.4.RELEASE</version>
+    	</dependency>
+    
+    	<!-- mongodb java driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+    	
+    	<!-- Jakson -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <version>${jackson.library}</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.library}</version>
+		</dependency>
+	
+	    <!-- Dataset Qald AKSW -->
+	    <dependency>
+			<groupId>org.aksw.qa</groupId>
+			<artifactId>commons</artifactId>
+			<version>0.4.18</version>
+		</dependency>
+		
+		<!-- Apache Jena Depdendency -->
+		<dependency>
+		    <groupId>org.apache.jena</groupId>
+		    <artifactId>apache-jena-libs</artifactId>
+		    <version>3.6.0</version>
+		    <type>pom</type>
+		</dependency>
+	    
+    
+  </dependencies>
+  <build>
+  	<sourceDirectory>src/main/java</sourceDirectory>
+  	<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+ 
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+                <source>9</source>
+                <target>9</target>
+            </configuration>
+			</plugin>
+ 
+		</plugins>
+    <finalName>webqald</finalName>
+  </build>
+</project>
