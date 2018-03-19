@@ -32,19 +32,23 @@
                         <h3 class="panel-title">Please Enter your e-Mail Address and Name</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form role="form" id="loginForm" modelAttribute="login" action="loginProcess" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Name" name="username" type="text" value="">
+                                    <input class="form-control" placeholder="Password" name="password" type="password">
                                 </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="document-list" class="btn btn-lg btn-success btn-block">Log in</a>
+                                <button type="submit" id="login" name="login" class="btn btn-lg btn-success btn-block">Login</button>
+                                
                             </fieldset>
                         </form>
+                        <div class="form-group">
+                        	<span style="font-style: italic; color: red">${message }</span>
+                        	
                     </div>
                 </div>
             </div>

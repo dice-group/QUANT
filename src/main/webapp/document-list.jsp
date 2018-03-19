@@ -51,6 +51,25 @@
                 <a class="navbar-brand" href="${pageContext.request.contextPath}">QALD Curator v1.0</a>
             </div>
             <!-- /.navbar-header -->
+            <!-- sidebar -->
+            <div class="navbar-default sidebar" role="navigation">
+            	<div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                    	
+                    	<li>
+                            <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset List</a>
+                        </li>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar sidebar -->
+        
         </nav>
         <div id="page-wrapper">
             <div class="row">
@@ -93,7 +112,7 @@
 			                                    </c:forEach>
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
-                                    		<td><a href="document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye"></span></a> </td>
+                                    		<td><a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye"></span></a> </td>
                                     	</tr>
                                     </c:forEach>
                                 </tbody>

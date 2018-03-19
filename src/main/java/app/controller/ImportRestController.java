@@ -48,6 +48,7 @@ public class ImportRestController {
 	   return response;
 	 }
 	/**
+	 * Load form QA Library
 	 * Display All Datasets :
 	 * QALD1_Test_dbpedia 
 	 * QALD1_Train_dbpedia 
@@ -64,12 +65,11 @@ public class ImportRestController {
 	 * QALD7_Train_Multilingual
 	 * QALD8_Test_Multilingual
 	 * QALD8_Train_Multilingual
-	 * @return
+	 * @return all parameter from all of document 
 	 */
 	@RequestMapping(value = "/question/all", method = RequestMethod.GET)
 	 public JSONArray QuestionAll() {
 		JSONArray arrayObject = new JSONArray();
-		JSONObject parentObject = new JSONObject();
 		for (Dataset d : Dataset.values()) {
 			LOGGER.info("Try to load:" + d.name());
 			if (
@@ -93,17 +93,23 @@ public class ImportRestController {
 				try {
 					List<IQuestion> questions = LoaderController.load(d);
 					LOGGER.info("Dataset succesfully loaded:" + d.name());
-					
-					JSONArray arrayItem = new JSONArray();
 					for (IQuestion q : questions) {
 						QuestionResponse item = new QuestionResponse();
+						item.setId(q.getId());
+						item.setAnswerType(q.getAnswerType());
+						item.setAggregation(q.getAggregation());
+						item.setOnlydbo(q.getOnlydbo());
+						item.setHybrid(q.getHybrid());
 						item.setLanguageToQuestion(q.getLanguageToQuestion());
 						item.setLanguageToKeyword(q.getLanguageToKeywords());
-						arrayItem.put(item);
+						item.setSparqlQuery(q.getSparqlQuery());
+						item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+						item.setGoldenAnswer(q.getGoldenAnswers());
+						
+						arrayObject.put(item);
 						LOGGER.info("item :"+ q.toString());
 					}
-					parentObject.put(d.name(), arrayItem);
-					arrayObject.put(parentObject);
+					
 					return arrayObject;
 				} catch (Exception e) {
 					LOGGER.info("Dataset couldn't be loaded:" + d.name());
@@ -112,51 +118,12 @@ public class ImportRestController {
 		}
 		return null;
 	 }
-	@RequestMapping(value = "/question/all2", method = RequestMethod.GET)
-	 public JSONArray QuestionAllAlt() {
-		JSONArray arrayObject = new JSONArray();
-		for (Dataset d : Dataset.values()) {
-			LOGGER.info("Try to load:" + d.name());
-			if (
-					d.name().equals("QALD1_Test_dbpedia") || 
-					d.name().equals("QALD1_Train_dbpedia") || 
-					d.name().equals("QALD2_Test_dbpedia") ||
-					d.name().equals("QALD2_Train_dbpedia") ||
-					d.name().equals("QALD3_Test_dbpedia") ||
-					d.name().equals("QALD4_Test_Multilingual") ||
-					d.name().equals("QALD4_Train_Multilingual") ||
-					d.name().equals("QALD5_Test_Multilingual") ||
-					d.name().equals("QALD5_Train_Multilingual") ||
-					d.name().equals("QALD6_Test_Multilingual") ||
-					d.name().equals("QALD6_Train_Multilingual") ||
-					d.name().equals("QALD7_Test_Multilingual") ||
-					d.name().equals("QALD7_Train_Multilingual") ||
-					d.name().equals("QALD8_Test_Multilingual") ||
-					d.name().equals("QALD8_Train_Multilingual") 
-				) 
-			{
-				try {
-					List<IQuestion> questions = LoaderController.load(d);
-					LOGGER.info("Dataset succesfully loaded:" + d.name());
-					
-					JSONArray arrayItem = new JSONArray();
-					for (IQuestion q : questions) {
-						QuestionResponse item = new QuestionResponse();
-						//item.setDatasetVersion(d.name());
-						item.setLanguageToQuestion(q.getLanguageToQuestion());
-						item.setLanguageToKeyword(q.getLanguageToKeywords());
-						arrayObject.put(item);
-						LOGGER.info("item :"+ q.toString());
-					}
-					
-				} catch (Exception e) {
-					LOGGER.info("Dataset couldn't be loaded:" + d.name());
-				}
-				return arrayObject;
-			}
-		}
-		return null;
-	 }
+	
+	/*
+	 * Load using qa commons Library 
+	 * Display all document from specified collection
+	 * return all parameter form QuestionResponse
+	 */
 	@RequestMapping(value = "/question/{qaldVersion}", method = RequestMethod.GET)
 	 public JSONArray QuestionByQaldVersion(@PathVariable("qaldVersion") String qaldVersion) {
 		JSONArray arrayObject = new JSONArray();
@@ -194,4 +161,5 @@ public class ImportRestController {
 		}
 		return null;
 	 }
+	
 }

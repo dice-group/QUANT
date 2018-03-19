@@ -33,6 +33,9 @@ public class DatasetModelShortVersion {
 	public void setId(String id) {
 		this.id=id;
 	}
+	public void  setDatasetVersion(String datasetVersion) {
+		this.datasetVersion = datasetVersion;
+	}
 	public Map<String, String> getLanguageToQuestion() {
 		return languageToQuestion;
 	}

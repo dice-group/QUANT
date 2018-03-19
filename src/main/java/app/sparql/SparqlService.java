@@ -1,7 +1,9 @@
 package app.sparql;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
+import java.util.Set;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -27,6 +29,7 @@ public class SparqlService {
 			QueryExecution qe = QueryExecutionFactory.sparqlService(service, strQuery); //put query to jena sparql library
 			ResultSet rs = qe.execSelect(); //execute query
 			String szVal="";
+			Set<String> setResult = new HashSet();;
 			while(rs.hasNext()) {
 				QuerySolution s = rs.nextSolution(); //get record value
 				Iterator<String> itVars = s.varNames(); //get all variable of query
@@ -39,13 +42,14 @@ public class SparqlService {
 	                }else {
 	                	szVal = s.get(szVar).asNode().getLiteralValue().toString(); //get literal value
 	                }
+	                setResult.add(szVal);
 	            }
 	            
 	            /*** only support for 1 variable query result. for multiple need to modify **/
-	            result =szVal;
+	            result =setResult.toString();
 			}
 		} catch (Exception e) {
-			result = "-";
+			result = null;
 		}
 		return result;
 	}
@@ -59,7 +63,15 @@ public class SparqlService {
 	 */
 	public String getQueryFormated(String strQuery) {
 		//put query to jena sparql library
+		try {
 		QueryExecution qe = QueryExecutionFactory.sparqlService(service, strQuery); 
 		return qe.getQuery().toString();
+		} catch (Exception e) {
+			return strQuery;
+		}
+	}
+	
+	public void getAllPossibleProperty(String StrQuery) {
+		
 	}
 }

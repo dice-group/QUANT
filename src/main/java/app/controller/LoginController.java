@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import app.dao.UserDAO;
 import app.model.Login;
+import app.model.User;
 
 
 @Controller
@@ -25,8 +28,17 @@ public class LoginController {
   @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
   public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response,
   @ModelAttribute("login") Login login) {
-    ModelAndView mav = null;
-    mav = new ModelAndView("index");
-    return mav;
+	UserDAO  userDao = new UserDAO();
+	Boolean isUser = userDao.validateUser(login);
+	    if (isUser) {
+		    ModelAndView mav = new ModelAndView("dashboard");
+		    return mav;
+	    } else {
+	    	ModelAndView mav = new ModelAndView("login");
+	    	mav.addObject("message", "Username or Password is wrong!!");
+	    	return mav;
+	    }
+    
   }
+  
 }

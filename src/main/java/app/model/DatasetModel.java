@@ -37,7 +37,7 @@ public class DatasetModel {
 			Boolean outOfScope,
 			Map<String, String> languageToQuestion,
 			Map<String, List<String>> languageToKeyword,
-			Set<String> goldenAnswer
+			Set<String> goldenAnswer			
 			) {
 		this.id = id;
 		this.answerType = answerType;
@@ -49,13 +49,13 @@ public class DatasetModel {
 		this.outOfScope = outOfScope;
 		this.languageToQuestion = languageToQuestion;
 		this.languageToKeyword = languageToKeyword;
-		this.goldenAnswer = goldenAnswer;
-		
-		
+		this.goldenAnswer = goldenAnswer;		
 	}
+	
 	public String getDatasetVersion() {
 		return datasetVersion;
 	}
+	
 	public void  setDatasetVersion(String datasetVersion) {
 		this.datasetVersion = datasetVersion;
 	}
@@ -71,12 +71,14 @@ public class DatasetModel {
 	public void setAnswerType(String answerType) {
 		this.answerType = answerType;
 	}
+	
 	public Boolean getAggregation() {
 		return aggregation;
 	}
 	public void setAggregation(Boolean aggregation) {
 		this.aggregation=aggregation;
 	}
+	
 	public Boolean getHybrid() {
 		return hybrid;
 	}
