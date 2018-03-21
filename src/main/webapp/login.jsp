@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>QUANT-Log in</title>
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/resources/vendor/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
     <!-- MetisMenu CSS -->
@@ -35,14 +35,14 @@
                         <form role="form" id="loginForm" modelAttribute="login" action="loginProcess" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                    <input class="form-control" placeholder="User Name" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password">
                                 </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" id="login" name="login" class="btn btn-lg btn-success btn-block">Login</button>
+                                <button type="submit" id="login" name="login" class="btn btn-lg btn-success btn-block">Log in</button>
                                 
                             </fieldset>
                         </form>

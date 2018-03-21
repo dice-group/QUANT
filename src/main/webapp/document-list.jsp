@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="app.dao.UserDatasetCorrectionDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>QUANT-Dataset</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/resources/vendor/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
@@ -60,10 +61,28 @@
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset List</a>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
                          <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> User Activities<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Dataset Correction</a>
+                                </li>
+                                <li>
+                                    <a href="#">Log Activities</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
+                        </li>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -93,7 +112,7 @@
                                         <th class="text-center">Question</th>
                                         <th class="text-center">Keywords</th>
                                         <th class="text-center">Database Origin Version</th>
-                                        <th></th>
+                                        <th width="5%" ></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -112,7 +131,10 @@
 			                                    </c:forEach>
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
-                                    		<td><a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye"></span></a> </td>
+                                    		<td>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Data master"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Data Correction"></span></a>
+                                    		</td>
                                     	</tr>
                                     </c:forEach>
                                 </tbody>
