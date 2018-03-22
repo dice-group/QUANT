@@ -67,13 +67,31 @@
                     <ul class="nav" id="side-menu">
                     	
                     	<li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset List</a>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
-                        <li>
+                         <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
+                        </li>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -104,6 +122,22 @@
                     <div class="panel panel-default">
                     	<c:if test="${isExist=='yes'}">
                         <div class="panel-body">
+                        <div class="panel-heading">
+                        <div class="row">
+                        	
+                        	 	<div class="col-md-6" style="text-align: left">
+                        	 	<button type="submit" name="startButton" id="startButton" class="btn btn-default">Start Button</button>
+                        	 	</div>
+                        	 	<div class="col-md-6" style="text-align: right">
+                        	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
+		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk"> No changes needed
+		                        </label>
+                                <button type="submit" name=doneButton' id='doneButton' style="display:none" class="btn btn-primary">Done</button>
+		                        
+		                        </div>
+                        	
+                        </div>
+                        </div>
                         <form role="form" method="post" name="documentForm" id="documentForm">
                             <div class="row">
                             	<div class="col-lg-12">
@@ -112,7 +146,7 @@
 	                                    	<label>Question</label>
 	                                    </div>
 	                                    <div class="col-lg-11" style="text-align:left">
-		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion">
+		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" readonly="readonly">
 		                                    <!--  <p class="font-italic">Question is displayed in English (as default)</p> -->
 	                                    </div>
                                     </div>
@@ -121,7 +155,7 @@
                                     
                                         <div class="form-group">
                                             <label>SPARQL</label>
-                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery">${sparqlQuery}</textarea>
+                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                         
@@ -132,17 +166,17 @@
                                 	
                                         <div class="form-group">
                                             <label>Answer from File</label>
-                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="goldenAnswer">${goldenAnswer}</textarea>
+                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="goldenAnswer" readonly="readonly">${goldenAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                     	<div class="form-group">
                                             <label>Answer from Current Endpoint</label> 
-                                            
+                                            <!--  
                                             <a href="#change-answer" class="change-answer btn btn-xs btn-default">
                                             	<span class="glyphicon glyphicon-upload"></span>
                                             </a>
-                                            
-                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer">${onlineAnswer}</textarea>
+                                            -->
+                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" readonly="readonly">${onlineAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                     
@@ -155,7 +189,7 @@
                             	<div class="col-lg-4">
                             		<div class="form-group">
                                             <label>Endpoint</label>
-                                            <input class="form-control" value="" id="endpoint" name="endpoint">
+                                            <input class="form-control" value="" id="endpoint" name="endpoint" disabled="disabled">
                                             <p class="help-block"></p>
                                         </div>
                             	</div>
@@ -166,6 +200,7 @@
                                             <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
 											</c:if>
+											disabled="disabled"
  											>
                                             <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not empty answerTypeSugg}">
     										Suggestion :	
@@ -176,16 +211,17 @@
                         		<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Out of Scope</label>
-                                           	<select class="form-control" id="outOfScope" name="outOfScope"]] <c:if test="${not empty outOfScopeSugg}">
+                                           	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
     										style="background-color:#E6E6FA"    											
-											</c:if>>
-                                                <option></option> 
-                                                <option value="true" ${outOfScope == true ? 'selected="selected"' : ''} >True</option>
-                                                <option value="false" ${outOfScope == false ? 'selected="selected"' : ''}>False</option>                                                
+											</c:if> disabled="disabled">
+                                                <option value=""  <c:if test="${empty outOfScope}">selected="selected"</c:if>></option> 
+                                                <option value="true" ${outOfScope == "true" ? 'selected="selected"' : ''} >True</option>
+                                                <option value="false" ${outOfScope == "false" ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
+                                            
                                             <p class="text-danger" id="outOfScopeSugg"><c:if test="${not empty outOfScopeSugg}">
-                                            Suggestion :												
-                                            ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}
+                                            <em>Suggestion :												
+                                            ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}</em>
                                             </c:if></p>    												
                                     </div>	
                         		</div>
@@ -195,24 +231,24 @@
                             	<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Aggregation</label>
-                                           <select class="form-control" id="aggregation" name="aggregation"]] <c:if test="${not empty aggregationSugg}">
+                                           <select class="form-control" id="aggregation" name="aggregation" <c:if test="${not empty aggregationSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>>
+											</c:if> disabled="disabled">
                                                 <option></option>
                                                 <option value="true" ${aggregation == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${aggregation == false ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
                                             <p class="text-danger" id="aggregationSugg"><c:if test="${not empty aggregationSugg}">
-    												Suggestion : </c:if>
-    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</p>
+    												<em>Suggestion : </c:if>
+    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</em></p>
                                     </div>	
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Onlydbo</label>
-                                           <select class="form-control" id="onlydbo" name="onlydbo"]] <c:if test="${not empty onlyDboSugg}">
+                                           <select class="form-control" id="onlydbo" name="onlydbo" <c:if test="${not empty onlyDboSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>>
+											</c:if> disabled="disabled">
                                                 <option></option>
                                                 <option value="true" ${onlydbo == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${onlydbo == false ? 'selected="selected"' : ''}>False</option>
@@ -226,9 +262,9 @@
                         		<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Hybrid</label>
-                                           <select class="form-control" id="hybrid" name="hybrid"]] <c:if test="${not empty hybridSugg}">
+                                           <select class="form-control" id="hybrid" name="hybrid" <c:if test="${not empty hybridSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>>
+											</c:if> disabled="disabled">
                                                 <option></option>
                                                 <option value="true" ${hybrid == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${hybrid == false ? 'selected="selected"' : ''}>False</option>
@@ -279,8 +315,10 @@
                         		<div class="col-lg-12">
                         			<div class="form-group">
                         				<label>Multilingual Question List</label> &nbsp;&nbsp;
+                        				<!--  
                         				<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Question Correction</button>
                         				<br />
+                        				-->
                         				<table id="example"  width="100%" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
@@ -415,6 +453,7 @@
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.validate.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables/js/dataTables.jqueryui.js" />"></script>
 	<script>
+	var url = "${pageContext.request.contextPath}/document-list/detail-correction/${id}/${datasetVersion}";
 	  $(document).ready($('.form-control').change(function() {
 	   $.ajax({
 	    type : "post",
@@ -423,8 +462,7 @@
 	    data : $('#documentForm').serialize(),
 	    success : function(response) {
 	    	
-	    	 $('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data is saved</div>')
-	    	    
+	    	window.location = url;
 	    },
 	    error : function() {
 	     alert('Error while request..');
@@ -484,6 +522,23 @@
 	    }});
 	}) 
  </script>
+ <script>
+$(function(){
+     $('#startButton').click(function(){
+    	$('.form-control').prop('disabled', false);
+        $('#startButton').val('CorrectionOnProgress');
+        $('#startButton').prop("disable", true);
+        document.getElementById("doneButton").style.display='';
+        document.getElementById("chkLabel").style.display='';
+     });
+     $('#doneButton').click(function(){
+     	$('.form-control').prop('disabled', true);
+         $('#startButton').val('Start Curate');
+         document.getElementById("doneButton").style.display='none';
+         document.getElementById("chkLabel").style.display='none';
+      });
+});
+</script>
 </body>
 
 </html>

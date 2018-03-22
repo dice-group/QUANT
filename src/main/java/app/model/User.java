@@ -1,7 +1,7 @@
 package app.model;
 
 public class User {
-	private String id;
+	private int id;
 	private String name;
 	private String email;
 	private String username;
@@ -13,7 +13,7 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String id, String name, String email, String username, String password,String role) {
+	public User(int id, String name, String email, String username, String password,String role) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -23,11 +23,11 @@ public class User {
 		this.role = role;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

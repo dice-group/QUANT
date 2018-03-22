@@ -12,6 +12,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import app.config.MongoDBManager;
+import app.model.DatasetModel;
 import app.model.Login;
 import app.model.User;
 
@@ -19,30 +20,34 @@ public class UserDAO  {
 	public Boolean validateUser(Login login) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 searchObj.put("username", login.getUsername());
+		 searchObj.put("password", login.getPassword());
 		 try {
 				//call mongoDb
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("User"); //Collection
 				DBCursor cursor = coll.find(searchObj); //Find All
-				while (cursor.hasNext()) {
+				
+				while (cursor.hasNext()) {					
 					return true;
 				}
 				
 			}catch (Exception e) {}
 			return false;
 	}
-
+	/**
+	 * This method used to get all users
+	 * @return List<User>
+	 */
 	public List<User> getAll() {
 		 List<User> users = new ArrayList<User>();
-		 
+		 BasicDBObject searchObj = new BasicDBObject();
+		 searchObj.put("id", 1);
 		 try {
 			//call mongoDb
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 			DBCollection coll = db.getCollection("User"); //Collection
-			DBCursor cursor = coll.find(); //Find All
+			DBCursor cursor = coll.find().sort(searchObj); //Find All
 			while (cursor.hasNext()) {
-				System.out.println("Record is found");
-				
 				DBObject dbobj = cursor.next();
 				Gson gson = new GsonBuilder().create();
 				
@@ -54,13 +59,128 @@ public class UserDAO  {
 				itemUser.setEmail(q.getEmail());
 				itemUser.setRole(q.getRole());
 				itemUser.setUsername(q.getUsername());
+				itemUser.setPassword(q.getPassword());
 				users.add(itemUser);
-				System.out.println("Record is found");
+				
 			}
 			return users;
 		 }catch (Exception e) {
-			 System.out.println("Record is not found");
+			 
 		 }
 		return null;
 	}
+	/*
+	  * This method is used to add User to MongoDB
+	  */
+	 public void addUser(User user) {
+		 try {
+			BasicDBObject newDbObj = toBasicDBObject(user);
+			
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("User");
+			
+			coll.save(newDbObj);
+		 } catch (Exception e) {}
+	 } 
+	 /*
+	  * This method is used to create an object for update or save purpose in MongoDB
+	  */
+	private BasicDBObject toBasicDBObject(User user) {
+		BasicDBObject newdbobj = new BasicDBObject();
+		newdbobj.put("id", user.getId());
+		newdbobj.put("username", user.getUsername());
+		newdbobj.put("password", user.getPassword());
+		newdbobj.put("email", user.getEmail());
+		newdbobj.put("name", user.getName());
+		newdbobj.put("role", user.getRole());
+		
+		return newdbobj;
+	}
+	/**
+	 * This method is used to update User in MongoBD
+	 */
+	 public void updateUser(User user) {
+		 try {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("id", user.getId());
+			BasicDBObject newDbObj = toBasicDBObject(user);
+			
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("User");
+			
+			coll.update(searchObj, newDbObj);
+		 } catch (Exception e) {}
+	 } 
+	 /**
+	  * Get last record
+	  */
+	 public int getUserId() {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 searchObj.put("id", -1);
+		 try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("User"); //Collection
+				DBCursor cursor = coll.find().sort(searchObj).limit(1); //Find All
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					
+					User q = gson.fromJson(dbobj.toString(), User.class);
+					int id = q.getId();
+					id++;
+					return id;
+					
+				}
+				
+			}catch (Exception e) {}
+		 return 0;
+	 }
+	 /**
+	  * Delete User
+	  */
+	 public void deleteUser(int id) {
+		 try {
+				BasicDBObject searchObj = new BasicDBObject();
+				searchObj.put("id", id);
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("User");
+				
+				coll.remove(searchObj);
+			 } catch (Exception e) {
+				 
+			 }
+	 }
+	 /**
+	  * Get User by Username
+	  * @param username
+	  * @return
+	  */
+	 public User getUserByUsername(String username) {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 searchObj.put("username", username);
+		 User itemUser = new User();
+		 try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("User"); //Collection
+				DBCursor cursor = coll.find(searchObj); //Find All
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					
+					User q = gson.fromJson(dbobj.toString(), User.class);
+					
+					
+					itemUser.setId(q.getId());
+					itemUser.setName(q.getName());
+					itemUser.setEmail(q.getEmail());
+					itemUser.setRole(q.getRole());
+					itemUser.setUsername(q.getUsername());
+					itemUser.setPassword(q.getPassword());
+				}
+				
+			}catch (Exception e) {}
+			return itemUser;
+	 }
 }

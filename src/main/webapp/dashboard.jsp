@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>QUANT-Dashboard</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/resources/vendor/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
@@ -54,13 +56,33 @@
             <!-- sidebar -->
             <div class="navbar-default sidebar" role="navigation">
             	<div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    	
+                    <ul class="nav" id="side-menu">                    	
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset List</a>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
+                        </li>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
+                                </li>
+                                <li>
+                                    <a href="#">Activity Log</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
+                        </li>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -72,6 +94,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
+                    <h4>Welcome ${name}. You are an ${role}</h4>
+                    
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -82,15 +106,15 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
+                                    <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments!</div>
+                                    <div class="huge">${qald1 }</div>
+                                    <div>QALD1 (Test & Train)</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -107,12 +131,12 @@
                                     <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
+                                    <div class="huge">${qald2 }</div>
+                                    <div>QALD2 (Test & Train)</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD2_Test_dbpedia/QALD2_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -126,15 +150,15 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                    <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders!</div>
+                                    <div class="huge">${qald3 }</div>
+                                    <div>QALD3 (Test & Train)</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD3_Test_dbpedia/QALD3_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -148,15 +172,103 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
+                                    <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
+                                    <div class="huge">${qald4 }</div>
+                                    <div>QALD4 (Test & Train)</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD4_Test_Multilingual/QALD4_Train_Multilingual">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald5 }</div>
+                                    <div>QALD5 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD5_Test_Multilingual/QALD5_Train_Multilingual">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald6 }</div>
+                                    <div>QALD6 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD6_Test_Multilingual/QALD6_Train_Multilingual">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald7 }</div>
+                                    <div>QALD7 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD7_Test_Multilingual/QALD7_Train_Multilingual">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald8 }</div>
+                                    <div>QALD8 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD8_Test_Multilingual/QALD8_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -166,6 +278,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- /.row -->
         </div>
      </div>

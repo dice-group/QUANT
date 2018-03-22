@@ -32,19 +32,20 @@ import app.sparql.SparqlService;
 import rationals.properties.isEmpty;
 
 public class DocumentDAO {
-	 public List<DatasetModel> getAllDocuments() {
+	 public List<DatasetModel> getCollections(List<DatasetList> listDataset) {
 		 List<DatasetModel> tasks = new ArrayList<DatasetModel>();
-		 
+		 for (int x=0; x<listDataset.size(); x++)	{	
 			try {
 				//call mongoDb
-				DB db = MongoDBManager.getDB("QaldCurator"); //Database Name
-				DBCollection coll = db.getCollection("QALD8_Test_Multilingual"); //Collection
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
 				DBCursor cursor = coll.find(); //Find All
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
 					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
 					DatasetModel item = new DatasetModel();
+					item.setDatasetVersion(listDataset.get(x).getName());
 					item.setId(q.getId());
 					item.setAnswerType(q.getAnswerType());
 					item.setAggregation(q.getAggregation());
@@ -57,9 +58,10 @@ public class DocumentDAO {
 					item.setGoldenAnswer(q.getGoldenAnswer());
 					tasks.add(item);
 				}
-				return tasks;				
+							
 			} catch (Exception e) {}
-			return null;
+		 }
+			return tasks;
 		}
 	 
 	 public List<DatasetModel> filteredDocument() {
@@ -69,7 +71,7 @@ public class DocumentDAO {
 		 	HashMap<String, String> questionDatabaseVersion = new HashMap<String, String>();	 	
 		 	for (int x=0; x<listDataset.size(); x++) {
 			try {
-				DB db = MongoDBManager.getDB("QaldCurator"); //Database Name
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
 				DBCursor cursor = coll.find(); //Find All
 				while (cursor.hasNext()) {
@@ -101,14 +103,13 @@ public class DocumentDAO {
 		    HashMap<String, String> xx = new HashMap<String, String>();
 		    int id_new = 1;
 		    while(iterator.hasNext()) {
-		         Map.Entry mEntry = (Map.Entry)iterator.next();
-		         //xx.put(mentry.getKey().toString(), mentry.getValue().toString());	
+		         Map.Entry mEntry = (Map.Entry)iterator.next();		         	
 		         
 		         try {
 		        	//build query
 		     	 	BasicDBObject searchObj = new BasicDBObject();
 		        	searchObj.put("languageToQuestion.en", mEntry.getKey().toString());
-		 			DB db = MongoDBManager.getDB("QaldCurator"); //Database Name
+		 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 		 			DBCollection coll = db.getCollection(mEntry.getValue().toString()); //Collection	
 		 			String question = mEntry.getKey().toString();
 		 			DBCursor cursor = coll.find(searchObj);
@@ -144,7 +145,7 @@ public class DocumentDAO {
 		 DatasetModel item = new DatasetModel();
 		 searchObj.put("id", id);
 		 try {
-				DB db = MongoDBManager.getDB("QaldCurator");
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 				DBCollection coll = db.getCollection(datasetVersion);
 				DBCursor cursor = coll.find(searchObj);
 				while (cursor.hasNext()) {
@@ -176,7 +177,7 @@ public class DocumentDAO {
 		 	for (int x=0; x<listDataset.size(); x++) {
 			try {
 				//call mongoDb
-				DB db = MongoDBManager.getDB("QaldCurator"); //Database Name
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
 				DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
 				while (cursor.hasNext()) {
@@ -203,7 +204,7 @@ public class DocumentDAO {
 			return tasks;
 		}
 	 /*
-	  * This method is used to update document on MongoDB
+	  * This method is used to update document in MongoDB
 	  */
 	 public void updateDocument(DatasetModel document, String collectionName) {
 		 try {
@@ -212,7 +213,7 @@ public class DocumentDAO {
 			
 			BasicDBObject newDbObj = toBasicDBObject(document);
 			
-			DB db = MongoDBManager.getDB("QaldCurator");
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 			DBCollection coll = db.getCollection(collectionName);
 			
 			coll.update(searchObj, newDbObj);
@@ -220,7 +221,7 @@ public class DocumentDAO {
 	 }
 
 	 /*
-	  * This method is used to create an object for update or save purpose process on MongoDB
+	  * This method is used to create an object for update or save purpose in MongoDB
 	  */
 	private BasicDBObject toBasicDBObject(DatasetModel document) {
 		BasicDBObject newdbobj = new BasicDBObject();
@@ -246,7 +247,7 @@ public class DocumentDAO {
 		 DatasetSuggestionModel item = new DatasetSuggestionModel();
 		 searchObj.put("id", id);
 		 try {
-				DB db = MongoDBManager.getDB("QaldCurator");
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 				DBCollection coll = db.getCollection(datasetVersion);
 				DBCursor cursor = coll.find(searchObj);
 				while (cursor.hasNext()) {
@@ -400,7 +401,7 @@ public class DocumentDAO {
 		}
 	}
 	
-	//Covert a string into a number	
+	//Convert a string into a number	
 	public static boolean isNumeric(String str)  
 	{  
 	  try  
@@ -427,5 +428,20 @@ public class DocumentDAO {
 		/** Retrieve online answer from current endpoint **/
 		String onlineAnswer = ss.getQuery(sparqlQuery).toString();
 		return onlineAnswer;
+	}
+	
+	public int countQaldDataset(String datasetVersion) {
+		 List<DatasetModel> tasks = new ArrayList<DatasetModel>();
+		 
+			try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection(datasetVersion); //Collection
+				DBCursor cursor = coll.find(); //Find All
+				
+				return cursor.count();				
+			} catch (Exception e) {}
+		
+		return 0;
 	}
 }

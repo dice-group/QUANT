@@ -10,7 +10,8 @@ html {
       -ms-text-size-adjust: 100%;
 }
 body {
-  margin: 0;
+	font-family: 'Oswald', sans-serif !important;
+  	margin: 0;
 }
 article,
 aside,
