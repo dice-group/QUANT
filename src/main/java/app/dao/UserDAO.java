@@ -26,7 +26,8 @@ public class UserDAO  {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("User"); //Collection
 				DBCursor cursor = coll.find(searchObj); //Find All
-				while (cursor.hasNext()) {
+				
+				while (cursor.hasNext()) {					
 					return true;
 				}
 				

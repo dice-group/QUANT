@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
 
     <title>QUANT-Dashboard</title>
 
@@ -54,25 +56,24 @@
             <!-- sidebar -->
             <div class="navbar-default sidebar" role="navigation">
             	<div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    	
+                    <ul class="nav" id="side-menu">                    	
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
                          <li>
-                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> User Activities<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Dataset Correction</a>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="#">Log Activities</a>
+                                    <a href="#">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -93,7 +94,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
-                    <h1>${cokie }</h1>
+                    <h4>Welcome ${name}. You are an ${role}</h4>
                     
                 </div>
                 <!-- /.col-lg-12 -->

@@ -1,5 +1,6 @@
 package app.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -7,20 +8,21 @@ import java.util.Set;
 public class UserDatasetCorrection {
 	String transId;
 	int userId;
-	String revision;
+	int revision;
 	String lastRevision;
 	String id;
 	String datasetVersion;	
 	String answerType;
-	Boolean aggregation;
-	Boolean hybrid;
-	Boolean onlydbo;
+	String aggregation;
+	String hybrid;
+	String onlydbo;
 	String sparqlQuery;
 	String pseudoSparqlQuery;
-	Boolean outOfScope;
+	String outOfScope;
 	Map<String, String> languageToQuestion;
 	Map<String, List<String>> languageToKeyword;
 	Set<String> goldenAnswer;
+	String status;
 	public UserDatasetCorrection() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -37,10 +39,10 @@ public class UserDatasetCorrection {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getRevision() {
+	public int getRevision() {
 		return revision;
 	}
-	public void setRevision(String revision) {
+	public void setRevision(int revision) {
 		this.revision = revision;
 	}
 	public String getLastRevision() {
@@ -67,22 +69,22 @@ public class UserDatasetCorrection {
 	public void setAnswerType(String answerType) {
 		this.answerType = answerType;
 	}
-	public Boolean getAggregation() {
+	public String getAggregation() {
 		return aggregation;
 	}
-	public void setAggregation(Boolean aggregation) {
+	public void setAggregation(String aggregation) {
 		this.aggregation = aggregation;
 	}
-	public Boolean getHybrid() {
+	public String getHybrid() {
 		return hybrid;
 	}
-	public void setHybrid(Boolean hybrid) {
+	public void setHybrid(String hybrid) {
 		this.hybrid = hybrid;
 	}
-	public Boolean getOnlydbo() {
+	public String getOnlydbo() {
 		return onlydbo;
 	}
-	public void setOnlydbo(Boolean onlydbo) {
+	public void setOnlydbo(String onlydbo) {
 		this.onlydbo = onlydbo;
 	}
 	public String getSparqlQuery() {
@@ -97,10 +99,10 @@ public class UserDatasetCorrection {
 	public void setPseudoSparqlQuery(String pseudoSparqlQuery) {
 		this.pseudoSparqlQuery = pseudoSparqlQuery;
 	}
-	public Boolean getOutOfScope() {
+	public String getOutOfScope() {
 		return outOfScope;
 	}
-	public void setOutOfScope(Boolean outOfScope) {
+	public void setOutOfScope(String outOfScope) {
 		this.outOfScope = outOfScope;
 	}
 	public Map<String, String> getLanguageToQuestion() {
@@ -120,6 +122,12 @@ public class UserDatasetCorrection {
 	}
 	public void setGoldenAnswer(Set<String> goldenAnswer) {
 		this.goldenAnswer = goldenAnswer;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 		
 }

@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.dao.CookieDAO;
 import app.dao.DocumentDAO;
+import app.dao.UserDAO;
+import app.model.User;
 
 
 @Controller
@@ -25,7 +27,13 @@ public class DashboardController {
 		CookieDAO cookieDao = new CookieDAO();
 		ModelAndView mav = new ModelAndView("dashboard");
 		//mav.addObject("isValidate", cookieDao.isValidate(cks));
-		mav.addObject("cokie", cookieDao.getAuth(cks));
+		//Get name of the user
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		//String Name = user.getName();
+		//mav.addObject("cokie", cookieDao.getAuth(cks));
+		mav.addObject("name", user.getName());
+		mav.addObject("role", user.getRole());
 		if (cookieDao.isValidate(cks)) {
 			DocumentDAO documentDao = new DocumentDAO();
 			int qald1 = documentDao.countQaldDataset("QALD1_Test_dbpedia") + documentDao.countQaldDataset("QALD1_Train_dbpedia");

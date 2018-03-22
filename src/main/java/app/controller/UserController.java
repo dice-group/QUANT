@@ -110,7 +110,7 @@ public class UserController {
 		}
 		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
 		
-		ModelAndView mav = new ModelAndView("document-list");
+		ModelAndView mav = new ModelAndView("document-curate-list");
 		mav.addObject("datasets", udcDao.getAllDatasets());
 	    return mav;  
 	}

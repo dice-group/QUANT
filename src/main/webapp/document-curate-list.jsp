@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ page import="app.dao.UserDatasetCorrectionDAO" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>QUANT-Curate my Dataset</title>
+    <title>QUANT-Dataset</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/resources/vendor/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
@@ -35,11 +35,12 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->	
+    <![endif]-->
 </head>
 <body>
-	<div id="wrapper">
-		<!-- Navigation -->
+
+    <div id="wrapper">
+     <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -49,14 +50,14 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="${pageContext.request.contextPath}">QALD Curator v1.0</a>
-        </div>
-        <!-- /.navbar-header -->
-        <!-- sidebar -->
-        <div class="navbar-default sidebar" role="navigation">
-        	<div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu">
-                	
-                	<li>
+            </div>
+            <!-- /.navbar-header -->
+            <!-- sidebar -->
+            <div class="navbar-default sidebar" role="navigation">
+            	<div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                    	
+                    	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
@@ -72,7 +73,7 @@
                                     <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="#">Activity Log</a>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -83,59 +84,79 @@
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <!-- /.navbar sidebar -->        
+            <!-- /.navbar sidebar -->
+        
         </nav>
-	</div>
-	<div id="page-wrapper">
-		 <div class="row">
+        <div id="page-wrapper">
+            <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Curate my Dataset</h1>
-                </div>                
-         </div>      
-	
-		<div class="row">
-			<div class="col-lg-6">
-				<div class="panel panel-default">
-					<div class="panel-heading"></div>
-						<div class="row">	
-							<div class="panel-body">		                        
-                        	</div>
-							<form class="form-horizontal">
-				  				<div class="form-group">
-						    		<label for="inputDatabaseVersion" class="control-label col-xs-4"><h5>Database Origin Version:</h5></label>
-						    		<div class="col-xs-5">
-						    			<input type="text" class="form-control" id="databaseVersion" placeholder="Enter Database Origin Version">
-						    		</div>			    		
-						  		</div>
-						  		<div class="form-group">
-						    		<label for="inputSparqlEndpoint" class="control-label col-xs-4"><h5>SPARQL Endpoint:</h5></label>
-						    		<div class="col-xs-5">
-						    			<input type="text" class="form-control" id="sparqlEndpoint" placeholder="Enter SPARQL Endpoint URL">
-						    		</div>
-						 		</div>
-						  		<div class="form-group">
-						    		<label for="inputDatasetFile" class="control-label col-xs-4"><h5>Dataset File (.json):</h5></label>
-						    		<div class="col-xs-5">
-						    			<input type="file" class="filestyle" data-buttonText="Select a File">
-						    		</div>
-						 		</div>
-						 		<div class="modal-footer">
-			        				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			        				<button type="submit" class="btn btn-primary">Start to Curate</button>
-			        			</div>
-							</form>	
-						</div>				
-				</div>
-			</div>
-		</div>
-		
-	
-	
-	
-	 <!-- jQuery -->
+                    <h1 class="page-header">QALD Dataset Question Curate List</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Question</th>
+                                        <th class="text-center">Keywords</th>
+                                        <th class="text-center">Database Origin Version</th>
+                                        <th width="5%" ></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <c:forEach var="datasets" items="${datasets}" varStatus="loop">
+                                    	<tr>
+                                    		<td>${loop.index+1}</td>
+                                    		<td>${datasets.getLanguageToQuestion().get("en").toString()}</td>
+                                    		<td>
+                                    		
+                                    		<c:forEach items="${datasets.getLanguageToKeyword()}" var="map">
+			                                     	<c:if test="${map.getKey()=='en'}">
+			                                     		${map.getValue().toString()}
+			                                     	</c:if>
+				                                    		
+			                                    	
+			                                    </c:forEach>
+                                    		</td>
+                                    		<td>${datasets.getDatasetVersion()}</td>
+                                    		<td>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Data master"></span></a>
+                                    			
+                                    		</td>
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+                                   
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
     <script src="<c:url value="/resources/vendor/jquery/jquery.min.js" />"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -151,5 +172,16 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
+
 </body>
+
 </html>

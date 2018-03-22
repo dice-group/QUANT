@@ -60,19 +60,19 @@
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
-                        </li>                        
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
+                        </li>
                          <li>
-                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> User Activities<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Dataset Correction</a>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="#">Log Activities</a>
+                                    <a href="#">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -80,7 +80,7 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
-                        <li>
+                         <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
                     </ul>
@@ -106,9 +106,12 @@
                         <div class="panel-body">
                         <div class="row" style="margin-bottom:2%">
 	                        <div class="col-lg-12">
+	                        	<button type="button" class="btn btn-outline-primary" id="add-user" data-toggle="modal" data-target="#insert-user-modal">Add User</button>
+		                        <!--  
 		                        <button type="button" class="add-user btn btn-xs btn-default" data-toggle="modal" data-target="#insert-user-modal" id="add-user">
-						        	<span class="glyphicon glyphicon-plus"></span> Add User
+						        	<span class="glyphicon glyphicon-plus"></span> <h6>Add User</h6>
 						        </button>
+						        -->
 					        </div>
                         </div>
                         <div class="row">
@@ -177,33 +180,33 @@
             		<input id="id-input" name="id-input" type="text" class="hidden" >
 			        <div class="modal-body">
 			        	<div class="form-group">
-			                <label for="name-input" class="col-sm-2 control-label">Name </label>
+			                <label for="name-input" class="col-sm-2 control-label"><h5>Name</h5> </label>
 			                <div class="col-sm-10">
 			                  <input id="name-input" name="name-input" type="text" class="form-control" placeholder="Name">
 			                </div>
 			            </div>
 			            
 			            <div class="form-group">
-			                <label for="email-input" class="col-sm-2 control-label">e-Mail </label>
+			                <label for="email-input" class="col-sm-2 control-label"><h5>e-Mail</h5> </label>
 			                <div class="col-sm-10">
 			                  <input id="email-input" name="email-input" type="text" class="form-control" placeholder="e-Mail address">
 			                </div>
 			            </div>
 			            <div class="form-group">
-			                <label for="role-input" class="col-sm-2 control-label">Role </label>
+			                <label for="role-input" class="col-sm-2 control-label"><h5>Role</h5> </label>
 			                <div class="col-sm-10">
 			                  <input id="role-user-input" name="role-user-input" type="text" class="form-control" placeholder="Type in administrator or evaluator">
 			                </div>
 			            </div>
 			            <div class="form-group">
-			                <label for="username-input" class="col-sm-2 control-label">User Name </label>
+			                <label for="username-input" class="col-sm-2 control-label"><h5>User Name</h5> </label>
 			                <div class="col-sm-10">
 			                  <input id="username-input" name="username-input" type="text" class="form-control" placeholder="User name">
 			                </div>
 			            </div>
 			            
 			            <div class="form-group">
-			                <label for="password-input" class="col-sm-2 control-label">Password </label>
+			                <label for="password-input" class="col-sm-2 control-label"><h5>Password</h5> </label>
 			                <div class="col-sm-10">
 			                  <input id="password-user-input" name="password-user-input" type="text" class="form-control" placeholder="Password">
 			                </div>

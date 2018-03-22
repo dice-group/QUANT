@@ -76,6 +76,18 @@
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
                          <li>
@@ -110,7 +122,22 @@
                     <div class="panel panel-default">
                     	<c:if test="${isExist=='yes'}">
                         <div class="panel-body">
-                        <input type="submit"" name=startButton' id='startButton' value='Start Correction'/>
+                        <div class="panel-heading">
+                        <div class="row">
+                        	
+                        	 	<div class="col-md-6" style="text-align: left">
+                        	 	<button type="submit" name="startButton" id="startButton" class="btn btn-default">Start Button</button>
+                        	 	</div>
+                        	 	<div class="col-md-6" style="text-align: right">
+                        	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
+		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk"> No changes needed
+		                        </label>
+                                <button type="submit" name=doneButton' id='doneButton' style="display:none" class="btn btn-primary">Done</button>
+		                        
+		                        </div>
+                        	
+                        </div>
+                        </div>
                         <form role="form" method="post" name="documentForm" id="documentForm">
                             <div class="row">
                             	<div class="col-lg-12">
@@ -187,13 +214,14 @@
                                            	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
     										style="background-color:#E6E6FA"    											
 											</c:if> disabled="disabled">
-                                                <option></option> 
-                                                <option value="true" ${outOfScope == true ? 'selected="selected"' : ''} >True</option>
-                                                <option value="false" ${outOfScope == false ? 'selected="selected"' : ''}>False</option>                                                
+                                                <option value=""  <c:if test="${empty outOfScope}">selected="selected"</c:if>></option> 
+                                                <option value="true" ${outOfScope == "true" ? 'selected="selected"' : ''} >True</option>
+                                                <option value="false" ${outOfScope == "false" ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
+                                            
                                             <p class="text-danger" id="outOfScopeSugg"><c:if test="${not empty outOfScopeSugg}">
-                                            Suggestion :												
-                                            ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}
+                                            <em>Suggestion :												
+                                            ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}</em>
                                             </c:if></p>    												
                                     </div>	
                         		</div>
@@ -211,8 +239,8 @@
                                                 <option value="false" ${aggregation == false ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
                                             <p class="text-danger" id="aggregationSugg"><c:if test="${not empty aggregationSugg}">
-    												Suggestion : </c:if>
-    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</p>
+    												<em>Suggestion : </c:if>
+    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</em></p>
                                     </div>	
                         		</div>
                         		<div class="col-lg-4">
@@ -497,9 +525,18 @@
  <script>
 $(function(){
      $('#startButton').click(function(){
-    	 $('.form-control').prop('disabled', false);
+    	$('.form-control').prop('disabled', false);
         $('#startButton').val('CorrectionOnProgress');
+        $('#startButton').prop("disable", true);
+        document.getElementById("doneButton").style.display='';
+        document.getElementById("chkLabel").style.display='';
      });
+     $('#doneButton').click(function(){
+     	$('.form-control').prop('disabled', true);
+         $('#startButton').val('Start Curate');
+         document.getElementById("doneButton").style.display='none';
+         document.getElementById("chkLabel").style.display='none';
+      });
 });
 </script>
 </body>

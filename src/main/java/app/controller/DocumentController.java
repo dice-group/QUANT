@@ -1,6 +1,9 @@
 package app.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +29,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mongodb.BasicDBObject;
 
 import app.dao.CookieDAO;
 import app.dao.DocumentDAO;
 import app.dao.UserDAO;
 import app.dao.UserDatasetCorrectionDAO;
+import app.dao.UserLogDAO;
 import app.model.DatasetList;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
 import app.model.User;
 import app.model.UserDatasetCorrection;
+import app.model.UserLog;
 import app.response.QuestionResponse;
 import app.sparql.SparqlService;
 
@@ -211,11 +218,11 @@ public class DocumentController {
 			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
 			String sprqlQuery = documentItem.getSparqlQuery();
 			String goldenAnswer = documentItem.getGoldenAnswer().toString();
-			Boolean aggregation = documentItem.getAggregation();
+			String aggregation = documentItem.getAggregation();
 			String answerType = documentItem.getAnswerType();
-			Boolean onlydbo = documentItem.getOnlydbo();
-			Boolean hybrid = documentItem.getHybrid();
-			Boolean outOfScope = documentItem.getOutOfScope();
+			String onlydbo = documentItem.getOnlydbo();
+			String hybrid = documentItem.getHybrid();
+			String outOfScope = documentItem.getOutOfScope();
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 			
@@ -243,7 +250,7 @@ public class DocumentController {
 			mav.addObject("idNext", idNext);
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, "UserDatasetCorrection");
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
@@ -298,36 +305,48 @@ public class DocumentController {
 		if (udcDao.isDocumentExist(userId, id, datasetVersion)) {
 			UserDatasetCorrection documentCorrection = udcDao.getDocument(userId, id, datasetVersion);
 			documentCorrection.setAnswerType(answerType);
-			documentCorrection.setAggregation(Boolean.parseBoolean(aggregation));
-			documentCorrection.setOnlydbo(Boolean.parseBoolean(onlydbo));
-			documentCorrection.setHybrid(Boolean.parseBoolean(hybrid));
+			documentCorrection.setAggregation(aggregation);
+			documentCorrection.setOnlydbo(onlydbo);
+			documentCorrection.setHybrid(hybrid);
 			documentCorrection.setSparqlQuery(sparqlQuery);
 			documentCorrection.setPseudoSparqlQuery(pseudoSparqlQuery);
-			documentCorrection.setOutOfScope(Boolean.parseBoolean(outOfScope));
-			
+			documentCorrection.setOutOfScope(outOfScope);
 			udcDao.updateDocument(documentCorrection);
 		}else {
 			
 			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
 			documentCorrection.setDatasetVersion(datasetVersion);
 			documentCorrection.setId(id);
-			documentCorrection.setTransId("1");
+			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 			documentCorrection.setAnswerType(answerType);
-			documentCorrection.setAggregation(Boolean.parseBoolean(aggregation));
-			documentCorrection.setOnlydbo(Boolean.parseBoolean(onlydbo));
-			documentCorrection.setHybrid(Boolean.parseBoolean(hybrid));
+			documentCorrection.setAggregation(aggregation);
+			documentCorrection.setOnlydbo(onlydbo);
+			documentCorrection.setHybrid(hybrid);
 			documentCorrection.setSparqlQuery(sparqlQuery);
 			documentCorrection.setPseudoSparqlQuery(pseudoSparqlQuery);
-			documentCorrection.setOutOfScope(Boolean.parseBoolean(outOfScope));
+			documentCorrection.setOutOfScope(outOfScope);
 			documentCorrection.setLanguageToKeyword(document.getLanguageToKeyword());
 			documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
 			documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 			documentCorrection.setUserId(userId);
-			documentCorrection.setRevision("1");
-			documentCorrection.setLastRevision("111");
+			documentCorrection.setRevision(1);
+			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			
 			udcDao.addDocument(documentCorrection);
 		}
+		
+		UserLogDAO userLogDao = new UserLogDAO();
+		UserLog userLog = new UserLog();
+		BasicDBObject logInfo = new BasicDBObject();
+		logInfo.put("id", id);
+		logInfo.put("datasetVersion", datasetVersion);
+		
+		userLog.setUserId(userId);
+		userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		userLog.setLogType("curate");
+		userLog.setIpAddress("");
+		userLog.setLogInfo(logInfo);
+		userLogDao.addLogCurate(userLog);
 		return document;
 	}
 	@RequestMapping(value = "/document-list/document/edit-question/{datasetId}/{datasetVersion}", method = RequestMethod.POST)
