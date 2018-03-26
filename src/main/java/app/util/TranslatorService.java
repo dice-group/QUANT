@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 import java.io.FileReader;
@@ -57,6 +59,49 @@ public class TranslatorService {
 		return output.toString();
 	}
 	
+	/**
+	 * Accepts question in English and returns a JSONObject having its translation in target languages
+	 * @param question
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public JSONObject translateNewQuestion(String question) throws FileNotFoundException {
+		JSONObject result = new JSONObject();
+        Vector<String> targetLanguages = getTargetLanguages();
+        for (String lang : targetLanguages) {
+        	if (lang.equals("en")) {
+        		result.put("en", question);
+        	}
+        	else {
+        		result.put(lang, executeCommand("trans -b :", lang, question));
+        	}
+        }
+        return result;
+	}
+	
+	/**
+	 * Accepts keywordList in English and returns a JSONObject having its translation in target languages
+	 * @param keywordList
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	public JSONObject translateNewKeywords(List<String> keywordList) throws FileNotFoundException {
+		JSONArray newKeywordList = new JSONArray();
+		newKeywordList.addAll(keywordList);
+		JSONObject result = new JSONObject();
+		Vector<String> targetLanguages = getTargetLanguages();
+		
+        for (String lang : targetLanguages) {
+        	if (lang.equals("en")) {
+        		result.put("en", keywordList);
+        	}
+        	else {
+        		result.put(lang, translateKeywords(newKeywordList, lang, "trans -b :"));
+        	}
+        }
+        return result;
+	}
+	
 	private JSONArray translateKeywords(JSONArray keywordList, String lang, String command) {
 		JSONArray translatedKeywordList = new JSONArray();
 		
@@ -69,19 +114,8 @@ public class TranslatorService {
 	private void translateQuestions() throws FileNotFoundException, IOException, ParseException {
 		JSONParser parser = new JSONParser();
 		JSONArray a = (JSONArray) parser.parse(new FileReader("src/resources/List_question_with_attributes.json"));
-		File file = new File("src/resources/List_target_language.txt");
-        Scanner sc = new Scanner(file);
-        Vector<String> targetLanguages = new Vector<>();
-        int totalLangs = 0;
-        
-        // create a vector of target langs
-        while(sc.hasNextLine()){
-            String line = sc.nextLine();
-            int colon = line.indexOf(":");
-            String lang = line.substring(0, colon);
-            targetLanguages.add(lang.trim());
-            totalLangs++;
-        }
+		Vector<String> targetLanguages = getTargetLanguages();
+
         //Example command : trans -b :de "Why is the sky blue?"
         String command = "trans -b :";
         
@@ -96,15 +130,17 @@ public class TranslatorService {
 			JSONObject ltk = (JSONObject) jsonObject.get("languageToKeyword");
 			String question = (String) ltq.get("en");
 			Boolean keywordPresent = true;
+			
 			if(ltk.isEmpty())
 				keywordPresent = false;
+			
 			JSONArray keywordList = new JSONArray();
 			if (keywordPresent == true)
 				if (ltk.containsKey("en"))
 					keywordList = (JSONArray) ltk.get("en");
 				else if (ltk.containsKey(""))
 					keywordList = (JSONArray) ltk.get("");
-			//System.out.println(question + "\n" + keywordList);
+			
 			int addedLangs = 0;
 			for (String lang : targetLanguages) {
 				if (!ltq.containsKey(lang) || ltq.containsValue(null)) {
@@ -115,24 +151,20 @@ public class TranslatorService {
 				}
 			}
 			
-			//System.out.println(addedLangs + "\n");
-			
 			JSONObject result = new JSONObject();
 			result.put("languageToQuestion", ltq);
 			result.put("languageToKeyword", ltk);
 			
 			// translation for all langs added
-			if (addedLangs == totalLangs-1) {
+			if (addedLangs == targetLanguages.size()-1) {
 				result.put("id", ++all_id);
 				writeAll.add(result);
-				//System.out.println(result + "\n");
 			}
 			
 			// translation for only remaining langs added
 			else {
 				result.put("id", ++add_id);
 				writeAdditional.add(result);
-				System.out.println(result + "\n");
 			}
 			
 		}
@@ -143,10 +175,35 @@ public class TranslatorService {
 		writer.writeValue(new File("src/resources/addedTranslations.json"), writeAdditional);
 		
 	}
+
+	/**
+	 * Returns a vector of target languages as given in the file
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	private Vector<String> getTargetLanguages() throws FileNotFoundException {
+		File file = new File("src/resources/List_target_language.txt");
+        Scanner sc = new Scanner(file);
+        Vector<String> targetLanguages = new Vector<>();
+        
+        // create a vector of target langs
+        while(sc.hasNextLine()){
+            String line = sc.nextLine();
+            int colon = line.indexOf(":");
+            String lang = line.substring(0, colon);
+            targetLanguages.add(lang.trim());
+        }
+		return targetLanguages;
+	}
 	
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		TranslatorService obj = new TranslatorService();
 		obj.translateQuestions();
+//		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
+//		List<String> list = new ArrayList<String>();
+//		list.add("sky");
+//		list.add("blue");
+//		System.out.println(obj.translateNewKeywords(list));
 	}
 }
