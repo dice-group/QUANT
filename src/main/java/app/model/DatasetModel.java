@@ -18,7 +18,7 @@ public class DatasetModel {
 	Boolean onlydbo;
 	String sparqlQuery;
 	String pseudoSparqlQuery;
-	Boolean outOfScope;
+	Boolean outOfScope;	
 	Map<String, String> languageToQuestion;
 	Map<String, List<String>> languageToKeyword;
 	Set<String> goldenAnswer;
@@ -49,8 +49,8 @@ public class DatasetModel {
 		this.outOfScope = outOfScope;
 		this.languageToQuestion = languageToQuestion;
 		this.languageToKeyword = languageToKeyword;
-		this.goldenAnswer = goldenAnswer;		
-	}
+		this.goldenAnswer = goldenAnswer;	
+	}	
 	
 	public String getDatasetVersion() {
 		return datasetVersion;

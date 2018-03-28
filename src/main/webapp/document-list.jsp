@@ -112,7 +112,7 @@
                                         <th class="text-center">Question</th>
                                         <th class="text-center">Keywords</th>
                                         <th class="text-center">Database Origin Version</th>
-                                        <th width="5%" ></th>
+                                        <th width="5%" ></th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -125,16 +125,15 @@
                                     		<c:forEach items="${datasets.getLanguageToKeyword()}" var="map">
 			                                     	<c:if test="${map.getKey()=='en'}">
 			                                     		${map.getValue().toString()}
-			                                     	</c:if>
-				                                    		
+			                                     	</c:if>      		
 			                                    	
 			                                    </c:forEach>
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
                                     		<td>
                                     			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Data master"></span></a>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Data Correction"></span></a>
-                                    		</td>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/yes"><span class="fa fa-edit" title="View Data Correction"></span></a>
+                                    		</td>                                    		                                    		
                                     	</tr>
                                     </c:forEach>
                                 </tbody>

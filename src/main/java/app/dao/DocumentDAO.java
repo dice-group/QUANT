@@ -34,12 +34,14 @@ import rationals.properties.isEmpty;
 public class DocumentDAO {
 	 public List<DatasetModel> getCollections(List<DatasetList> listDataset) {
 		 List<DatasetModel> tasks = new ArrayList<DatasetModel>();
+		 Integer numFailedQuestions = 0;
 		 for (int x=0; x<listDataset.size(); x++)	{	
 			try {
 				//call mongoDb
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
 				DBCursor cursor = coll.find(); //Find All
+				
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
@@ -55,12 +57,11 @@ public class DocumentDAO {
 					item.setLanguageToKeyword(q.getLanguageToKeyword());
 					item.setSparqlQuery(q.getSparqlQuery());
 					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
-					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setGoldenAnswer(q.getGoldenAnswer());					
 					tasks.add(item);
-				}
-							
+				}						
 			} catch (Exception e) {}
-		 }
+		 	}		 	
 			return tasks;
 		}
 	 
@@ -174,6 +175,7 @@ public class DocumentDAO {
 		 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
 		 	BasicDBObject sortObj = new BasicDBObject();
 			sortObj.put("id",1);
+			
 		 	for (int x=0; x<listDataset.size(); x++) {
 			try {
 				//call mongoDb
@@ -196,7 +198,7 @@ public class DocumentDAO {
 					item.setSparqlQuery(q.getSparqlQuery());
 					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
 					item.setGoldenAnswer(q.getGoldenAnswer());
-					item.setOutOfScope(q.getOutOfScope());							
+					item.setOutOfScope(q.getOutOfScope());				
 					tasks.add(item);
 				}								
 			} catch (Exception e) {}

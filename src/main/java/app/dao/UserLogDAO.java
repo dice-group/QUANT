@@ -40,7 +40,7 @@ public class UserLogDAO {
 		List<UserLog> userLogs = new ArrayList<UserLog>();
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("userId", userId);
-		searchObj.put("logType", "curate");
+		//searchObj.put("logType", "curate");
 		try {
 			//call mongoDb
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name

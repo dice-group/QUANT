@@ -236,40 +236,37 @@ public class UserDatasetCorrectionDAO {
 					finalAnswerType = "resource";
 				}	
 			}
-				else if (validateDateFormat(answerValue))
+			else if (validateDateFormat(answerValue))
+			{
+				//System.out.println("this is date");
+				if (answerType.toLowerCase().equals("date")) {
+					finalAnswerType = answerType;
+				}else
 				{
-					//System.out.println("this is date");
-					if (answerType.toLowerCase().equals("date")) {
-						finalAnswerType = answerType;
-					}else
-					{
-						finalAnswerType =  "date";
-					}
+					finalAnswerType =  "date";
 				}
-					else if ((isNumeric(answerValue)) || (answerValue.matches("\\d.*")))
-					{					
-						if (answerType.toLowerCase().equals("number")) {
-							finalAnswerType = answerType;
-						}else
-						{					
-							finalAnswerType = "number";
-						}
-					}else if ((answerValue.toString().equals("true")) || (answerValue.toString().equals("false"))){
-								if (answerType.toLowerCase().equals("boolean")) {
-									finalAnswerType = answerType;
-								}else
-								{					
-									finalAnswerType = "boolean";
-								}
-							}			
-							else if (answerValue.toLowerCase().matches("\\w.*")){
-								if (answerType.toLowerCase().equals("string")) {
-									finalAnswerType = answerType;
-								}else
-								{
-									finalAnswerType =  "string";
-								}
-							}		
+			}
+			else if ((isNumeric(answerValue)) || (answerValue.matches("\\d.*")))
+			{					
+				if (answerType.toLowerCase().equals("number")) {
+					finalAnswerType = answerType;
+				}else{					
+					finalAnswerType = "number";
+				}
+			}else if ((answerValue.toString().equals("true")) || (answerValue.toString().equals("false"))){
+				if (answerType.toLowerCase().equals("boolean")) {
+					finalAnswerType = answerType;
+				}else{					
+					finalAnswerType = "boolean";
+				}
+			}			
+			else if (answerValue.toLowerCase().matches("\\w.*")){
+				if (answerType.toLowerCase().equals("string")) {
+					finalAnswerType = answerType;
+				}else{
+					finalAnswerType =  "string";
+				}
+			}		
 			return finalAnswerType;
 		}
 		
@@ -281,14 +278,14 @@ public class UserDatasetCorrectionDAO {
 			String queryModifier = ""; 
 			if (m.find()) {
 				if (partOfSparql.contains("GROUP BY")) {
-						queryModifier = "GROUP BY";
+					queryModifier = "GROUP BY";
 				}else if (partOfSparql.contains("HAVING")) {
-						  	queryModifier = "HAVING";
-						} else if (partOfSparql.contains("ORDER BY")) {
-										queryModifier = "ORDER BY";
-								} else {
-											queryModifier = "LIMIT";
-										}			
+				  	queryModifier = "HAVING";
+				} else if (partOfSparql.contains("ORDER BY")) {
+					queryModifier = "ORDER BY";
+				} else {
+					queryModifier = "LIMIT";
+				}			
 			}
 			return queryModifier;			
 		}
@@ -356,5 +353,44 @@ public class UserDatasetCorrectionDAO {
 			String onlineAnswer = ss.getQuery(sparqlQuery).toString();
 			return onlineAnswer;
 		}
-	 
+		
+		// did the aggregation feature cureated?
+		public Boolean isAggregationCurated (int userId, String id, String datasetVersion) {
+			 BasicDBObject searchObj = new BasicDBObject();
+			 UserDatasetCorrection item = new UserDatasetCorrection();
+			 searchObj.put("userId", userId);
+			 searchObj.put("logType", "curate");
+			 searchObj.put("logInfo.id", id);
+			 searchObj.put("logInfo.datasetVersion", datasetVersion);
+			 searchObj.put("logInfo.field", "aggregation");
+			 try {
+				 DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+					DBCollection coll = db.getCollection("UserLog");
+					DBCursor cursor = coll.find(searchObj);
+					while (cursor.hasNext()) {
+						return true;
+					}
+			 }catch (Exception e) {}
+			return false;
+			
+		}
+		// did the a feature cureated?
+		public Boolean isOnlydboCurated (int userId, String id, String datasetVersion) {
+			BasicDBObject searchObj = new BasicDBObject();
+			UserDatasetCorrection item = new UserDatasetCorrection();
+			searchObj.put("userId", userId);
+			searchObj.put("logType", "curate");
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "onlydbo");
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserLog");
+				DBCursor cursor = coll.find(searchObj);
+				while (cursor.hasNext()) {
+					return true;
+				}
+			}catch (Exception e) {}
+			return false;			
+		}
 }

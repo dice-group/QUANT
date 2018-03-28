@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -23,10 +25,34 @@ public class SparqlService {
 	 * desc : function to do online query
 	 * 
 	 */
+	
+	public Boolean isASKQuery(String question) {
+		// Compare to source from:
+		// src/main/java/org/aksw/hawk/controller/Cardinality.java
+
+		// From train query set: (better to use keyword list!)
+		// (Root [-> first child])
+		// VBG -> VBZ (Does)
+		// VBZ (Is)
+		// ADD -> VB (Do)
+		// VBP (Are)
+		// VBD (Was)
+		// VB -> VBD (Did)
+		// VBN -> VBD (Was)
+		// VB -> VBZ (Does)
+		// VBN -> VBZ (Is)
+
+		// regex: ^(Are|D(id|o(es)?)|Is|Was)( .*)$
+		return question.startsWith("Are ") || question.startsWith("Did ") || question.startsWith("Do ") || question.startsWith("Does ") || question.startsWith("Is ") || question.startsWith("Was ");
+		//return false;
+	}
+	
+	//get result from Virtuoso endpoint when the question has a SelectQuery
 	public String getQuery(String strQuery) {
 		String result = null;
 		try {
 			QueryExecution qe = QueryExecutionFactory.sparqlService(service, strQuery); //put query to jena sparql library
+			qe.setTimeout(5, TimeUnit.MINUTES);
 			ResultSet rs = qe.execSelect(); //execute query
 			String szVal="";
 			Set<String> setResult = new HashSet();;
@@ -53,6 +79,24 @@ public class SparqlService {
 		}
 		return result;
 	}
+	
+	//get result from Virtuoso endpoint when the question has an AskQuery
+	public Boolean getResultAskQuery(String strQuery) {			
+	
+		try {
+				QueryExecution qe = QueryExecutionFactory.sparqlService(service, strQuery); //put query to jena sparql library
+				qe.setTimeout(5, TimeUnit.MINUTES);
+				Boolean result = qe.execAsk(); //execute query	
+				qe.close();
+				
+			
+				return result;
+				
+				
+			} catch (Exception e) {}
+		return false;
+	}
+	
 	/***
 	 * 
 	 * @param strQuery
