@@ -115,7 +115,8 @@ public class DocumentController {
 		
 		DocumentDAO documentDao = new DocumentDAO();
 		ModelAndView mav = new ModelAndView("document-detail");
-		DatasetModel documentItem = documentDao.getDocument(id, datasetVersion);
+		DatasetModel documentItem = documentDao.getDocument(id, datasetVersion);//get documents
+		mav.addObject("classDisplay", "btn btn-default");//Show start button
 		/** Setting previous and next record **/
 		int idCurrent = Integer.parseInt(id);
 		String previousStatus = "";
@@ -139,12 +140,22 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 			
+			
 			/** Pretty display Query Sparql **/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-			
+			//System.out.println("online");
 			/** Retrieve online answer from current endpoint **/
-			String onlineAnswer = ss.getQuery(sprqlQuery);
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				Boolean onlineAnswer = ss.getResultAskQuery(sprqlQuery);
+				System.out.println(onlineAnswer);
+				mav.addObject("onlineAnswer", onlineAnswer);
+			}else {
+				String onlineAnswer = ss.getQuery(sprqlQuery);
+				System.out.println(onlineAnswer);
+				mav.addObject("onlineAnswer", onlineAnswer);
+			}
+			
 			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
@@ -158,7 +169,7 @@ public class DocumentController {
 			mav.addObject("outOfScope", outOfScope);
 			mav.addObject("id", id);
 			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("onlineAnswer", onlineAnswer);
+			
 			mav.addObject("idPrevious", idPrevious);
 			mav.addObject("idNext", idNext);
 			
@@ -186,8 +197,8 @@ public class DocumentController {
 		return mav;  
 	}
 	
-	@RequestMapping(value = "/document-list/detail-correction/{id}/{datasetVersion}", method = RequestMethod.GET)
-	public ModelAndView showDocumentListDetailCorrection(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/document-list/detail-correction/{id}/{datasetVersion}/{editStatus}", method = RequestMethod.GET)
+	public ModelAndView showDocumentListDetailCorrection(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, @PathVariable("editStatus") String editStatus, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		
@@ -202,7 +213,12 @@ public class DocumentController {
 		DocumentDAO documentDao = new DocumentDAO();		
 		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
 		ModelAndView mav = new ModelAndView("document-detail");
-		UserDatasetCorrection documentItem = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion);
+		if (editStatus.equals("yes"))
+			mav.addObject("classDisplay", "btn btn-default");//Hide start button
+		else
+			mav.addObject("classDisplay", "hidden");//Hide start button
+		
+		UserDatasetCorrection documentItem = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion); //get documents
 		/** Setting previous and next record **/
 		int idCurrent = Integer.parseInt(id);
 		String previousStatus = "";
@@ -272,6 +288,147 @@ public class DocumentController {
 		}
 		return mav;  
 	}
+	@RequestMapping(value = "/document-list/start-correction/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView showDocumentListStartCorrection(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+						
+		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
+		ModelAndView mav = new ModelAndView("document-detail-curate");
+		mav.addObject("disabledForm", "");
+		mav.addObject("startButton", "On Process");
+		mav.addObject("startButtonDisabled", "disabled");
+		mav.addObject("displayStatus", "");
+		UserDatasetCorrection documentItem = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion);
+		/** Setting previous and next record **/
+		int idCurrent = Integer.parseInt(id);
+		String previousStatus = "";
+		int idNext = idCurrent+1;
+		int idPrevious;
+		if (idCurrent==1) {
+			previousStatus = "disabled";
+			idPrevious = 1;
+		}else {
+			idPrevious = idCurrent - 1;
+		}
+		String statusNoChangeChk="";
+		if (documentItem.getId()!=null) {
+			statusNoChangeChk = "style='display:none'";
+			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
+			String sprqlQuery = documentItem.getSparqlQuery();
+			String goldenAnswer = documentItem.getGoldenAnswer().toString();
+			String aggregation = documentItem.getAggregation();
+			String answerType = documentItem.getAnswerType();
+			String onlydbo = documentItem.getOnlydbo();
+			String hybrid = documentItem.getHybrid();
+			String outOfScope = documentItem.getOutOfScope();
+			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
+			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
+					
+			/** Pretty display Query Sparql **/
+			SparqlService ss = new SparqlService();
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
+					
+			/** Retrieve online answer from current endpoint **/
+			String onlineAnswer = ss.getQuery(sprqlQuery);
+					
+			mav.addObject("languageToQuestionEn", languageToQuestionEn);
+			mav.addObject("sparqlQuery", formatedSparqlQuery);
+			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("aggregation", aggregation);
+			mav.addObject("answerType", answerType);
+			mav.addObject("onlydbo", onlydbo);
+			mav.addObject("hybrid", hybrid);
+			mav.addObject("languageToKeyword", languageToKeyword);
+			mav.addObject("languageToQuestion", languageToQuestion);
+			mav.addObject("outOfScope", outOfScope);
+			mav.addObject("id", id);
+			mav.addObject("datasetVersion", datasetVersion);
+			mav.addObject("onlineAnswer", onlineAnswer);
+			mav.addObject("idPrevious", idPrevious);
+			mav.addObject("idNext", idNext);
+			
+			
+			/** Provide suggestion **/
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);
+			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
+			String aggregationSugg = documentItemSugg.getAggregationSugg();		
+			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
+			String hybridSugg = documentItemSugg.getHybridSugg();
+			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
+							
+			mav.addObject("answerTypeSugg", answerTypeSugg);
+			mav.addObject("aggregationSugg", aggregationSugg);
+			mav.addObject("onlyDboSugg", onlyDboSugg);
+			mav.addObject("hybridSugg", hybridSugg);
+			mav.addObject("outOfScopeSugg", outOfScopeSugg);
+			mav.addObject("isExist", "yes");
+			
+			
+		}else {
+			DocumentDAO documentDao = new DocumentDAO();
+			DatasetModel documentMaster = documentDao.getDocument(id, datasetVersion);
+			String languageToQuestionEn = documentMaster.getLanguageToQuestion().get("en").toString();
+			String sprqlQuery = documentMaster.getSparqlQuery();
+			String goldenAnswer = documentMaster.getGoldenAnswer().toString();
+			String aggregation = String.valueOf(documentMaster.getAggregation());
+			String answerType = documentMaster.getAnswerType();
+			String onlydbo = String.valueOf(documentMaster.getOnlydbo());
+			String hybrid = String.valueOf(documentMaster.getHybrid());
+			String outOfScope = String.valueOf(documentMaster.getOutOfScope());
+			Map<String, List<String>> languageToKeyword = documentMaster.getLanguageToKeyword();
+			Map<String, String> languageToQuestion = documentMaster.getLanguageToQuestion();
+					
+			/** Pretty display Query Sparql **/
+			SparqlService ss = new SparqlService();
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
+					
+			/** Retrieve online answer from current endpoint **/
+			String onlineAnswer = ss.getQuery(sprqlQuery);
+					
+			mav.addObject("languageToQuestionEn", languageToQuestionEn);
+			mav.addObject("sparqlQuery", formatedSparqlQuery);
+			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("aggregation", aggregation);
+			mav.addObject("answerType", answerType);
+			mav.addObject("onlydbo", onlydbo);
+			mav.addObject("hybrid", hybrid);
+			mav.addObject("languageToKeyword", languageToKeyword);
+			mav.addObject("languageToQuestion", languageToQuestion);
+			mav.addObject("outOfScope", outOfScope);
+			mav.addObject("id", id);
+			mav.addObject("datasetVersion", datasetVersion);
+			mav.addObject("onlineAnswer", onlineAnswer);
+			mav.addObject("idPrevious", idPrevious);
+			mav.addObject("idNext", idNext);
+					
+			/** Provide suggestion **/
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
+			String aggregationSugg = documentItemSugg.getAggregationSugg();		
+			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
+			String hybridSugg = documentItemSugg.getHybridSugg();
+			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
+							
+			mav.addObject("answerTypeSugg", answerTypeSugg);
+			mav.addObject("aggregationSugg", aggregationSugg);
+			mav.addObject("onlyDboSugg", onlyDboSugg);
+			mav.addObject("hybridSugg", hybridSugg);
+			mav.addObject("outOfScopeSugg", outOfScopeSugg);
+			mav.addObject("isExist", "yes");
+		}
+		mav.addObject("statusNoChangeChk", statusNoChangeChk);
+		return mav;
+	}
 	/*
 	 * Autosave Document
 	 */
@@ -295,7 +452,11 @@ public class DocumentController {
 		String sparqlQuery = request.getParameter("sparqlQuery");
 		String pseudoSparqlQuery = request.getParameter("pseudoSparqlQuery");
 		String outOfScope = request.getParameter("outOfScope");
-		
+		String answerTypeSugg = request.getParameter("answerTypeSugg");
+		String aggregationSugg = request.getParameter("aggregationSugg");
+		String outOfScopeSugg = request.getParameter("outOfScopeSugg");
+		String onlyDboSugg=request.getParameter("onlyDboSugg");
+		String hybridSugg=request.getParameter("hybridSugg");
 		
 		//find document
 		DatasetModel document = documentDao.getDocument(id, datasetVersion);
@@ -304,6 +465,49 @@ public class DocumentController {
 		
 		if (udcDao.isDocumentExist(userId, id, datasetVersion)) {
 			UserDatasetCorrection documentCorrection = udcDao.getDocument(userId, id, datasetVersion);
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", id);
+			logInfo.put("datasetVersion", datasetVersion);
+			//checking changes
+			//check answer type changes
+			if (!answerType.equals(documentCorrection.getAnswerType())) {
+				logInfo.put("field", "answerType");
+				logInfo.put("originValue", documentCorrection.getAnswerType());
+				logInfo.put("fieldValue", answerType);
+				logInfo.put("suggestionValue", answerTypeSugg);
+			}
+			//check outOfScope changes
+			if (!outOfScope.equals(documentCorrection.getOutOfScope())) {
+				logInfo.put("field", "outOfScope");
+				logInfo.put("originValue", documentCorrection.getOutOfScope());
+				logInfo.put("fieldValue", outOfScope);
+				logInfo.put("suggestionValue", outOfScopeSugg);
+			}
+			//check aggregation changes
+			if (!aggregation.equals(documentCorrection.getAggregation())) {
+				logInfo.put("field", "aggregation");
+				logInfo.put("originValue", documentCorrection.getAggregation());
+				logInfo.put("fieldValue", aggregation);
+				logInfo.put("suggestionValue", aggregationSugg);
+			}
+			//check onlydbo changes
+			if (!onlydbo.equals(documentCorrection.getOnlydbo())) {
+				logInfo.put("field", "onlydbo");
+				logInfo.put("originValue", documentCorrection.getOnlydbo());
+				logInfo.put("fieldValue", onlydbo);
+				logInfo.put("suggestionValue", onlyDboSugg);
+			}
+			//check hybrid changes
+			if (!hybrid.equals(documentCorrection.getHybrid())) {
+				logInfo.put("field", "hybrid");
+				logInfo.put("originValue", documentCorrection.getHybrid());
+				logInfo.put("fieldValue", hybrid);
+				logInfo.put("suggestionValue", hybridSugg);
+			}
+			
 			documentCorrection.setAnswerType(answerType);
 			documentCorrection.setAggregation(aggregation);
 			documentCorrection.setOnlydbo(onlydbo);
@@ -311,10 +515,61 @@ public class DocumentController {
 			documentCorrection.setSparqlQuery(sparqlQuery);
 			documentCorrection.setPseudoSparqlQuery(pseudoSparqlQuery);
 			documentCorrection.setOutOfScope(outOfScope);
-			udcDao.updateDocument(documentCorrection);
+			udcDao.updateDocument(documentCorrection); //update UserDatasetCorrection
+			
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			userLogDao.addLogCurate(userLog);//add UserLog
+			
 		}else {
 			
 			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
+			
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", id);
+			logInfo.put("datasetVersion", datasetVersion);
+			//checking changes
+			//check answer type changes
+			if (!answerType.equals(document.getAnswerType())) {
+				logInfo.put("field", "answerType");
+				logInfo.put("originValue", document.getAnswerType());
+				logInfo.put("fieldValue", answerType);
+				logInfo.put("suggestionValue", answerTypeSugg);
+			}
+			//check outOfScope changes
+			if (!outOfScope.equals(document.getOutOfScope())) {
+				logInfo.put("field", "outOfScope");
+				logInfo.put("originValue", document.getOutOfScope());
+				logInfo.put("fieldValue", outOfScope);
+				logInfo.put("suggestionValue", outOfScopeSugg);
+			}
+			//check aggregation changes
+			if (!aggregation.equals(document.getAggregation())) {
+				logInfo.put("fild", "aggregation");
+				logInfo.put("originValue", document.getAggregation());
+				logInfo.put("fieldValue", aggregation);
+				logInfo.put("suggestionValue", aggregationSugg);
+			}
+			//check onlydbo changes
+			if (!onlydbo.equals(document.getOnlydbo())) {
+				logInfo.put("field", "onlydbo");
+				logInfo.put("originValue", document.getOnlydbo());
+				logInfo.put("fieldValue", onlydbo);
+				logInfo.put("suggestionValue", onlyDboSugg);
+			}
+			//check hybrid changes
+			if (!hybrid.equals(document.getHybrid())) {
+				logInfo.put("field", "hybrid");
+				logInfo.put("originValue", document.getHybrid());
+				logInfo.put("fieldValue", hybrid);
+				logInfo.put("suggestionValue", hybridSugg);
+			}
 			documentCorrection.setDatasetVersion(datasetVersion);
 			documentCorrection.setId(id);
 			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
@@ -333,69 +588,229 @@ public class DocumentController {
 			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			
 			udcDao.addDocument(documentCorrection);
+			
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			userLogDao.addLogCurate(userLog);//add userLog
 		}
 		
-		UserLogDAO userLogDao = new UserLogDAO();
-		UserLog userLog = new UserLog();
-		BasicDBObject logInfo = new BasicDBObject();
-		logInfo.put("id", id);
-		logInfo.put("datasetVersion", datasetVersion);
 		
-		userLog.setUserId(userId);
-		userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		userLog.setLogType("curate");
-		userLog.setIpAddress("");
-		userLog.setLogInfo(logInfo);
-		userLogDao.addLogCurate(userLog);
 		return document;
 	}
 	@RequestMapping(value = "/document-list/document/edit-question/{datasetId}/{datasetVersion}", method = RequestMethod.POST)
 	public @ResponseBody String editQuestion(@PathVariable("datasetId") String datasetId,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		DocumentDAO documentDao = new DocumentDAO();
-		DatasetModel documentItem = documentDao.getDocument(datasetId, datasetVersion);
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		int userId=user.getId();//assign userId
 		
-		String id =request.getParameter("id");
+		//Retrieve change value (if any)
+		String id =request.getParameter("id"); 
 		String value =request.getParameter("value");
 		
-		Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
-		Map<String, String> mapLanguagetToQuestion = new HashMap<String, String>();
-		for (Map.Entry<String, String> mapEntry : languageToQuestion.entrySet()) {
-			if (mapEntry.getKey().equals(id)) {
-				mapLanguagetToQuestion.put(mapEntry.getKey(), value);
-			}else {
-				mapLanguagetToQuestion.put(mapEntry.getKey(), mapEntry.getValue());
+		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO(); //define user dataset correction access object
+		
+		if (udcDao.isDocumentExist(userId, datasetId, datasetVersion)) {
+			UserDatasetCorrection documentCorrection = udcDao.getDocument(userId, datasetId, datasetVersion); //get document from dataset correction
+			// build languageToQuestion parameter
+			Map<String, String> languageToQuestion = documentCorrection.getLanguageToQuestion();
+			Map<String, String> mapLanguageToQuestion = new HashMap<String, String>();
+			for (Map.Entry<String, String> mapEntry : languageToQuestion.entrySet()) {
+				if (mapEntry.getKey().equals(id)) {
+					mapLanguageToQuestion.put(mapEntry.getKey(), value);
+				}else {
+					mapLanguageToQuestion.put(mapEntry.getKey(), mapEntry.getValue());
+				}
 			}
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", datasetId);
+			logInfo.put("datasetVersion", datasetVersion);
+			logInfo.put("field", "languageToQuestion");
+			logInfo.put("originValue", documentCorrection.getLanguageToQuestion());
+			logInfo.put("fieldValue", mapLanguageToQuestion);
+			logInfo.put("suggestionValue", "");
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			
+			documentCorrection.setLanguageToQuestion(mapLanguageToQuestion);//change value of languageToQuestion
+			udcDao.updateDocument(documentCorrection);//update document
+			userLogDao.addLogCurate(userLog);//add userLog
+		}else {
+			DocumentDAO documentDao = new DocumentDAO();
+			DatasetModel documentItem = documentDao.getDocument(datasetId, datasetVersion);
+			
+			// build languageToQuestion parameter
+			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
+			Map<String, String> mapLanguageToQuestion = new HashMap<String, String>();
+			for (Map.Entry<String, String> mapEntry : languageToQuestion.entrySet()) {
+				if (mapEntry.getKey().equals(id)) {
+					mapLanguageToQuestion.put(mapEntry.getKey(), value);
+				}else {
+					mapLanguageToQuestion.put(mapEntry.getKey(), mapEntry.getValue());
+				}
+			}
+			
+			// Add document to UserDatasetCorrection
+			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
+			documentCorrection.setDatasetVersion(datasetVersion);
+			documentCorrection.setId(datasetId);
+			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			documentCorrection.setAnswerType(documentItem.getAnswerType());
+			documentCorrection.setAggregation(String.valueOf(documentItem.getAggregation()));
+			documentCorrection.setOnlydbo(String.valueOf(documentItem.getOnlydbo()));
+			documentCorrection.setHybrid(String.valueOf(documentItem.getHybrid()));
+			documentCorrection.setSparqlQuery(documentItem.getSparqlQuery());
+			documentCorrection.setPseudoSparqlQuery(documentItem.getPseudoSparqlQuery());
+			documentCorrection.setOutOfScope(String.valueOf(documentItem.getOutOfScope()));
+			documentCorrection.setLanguageToKeyword(documentItem.getLanguageToKeyword());
+			documentCorrection.setLanguageToQuestion(mapLanguageToQuestion);
+			documentCorrection.setGoldenAnswer(documentItem.getGoldenAnswer());
+			documentCorrection.setUserId(userId);
+			documentCorrection.setRevision(1);
+			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			udcDao.addDocument(documentCorrection); 
+			
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", datasetId);
+			logInfo.put("datasetVersion", datasetVersion);
+			logInfo.put("field", "languageToQuestion");
+			logInfo.put("originValue", documentItem.getLanguageToQuestion());
+			logInfo.put("fieldValue", mapLanguageToQuestion);
+			logInfo.put("suggestionValue", "");
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			userLogDao.addLogCurate(userLog);//add userLog
 		}
-		documentItem.setLanguageToQuestion(mapLanguagetToQuestion);
-		documentDao.updateDocument(documentItem, datasetVersion);
+		
 		return "Dataset has been updated";
+		
 	}
 	
 	//Edit function of Question keyword 
 	@RequestMapping(value = "/document-list/document/edit-keyword/{datasetId}/{datasetVersion}", method = RequestMethod.POST)
 	public @ResponseBody String ediKeyword(@PathVariable("datasetId") String datasetId,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		DocumentDAO documentDao = new DocumentDAO();
-		DatasetModel documentItem = documentDao.getDocument(datasetId, datasetVersion);
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		int userId=user.getId();//assign userId
 		
 		String id =request.getParameter("id");
 		String value =request.getParameter("value");
+		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO(); //define user dataset correction access object
 		
-		Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
-		Map<String, List<String>> mapLanguageToKeyword = new HashMap<String, List<String>>();
-		for (Map.Entry<String, List<String>> mapEntry : languageToKeyword.entrySet()) {
-			if (mapEntry.getKey().equals(id)) {
-				List<String> listValue = new ArrayList<String>();
-				JSONArray jsonArrayValue = new JSONArray(value);
-				for (int x=0; x<jsonArrayValue.length();x++) {
-					listValue.add(x, jsonArrayValue.getString(x));
+		if (udcDao.isDocumentExist(userId, datasetId, datasetVersion)) {
+			UserDatasetCorrection documentCorrection = udcDao.getDocument(userId, datasetId, datasetVersion); //get document from dataset correction
+			//Build languageToKeyword Parameter
+			Map<String, List<String>> languageToKeyword = documentCorrection.getLanguageToKeyword();
+			Map<String, List<String>> mapLanguageToKeyword = new HashMap<String, List<String>>();
+			for (Map.Entry<String, List<String>> mapEntry : languageToKeyword.entrySet()) {
+				if (mapEntry.getKey().equals(id)) {
+					List<String> listValue = new ArrayList<String>();
+					JSONArray jsonArrayValue = new JSONArray(value);
+					for (int x=0; x<jsonArrayValue.length();x++) {
+						listValue.add(x, jsonArrayValue.getString(x));
+					}
+					mapLanguageToKeyword.put(mapEntry.getKey(), listValue);
+				}else {
+					mapLanguageToKeyword.put(mapEntry.getKey(), mapEntry.getValue());
 				}
-				mapLanguageToKeyword.put(mapEntry.getKey(), listValue);
-			}else {
-				mapLanguageToKeyword.put(mapEntry.getKey(), mapEntry.getValue());
 			}
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", datasetId);
+			logInfo.put("datasetVersion", datasetVersion);
+			logInfo.put("field", "languageToKeyword");
+			logInfo.put("originValue", documentCorrection.getLanguageToQuestion());
+			logInfo.put("fieldValue", mapLanguageToKeyword);
+			logInfo.put("suggestionValue", "");
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			
+			documentCorrection.setLanguageToKeyword(mapLanguageToKeyword);//change value of languageToKeyword
+			udcDao.updateDocument(documentCorrection); //update correction document
+			userLogDao.addLogCurate(userLog);//add userLog
+			
+		}else {
+			DocumentDAO documentDao = new DocumentDAO();
+			DatasetModel documentItem = documentDao.getDocument(datasetId, datasetVersion);
+			
+			//Build languageToKeyword Parameter
+			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
+			Map<String, List<String>> mapLanguageToKeyword = new HashMap<String, List<String>>();
+			for (Map.Entry<String, List<String>> mapEntry : languageToKeyword.entrySet()) {
+				if (mapEntry.getKey().equals(id)) {
+					List<String> listValue = new ArrayList<String>();
+					JSONArray jsonArrayValue = new JSONArray(value);
+					for (int x=0; x<jsonArrayValue.length();x++) {
+						listValue.add(x, jsonArrayValue.getString(x));
+					}
+					mapLanguageToKeyword.put(mapEntry.getKey(), listValue);
+				}else {
+					mapLanguageToKeyword.put(mapEntry.getKey(), mapEntry.getValue());
+				}
+			}
+			// Add document to UserDatasetCorrection
+			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
+			documentCorrection.setDatasetVersion(datasetVersion);
+			documentCorrection.setId(datasetId);
+			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			documentCorrection.setAnswerType(documentItem.getAnswerType());
+			documentCorrection.setAggregation(String.valueOf(documentItem.getAggregation()));
+			documentCorrection.setOnlydbo(String.valueOf(documentItem.getOnlydbo()));
+			documentCorrection.setHybrid(String.valueOf(documentItem.getHybrid()));
+			documentCorrection.setSparqlQuery(documentItem.getSparqlQuery());
+			documentCorrection.setPseudoSparqlQuery(documentItem.getPseudoSparqlQuery());
+			documentCorrection.setOutOfScope(String.valueOf(documentItem.getOutOfScope()));
+			documentCorrection.setLanguageToKeyword(mapLanguageToKeyword);
+			documentCorrection.setLanguageToQuestion(documentItem.getLanguageToQuestion());
+			documentCorrection.setGoldenAnswer(documentItem.getGoldenAnswer());
+			documentCorrection.setUserId(userId);
+			documentCorrection.setRevision(1);
+			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			udcDao.addDocument(documentCorrection); 
+						
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", datasetId);
+			logInfo.put("datasetVersion", datasetVersion);
+			logInfo.put("field", "languageToKeyword");
+			logInfo.put("originValue", documentItem.getLanguageToKeyword());
+			logInfo.put("fieldValue", mapLanguageToKeyword);
+			logInfo.put("suggestionValue", "");
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("curate");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			userLogDao.addLogCurate(userLog);//add userLog
 		}
-		documentItem.setLanguageToKeyword(mapLanguageToKeyword);
-		documentDao.updateDocument(documentItem, datasetVersion);
+		
 		return "Dataset has been updated";
 	}
 	@RequestMapping(value = "/document-list/document/change-answer-from-file/{datasetId}/{datasetVersion}", method = RequestMethod.POST)
@@ -403,4 +818,76 @@ public class DocumentController {
 		
 		return "Dataset has been updated";
 	}	
+	@RequestMapping(value = "/document-list/done-correction/{datasetId}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView showDocumentListDoneCorrection(@PathVariable("datasetId") String datasetId,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		int userId=user.getId();//assign userId
+		
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		String noChangeChk = "";
+		if(request.getParameterMap().containsKey("noChangeChk")) {
+			if (request.getParameter("noChangeChk").equals("on")) {
+				noChangeChk = request.getParameter("noChangeChk");
+			}
+		}
+		
+		
+		if (noChangeChk.equals("on")) {
+			DocumentDAO documentDao = new DocumentDAO();
+			DatasetModel document = documentDao.getDocument(datasetId, datasetVersion);
+			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
+			documentCorrection.setDatasetVersion(datasetVersion);
+			documentCorrection.setId(datasetId);
+			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			documentCorrection.setAnswerType(document.getAnswerType());
+			documentCorrection.setAggregation(String.valueOf(document.getAggregation()));
+			documentCorrection.setOnlydbo(String.valueOf(document.getOnlydbo()));
+			documentCorrection.setHybrid(String.valueOf(document.getHybrid()));
+			documentCorrection.setSparqlQuery(document.getSparqlQuery());
+			documentCorrection.setPseudoSparqlQuery(document.getPseudoSparqlQuery());
+			documentCorrection.setOutOfScope(String.valueOf(document.getOutOfScope()));
+			documentCorrection.setLanguageToKeyword(document.getLanguageToKeyword());
+			documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
+			documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
+			documentCorrection.setUserId(userId);
+			documentCorrection.setRevision(1);
+			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			
+			udcDao.addDocument(documentCorrection);
+			
+			//build logInfo
+			UserLogDAO userLogDao = new UserLogDAO();
+			UserLog userLog = new UserLog();
+			BasicDBObject logInfo = new BasicDBObject();
+			logInfo.put("id", datasetId);
+			logInfo.put("datasetVersion", datasetVersion);
+			logInfo.put("field", "all");
+			logInfo.put("originValue", "");
+			logInfo.put("fieldValue", "");
+			logInfo.put("suggestionValue", "");
+			userLog.setUserId(userId);
+			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			userLog.setLogType("no change needed");
+			userLog.setIpAddress("");
+			userLog.setLogInfo(logInfo);
+			userLogDao.addLogCurate(userLog);//add userLog
+		}
+		ModelAndView mav = new ModelAndView("redirect:/document-list/detail-correction/"+datasetId+"/"+datasetVersion+"/no");
+		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO(); //define user dataset correction access object
+		
+		if (!udcDao.isDocumentExist(userId, datasetId, datasetVersion)) {
+			mav = new ModelAndView("redirect:/document-list/detail/"+datasetId+"/"+datasetVersion);
+		}
+		return mav;
+	}
 }

@@ -8,6 +8,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>webqald Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
   <!--  define properties -->
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,7 +24,7 @@
   
   <!-- Repositories -->
   <repositories>
-  <repository>
+  		<repository>
 			<id>org.springframework.data</id>
 			<name>Spring Data Common Core</name>
 			<url>https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core</url>
@@ -92,7 +93,7 @@
         </dependency>
         
     <!-- Spring Security Dependencies-->
-        <dependency>
+    <!--     <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>${spring.security.core.version}</version>
@@ -120,7 +121,7 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-    
+     -->
     
     	<!-- Logging -->
 		<dependency>

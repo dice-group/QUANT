@@ -108,7 +108,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                	<div id = "alert_placeholder"></div>
+                	
                     <h3 class="page-header">Question Detail</h3>
                     <label>ID </label> &nbsp;${id } &nbsp;<label>Dataset Version</label>&nbsp;${datasetVersion }
                 </div>
@@ -123,17 +123,21 @@
                     	<c:if test="${isExist=='yes'}">
                         <div class="panel-body">
                         <div class="panel-heading">
-                        <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/start-correction/${id }/${datasetVersion}">
-                        <div class="row">                        	
+                        <div id = "alert_placeholder"></div>
+                        <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/done-correction/${id }/${datasetVersion}">
+                        <div class="row">
+                        	
                         	 	<div class="col-md-6" style="text-align: left">
-                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>
+                        	 	<button type="submit" name="startButton" id="startButton" class="btn btn-default" ${startButtonDisabled }>${startButton }</button>
                         	 	</div>
                         	 	<div class="col-md-6" style="text-align: right">
-                        	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
-		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk"> No changes needed
+                        	 	<label class="checkbox-inline" id="chkLabel" ${displayStatus} ${statusNoChangeChk }>
+		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
 		                        </label>
-                                <button type="submit" name=doneButton' id='doneButton' style="display:none" class="btn btn-primary">Done</button>
-		                        </div>                        	
+                                <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
+		                        
+		                        </div>
+                        	
                         </div>
                         </form>
                         </div>
@@ -145,7 +149,7 @@
 	                                    	<label>Question</label>
 	                                    </div>
 	                                    <div class="col-lg-11" style="text-align:left">
-		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" readonly="readonly">
+		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" disabled="disabled">
 		                                    <!--  <p class="font-italic">Question is displayed in English (as default)</p> -->
 	                                    </div>
                                     </div>
@@ -154,7 +158,7 @@
                                     
                                         <div class="form-group">
                                             <label>SPARQL</label>
-                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
+                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" ${disabledForm }>${sparqlQuery}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                         
@@ -165,7 +169,7 @@
                                 	
                                         <div class="form-group">
                                             <label>Answer from File</label>
-                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="goldenAnswer" readonly="readonly">${goldenAnswer}</textarea>
+                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="goldenAnswer" ${disabledForm }>${goldenAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                     	<div class="form-group">
@@ -175,7 +179,7 @@
                                             	<span class="glyphicon glyphicon-upload"></span>
                                             </a>
                                             -->
-                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" readonly="readonly">${onlineAnswer}</textarea>
+                                            <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" ${disabledForm }>${onlineAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                     
@@ -188,7 +192,7 @@
                             	<div class="col-lg-4">
                             		<div class="form-group">
                                             <label>Endpoint</label>
-                                            <input class="form-control" value="" id="endpoint" name="endpoint" disabled="disabled">
+                                            <input class="form-control" value="" id="endpoint" name="endpoint" ${disabledForm }>
                                             <p class="help-block"></p>
                                         </div>
                             	</div>
@@ -199,12 +203,14 @@
                                             <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
 											</c:if>
-											disabled="disabled"
+											${disabledForm }
  											>
                                             <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not empty answerTypeSugg}">
     										Suggestion :	
 											${fn:toUpperCase(fn:substring(answerTypeSugg, 0, 1))}${fn:toLowerCase(fn:substring(answerTypeSugg, 1,fn:length(answerTypeSugg)))}
-											</c:if></i></p>
+											</c:if></i>
+											<input type="hidden" value="${answerTypeSugg }" name="answerTypeSugg" id="answerTypeSugg" class="form-control" />
+											</p>
                                      </div>	
                         		</div>
                         		<div class="col-lg-4">
@@ -212,7 +218,7 @@
                                             <label>Out of Scope</label>
                                            	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
     										style="background-color:#E6E6FA"    											
-											</c:if> disabled="disabled">
+											</c:if> ${disabledForm }>
                                                 <option value=""  <c:if test="${empty outOfScope}">selected="selected"</c:if>></option> 
                                                 <option value="true" ${outOfScope == "true" ? 'selected="selected"' : ''} >True</option>
                                                 <option value="false" ${outOfScope == "false" ? 'selected="selected"' : ''}>False</option>                                                
@@ -221,7 +227,9 @@
                                             <p class="text-danger" id="outOfScopeSugg"><c:if test="${not empty outOfScopeSugg}">
                                             <em>Suggestion :												
                                             ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}</em>
-                                            </c:if></p>    												
+                                            </c:if>
+                                            <input type="hidden" value="${outOfScopeSugg }" name="outOfScopeSugg" id="outOfScopeSugg" class="form-control" />
+                                            </p>    												
                                     </div>	
                         		</div>
                         		
@@ -230,24 +238,28 @@
                             	<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Aggregation</label>
+                                           
                                            <select class="form-control" id="aggregation" name="aggregation" <c:if test="${not empty aggregationSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> disabled="disabled">
+											</c:if> ${disabledForm }>
                                                 <option></option>
                                                 <option value="true" ${aggregation == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${aggregation == false ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
                                             <p class="text-danger" id="aggregationSugg"><c:if test="${not empty aggregationSugg}">
     												<em>Suggestion : </c:if>
-    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</em></p>
+    												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</em>
+    											<input type="hidden" value="${aggregationSugg }" name="aggregationSugg" id="aggregationSugg" class="form-control" />
+    										</p>
                                     </div>	
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
                                             <label>Onlydbo</label>
+                                            
                                            <select class="form-control" id="onlydbo" name="onlydbo" <c:if test="${not empty onlyDboSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> disabled="disabled">
+											</c:if> ${disabledForm }>
                                                 <option></option>
                                                 <option value="true" ${onlydbo == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${onlydbo == false ? 'selected="selected"' : ''}>False</option>
@@ -255,7 +267,9 @@
                                             </select>
                                             <p class="text-danger" id="onlyDboSugg">
                                             	<c:if test="${not empty onlyDboSugg}">
-    												Suggestion : </c:if>${fn:toUpperCase(fn:substring(onlyDboSugg, 0, 1))}${fn:toLowerCase(fn:substring(onlyDboSugg, 1,fn:length(onlyDboSugg)))}</p>
+    												Suggestion : </c:if>${fn:toUpperCase(fn:substring(onlyDboSugg, 0, 1))}${fn:toLowerCase(fn:substring(onlyDboSugg, 1,fn:length(onlyDboSugg)))}
+    										<input type="hidden" value="${onlyDboSugg }" name="onlyDboSugg" id="onlyDboSugg" class="form-control" />
+    										</p>
                                     </div>
                         		</div>
                         		<div class="col-lg-4">
@@ -263,7 +277,7 @@
                                             <label>Hybrid</label>
                                            <select class="form-control" id="hybrid" name="hybrid" <c:if test="${not empty hybridSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> disabled="disabled">
+											</c:if> ${disabledForm }>
                                                 <option></option>
                                                 <option value="true" ${hybrid == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${hybrid == false ? 'selected="selected"' : ''}>False</option>
@@ -271,7 +285,9 @@
                                             </select>
                                             <p class="text-danger" id="hybridSugg">
                                             	<c:if test="${not empty hybridSugg}">
-    												Suggestion : </c:if>${fn:toUpperCase(fn:substring(hybridSugg, 0, 1))}${fn:toLowerCase(fn:substring(hybridSugg, 1,fn:length(hybridSugg)))}</p>
+    												Suggestion : </c:if>${fn:toUpperCase(fn:substring(hybridSugg, 0, 1))}${fn:toLowerCase(fn:substring(hybridSugg, 1,fn:length(hybridSugg)))}
+    										<input type="hidden" value="${hybridSugg }" name="hybridSugg" id="hybridSugg" class="form-control" />
+    										</p>
                                     </div>	
                         		</div>
                         	</div>
@@ -451,6 +467,87 @@
     <script src="<c:url value="/resources/vendor/datatables-responsive/dataTables.responsive.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.validate.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables/js/dataTables.jqueryui.js" />"></script>
+	<script>
+	var url = "${pageContext.request.contextPath}/document-list/detail-correction/${id}/${datasetVersion}";
+	  $(document).ready($('.form-control').change(function() {
+	   $.ajax({
+	    type : "post",
+	    url : "${pageContext.request.contextPath}/document-list/document/save",
+	    cache : false,
+	    data : $('#documentForm').serialize(),
+	    success : function(response) {
+	    	
+	    	window.location.reload(true);
+	    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data saved</div>')
+	    },
+	    error : function() {
+	     alert('Error while request..');
+	    }
+	   });
+	  }));
+ </script>
+ <!-- Question Editing -->
+ <script>
+	 var editor;
+	//Activate an inline edit on click of a table cell
+	 $('#example').on( 'click', 'tbody td:not(:first-child)', function (e) {
+	     editor.inline( this );
+	 } );
+	 
+	 $("#example").dataTable({
+	     "paging":   false,
+	     "ordering": false,
+	     "info":     false,
+	     "filter" : false
+	 }).makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-question/${id}/${datasetVersion}"}); 
+
+ </script>
+ <!-- Keyword Editing -->
+ <script>
+	 var editor;
+	//Activate an inline edit on click of a table cell
+	 $('#keywordTable').on( 'click', 'tbody td:not(:first-child)', function (e) {
+	     editor.inline( this );
+	 } );
+	 
+	 $("#keywordTable").dataTable({
+	     "paging":   false,
+	     "ordering": false,
+	     "info":     false,
+	     "filter" : false
+	 }).makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-keyword/${id}/${datasetVersion}"}); 
+
+ </script>
+ <script>
+ $(".edit-movie-quote").click(function() {
+	    keywordKey = $(this).find(".keyword-key").html();
+	    keywordValue = $(this).find(".keyword-value").html();
+	    entityKey = $(this).find(".entity-key").html();
+	    $("#insert-keyword-modal input[name=keyword_key]").val(keywordKey);
+	    $("#insert-keyword-modal input[name=keyword_value]").val(keywordValue);
+	    $("#insert-keyword-modal input[name=entity_key]").val(entityKey).prop("disabled", false);
+	    $("#insert-keyword-modal .modal-title").html("Edit this MovieQuote");
+	    $("#insert-keyword-modal button[type=submit]").html("Edit Quote");
+	  });
+ </script>
+ 
+ <script>
+$(function(){
+     $('#startButton').click(function(){
+    	$('.form-control').prop('disabled', false);
+        $('#startButton').val('CorrectionOnProgress');
+        $('#startButton').prop("disable", true);
+        document.getElementById("doneButton").style.display='';
+        document.getElementById("chkLabel").style.display='';
+     });
+     $('#doneButton').click(function(){
+     	$('.form-control').prop('disabled', true);
+         $('#startButton').val('Start Curate');
+         document.getElementById("doneButton").style.display='none';
+         document.getElementById("chkLabel").style.display='none';
+      });
+});
+</script>
 </body>
 
 </html>
