@@ -99,7 +99,7 @@ public class DocumentController {
 	 * @param id
 	 * @param datasetVersion
 	 * 
-	 * This method use to display detail of document
+	 * This method is used to display detail of document
 	 * 
 	 * 
 	 */
@@ -117,6 +117,7 @@ public class DocumentController {
 		ModelAndView mav = new ModelAndView("document-detail");
 		DatasetModel documentItem = documentDao.getDocument(id, datasetVersion);//get documents
 		mav.addObject("classDisplay", "btn btn-default");//Show start button
+		
 		/** Setting previous and next record **/
 		int idCurrent = Integer.parseInt(id);
 		String previousStatus = "";
@@ -141,11 +142,12 @@ public class DocumentController {
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 			
 			
-			/** Pretty display Query Sparql **/
+			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-			//System.out.println("online");
-			/** Retrieve online answer from current endpoint **/
+			
+			
+			/** Retrieve answer from Virtuoso current endpoint **/
 			if (ss.isASKQuery(languageToQuestionEn)) {
 				Boolean onlineAnswer = ss.getResultAskQuery(sprqlQuery);
 				System.out.println(onlineAnswer);
@@ -242,11 +244,11 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 			
-			/** Pretty display Query Sparql **/
+			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
 			
-			/** Retrieve online answer from current endpoint **/
+			/** Retrieve answer from Virtuoso current endpoint **/
 			String onlineAnswer = ss.getQuery(sprqlQuery);
 			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
@@ -301,7 +303,7 @@ public class DocumentController {
 		//retrieve User
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
-						
+		
 		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
 		ModelAndView mav = new ModelAndView("document-detail-curate");
 		mav.addObject("disabledForm", "");
@@ -321,6 +323,14 @@ public class DocumentController {
 			idPrevious = idCurrent - 1;
 		}
 		String statusNoChangeChk="";
+		
+		// initial is curated = false
+		Boolean isAnswerTypeCurated = false;
+		Boolean isOutOfScopeCurated = false;
+		Boolean isAggregationCurated = false;
+		Boolean isOnlydboCurated = false;
+		Boolean isHybridCurated = false;
+		
 		if (documentItem.getId()!=null) {
 			statusNoChangeChk = "style='display:none'";
 			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
@@ -334,11 +344,11 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 					
-			/** Pretty display Query Sparql **/
+			/** Pretty display Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
 					
-			/** Retrieve online answer from current endpoint **/
+			/** Retrieve answer from Virtuoso current endpoint **/
 			String onlineAnswer = ss.getQuery(sprqlQuery);
 					
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
@@ -373,6 +383,12 @@ public class DocumentController {
 			mav.addObject("outOfScopeSugg", outOfScopeSugg);
 			mav.addObject("isExist", "yes");
 			
+			/** is Curated ? **/
+			isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "answerType");
+			isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "outOfScope");
+			isAggregationCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "aggregation");
+			isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "onlydbo");
+			isHybridCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "hybrid");
 			
 		}else {
 			DocumentDAO documentDao = new DocumentDAO();
@@ -388,11 +404,11 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentMaster.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentMaster.getLanguageToQuestion();
 					
-			/** Pretty display Query Sparql **/
+			/** Pretty display Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
 					
-			/** Retrieve online answer from current endpoint **/
+			/** Retrieve answer from Virtuoso current endpoint **/
 			String onlineAnswer = ss.getQuery(sprqlQuery);
 					
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
@@ -427,6 +443,11 @@ public class DocumentController {
 			mav.addObject("isExist", "yes");
 		}
 		mav.addObject("statusNoChangeChk", statusNoChangeChk);
+		mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
+		mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
+		mav.addObject("isAggregationCurated", isAggregationCurated);
+		mav.addObject("isOnlydboCurated", isOnlydboCurated);
+		mav.addObject("isHybridCurated", isHybridCurated);
 		return mav;
 	}
 	/*

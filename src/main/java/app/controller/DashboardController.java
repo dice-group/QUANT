@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import app.dao.CookieDAO;
 import app.dao.DocumentDAO;
 import app.dao.UserDAO;
+import app.dao.UserDatasetCorrectionDAO;
 import app.model.User;
 
 
@@ -52,6 +53,15 @@ public class DashboardController {
 			mav.addObject("qald6", qald6);
 			mav.addObject("qald7", qald7);
 			mav.addObject("qald8", qald8);
+			
+			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+			int qald1Correction = udcDao.countQaldDataset(user.getId(), "QALD1_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD1_Train_dbpedia");
+			int qald2Correction = udcDao.countQaldDataset(user.getId(), "QALD2_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD2_Train_dbpedia");
+			int qald3Correction = udcDao.countQaldDataset(user.getId(), "QALD3_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD3_Train_dbpedia");
+			mav.addObject("qald1Correction", qald1Correction);
+			mav.addObject("qald2Correction", qald2Correction);
+			mav.addObject("qald3Correction", qald3Correction);
+			
 		}else {
 			redirectAttributes.addFlashAttribute("message","Session Expired.");
 			mav = new ModelAndView("redirect:/login");

@@ -353,36 +353,14 @@ public class UserDatasetCorrectionDAO {
 			String onlineAnswer = ss.getQuery(sparqlQuery).toString();
 			return onlineAnswer;
 		}
-		
-		// did the aggregation feature cureated?
-		public Boolean isAggregationCurated (int userId, String id, String datasetVersion) {
-			 BasicDBObject searchObj = new BasicDBObject();
-			 UserDatasetCorrection item = new UserDatasetCorrection();
-			 searchObj.put("userId", userId);
-			 searchObj.put("logType", "curate");
-			 searchObj.put("logInfo.id", id);
-			 searchObj.put("logInfo.datasetVersion", datasetVersion);
-			 searchObj.put("logInfo.field", "aggregation");
-			 try {
-				 DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-					DBCollection coll = db.getCollection("UserLog");
-					DBCursor cursor = coll.find(searchObj);
-					while (cursor.hasNext()) {
-						return true;
-					}
-			 }catch (Exception e) {}
-			return false;
-			
-		}
-		// did the a feature cureated?
-		public Boolean isOnlydboCurated (int userId, String id, String datasetVersion) {
+		// did item feature cureated?
+		public Boolean isItemCurated (int userId, String id, String datasetVersion, String item) {
 			BasicDBObject searchObj = new BasicDBObject();
-			UserDatasetCorrection item = new UserDatasetCorrection();
 			searchObj.put("userId", userId);
 			searchObj.put("logType", "curate");
 			searchObj.put("logInfo.id", id);
 			searchObj.put("logInfo.datasetVersion", datasetVersion);
-			searchObj.put("logInfo.field", "onlydbo");
+			searchObj.put("logInfo.field", item);
 			try {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 				DBCollection coll = db.getCollection("UserLog");
@@ -393,4 +371,20 @@ public class UserDatasetCorrectionDAO {
 			}catch (Exception e) {}
 			return false;			
 		}
+		public int countQaldDataset(int userId, String datasetVersion) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("userId", userId);
+			searchObj.put("datasetVersion", datasetVersion);
+			try {
+					//call mongoDb
+					DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+					DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+					DBCursor cursor = coll.find(searchObj); //Find All
+					
+					return cursor.count();				
+				} catch (Exception e) {}
+			
+			return 0;
+		}
+		
 }

@@ -198,6 +198,9 @@
                             	</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        				<c:if test="${isAnswerTypeCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
                                             <label>Answer Type</label>
                                             <input class="form-control" value="${fn:toUpperCase(fn:substring(answerType, 0, 1))}${fn:toLowerCase(fn:substring(answerType, 1,fn:length(answerType)))}" id="answerType" name="answerType" 
                                             <c:if test="${not empty answerTypeSugg}">
@@ -215,6 +218,9 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        				<c:if test="${isOutOfScopeCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
                                             <label>Out of Scope</label>
                                            	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
     										style="background-color:#E6E6FA"    											
@@ -237,7 +243,10 @@
                         	<div class="row">
                             	<div class="col-lg-4">
                         			<div class="form-group">
-                                            <label>Aggregation</label>
+                                    	<c:if test="${isAggregationCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
+                                           <label>Aggregation</label>
                                            
                                            <select class="form-control" id="aggregation" name="aggregation" <c:if test="${not empty aggregationSugg}">
     										style="background-color:#E6E6FA"	
@@ -255,8 +264,11 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
-                                            <label>Onlydbo</label>
-                                            
+                        				<c:if test="${isOnlydboCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
+                                           <label>Onlydbo</label>
+                                           
                                            <select class="form-control" id="onlydbo" name="onlydbo" <c:if test="${not empty onlyDboSugg}">
     										style="background-color:#E6E6FA"	
 											</c:if> ${disabledForm }>
@@ -274,6 +286,9 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        				<c:if test="${isHybridCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
                                             <label>Hybrid</label>
                                            <select class="form-control" id="hybrid" name="hybrid" <c:if test="${not empty hybridSugg}">
     										style="background-color:#E6E6FA"	
