@@ -121,6 +121,8 @@ public class TranslatorService {
         
         JSONArray writeAll = new JSONArray();
         JSONArray writeAdditional = new JSONArray();
+        JSONObject resultForQuestion = new JSONObject();
+        JSONObject resultForKeyword = new JSONObject();
         int all_id = 0, add_id = 0;
         
         // loop over all JSONObjects to get translation for questions and keywords
@@ -129,42 +131,51 @@ public class TranslatorService {
 			JSONObject ltq = (JSONObject) jsonObject.get("languageToQuestion");
 			JSONObject ltk = (JSONObject) jsonObject.get("languageToKeyword");
 			String question = (String) ltq.get("en");
+			System.out.println(question);
+			resultForQuestion.put("en", question);
 			Boolean keywordPresent = true;
 			
+			// no keywords
 			if(ltk.isEmpty())
 				keywordPresent = false;
 			
 			JSONArray keywordList = new JSONArray();
 			if (keywordPresent == true)
-				if (ltk.containsKey("en"))
+				if (ltk.containsKey("en")) {
 					keywordList = (JSONArray) ltk.get("en");
-				else if (ltk.containsKey(""))
+					resultForKeyword.put("en", keywordList);
+				}
+				else if (ltk.containsKey("")) {
 					keywordList = (JSONArray) ltk.get("");
+					resultForKeyword.put("en", keywordList);
+				}
 			
 			int addedLangs = 0;
 			for (String lang : targetLanguages) {
 				if (!ltq.containsKey(lang) || ltq.containsValue(null)) {
-					ltq.put(lang, executeCommand(command, lang, question));
+					resultForQuestion.put(lang, executeCommand(command, lang, question));
 					if (keywordPresent == true)
-						ltk.put(lang, translateKeywords(keywordList, lang, command));
+						resultForKeyword.put(lang, translateKeywords(keywordList, lang, command));
 					addedLangs++;	
 				}
 			}
 			
-			JSONObject result = new JSONObject();
-			result.put("languageToQuestion", ltq);
-			result.put("languageToKeyword", ltk);
+			JSONObject finalResult = new JSONObject();
+			finalResult.put("languageToQuestion", resultForQuestion);
+			finalResult.put("languageToKeyword", resultForKeyword);
 			
 			// translation for all langs added
 			if (addedLangs == targetLanguages.size()-1) {
-				result.put("id", ++all_id);
-				writeAll.add(result);
+				finalResult.put("id", ++all_id);
+				writeAll.add(finalResult);
+				//System.out.println(finalResult);
 			}
 			
-			// translation for only remaining langs added
+			// translation for only remaining langs added; finalResult contains only missing translations
 			else {
-				result.put("id", ++add_id);
-				writeAdditional.add(result);
+				finalResult.put("id", ++add_id);
+				writeAdditional.add(finalResult);
+				//System.out.println(finalResult);
 			}
 			
 		}
@@ -200,6 +211,7 @@ public class TranslatorService {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		TranslatorService obj = new TranslatorService();
 		obj.translateQuestions();
+		//System.out.println("Files written.");
 //		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
 //		List<String> list = new ArrayList<String>();
 //		list.add("sky");
