@@ -27,7 +27,7 @@ import org.apache.jena.query.ResultSet;
  * 3) Entity's renamed : Checks for redirects and returns the new name. 
  * 4) In case of hybrid queries: use of homophones/wrong spellings!    
  * @author rricha
- *
+ * How to check if entity is missing or the property? 
  */
 
 public class SparqlCorrection {
@@ -49,28 +49,21 @@ public class SparqlCorrection {
 		String query = prefixString;
 		if (subject.startsWith("?") && !object.startsWith("?")) {
 			entityToBeChecked = object;
-			query += subject + " " + predicate + " ?p }";
+			query += "ASK { VALUES (?r) { ("+ entityToBeChecked+ " ) } { ?r ?p ?o } UNION { ?s ?r ?o } UNION { ?s ?p ?r }} ";
 		}
 		else if (object.startsWith("?") && !subject.startsWith("?")){
-		 query +=  "?p " + predicate + " " + object + " }";
+		 query +=  "ASK { VALUES (?r) { ("+ entityToBeChecked+ " ) } { ?r ?p ?o } UNION { ?s ?r ?o } UNION { ?s ?p ?r }} ";
 		}
 		else 
 			return null;
 		System.out.println(query);
 		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query); //put query to jena sparql library
-		ResultSet rs = qe.execSelect(); //execute query
+		boolean rs = qe.execAsk(); //execute query
 		
-		while (rs.hasNext()) {
-            QuerySolution s = rs.nextSolution();     
-            Iterator<String> varNames = s.varNames();
-            for (Iterator<String> it = varNames; it.hasNext(); ) {
-                String varName = it.next();
-                //check if there's a value which matches the entityToBeChecked 
-                if (s.get(varName).toString().equals(entityToBeChecked)) {
-               	 return null;
-                }
-            }
+		if (rs == true) {
+			return null;
 		}
+		
 		return entityToBeChecked;
 	}
 	
@@ -187,9 +180,10 @@ public class SparqlCorrection {
 			//analyze the result obtained
             if(result.isEmpty()) { //property missing case
             	//check if entity is missing/entity's name has changed
-            	String entityMissing = isEntityPresent(prefixString + " select distinct ?p where { ", subject, predicate, object); 
+            	String entityMissing = isEntityPresent(prefixString, subject, predicate, object); 
             	if(entityMissing != null) {
             		changedTriples.add("The entity " + entityMissing + " is missing in " + splitTriples[i]);
+            		break;
             	}
             	else {
             		changedTriples.add("The predicate " + predicate + " is missing in " + splitTriples[i]);
@@ -239,9 +233,9 @@ public class SparqlCorrection {
 		SparqlCorrection sc = new SparqlCorrection();
 		//String queryString = "SELECT DISTINCT ?n WHERE { <http://dbpedia.org/resource/FC_Porto> <http://dbpedia.org/ontology/ground> ?x . ?x <http://dbpedia.org/ontology/seatingCapacity> ?n .}";
 		//String queryString = "PREFIX res: <http://dbpedia.org/resource/> select distinct ?s ?x where {  res:New_Delhi dbo:country ?s ; dbo:areaCode ?x .}";
-		String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
+		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
-		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  res:European_Union ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
+		String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  res:European_Union ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri  rdf:type     yago:FemaleHeadsOfGovernment ; prop:office  ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri  rdfs:label  ?stringFILTER ( lang(?string) = \"en\" )}}";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:StatesOfTheUnitedStates ; dbpedia2:densityrank  ?density    OPTIONAL      { ?uri  rdfs:label  ?string       FILTER ( lang(?string) = \"en\" )      }  } ORDER BY ASC(?density) LIMIT   1";
