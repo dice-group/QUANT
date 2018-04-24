@@ -108,10 +108,12 @@ public class UserController {
 			ModelAndView mav = new ModelAndView("redirect:/login");
 			return mav;
 		}
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
 		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
 		
 		ModelAndView mav = new ModelAndView("document-curate-list");
-		mav.addObject("datasets", udcDao.getAllDatasets());
+		mav.addObject("datasets", udcDao.getAllDatasets(user.getId()));
 	    return mav;  
 	}
 }

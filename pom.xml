@@ -92,38 +92,7 @@
             <version>${spring.version}</version>
         </dependency>
         
-    <!-- Spring Security Dependencies-->
-    <!--     <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring.security.core.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring.security.core.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring.security.core.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.security.core.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-     -->
-    
-    	<!-- Logging -->
+      	<!-- Logging -->
 		<dependency>
 	    	<groupId>commons-logging</groupId>
 	    	<artifactId>commons-logging</artifactId>
@@ -161,7 +130,7 @@
 			<groupId>org.aksw.qa</groupId>
 			<artifactId>commons</artifactId>
 			<version>0.4.18</version>
-		</dependency>
+		</dependency>		
 		
 		<!-- Apache Jena Depdendency -->
 		<dependency>
@@ -170,8 +139,31 @@
 		    <version>3.6.0</version>
 		    <type>pom</type>
 		</dependency>
-	    
-    
+	   
+	   <!-- Json file processing --> 
+    	<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>com.googlecode.json-simple</groupId>
+    		<artifactId>json-simple</artifactId>
+    		<version>1.1.1</version>
+		</dependency>
+		 
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
+		 
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>18.0</version>
+		</dependency>		
   </dependencies>
   <build>
   	<sourceDirectory>src/main/java</sourceDirectory>

@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- charset utf-8 for apply encoding multilingual -->
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,8 +102,9 @@
         <div id="page-wrapper">
         	<div class="row">
                 <div class="col-lg-12">
-                    <a href="${pageContext.request.contextPath}/document-list/detail/${idPrevious}/${datasetVersion}" class="btn btn-default"><< PREVIOUS</a>
-                    <a href="${pageContext.request.contextPath}/document-list/detail/${idNext}/${datasetVersion}" class="btn btn-default">NEXT >></a>
+                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idPrevious}/${datasetVersionPrevious}${addUrlParameter}" class="btn btn-default" ${previousStatus }><< PREVIOUS</a>
+                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idNext}/${datasetVersionNext}${addUrlParameter}" class="btn btn-default" ${nextStatus }>NEXT >></a>
+                    ${previousCollection }
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -155,7 +157,7 @@
                                         <div class="form-group">
                                             <label>SPARQL</label>
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
-                                            <p class="help-block"></p>
+                                            <p class="help-block"><button type="button" class="btn btn-outline-primary" id="add-user" data-toggle="modal" data-target="#insert-user-modal">View Suggestion</button></p>
                                         </div>
                                         
                                     
@@ -428,6 +430,60 @@
 	    	</div>
 	    </div>
     	<!-- end block editKeywordModal -->
+    	<!-- start block insert-user-modal -->
+    	<div class="modal fade" id="insert-user-modal" role="dialog">
+	    	<div class="modal-dialog">
+	    		<div class="modal-content">
+	    			<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<h4 class="modal-title">Add User Form</h4>
+			        </div>
+			        <form action="user-list/user/insert-user" method="POST" class="form-horizontal" role="form">
+            		<input id="id-input" name="id-input" type="text" class="hidden" >
+			        <div class="modal-body">
+			        	<div class="form-group">
+			                <label for="name-input" class="col-sm-2 control-label"><h5>Name</h5> </label>
+			                <div class="col-sm-10">
+			                  <input id="name-input" name="name-input" type="text" class="form-control" placeholder="Name">
+			                </div>
+			            </div>
+			            
+			            <div class="form-group">
+			                <label for="email-input" class="col-sm-2 control-label"><h5>e-Mail</h5> </label>
+			                <div class="col-sm-10">
+			                  <input id="email-input" name="email-input" type="text" class="form-control" placeholder="e-Mail address">
+			                </div>
+			            </div>
+			            <div class="form-group">
+			                <label for="role-input" class="col-sm-2 control-label"><h5>Role</h5> </label>
+			                <div class="col-sm-10">
+			                  <input id="role-user-input" name="role-user-input" type="text" class="form-control" placeholder="Type in administrator or evaluator">
+			                </div>
+			            </div>
+			            <div class="form-group">
+			                <label for="username-input" class="col-sm-2 control-label"><h5>User Name</h5> </label>
+			                <div class="col-sm-10">
+			                  <input id="username-input" name="username-input" type="text" class="form-control" placeholder="User name">
+			                </div>
+			            </div>
+			            
+			            <div class="form-group">
+			                <label for="password-input" class="col-sm-2 control-label"><h5>Password</h5> </label>
+			                <div class="col-sm-10">
+			                  <input id="password-user-input" name="password-user-input" type="text" class="form-control" placeholder="Password">
+			                </div>
+			            </div>			            
+			        </div>
+			       
+			        <div class="modal-footer">
+			        	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			        	<button type="submit" class="btn btn-primary">Add User</button>
+			        </div>
+	    		</div>
+	    		 </form>
+	    	</div>
+	    </div>
+    	<!-- end block insert-user-modal -->
     </div>
     <!-- /#wrapper -->
 

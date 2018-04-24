@@ -63,9 +63,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
+                        <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -95,6 +97,14 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
                     <h4>Welcome ${name}. You are an ${role}</h4>
+                    
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Master Dataset</h1>
+                    <h4></h4>
                     
                 </div>
                 <!-- /.col-lg-12 -->
@@ -277,12 +287,13 @@
                         </a>
                     </div>
                 </div>
+                
             </div>
-            
+            <c:if test="${role!='administrator'}"> <!-- filter menu based on role -->
             <!-- /.row -->
              <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Correction</h1>
+                    <h1 class="page-header">Curated Dataset</h1>
                    
                 </div>
                 <!-- /.col-lg-12 -->
@@ -301,7 +312,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -354,8 +365,167 @@
                         </a>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald4Correction }</div>
+                                    <div>QALD4 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald5Correction }</div>
+                                    <div>QALD5 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald6Correction }</div>
+                                    <div>QALD6 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald7Correction }</div>
+                                    <div>QALD7 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${qald8Correction }</div>
+                                    <div>QALD8 (Test & Train)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
+            </c:if>
             <!-- /.row -->
+            <!-- /.row -->
+            <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
+             <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Summary</h1>
+                   
+                </div>
+                <!-- /.col-lg-12 -->
+                <div class="row">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">User Name</th>
+                                        <th class="text-center">QALD1</th>
+                                        <th class="text-center">QALD2</th>
+                                        <th class="text-center">QALD3</th>
+                                        <th class="text-center">QALD4</th>
+                                        <th class="text-center">QALD5</th>
+                                        <th class="text-center">QALD6</th>
+                                        <th class="text-center">QALD7</th>
+                                        <th class="text-center">QALD8</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                	<c:forEach var="users" items="${csList}" varStatus="loop">
+                                    	<tr>
+                                    		<td>${loop.index+1}</td>
+                                    		<td>${users.getName()}</td>
+                                    		<td>${users.getUsername() }</td>
+                                    		<td>${users.getQald1() }</td>
+                                    		<td>${users.getQald2() }</td>
+                                    		<td>${users.getQald3() }</td>
+                                    		<td>${users.getQald4() }</td>
+                                    		<td>${users.getQald5() }</td>
+                                    		<td>${users.getQald6() }</td>
+                                    		<td>${users.getQald7() }</td>
+                                    		<td>${users.getQald8() }</td>
+                                    		
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                                </table>
+                 </div>
+            </div>
+            </c:if>
         </div>
      </div>
  <!-- /#wrapper -->

@@ -93,7 +93,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">QALD Dataset Question Curate List</h1>
+                    <h1 class="page-header"> List of Curated Questions</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -132,7 +132,7 @@
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
                                     		<td>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-eye" title="View Data master"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-eye" title="View Details"></span></a>
                                     			
                                     		</td>
                                     	</tr>

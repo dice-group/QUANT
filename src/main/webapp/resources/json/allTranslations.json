@@ -1,0 +1,2549 @@
+[ {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 1,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 2,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 3,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 4,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 5,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 6,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 7,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 8,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 9,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 10,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 11,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 12,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 13,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 14,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 15,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 16,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 17,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 18,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 19,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 20,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 21,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 22,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 23,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 24,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 25,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 26,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 27,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 28,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 29,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 30,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 31,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 32,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 33,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 34,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 35,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 36,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 37,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 38,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 39,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 40,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 41,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 42,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 43,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 44,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 45,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 46,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 47,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 48,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 49,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 50,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 51,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 52,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 53,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 54,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 55,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 56,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 57,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 58,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 59,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 60,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 61,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 62,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 63,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 64,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 65,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 66,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 67,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 68,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 69,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 70,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 71,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 72,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 73,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 74,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 75,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 76,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 77,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 78,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 79,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 80,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 81,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 82,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 83,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 84,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 85,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 86,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 87,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 88,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 89,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 90,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Jahre' ", "'Ford Modell T ' ", "\"hergestellt\" " ],
+    "ru" : [ "«Производства» ", "'Франция' ", "«игристое вино' " ],
+    "pt" : [ "'produzido' ", "'França' ", "'espumante vinho' " ],
+    "en" : [ "produced", "France", "sparkling wine" ],
+    "hi_IN" : [ "'पुल' ", "'वही प्रकार' ", "'मैनहट्टन पुल ' " ],
+    "fa" : [ "'هدش  ", " ", " 'بارش  " ],
+    "it" : [ "'anni' ", "'Guado Modello T' ", "'manufatto' " ],
+    "fr" : [ "'années' ", "'Gué Modèle T ' ", "«fabriqué» " ],
+    "ro" : [ "'ani' ", "'Vad Model T“ ", "'fabricat' " ],
+    "es" : [ "'años' ", "'Vado Modelo T ' ", "'fabricado' " ],
+    "nl" : [ "'Jaar' ", "'Ford Model T' ", "'Vervaardigd' " ]
+  },
+  "id" : 91,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Jahre war das Ford Modell T hergestellt? ' ",
+    "ru" : "'Где в Франция является сверкающий вино производства? ",
+    "pt" : "'Onde dentro França é espumante vinho produzido?' ",
+    "en" : "Where in France is sparkling wine produced?",
+    "hi_IN" : "'कौन कौन से पुलों कर रहे हैं का  वही प्रकार जैसा  मैनहट्टन पुल? ' ",
+    "fa" : "هک ییاج'  رد هک  هسنارف  تسا  ناشخرد  بارش  '؟هدش دیلوت  ",
+    "it" : "'Come molti anni era il Guado Modello T manufatto?' ",
+    "fr" : "'Comment beaucoup années était la Gué Modèle T fabriqué? ",
+    "ro" : "'Cum mulți ani a fost  Vad Model T fabricat?' ",
+    "es" : "'Cómo muchos años estaba el Vado Modelo T ¿fabricado?' ",
+    "nl" : "'Hoe veel jaar was de doorwaadbare plaats Model T vervaardigd?' "
+  }
+} ]

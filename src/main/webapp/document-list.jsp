@@ -121,10 +121,9 @@
                                      <c:forEach var="datasets" items="${datasets}" varStatus="loop">
                                     	<tr>
                                     		<td>${loop.index+1}</td>
-                                    		<td>${datasets.getLanguageToQuestion().get("en").toString()}</td>
+                                    		<td>${datasets.getQuestion()}</td>
                                     		<td>
-                                    		
-                                    		<c:forEach items="${datasets.getLanguageToKeyword()}" var="map">
+                                    		<c:forEach items="${datasets.getKeywords()}" var="map">
 			                                     	<c:if test="${map.getKey()=='en'}">
 			                                     		${map.getValue().toString()}
 			                                     	</c:if>      		
@@ -133,8 +132,11 @@
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
                                     		<td>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Data master"></span></a>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/yes"><span class="fa fa-edit" title="View Data Correction"></span></a>
+                                    		
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Details"></span></a>
+                                    			<c:if test="${datasets.getIsCurate()==true}">
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/yes"><span class="fa fa-edit" title="View Correction Results"></span></a>
+                                    			</c:if>
                                     		</td>                                    		                                    		
                                     	</tr>
                                     </c:forEach>

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -72,10 +74,11 @@ public class DocumentController {
 		DocumentDAO documentDao = new DocumentDAO();
 		
 		ModelAndView mav = new ModelAndView("document-list");
-		mav.addObject("datasets", documentDao.getAllDatasets());
+		mav.addObject("datasets", documentDao.getAllDatasets(userId));
 		mav.addObject("userId", userId);
 	    return mav;  
 	} 
+	
 	@RequestMapping(value = "/document-list/collections/{qald-test}/{qald-train}", method = RequestMethod.GET)
 	public ModelAndView showCollectionList(@PathVariable("qald-test") String qaldTest,@PathVariable("qald-train") String qaldTrain,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		Cookie[] cks = request.getCookies();
@@ -85,13 +88,16 @@ public class DocumentController {
 			ModelAndView mav = new ModelAndView("redirect:/login");
 			return mav;
 		}
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		int userId = user.getId();
 		DocumentDAO documentDao = new DocumentDAO();
 		List<DatasetList> datasetVersionList = new ArrayList<DatasetList>();
 		datasetVersionList.add(new DatasetList(1, qaldTest));
 		datasetVersionList.add(new DatasetList(2, qaldTrain));
 		
 		ModelAndView mav = new ModelAndView("document-list");
-		mav.addObject("datasets", documentDao.getCollections(datasetVersionList));
+		mav.addObject("datasets", documentDao.getCollections(userId, datasetVersionList));
 	    return mav;  
 	}
 	/**
@@ -102,6 +108,14 @@ public class DocumentController {
 	 * This method is used to display detail of document
 	 * 
 	 * 
+	 */
+	/**
+	 * @param id
+	 * @param datasetVersion
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
 	 */
 	@RequestMapping(value = "/document-list/detail/{id}/{datasetVersion}", method = RequestMethod.GET)
 	public ModelAndView showDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -119,16 +133,61 @@ public class DocumentController {
 		mav.addObject("classDisplay", "btn btn-default");//Show start button
 		
 		/** Setting previous and next record **/
-		int idCurrent = Integer.parseInt(id);
 		String previousStatus = "";
-		int idNext = idCurrent+1;
-		int idPrevious;
-		if (idCurrent==1) {
-			previousStatus = "disabled";
-			idPrevious = 1;
-		}else {
-			idPrevious = idCurrent - 1;
+		String nextStatus="";
+		String idNext = documentDao.getNextDocument(id, datasetVersion);;
+		String idPrevious = documentDao.getPreviousDocument(id, datasetVersion);
+		String previousDataset = datasetVersion;
+		String nextDataset = datasetVersion;
+		
+		//	Previous Part	
+		if (idPrevious==null) {
+			previousStatus = "disabled=\"disabled\"";
+			idPrevious = id;
+			
+			//Get previous collection
+			String previousCollection = documentDao.getPreviousCollection(datasetVersion);
+			
+			if (previousCollection != null) {
+				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
+				if (lastRecord != null) {
+					idPrevious = lastRecord;
+					previousDataset = previousCollection;
+					previousStatus="";
+				}				
+			}
+			
 		}
+		
+		// Next part
+		if (idNext==null) {
+			nextStatus = "disabled=\"disabled\"";
+			idNext = id;
+			
+			//Get Next collection
+			String nextCollection = documentDao.getNextCollection(datasetVersion);
+			if (nextCollection != null) {
+				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
+				if (nextRecord != null) {
+					idNext = nextRecord;
+					nextDataset = nextCollection;
+					nextStatus = "";
+				}					
+			}
+		}
+		
+		
+		
+		mav.addObject("previousStatus", previousStatus);
+		mav.addObject("nextStatus", nextStatus);
+		mav.addObject("pageName", "detail");
+		mav.addObject("addUrlParameter", "");
+		mav.addObject("datasetVersionPrevious", previousDataset);
+		mav.addObject("datasetVersionNext", nextDataset);
+		mav.addObject("idPrevious", idPrevious);
+		mav.addObject("idNext", idNext);
+		
+		/** end setting previous and next record **/
 		if (documentItem.getId()!=null) {
 			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
 			String sprqlQuery = documentItem.getSparqlQuery();
@@ -144,24 +203,20 @@ public class DocumentController {
 			
 			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
-			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-			
-			
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
 			/** Retrieve answer from Virtuoso current endpoint **/
 			if (ss.isASKQuery(languageToQuestionEn)) {
-				Boolean onlineAnswer = ss.getResultAskQuery(sprqlQuery);
-				System.out.println(onlineAnswer);
-				mav.addObject("onlineAnswer", onlineAnswer);
-			}else {
-				String onlineAnswer = ss.getQuery(sprqlQuery);
-				System.out.println(onlineAnswer);
-				mav.addObject("onlineAnswer", onlineAnswer);
-			}
-			
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}			
 			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
-			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("goldenAnswer", goldenAnswer);			
 			mav.addObject("aggregation", aggregation);
 			mav.addObject("answerType", answerType);
 			mav.addObject("onlydbo", onlydbo);
@@ -172,8 +227,7 @@ public class DocumentController {
 			mav.addObject("id", id);
 			mav.addObject("datasetVersion", datasetVersion);
 			
-			mav.addObject("idPrevious", idPrevious);
-			mav.addObject("idNext", idNext);
+			
 			
 			/** Provide suggestion **/
 			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
@@ -193,8 +247,7 @@ public class DocumentController {
 			mav.addObject("isExist", "no");
 			mav.addObject("id", id);
 			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("idPrevious", idPrevious);
-			mav.addObject("idNext", idNext);
+			
 		}
 		return mav;  
 	}
@@ -222,16 +275,58 @@ public class DocumentController {
 		
 		UserDatasetCorrection documentItem = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion); //get documents
 		/** Setting previous and next record **/
-		int idCurrent = Integer.parseInt(id);
 		String previousStatus = "";
-		int idNext = idCurrent+1;
-		int idPrevious;
-		if (idCurrent==1) {
-			previousStatus = "disabled";
-			idPrevious = 1;
+		String nextStatus="";
+		String datasetVersionPrevious;
+		String datasetVersionNext;
+		String idPrevious;
+		String idNext;
+		UserDatasetCorrection documentNext = documentCorrectionDao.getNextDocument(user.getId(), id, datasetVersion); 
+		UserDatasetCorrection documentPrevious = documentCorrectionDao.getPreviousDocument(user.getId(), id, datasetVersion);
+		String pageName = "detail-correction";
+		String addUrlParameter = "/no";
+		
+		if (editStatus.equals("yes"))
+			addUrlParameter="/yes";
+		
+		if (documentPrevious.equals(null)) {
+			previousStatus = "disabled=\"disabled\"";
+			idPrevious = id;
+			datasetVersionPrevious = datasetVersion;
 		}else {
-			idPrevious = idCurrent - 1;
+			idPrevious = documentPrevious.getId();
+			datasetVersionPrevious = documentPrevious.getDatasetVersion();
+			if (idPrevious==null) {
+				previousStatus = "disabled=\"disabled\"";
+				idPrevious = id;
+				datasetVersionPrevious = datasetVersion;
+			}
 		}
+		
+		if (documentNext.equals(null)) {
+			nextStatus = "disabled=\"disabled\"";
+			idNext=id;
+			datasetVersionNext = datasetVersion;
+		}else {
+			idNext = documentNext.getId();
+			datasetVersionNext = documentNext.getDatasetVersion();
+			if (idNext==null) {
+				nextStatus = "disabled=\"disabled\"";
+				idNext=id;
+				datasetVersionNext = datasetVersion;
+			}
+		}
+		
+		mav.addObject("previousStatus", previousStatus);
+		mav.addObject("nextStatus", nextStatus);
+		mav.addObject("pageName", pageName);
+		mav.addObject("addUrlParameter", addUrlParameter);
+		mav.addObject("datasetVersionPrevious", datasetVersionPrevious);
+		mav.addObject("datasetVersionNext", datasetVersionNext);
+		mav.addObject("idPrevious", idPrevious);
+		mav.addObject("idNext", idNext);
+		/** end setting previous and next record **/
+		
 		if (documentItem.getId()!=null) {
 			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
 			String sprqlQuery = documentItem.getSparqlQuery();
@@ -246,10 +341,17 @@ public class DocumentController {
 			
 			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
-			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-			
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
 			/** Retrieve answer from Virtuoso current endpoint **/
-			String onlineAnswer = ss.getQuery(sprqlQuery);
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}				
+			
 			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
@@ -262,31 +364,27 @@ public class DocumentController {
 			mav.addObject("languageToQuestion", languageToQuestion);
 			mav.addObject("outOfScope", outOfScope);
 			mav.addObject("id", id);
-			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("onlineAnswer", onlineAnswer);
-			mav.addObject("idPrevious", idPrevious);
-			mav.addObject("idNext", idNext);
+			mav.addObject("datasetVersion", datasetVersion);			
 			
 			/** Provide suggestion **/
 			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);
-			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
+			/*String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
-			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
+			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();*/
 					
-			mav.addObject("answerTypeSugg", answerTypeSugg);
-			mav.addObject("aggregationSugg", aggregationSugg);
-			mav.addObject("onlyDboSugg", onlyDboSugg);
-			mav.addObject("hybridSugg", hybridSugg);
-			mav.addObject("outOfScopeSugg", outOfScopeSugg);
+			mav.addObject("answerTypeSugg", null);
+			mav.addObject("aggregationSugg", null);
+			mav.addObject("onlyDboSugg", null);
+			mav.addObject("hybridSugg", null);
+			mav.addObject("outOfScopeSugg", null);
 			mav.addObject("isExist", "yes");
 		}else {
 			mav.addObject("isExist", "no");
 			mav.addObject("id", id);
 			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("idPrevious", idPrevious);
-			mav.addObject("idNext", idNext);
+			
 		}
 		return mav;  
 	}
@@ -344,12 +442,18 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
 					
-			/** Pretty display Sparql Query**/
+			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
-			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-					
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
 			/** Retrieve answer from Virtuoso current endpoint **/
-			String onlineAnswer = ss.getQuery(sprqlQuery);
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}			
 					
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
@@ -362,8 +466,7 @@ public class DocumentController {
 			mav.addObject("languageToQuestion", languageToQuestion);
 			mav.addObject("outOfScope", outOfScope);
 			mav.addObject("id", id);
-			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("onlineAnswer", onlineAnswer);
+			mav.addObject("datasetVersion", datasetVersion);			
 			mav.addObject("idPrevious", idPrevious);
 			mav.addObject("idNext", idNext);
 			
@@ -404,12 +507,18 @@ public class DocumentController {
 			Map<String, List<String>> languageToKeyword = documentMaster.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentMaster.getLanguageToQuestion();
 					
-			/** Pretty display Sparql Query**/
+			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
-			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);
-					
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
 			/** Retrieve answer from Virtuoso current endpoint **/
-			String onlineAnswer = ss.getQuery(sprqlQuery);
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}			
 					
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
@@ -422,8 +531,7 @@ public class DocumentController {
 			mav.addObject("languageToQuestion", languageToQuestion);
 			mav.addObject("outOfScope", outOfScope);
 			mav.addObject("id", id);
-			mav.addObject("datasetVersion", datasetVersion);
-			mav.addObject("onlineAnswer", onlineAnswer);
+			mav.addObject("datasetVersion", datasetVersion);			
 			mav.addObject("idPrevious", idPrevious);
 			mav.addObject("idNext", idNext);
 					
@@ -543,7 +651,7 @@ public class DocumentController {
 			userLog.setLogType("curate");
 			userLog.setIpAddress("");
 			userLog.setLogInfo(logInfo);
-			userLogDao.addLogCurate(userLog);//add UserLog
+			userLogDao.addLogCurate(userLog);//add UserLogcdcd
 			
 		}else {
 			
@@ -564,28 +672,28 @@ public class DocumentController {
 				logInfo.put("suggestionValue", answerTypeSugg);
 			}
 			//check outOfScope changes
-			if (!outOfScope.equals(document.getOutOfScope())) {
+			if (!outOfScope.equals(String.valueOf(document.getOutOfScope()))) {
 				logInfo.put("field", "outOfScope");
 				logInfo.put("originValue", document.getOutOfScope());
 				logInfo.put("fieldValue", outOfScope);
 				logInfo.put("suggestionValue", outOfScopeSugg);
 			}
 			//check aggregation changes
-			if (!aggregation.equals(document.getAggregation())) {
-				logInfo.put("fild", "aggregation");
+			if (!aggregation.equals(String.valueOf(document.getAggregation()))) {
+				logInfo.put("field", "aggregation");
 				logInfo.put("originValue", document.getAggregation());
 				logInfo.put("fieldValue", aggregation);
 				logInfo.put("suggestionValue", aggregationSugg);
 			}
 			//check onlydbo changes
-			if (!onlydbo.equals(document.getOnlydbo())) {
+			if (!onlydbo.equals(String.valueOf(document.getOnlydbo()))) {
 				logInfo.put("field", "onlydbo");
 				logInfo.put("originValue", document.getOnlydbo());
 				logInfo.put("fieldValue", onlydbo);
 				logInfo.put("suggestionValue", onlyDboSugg);
 			}
 			//check hybrid changes
-			if (!hybrid.equals(document.getHybrid())) {
+			if (!hybrid.equals(String.valueOf(document.getHybrid()))) {
 				logInfo.put("field", "hybrid");
 				logInfo.put("originValue", document.getHybrid());
 				logInfo.put("fieldValue", hybrid);
@@ -903,7 +1011,7 @@ public class DocumentController {
 			userLog.setLogInfo(logInfo);
 			userLogDao.addLogCurate(userLog);//add userLog
 		}
-		ModelAndView mav = new ModelAndView("redirect:/document-list/detail-correction/"+datasetId+"/"+datasetVersion+"/no");
+		ModelAndView mav = new ModelAndView("redirect:/document-list/detail/"+datasetId+"/"+datasetVersion);
 		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO(); //define user dataset correction access object
 		
 		if (!udcDao.isDocumentExist(userId, datasetId, datasetVersion)) {
