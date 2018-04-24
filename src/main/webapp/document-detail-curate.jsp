@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
@@ -99,13 +98,7 @@
             <!-- /.navbar sidebar -->
         </nav>
         <div id="page-wrapper">
-        	<div class="row">
-                <div class="col-lg-12">
-                    <a href="${pageContext.request.contextPath}/document-list/detail/${idPrevious}/${datasetVersion}" class="btn btn-default"><< PREVIOUS</a>
-                    <a href="${pageContext.request.contextPath}/document-list/detail/${idNext}/${datasetVersion}" class="btn btn-default">NEXT >></a>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+        	
             <div class="row">
                 <div class="col-lg-12">
                 	
@@ -237,9 +230,9 @@
                                             <input type="hidden" value="${outOfScopeSugg }" name="outOfScopeSugg" id="outOfScopeSugg" class="form-control" />
                                             </p>    												
                                     </div>	
-                        		</div>
-                        		
+                        		</div>                        		
                         	</div>
+                        	
                         	<div class="row">
                             	<div class="col-lg-4">
                         			<div class="form-group">
@@ -262,6 +255,7 @@
     										</p>
                                     </div>	
                         		</div>
+                        		
                         		<div class="col-lg-4">
                         			<div class="form-group">
                         				<c:if test="${isOnlydboCurated == true}">
@@ -284,6 +278,7 @@
     										</p>
                                     </div>
                         		</div>
+                        		
                         		<div class="col-lg-4">
                         			<div class="form-group">
                         				<c:if test="${isHybridCurated == true}">
@@ -295,9 +290,9 @@
 											</c:if> ${disabledForm }>
                                                 <option></option>
                                                 <option value="true" ${hybrid == true ? 'selected="selected"' : ''}>True</option>
-                                                <option value="false" ${hybrid == false ? 'selected="selected"' : ''}>False</option>
-                                                
+                                                <option value="false" ${hybrid == false ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
+                                            
                                             <p class="text-danger" id="hybridSugg">
                                             	<c:if test="${not empty hybridSugg}">
     												Suggestion : </c:if>${fn:toUpperCase(fn:substring(hybridSugg, 0, 1))}${fn:toLowerCase(fn:substring(hybridSugg, 1,fn:length(hybridSugg)))}
@@ -306,6 +301,7 @@
                                     </div>	
                         		</div>
                         	</div>
+                        	
                         	<input type=hidden id="id" name="id" value="${id }">
                         	<input type=hidden id="datasetVersion" name="datasetVersion" value="${datasetVersion }">
                         	<input type=hidden id="pseudoSparqlQuery" name="pseudoSparqlQuery" value="${pseudoSparqlQuery }">
@@ -341,6 +337,7 @@
                         			</div>
                         		</div>
                         	</div>
+                        	
                         	<div class="row">
                         		<div class="col-lg-12">
                         			<div class="form-group">
@@ -357,16 +354,13 @@
 			                                        
 			                                    </tr>
 			                                </thead>
-			                                <tbody>
 			                                
-			                                     <c:forEach items="${languageToQuestion}" var="map">
-			                                     	
+			                                <tbody>			                                
+			                                     <c:forEach items="${languageToQuestion}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>
-				                                    		
-				                                    	</tr>
-			                                    	
+				                                    		<td>${map.getValue()}</td>			                                    		
+				                                    	</tr>			                                    	
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
@@ -392,11 +386,11 @@
             </div>
             <!-- /.row -->
         </div>
+        
         <!-- /#page-wrapper -->
 		<!-- start block myModal -->
 	  <div class="modal fade" id="myModal" role="dialog">
-	    <div class="modal-dialog">
-	    
+	    <div class="modal-dialog">	    
 	      <!-- Modal content-->
 	      <div class="modal-content">
 	        <div class="modal-header">
@@ -424,10 +418,10 @@
 	        <div class="modal-footer">
 	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        </div>
-	      </div>
-      
+	      </div>      
     	</div>
     	</div>
+    	
     	<!-- end block myModal -->
     	<!-- start block editKeywordModal -->
     	<div class="modal fade" id="insert-keyword-modal" role="dialog">

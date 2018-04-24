@@ -14,8 +14,10 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import app.config.MongoDBManager;
+import app.model.CorrectionSummary;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
+import app.model.User;
 import app.model.UserDatasetCorrection;
 import app.sparql.SparqlService;
 
@@ -56,14 +58,17 @@ public class UserDatasetCorrectionDAO {
 		 } catch (Exception e) {}
 		 return item;
 	 }
-	public List<UserDatasetCorrection> getAllDatasets() {
+	public List<UserDatasetCorrection> getAllDatasets(int userId) {
 		List<UserDatasetCorrection> tasks = new ArrayList<UserDatasetCorrection>();
-		 
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("userId", userId);
+		BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("id",1);
 			try {
 				//call mongoDb
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
-				DBCursor cursor = coll.find(); //Find All
+				DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
@@ -174,7 +179,8 @@ public class UserDatasetCorrectionDAO {
 						DBObject dbobj = cursor.next();
 						Gson gson = new GsonBuilder().create();
 						UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
-						String answerType = q.getAnswerType();				
+						String answerType = q.getAnswerType();	
+						String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();
 						String[] strArray = (String[]) q.getGoldenAnswer().toArray(new String[ q.getGoldenAnswer().size()]);
 						String answer=strArray[0];
 						
@@ -204,21 +210,19 @@ public class UserDatasetCorrectionDAO {
 							item.setHybridSugg("");
 						}
 								
-						String outOfScope = q.getOutOfScope().toString();	
-						item.setOutOfScopeSugg("");
-						if ((outOfScopeChecking(query).isEmpty()) && (outOfScope.toLowerCase().equals("false"))) {
-							item.setOutOfScopeSugg("true");
-						}else if ((outOfScopeChecking(query).isEmpty()) && (outOfScope.toLowerCase().equals("true"))) {
-									item.setOutOfScopeSugg("");
-						}else if ((outOfScope.equals("")) && (!outOfScopeChecking(query).equals(""))) {
-							item.setOutOfScopeSugg("false");
-						}else if ((outOfScope.isEmpty()) && (outOfScopeChecking(query).equals(""))) {
-							item.setOutOfScopeSugg("true");
+						String outOfScope = String.valueOf(q.getOutOfScope());					
+						String oos = outOfScope;	
+						if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("false")) {
+							oos ="true";
+						}else if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("true")) {
+							oos="";
+						}else if (outOfScopeChecking(query, languageToQuestionEn).equals("true") && outOfScope.equals("null") || outOfScope.isEmpty()) {
+							oos="false";
+						}else if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("null") || outOfScope.isEmpty()) {
+							oos="true";
 						}
-						
-						//String result = outOfScopeChecking(query);
-						//item.setOutOfScopeSugg(result);
-						//System.out.println("This is the answer: "+ outOfScopeChecking(query));
+						//System.out.println("This is the checking result "+outOfScopeChecking(query, languageToQuestionEn));
+						item.setOutOfScopeSugg(oos);
 					}
 					
 			 } catch (Exception e) {}
@@ -346,12 +350,26 @@ public class UserDatasetCorrectionDAO {
 	    }
 		
 		//Check Out of Scope Value
-		public String outOfScopeChecking(String sparqlQuery) {
-			/** Pretty display Query Sparql **/
-			SparqlService ss = new SparqlService();		
-			/** Retrieve online answer from current endpoint **/
-			String onlineAnswer = ss.getQuery(sparqlQuery).toString();
-			return onlineAnswer;
+		//Check Out of Scope Value
+		public String outOfScopeChecking(String sparqlQuery, String languageToQuestionEn) {		
+			SparqlService ss = new SparqlService();	
+			String resultStatus="";
+			if (ss.isASKQuery(languageToQuestionEn)) {			
+				if (ss.getResultAskQuery(sparqlQuery).equals("null")) {
+					resultStatus = "false";
+				}else {
+					resultStatus = "true";
+				}
+					
+			}else {
+				if (ss.isNullAnswerFromEndpoint(sparqlQuery)) {
+					resultStatus = "false";
+				}else {
+					resultStatus = "true";
+				}
+							
+			}
+			return resultStatus;
 		}
 		// did item feature cureated?
 		public Boolean isItemCurated (int userId, String id, String datasetVersion, String item) {
@@ -385,6 +403,126 @@ public class UserDatasetCorrectionDAO {
 				} catch (Exception e) {}
 			
 			return 0;
+		}
+		//determine previous document
+		public UserDatasetCorrection getPreviousDocument(int userId, String currentId, String datasetVersion) {
+			BasicDBObject searchObj = new BasicDBObject();
+			BasicDBObject cSearchObj = new BasicDBObject();
+			cSearchObj.put("$lt", currentId);
+			searchObj.put("id", cSearchObj);
+			searchObj.put("userId", userId);
+			BasicDBObject sortObj = new BasicDBObject();
+			sortObj.put("id", -1);
+			UserDatasetCorrection item = new UserDatasetCorrection();
+			try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1); 
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(),UserDatasetCorrection.class);
+					item.setId(q.getId());
+					item.setDatasetVersion(q.getDatasetVersion());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+					item.setUserId(q.getUserId());
+					item.setRevision(q.getRevision());
+					item.setLastRevision(q.getLastRevision());
+					item.setTransId(q.getTransId());
+					item.setStatus(q.getStatus());
+				}
+								
+			} catch (Exception e) {}
+			return item;
+		}
+		//determine next document
+		public UserDatasetCorrection getNextDocument(int userId, String currentId, String datasetVersion) {
+			BasicDBObject searchObj = new BasicDBObject();
+			BasicDBObject cSearchObj = new BasicDBObject();
+			cSearchObj.put("$gt", currentId);
+			searchObj.put("id", cSearchObj);
+			searchObj.put("userId", userId);
+			
+			BasicDBObject sortObj = new BasicDBObject();
+			sortObj.put("id", 1);
+			UserDatasetCorrection item = new UserDatasetCorrection();
+			try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1); 
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(),UserDatasetCorrection.class);
+					item.setId(q.getId());
+					item.setDatasetVersion(q.getDatasetVersion());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+					item.setUserId(q.getUserId());
+					item.setRevision(q.getRevision());
+					item.setLastRevision(q.getLastRevision());
+					item.setTransId(q.getTransId());
+					item.setStatus(q.getStatus());
+				}
+								
+			} catch (Exception e) {}
+			return item;
+		}
+		
+		public List<CorrectionSummary> getCorrectionSummary() {
+			List<CorrectionSummary> csList = new ArrayList<CorrectionSummary>();List<User> users = new ArrayList<User>();
+			 BasicDBObject searchObj = new BasicDBObject();
+			 searchObj.put("id", 1);
+			 try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("User"); //Collection
+				DBCursor cursor = coll.find().sort(searchObj); //Find All
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					
+					User q = gson.fromJson(dbobj.toString(), User.class);
+					
+					CorrectionSummary itemCS = new CorrectionSummary();
+					itemCS.setUserId(q.getId());
+					itemCS.setName(q.getName());
+					itemCS.setUsername(q.getUsername());
+					itemCS.setQald1(countQaldDataset(q.getId(), "QALD1_Test_dbpedia")+countQaldDataset(q.getId(), "QALD1_Train_dbpedia"));
+					itemCS.setQald2(countQaldDataset(q.getId(), "QALD2_Test_dbpedia")+countQaldDataset(q.getId(), "QALD2_Train_dbpedia"));
+					itemCS.setQald3(countQaldDataset(q.getId(), "QALD3_Test_dbpedia")+countQaldDataset(q.getId(), "QALD3_Train_dbpedia"));
+					itemCS.setQald4(countQaldDataset(q.getId(), "QALD4_Test_Multilingual")+countQaldDataset(q.getId(), "QALD4_Train_Multilingual"));
+					itemCS.setQald5(countQaldDataset(q.getId(), "QALD5_Test_Multilingual")+countQaldDataset(q.getId(), "QALD5_Train_Multilingual"));
+					itemCS.setQald6(countQaldDataset(q.getId(), "QALD6_Test_Multilingual")+countQaldDataset(q.getId(), "QALD6_Train_Multilingual"));
+					itemCS.setQald7(countQaldDataset(q.getId(), "QALD7_Test_Multilingual")+countQaldDataset(q.getId(), "QALD7_Train_Multilingual"));
+					itemCS.setQald8(countQaldDataset(q.getId(), "QALD8_Test_Multilingual")+countQaldDataset(q.getId(), "QALD8_Train_Multilingual"));
+					csList.add(itemCS);
+					
+				}
+				return csList;
+			 }catch (Exception e) {
+				 
+			 }
+			return null;
 		}
 		
 }

@@ -25,7 +25,20 @@
         <property name="prefix" value="/" />
         <property name="suffix" value=".jsp" />
     </bean>
+    
     <mvc:resources mapping="/resources/**" location="/resources/bootstrap/" cache-period="31556926"/>
+     <mvc:resources mapping="/json/**" location="/resources/json/" />
     <mvc:annotation-driven />
-  	
+  	<!-- apply encoding multilingual -->
+  	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource"
+    p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application" p:fallbackToSystemLocale="false" />
+
+	<!-- store preferred language configuration in a cookie -->
+	<bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale" />
+	
+
+	<mvc:interceptors>
+	    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
+	</mvc:interceptors>
+	<!-- end apply encoding multilingual -->
 </beans>

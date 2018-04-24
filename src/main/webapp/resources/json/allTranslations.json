@@ -1,0 +1,2177 @@
+[ {
+  "languageToKeyword" : { },
+  "id" : 1,
+  "languageToQuestion" : {
+    "de" : "'Welche Land tut das Airedale Terrier Kommen Sie von?' ",
+    "ru" : "'Который страна делает  эрдельтерьер Терьер приехать из?' ",
+    "pt" : "'Qual país faz a Airedale Terrier venha a partir de?' ",
+    "en" : "Which country does the Airedale Terrier come from?",
+    "hi_IN" : "'कौन कौन से देश कर देता है  Airedale टेरिए आइए से? ' ",
+    "it" : "'Quale nazione fa il Airedale Terrier venire a partire dal?' ",
+    "fa" : "مادک  روشک  دنکیم  نیا  eladeriA  ریرت  ایب  '؟بناج زا  ",
+    "fr" : "'Lequel pays Est-ce que la airedale Terrier viens de?' ",
+    "ro" : "'Care țară face  Airedale cadastru veni din?' ",
+    "es" : "'Cual país hace el Airedale Terrier ven ¿de?' ",
+    "nl" : "'Welke land doet de Airedale Terriër komen van?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Sizilianisch Pizza' " ],
+    "ru" : [ "«Сицилийская пицца' " ],
+    "pt" : [ "'Siciliano pizza' " ],
+    "en" : [ "Sicilian pizza" ],
+    "hi_IN" : [ "'सिसिलियन पिज़्ज़ा' " ],
+    "it" : [ "'Siciliano Pizza' " ],
+    "fa" : [ "نایلیسیس  'ازتیپ  " ],
+    "fr" : [ "Sicilien Pizza' " ],
+    "ro" : [ "'Sicilian pizza' " ],
+    "es" : [ "'Siciliano Pizza' " ],
+    "nl" : [ "'Siciliaanse pizza' " ]
+  },
+  "id" : 2,
+  "languageToQuestion" : {
+    "de" : "'Was ist das sizilianisch Pizza?' ",
+    "ru" : "'Какие является  сицилийский пицца?' ",
+    "pt" : "'O que é a siciliano pizza?' ",
+    "en" : "What is the Sicilian pizza?",
+    "hi_IN" : "'क्या है  सिसिली का पिज़्ज़ा?' ",
+    "it" : "'Che cosa è il siciliano Pizza?' ",
+    "fa" : "یچ'  تسا  نیا  یلیسیس  '؟ازتیپ  ",
+    "fr" : "'Quelle est la Sicilien Pizza?' ",
+    "ro" : "'Ce este  sicilian pizza?' ",
+    "es" : "'Qué es el siciliano ¿Pizza?' ",
+    "nl" : "'Wat is de Siciliaans pizza?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'höchste' ", "'Berg' ", "'Sachsen' ", "'Deutschland' " ],
+    "ru" : [ "'наибольший' ", "«Гора» ", "'Саксония' ", "'Германия' " ],
+    "pt" : [ "'mais alto' ", "'montanha' ", "'Saxônia' ", "'Alemanha' " ],
+    "en" : [ "highest", "mountain", "Saxony", "Germany" ],
+    "hi_IN" : [ "'उच्चतम' ", "'पर्वत' ", "'सैक्सोनी' ", "'जर्मनी' " ],
+    "it" : [ "'massimo' ", "'montagna' ", "'Sassonia' ", "'Germania' " ],
+    "fa" : [ " ", " ", " ", " " ],
+    "fr" : [ "'le plus élevé' ", "'Montagne' ", "'Saxe' ", "'Allemagne' " ],
+    "ro" : [ "'cel mai inalt' ", "'Munte' ", "„Saxonia“ ", "'Germania' " ],
+    "es" : [ "'más alto' ", "'montaña' ", "'Sajonia' ", "'Alemania' " ],
+    "nl" : [ "'Hoogste' ", "'berg' ", "'Saksen' ", "'Duitsland' " ]
+  },
+  "id" : 3,
+  "languageToQuestion" : {
+    "de" : "'Was ist das höchste Berg im Sachsen Deutschland?' ",
+    "ru" : "'Какие является  наибольший гора в Саксония Германия?' ",
+    "pt" : "'O que é a maior montanha dentro Saxônia Alemanha?' ",
+    "en" : "What is the highest mountain in Saxony Germany?",
+    "hi_IN" : "'क्या है  उच्चतम पर्वत में सैक्सोनी जर्मनी? ' ",
+    "it" : "'Che cosa è il massimo montagna in Sassonia Germania?' ",
+    "fa" : "یچ'  تسا  نیا  نیرتالاب  هوک  رد هک  نسکاز  ؟ناملآ  ",
+    "fr" : "'Quelle est la le plus élevé Montagne dans Saxe Allemagne?' ",
+    "ro" : "'Ce este  cel mai inalt Munte în Saxonia Germania?' ",
+    "es" : "'Qué es el más alto montaña en Sajonia ¿Alemania?' ",
+    "nl" : "'Wat is de hoogst berg- in Saksen Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'letzte Arbeit' ", "\"Und Braun' " ],
+    "ru" : [ "'последний Работа' ", "И Браун " ],
+    "pt" : [ "'último trabalhos' ", "'E Castanho' " ],
+    "en" : [ "last work", "Dan Brown" ],
+    "hi_IN" : [ "'पिछले काम' ", "'और ब्राउन ' " ],
+    "it" : [ "'ultimo lavoro' ", "'E Marrone' " ],
+    "fa" : [ "رخآ'   ", "و  'یا هوهق گنر  " ],
+    "fr" : [ "'dernier travail' ", "Et Marron' " ],
+    "ro" : [ "'ultimul muncă' ", "„Și Maro' " ],
+    "es" : [ "'último trabajo' ", "'Y Marrón' " ],
+    "nl" : [ "'laatste werk' ", "'En Bruin' " ]
+  },
+  "id" : 4,
+  "languageToQuestion" : {
+    "de" : "'Was ist das letzte Arbeit von Und Braun?' ",
+    "ru" : "'Какие является  последний Работа из и Браун? ",
+    "pt" : "'O que é a último trabalhos do E Castanho?' ",
+    "en" : "What is the last work of Dan Brown?",
+    "hi_IN" : "'क्या है  अंतिम काम का और ब्राउन? ' ",
+    "it" : "'Che cosa è il ultimo lavoro di e Marrone?' ",
+    "fa" : "یچ'  تسا  نیا  رخآ  راک  زا  و  '؟یا هوهق گنر  ",
+    "fr" : "'Quelle est la dernier travail de Et Marron?' ",
+    "ro" : "'Ce este  ultimul muncă de și Maro?' ",
+    "es" : "'Qué es el último trabajo de Y ¿Marrón?' ",
+    "nl" : "'Wat is de laatste werk van en Bruin?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Penn Zustand Universität' " ],
+    "ru" : [ "«Penn состояние Университет' " ],
+    "pt" : [ "'Penn Estado Universidade' " ],
+    "en" : [ "Penn State University" ],
+    "hi_IN" : [ "'पेन राज्य विश्वविद्यालय' " ],
+    "it" : [ "'Penn Stato Università' " ],
+    "fa" : [ "نپ  تلود  هاگشناد  " ],
+    "fr" : [ "Penn Etat Université' " ],
+    "ro" : [ "„Penn Stat Universitate' " ],
+    "es" : [ "'Penn Estado Universidad' " ],
+    "nl" : [ "'Penn Staat Universiteit' " ]
+  },
+  "id" : 5,
+  "languageToQuestion" : {
+    "de" : "'Im welche Zustand Penn Zustand Universität ist gelegen?' ",
+    "ru" : "'В который государство Penn состояние Университет является располагается?' ",
+    "pt" : "'Dentro qual Estado Penn Estado Universidade é localizado?' ",
+    "en" : "In which state Penn State University is located?",
+    "hi_IN" : "'में कौन कौन से राज्य पेन राज्य विश्वविद्यालय है स्थित? ' ",
+    "it" : "'In quale stato Penn Stato Università è trova?' ",
+    "fa" : "رد هک'  هک  تلاح  نپ  تلود  هاگشناد  تسا  '؟هدش عقاو  ",
+    "fr" : "'Dans lequel Etat Penn Etat Université est situé?' ",
+    "ro" : "'În care stat Penn Stat Universitate este situat?' ",
+    "es" : "'En cual estado Penn Estado Universidad es ¿situado?' ",
+    "nl" : "'In welke staat Penn Staat Universiteit is gelegen?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 6,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Einnahmen von IBM? ",
+    "ru" : "'Какие является  доход из IBM? ",
+    "pt" : "'O que é a receita do IBM? ",
+    "en" : "What is the revenue of IBM?",
+    "hi_IN" : "'क्या है  राजस्व का आईबीएम? ' ",
+    "it" : "'Che cosa è il reddito di IBM?' ",
+    "fa" : "یچ'  تسا  نیا  دمآرد  زا  ؟ما یب یآ  ",
+    "fr" : "'Quelle est la revenu de IBM? ",
+    "ro" : "'Ce este  venituri de IBM? ",
+    "es" : "'Qué es el ingresos de ¿IBM? ",
+    "nl" : "'Wat is de omzet van IBM?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "millepede", "classis", "belong" ],
+    "de" : [ "'Millepede' ", "‚Klasse‘ ", "'gehören' " ],
+    "ru" : [ "«Многоножка» ", "«Класс» ", "«Принадлежит» " ],
+    "pt" : [ "'Millepede' ", "'Class' ", "'pertence' " ],
+    "hi_IN" : [ "'गोजर' ", "'क्लास' ", "'हैं' " ],
+    "it" : [ "'millepede' ", "'Classe' ", "'appartenere' " ],
+    "fa" : [ "،اپ رازه :  ", "»هقبط«  ", "'نتشاد  " ],
+    "fr" : [ "'Millepede' ", "« Classe » ", "'appartenir' " ],
+    "ro" : [ "„Miriapod“ ", "„Clasa“ ", "'aparține' " ],
+    "es" : [ "'Millepede' ", "'Clase' ", "'pertenecer a' " ],
+    "nl" : [ "'Duizendpoot' ", "'Class' ", "'behoren' " ]
+  },
+  "id" : 7,
+  "languageToQuestion" : {
+    "de" : "'Welche Klasse tut das Tausendfüßler gehören zu?' ",
+    "ru" : "'Который класс делает  многоножка принадлежать к? ",
+    "pt" : "'Qual classe faz a centopéia pertencer para?' ",
+    "en" : "Which classis does the Millepede belong to?",
+    "hi_IN" : "'कौन कौन से वर्ग कर देता है  गोजर संबंधित सेवा मेरे?' ",
+    "it" : "'Quale classe fa il Millepede appartenere a?' ",
+    "fa" : "مادک  سالک  دنکیم  نیا  اپ رازه  نتشاد قلعت  '؟هب  ",
+    "fr" : "'Lequel classe Est-ce que la mille-pattes appartenir à?' ",
+    "ro" : "'Care clasă face  miriapod aparține la?' ",
+    "es" : "'Cual clase hace el milpiés pertenecer a ¿a?' ",
+    "nl" : "'Welke klasse doet de duizendpoot behoren naar?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "governor", "Texas" ],
+    "de" : [ "'Gouverneur' ", "'Texas' " ],
+    "ru" : [ "«Губернатор» ", "«Техас» " ],
+    "pt" : [ "'governador' ", "'Texas' " ],
+    "hi_IN" : [ "'राज्यपाल' ", "'टेक्सास' " ],
+    "it" : [ "'governatore' ", "'Texas' " ],
+    "fa" : [ " ", " " ],
+    "fr" : [ "'gouverneur' ", "'Texas' " ],
+    "ro" : [ "'guvernator' ", "'Texas' " ],
+    "es" : [ "'gobernador' ", "'Texas' " ],
+    "nl" : [ "'gouverneur' ", "'Texas' " ]
+  },
+  "id" : 8,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Gouverneur von Texas?' ",
+    "ru" : "'Кто является  губернатор из Техас? ",
+    "pt" : "'Quem é a governador do Texas? ",
+    "en" : "Who is the governor of Texas?",
+    "hi_IN" : "'कौन है  राज्यपाल का टेक्सास? ' ",
+    "it" : "'Chi è il governatore di Texas?' ",
+    "fa" : "هک'  تسا  نیا  رادنامرف  زا  ؟سازگت  ",
+    "fr" : "'Qui est la gouverneur de Texas?' ",
+    "ro" : "'Care este  guvernator de Texas?' ",
+    "es" : "'Quien es el gobernador de ¿Texas?' ",
+    "nl" : "'Wie is de gouverneur van Texas?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Abraham Lincoln", "die" ],
+    "de" : [ "\"Abraham Lincoln ", "'die' " ],
+    "ru" : [ "Авраам Линкольн» ", "'The' " ],
+    "pt" : [ "'Abraão Lincoln ' ", "'A' " ],
+    "hi_IN" : [ "'अब्राहम लिंकन ' ", "'' " ],
+    "it" : [ "'Abramo Lincoln' ", "'Il' " ],
+    "fa" : [ "میهاربا  ' نلکنیل  ", "تلاصا «»  " ],
+    "fr" : [ "Abraham Lincoln ' ", "« Le » " ],
+    "ro" : [ "„Abraham Lincoln“ ", "'The' " ],
+    "es" : [ "'Abrahán Lincoln ' ", "'El' " ],
+    "nl" : [ "'Abraham Lincoln' ", "'The' " ]
+  },
+  "id" : 9,
+  "languageToQuestion" : {
+    "de" : "'Woher hat getan Abraham Lincoln die?' ",
+    "ru" : "'Где сделал Авраам Линкольн ? ",
+    "pt" : "'Onde fez Abraham Lincoln o '? ",
+    "en" : "Where did Abraham Lincoln die?",
+    "hi_IN" : "'कहा पे किया अब्राहम लिंकन ? ' ",
+    "it" : "'Dove fatto Abraham Lincoln il? ' ",
+    "fa" : "هک ییاج'  داد ماجنا  میهاربا  نلکنیل  :؟تسا  ",
+    "fr" : "'Où fait Abraham Lincoln le? ",
+    "ro" : "'Unde făcut Avraam Lincoln ? \" ",
+    "es" : "'Dónde hizo Abrahán Lincoln el '? ",
+    "nl" : "'Waar deed Abraham Lincoln het? ' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'oben Verkauf' ", "'Luxus Fahrzeug Marken ' " ],
+    "ru" : [ "'Вверх продажа» ", "«роскошь средство передвижения бренды " ],
+    "pt" : [ "'topo vendendo ' ", "'luxo veículo marcas " ],
+    "en" : [ "top selling", "luxury vehicle brands" ],
+    "hi_IN" : [ "'शीर्ष बेच ' ", "'विलासिता वाहन ब्रांड ' " ],
+    "it" : [ "'superiore vendita' ", "'lusso veicolo Marche' " ],
+    "fa" : [ "الاب'  ' شورف  ", "سکول'  هیلقن هلیسو  یراجت یاه تمالع  " ],
+    "fr" : [ "'Haut vente' ", "'luxe véhicule marques' " ],
+    "ro" : [ "'top de vânzare“ ", "'luxos vehicul Marci " ],
+    "es" : [ "'parte superior de venta' ", "'lujo vehículo Marcas " ],
+    "nl" : [ "'top selling' ", "'luxe voertuig merken " ]
+  },
+  "id" : 10,
+  "languageToQuestion" : {
+    "de" : "'Was sind das oben Verkauf Luxus Fahrzeug Marken im Deutschland?' ",
+    "ru" : "'Какие находятся  Вверх продажа роскошь средство передвижения бренды в Германия?' ",
+    "pt" : "'O que estamos a topo vendendo luxo veículo marcas dentro Alemanha?' ",
+    "en" : "What are the top selling luxury vehicle brands in Germany?",
+    "hi_IN" : "'क्या कर रहे हैं  चोटी बेचना विलासिता वाहन ब्रांडों में जर्मनी? ' ",
+    "it" : "'Che cosa siamo il superiore vendita lusso veicolo Marche in Germania?' ",
+    "fa" : "یچ'  دنتسه  نیا  الاب  شورف  سکول  هیلقن هلیسو  یراجت یاه تمالع  رد هک  ؟ناملآ  ",
+    "fr" : "'Quelle sont la Haut vente luxe véhicule marques dans Allemagne?' ",
+    "ro" : "'Ce sunt  top de vânzare luxos vehicul Marci în Germania?' ",
+    "es" : "'Qué son el parte superior de venta lujo vehículo marcas en ¿Alemania?' ",
+    "nl" : "'Wat zijn de top selling luxe voertuig merken in Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'UNS Gründung Väter " ],
+    "ru" : [ "'НАС учредительный отцов " ],
+    "pt" : [ "'NOS fundando pais " ],
+    "en" : [ "US founding fathers" ],
+    "hi_IN" : [ "'अमेरिका स्थापना पिता की' " ],
+    "it" : [ "'NOI fondazione padri " ],
+    "fa" : [ "هدحتم تالایا'  سیسات  ناردپ  " ],
+    "fr" : [ "'NOUS fonder pères " ],
+    "ro" : [ "'S.U.A fondator tați " ],
+    "es" : [ "'NOS establecimiento padres " ],
+    "nl" : [ "'ONS oprichten vaders " ]
+  },
+  "id" : 11,
+  "languageToQuestion" : {
+    "de" : "'Wer sind das Gründung Väter von vereinigt Zustände?' ",
+    "ru" : "'Кто находятся  учредительный отцы из единый состояния?' ",
+    "pt" : "'Quem estamos a fundando pais do Unidos estados? ",
+    "en" : "Who are the founding fathers of united states?",
+    "hi_IN" : "'कौन कर रहे हैं  स्थापना पिता की का संयुक्त राज्यों? ' ",
+    "it" : "'Chi siamo il fondazione padri di unito stati?' ",
+    "fa" : "هک'  دنتسه  نیا  سیسات  ناردپ  زا  دحتم  '؟اه تلایا  ",
+    "fr" : "'Qui sont la fonder pères de uni États?' ",
+    "ro" : "'Care sunt  fondator tați de Unit state?“ ",
+    "es" : "'Quien son el establecimiento padres de unido estados? ' ",
+    "nl" : "'Wie zijn de oprichten vaders van verenigd staten?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Träume' " ],
+    "ru" : [ "«Мечта» " ],
+    "pt" : [ "'Sonhos' " ],
+    "en" : [ "Dreams" ],
+    "hi_IN" : [ "'सपने' " ],
+    "it" : [ "'Sogni' " ],
+    "fa" : [ "اهایور  " ],
+    "fr" : [ "'Rêves' " ],
+    "ro" : [ "'Dreams' " ],
+    "es" : [ "'Sueños' " ],
+    "nl" : [ "'Dromen' " ]
+  },
+  "id" : 12,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Autor von das Deutung von Träume?' ",
+    "ru" : "'Кто является  автор из  интерпретация из мечты?» ",
+    "pt" : "'Quem é a autor do a interpretação do sonhos? ",
+    "en" : "Who is the author of the interpretation of dreams?",
+    "hi_IN" : "'कौन है  लेखक का  व्याख्या का सपने?' ",
+    "it" : "'Chi è il autore di il interpretazione di sogni?' ",
+    "fa" : "هک'  تسا  نیا  هدنسیون  زا  نیا  ریسفت  زا  ؟یاهایور  ",
+    "fr" : "'Qui est la auteur de la interprétation de rêves?' ",
+    "ro" : "'Care este  autor de  interpretare de vise?“ ",
+    "es" : "'Quien es el autor de el interpretación de ¿Sueños?' ",
+    "nl" : "'Wie is de auteur van de interpretatie van dromen?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Spezies' ", "'Elefant' " ],
+    "ru" : [ "«вид» ", "«Слон» " ],
+    "pt" : [ "'espécies' ", "'elefante' " ],
+    "en" : [ "species", "elephant" ],
+    "hi_IN" : [ "'' प्रजाति ", "'हाथी' " ],
+    "it" : [ "'specie' ", "'elefante' " ],
+    "fa" : [ "'اه  ", " " ],
+    "fr" : [ "'espèce' ", "'l'éléphant' " ],
+    "ro" : [ "„specie“ ", "'elefant' " ],
+    "es" : [ "'especies' ", "'elefante' " ],
+    "nl" : [ "'soorten' ", "'olifant' " ]
+  },
+  "id" : 13,
+  "languageToQuestion" : {
+    "de" : "'Welche Spezies tut ein Elefant gehören?' ",
+    "ru" : "'Который вид делает  слон принадлежат? ",
+    "pt" : "'Qual espécies faz a elefante pertenço? ",
+    "en" : "Which species does an elephant belong?",
+    "hi_IN" : "'कौन कौन से जाति कर देता है एक हाथी संबंधित? ' ",
+    "it" : "'Quale specie fa un elefante appartenere?' ",
+    "fa" : "مادک  اه هنوگ  دنکیم  کی  لیف  '؟نتشاد قلعت  ",
+    "fr" : "'Lequel espèce Est-ce que un l'éléphant appartenir?' ",
+    "ro" : "'Care specie face un elefant aparține?' ",
+    "es" : "'Cual especies hace un elefante ¿pertenecer a?' ",
+    "nl" : "'Welke soorten doet een olifant behoren?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 14,
+  "languageToQuestion" : {
+    "de" : "'Welche Zustand von das Vereinigt Zustände von Amerika hat das höchste Dichte?' ",
+    "ru" : "'Который государство из  объединенный состояния из Америка имеет  наибольший плотность? ",
+    "pt" : "'Qual Estado do a Unidos Estados do América tem a maior densidade?' ",
+    "en" : "Which state of the United States of America has the highest density?",
+    "hi_IN" : "'कौन कौन से राज्य का  यूनाइटेड राज्य अमेरिका का अमेरिका है  उच्चतम घनत्व? ' ",
+    "it" : "'Quale stato di il Unito stati di America ha il massimo densità?' ",
+    "fa" : "مادک  تلاح  زا  نیا  دتیانوی  اه تلایا  زا  اکیرمآ  یاراد  نیا  نیرتالاب  ؟یلاگچ  ",
+    "fr" : "'Lequel Etat de la Uni États de Amérique a la le plus élevé densité?' ",
+    "ro" : "'Care stat de  Unit statele de America are  cel mai inalt densitate?' ",
+    "es" : "'Cual estado de el Unido Estados de America tiene el más alto ¿densidad?' ",
+    "nl" : "'Welke staat van de Verenigd Staten van Amerika heeft de hoogst dichtheid?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Bereich' ", "'VEREINIGTES KÖNIGREICH' " ],
+    "ru" : [ "'площадь' ", "'ВЕЛИКОБРИТАНИЯ' " ],
+    "pt" : [ "'área' ", "'REINO UNIDO' " ],
+    "en" : [ "area", "UK" ],
+    "hi_IN" : [ "'क्षेत्र' ", "'ब्रिटेन' " ],
+    "it" : [ "'la zona' ", "'UK' " ],
+    "fa" : [ " ", " " ],
+    "fr" : [ "'région' ", "'ROYAUME-UNI' " ],
+    "ro" : [ "'zonă' ", "'REGATUL UNIT' " ],
+    "es" : [ "'zona' ", "'REINO UNIDO' " ],
+    "nl" : [ "'Gebied' ", "'UK' " ]
+  },
+  "id" : 15,
+  "languageToQuestion" : {
+    "de" : "'Wie groß ist das Bereich von VEREINIGTES KÖNIGREICH?' ",
+    "ru" : "'Как большой является  площадь из ВЕЛИКОБРИТАНИЯ?' ",
+    "pt" : "'Como ampla é a área do REINO UNIDO?' ",
+    "en" : "How large is the area of UK?",
+    "hi_IN" : "'किस तरह विशाल है  क्षेत्र का ब्रिटेन? ' ",
+    "it" : "'Come grande è il la zona di UK?' ",
+    "fa" : "؟روطچ  گرزب  تسا  نیا  هزوح  زا  '؟ناتسلگنا  ",
+    "fr" : "'Comment grand est la région de ROYAUME-UNI?' ",
+    "ro" : "'Cum mare este  zonă de REGATUL UNIT?' ",
+    "es" : "'Cómo grande es el zona de ¿REINO UNIDO?' ",
+    "nl" : "'Hoe groot is de Gebied van UK?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Bücher\" ", "'Autor' ", "'Das Fehler im Unser Sterne' " ],
+    "ru" : [ "«книги» ", "«Автор» ", "«The придираться в наш Звезды " ],
+    "pt" : [ "'livros' ", "'autor' ", "'O Culpa dentro Nosso Estrelas " ],
+    "en" : [ "books", "author", "The Fault in Our Stars" ],
+    "hi_IN" : [ "'पुस्तकें' ", "'लेखक' ", "' दोष में हमारी सितारे ' " ],
+    "it" : [ "'libri' ", "'autore' ", "'Il Colpa in Nostro Stelle' " ],
+    "fa" : [ " ", " ", " بیع  رد هک  ام  'اه هراتس  " ],
+    "fr" : [ "'livres' ", "'auteur' ", "'Le Faute dans Notre Étoiles' " ],
+    "ro" : [ "„cărți“ ", "'autor' ", "„The eroare în Al nostru stars " ],
+    "es" : [ "'libros' ", "'autor' ", "'Los Culpa en Nuestra Estrellas' " ],
+    "nl" : [ "'boeken' ", "'auteur' ", "'De fout in Onze Stars' " ]
+  },
+  "id" : 16,
+  "languageToQuestion" : {
+    "de" : "'Was andere Bücher haben gewesen geschrieben durch das Autor von Das Fehler im Unser Sterne?' ",
+    "ru" : "'Какие Другие книги иметь было написано от  автор из  придираться в наш Звезды?» ",
+    "pt" : "'O que de outros livros ter fui escrito de a autor do o Culpa dentro Nosso Estrelas? ",
+    "en" : "What other books have been written by the author of The Fault in Our Stars?",
+    "hi_IN" : "'क्या अन्य पुस्तकें है गया लिखा हुआ द्वारा  लेखक का  दोष में हमारी सितारे? ' ",
+    "it" : "'Che cosa altro libri avere stato scritto di il autore di Il Colpa in Nostro Stelle?' ",
+    "fa" : "یچ'  رگید  اه باتک  دنراد  هدوب  تسا هدش هتشون  طسوت  نیا  هدنسیون  زا  نیا  بیع  رد هک  ام  '؟اه هراتس  ",
+    "fr" : "'Quelle autre livres avoir été écrit par la auteur de le Faute dans Notre Étoiles?' ",
+    "ro" : "'Ce alte cărți avea fost scris de  autor de  eroare în Al nostru Stele?“ ",
+    "es" : "'Qué otro libros tener estado escrito por el autor de los Culpa en Nuestra ¿Estrellas?' ",
+    "nl" : "'Wat anders boeken hebben geweest geschreven door de auteur van De fout in Onze Stars?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "develop", "Skype" ],
+    "de" : [ "'entwickeln' ", "\"Skype\" " ],
+    "ru" : [ "«Развивать» ", "'Skype' " ],
+    "pt" : [ "'desenvolve' ", "'Skype' " ],
+    "hi_IN" : [ "'विकसित' ", "'स्काइप' " ],
+    "it" : [ "'sviluppare' ", "'Skype' " ],
+    "fa" : [ "هعسوت  ", "پیاکسا  " ],
+    "fr" : [ "'développer' ", "'Skype' " ],
+    "ro" : [ "'dezvolta' ", "'Skype' " ],
+    "es" : [ "'desarrollar' ", "'Skype' " ],
+    "nl" : [ "'ontwikkelen' ", "'Skype' " ]
+  },
+  "id" : 17,
+  "languageToQuestion" : {
+    "de" : "'Wer entwickelt Skype? ",
+    "ru" : "'Кто развитая Skype? ",
+    "pt" : "'Quem desenvolvido Skype? ",
+    "en" : "Who developed Skype?",
+    "hi_IN" : "'कौन विकसित स्काइपे? ' ",
+    "it" : "'Chi sviluppato Skype?' ",
+    "fa" : "هک'  هتفای هعسوت  ؟پیاکسا  ",
+    "fr" : "'Qui développé Skype? ",
+    "ro" : "'Care dezvoltat Skype? ",
+    "es" : "'Quien desarrollado ¿Skype? ",
+    "nl" : "'Wie ontwikkelde Skype?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'das Mauer' " ],
+    "ru" : [ "« стена» " ],
+    "pt" : [ "'a parede' " ],
+    "en" : [ "the wall" ],
+    "hi_IN" : [ "' दीवार' " ],
+    "it" : [ "'il parete' " ],
+    "fa" : [ " ' راوید  " ],
+    "fr" : [ "'la mur' " ],
+    "ro" : [ "denumită în continuare“ perete' " ],
+    "es" : [ "'el pared' " ],
+    "nl" : [ "'de muur' " ]
+  },
+  "id" : 18,
+  "languageToQuestion" : {
+    "de" : "'Wer sind das Schriftsteller von das Mauer Album von Rosa Floyd? ",
+    "ru" : "'Кто находятся  писатели из  стена альбом из розовый Флойд? ",
+    "pt" : "'Quem estamos a escritoras do a parede álbum do Rosa Floyd? ",
+    "en" : "Who are the writers of the Wall album of Pink Floyd?",
+    "hi_IN" : "'कौन कर रहे हैं  लेखकों के का  दीवार एल्बम का गुलाबी फ्लोयड? ' ",
+    "it" : "'Chi siamo il scrittori di il Parete album di Rosa Floyd?' ",
+    "fa" : "هک'  دنتسه  نیا  ناگدنسیون  زا  نیا  راوید  موبلآ  زا  یتروص گنر  ؟دیولف  ",
+    "fr" : "'Qui sont la écrivains de la mur album de Rose Floyd? ",
+    "ro" : "'Care sunt  Scriitori de  Perete album de Roz Floyd?“ ",
+    "es" : "'Quien son el escritores de el pared álbum de Rosado ¿Floyd? ",
+    "nl" : "'Wie zijn de schrijvers van de Muur album van Roze Floyd?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Deutschland' " ],
+    "ru" : [ "'Германия' " ],
+    "pt" : [ "'Alemanha' " ],
+    "en" : [ "Germany" ],
+    "hi_IN" : [ "'जर्मनी' " ],
+    "it" : [ "'Germania' " ],
+    "fa" : [ " " ],
+    "fr" : [ "'Allemagne' " ],
+    "ro" : [ "'Germania' " ],
+    "es" : [ "'Alemania' " ],
+    "nl" : [ "'Duitsland' " ]
+  },
+  "id" : 19,
+  "languageToQuestion" : {
+    "de" : "'Wie viel ist das Population Dichte Rang von Deutschland?' ",
+    "ru" : "'как много является  Население плотность ранг из Германия?' ",
+    "pt" : "'como Muito de é a população densidade classificação do Alemanha?' ",
+    "en" : "how much is the population densty rank of germany?",
+    "hi_IN" : "'किस तरह बहुत है  आबादी घनत्व श्रेणी का जर्मनी? ' ",
+    "it" : "'Come tanto è il popolazione densità rango di Germania?' ",
+    "fa" : "روطچ  یلیخ  تسا  نیا  تیعمج  یلاگچ  یدنب هبتر  زا  ؟ناملآ  ",
+    "fr" : "'Comment beaucoup est la population densité rang de Allemagne?' ",
+    "ro" : "'Cum mult este  populație densitate rang de Germania?' ",
+    "es" : "'cómo mucho es el población densidad rango de ¿Alemania?' ",
+    "nl" : "'hoe veel is de bevolking dichtheid rang van Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "Norden Rhein Westfalen' " ],
+    "ru" : [ "север Рейн Вестфалия» " ],
+    "pt" : [ "norte Reno Westphalia ' " ],
+    "en" : [ "Nord Rhine Westphalia" ],
+    "hi_IN" : [ "उत्तर राइन वेस्टफेलिया ' " ],
+    "it" : [ "nord Reno Westfalia' " ],
+    "fa" : [ "لامش  نیار  نلافتسو  " ],
+    "fr" : [ "'Nord Rhin Westphalie " ],
+    "ro" : [ "Nordul Rin Westfalia“ " ],
+    "es" : [ "norte Rin Westfalia " ],
+    "nl" : [ "noorden Rijn Westfalen' " ]
+  },
+  "id" : 20,
+  "languageToQuestion" : {
+    "de" : "'Wie groß ist das gesamt Bereich von Norden Rhein- Westfalen?' ",
+    "ru" : "'как большой является  Всего площадь из север Рейн Вестфалия? ",
+    "pt" : "'como grande é a total área do Norte Reno Vestfália? ",
+    "en" : "how big is the total area of North Rhine- Westphalia?",
+    "hi_IN" : "'किस तरह बड़े है  कुल क्षेत्र का उत्तर Rhine- वेस्टफेलिया? ' ",
+    "it" : "'Come grande è il totale la zona di Nord Reno- Westfalia?' ",
+    "fa" : "روطچ  گرزب  تسا  نیا  عمج  هزوح  زا  لامش  -نیار  ؟نلافتسو  ",
+    "fr" : "'Comment gros est la total région de Nord Rhin- Westphalie? ",
+    "ro" : "'Cum mare este  total zonă de Nord Rin Westfalia? ",
+    "es" : "'cómo grande es el total zona de norte Rhine- ¿Westfalia? ",
+    "nl" : "'hoe groot is de totaal Gebied van noorden Rijn Westfalen?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"kleinster\" ", "'Stadt' ", "'Deutschland' " ],
+    "ru" : [ "«Маленький» ", "'город' ", "'Германия' " ],
+    "pt" : [ "'menor' ", "'cidade' ", "'Alemanha' " ],
+    "en" : [ "smallest", "city", "Germany" ],
+    "hi_IN" : [ "'सबसे छोटा' ", "'शहर' ", "'जर्मनी' " ],
+    "it" : [ "'Piccolo' ", "'città' ", "'Germania' " ],
+    "fa" : [ "نیرتکچوک  ", " ", " " ],
+    "fr" : [ "«plus petit» ", "'ville' ", "'Allemagne' " ],
+    "ro" : [ "„Mai mic“ ", "'oraș' ", "'Germania' " ],
+    "es" : [ "'pequeñísimo' ", "'ciudad' ", "'Alemania' " ],
+    "nl" : [ "'Kleinste' ", "'stad' ", "'Duitsland' " ]
+  },
+  "id" : 21,
+  "languageToQuestion" : {
+    "de" : "'Was ist das kleinste Stadt durch Bereich im Deutschland?' ",
+    "ru" : "'Какие является  наименьшее город от площадь в Германия?' ",
+    "pt" : "'O que é a menor cidade de área dentro Alemanha?' ",
+    "en" : "What is the smallest city by area in Germany?",
+    "hi_IN" : "'क्या है  सबसे छोटा शहर द्वारा क्षेत्र में जर्मनी? ' ",
+    "it" : "'Che cosa è il minore città di la zona in Germania?' ",
+    "fa" : "یچ'  تسا  نیا  نیرتکچوک  رهش  طسوت  هزوح  رد هک  ؟ناملآ  ",
+    "fr" : "'Quelle est la le plus petit ville par région dans Allemagne?' ",
+    "ro" : "'Ce este  cel mai mic oraș de zonă în Germania?' ",
+    "es" : "'Qué es el pequeñísimo ciudad por zona en ¿Alemania?' ",
+    "nl" : "'Wat is de kleinste stad door Gebied in Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'tiefste Punkt' ", "'Ozean' " ],
+    "ru" : [ "«глубочайшее точка» ", "'океан' " ],
+    "pt" : [ "'mais profundo ponto' ", "'oceano' " ],
+    "en" : [ "deepest point", "ocean" ],
+    "hi_IN" : [ "का गहरा बिंदु' ", "'सागर' " ],
+    "it" : [ "'profondo punto' ", "'oceano' " ],
+    "fa" : [ "نیرت قیمع'  'هطقن  ", " " ],
+    "fr" : [ "'plus profond point' ", "'océan' " ],
+    "ro" : [ "„cea mai adâncă punct' ", "'ocean' " ],
+    "es" : [ "'más profundo punto' ", "'Oceano' " ],
+    "nl" : [ "'diepste punt' ", "'oceaan' " ]
+  },
+  "id" : 22,
+  "languageToQuestion" : {
+    "de" : "'Woher ist das die meisten tief Punkt im das Ozean?' ",
+    "ru" : "'Где является  большинство глубоко точка в  океан?' ",
+    "pt" : "'Onde é a a maioria profundo ponto dentro a oceano?' ",
+    "en" : "Where is the most deep point in the ocean?",
+    "hi_IN" : "'कहा पे है  अधिकांश गहरा बिंदु में  सागर?' ",
+    "it" : "'Dove è il maggior parte in profondità punto in il oceano?' ",
+    "fa" : "هک ییاج'  تسا  نیا  رثکا  قیمع  هطقن  رد هک  نیا  ؟سونایقا  ",
+    "fr" : "'Où est la plus Profond point dans la océan?' ",
+    "ro" : "'Unde este  cel mai adâncime punct în  ocean?' ",
+    "es" : "'Dónde es el más profundo punto en el ¿Oceano?' ",
+    "nl" : "'Waar is de meest diep punt in de oceaan?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 23,
+  "languageToQuestion" : {
+    "de" : "Ist es? das Ehefrau von Präsident Obama namens Michelle? ",
+    "ru" : "'Является  жена из президент Обама называется Мишель? ",
+    "pt" : "'É a esposa do Presidente Obama chamado Michelle? ",
+    "en" : "Is the wife of President Obama called Michelle?",
+    "hi_IN" : "'है  पत्नी का अध्यक्ष ओबामा बुलाया मिशेल? ' ",
+    "it" : "'È il moglie di Presidente Obama chiamato Michelle?' ",
+    "fa" : "تسا'  نیا  رسمه  زا  روهمج سيئر  امابوا  مان هب  ؟لشیم  ",
+    "fr" : "'Est la femme de Président Obama appelé Michelle? ",
+    "ro" : "'Este  soție de Președintele Obama denumit Michelle? ",
+    "es" : "'Es el esposa de presidente Obama llamado Michelle? ",
+    "nl" : "'Is de vrouw van President Obama riep Michelle?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Korrelation und Abhängigkeit' " ],
+    "ru" : [ "«корреляция а также зависимость' " ],
+    "pt" : [ "'correlação e dependência' " ],
+    "en" : [ "correlation and dependence" ],
+    "hi_IN" : [ "'सह - संबंध तथा निर्भरता ' " ],
+    "it" : [ "'correlazione e dipendenza' " ],
+    "fa" : [ "یگتسبمه'  و  'یگتسباو  " ],
+    "fr" : [ "'corrélation et dépendance' " ],
+    "ro" : [ "'corelație și dependență' " ],
+    "es" : [ "'correlación y dependencia' " ],
+    "nl" : [ "'correlatie en afhankelijkheid' " ]
+  },
+  "id" : 24,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Unterschied zwischen Korrelation und Abhängigkeit?' ",
+    "ru" : "'Какие является  разница между корреляция а также зависимость?' ",
+    "pt" : "'O que é a diferença entre correlação e dependência?' ",
+    "en" : "What is the difference between correlation and dependence?",
+    "hi_IN" : "'क्या है  अंतर के बीच सह - संबंध तथा निर्भरता? ' ",
+    "it" : "'Che cosa è il differenza fra correlazione e dipendenza?' ",
+    "fa" : "یچ'  تسا  نیا  توافت  نیب  یگتسبمه  و  '؟یگتسباو  ",
+    "fr" : "'Quelle est la différence entre corrélation et dépendance?' ",
+    "ro" : "'Ce este  diferență între corelație și dependență?' ",
+    "es" : "'Qué es el diferencia Entre correlación y ¿dependencia?' ",
+    "nl" : "'Wat is de verschil tussen correlatie en afhankelijkheid?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 25,
+  "languageToQuestion" : {
+    "de" : "'Wer war Tom Hanks verheiratet zu?' ",
+    "ru" : "'Кто был Том Hanks в браке к? ",
+    "pt" : "'Quem estava Tom Hanks casado para?' ",
+    "en" : "Who was Tom Hanks married to?",
+    "hi_IN" : "'कौन था टॉम हैंक्स शादी हो ग सेवा मेरे?' ",
+    "it" : "'Chi era Tom Hanks sposato a?' ",
+    "fa" : "هک'  دوب  مات  کناه  لهاتم  '؟هب  ",
+    "fr" : "'Qui était À M Hanks marié à?' ",
+    "ro" : "'Care a fost Tom Hanks căsătorit la?' ",
+    "es" : "'Quien estaba Tom Hanks casado ¿a?' ",
+    "nl" : "'Wie was Tom Hanks getrouwd naar?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "»Donald Trumps ", "'Geschäft' " ],
+    "ru" : [ "'Дональд Трампа ", "'бизнес' " ],
+    "pt" : [ "'Donald Trump's ' ", "'o negócio' " ],
+    "en" : [ "Donald Trump's", "business" ],
+    "hi_IN" : [ "'डोनाल्ड ट्रम्प की ' ", "'व्यापार' " ],
+    "it" : [ "'Donald Trump di ", "'attività commerciale' " ],
+    "fa" : [ "دلانود  ' پمارت  ", "'راک و  " ],
+    "fr" : [ "Donald Trump's ' ", "'Entreprise' " ],
+    "ro" : [ "„Donald lui Trump ", "'Afaceri' " ],
+    "es" : [ "'Donald Trump es ' ", "'negocio' " ],
+    "nl" : [ "'Donald Trump's' ", "'bedrijf' " ]
+  },
+  "id" : 26,
+  "languageToQuestion" : {
+    "de" : "'Was ist Donald Trumps Main Geschäft?' ",
+    "ru" : "'Какие является Дональд Трампа главный бизнес?' ",
+    "pt" : "'O que é Donald Trump's a Principal o negócio?' ",
+    "en" : "What is Donald Trump's main business?",
+    "hi_IN" : "'क्या है डोनाल्ड ट्रम्प की मुख्य व्यापार?' ",
+    "it" : "'Che cosa è Donald Trump di principale attività commerciale?' ",
+    "fa" : "یچ'  تسا  دلانود  تسا pmurT  یلصا  '؟راک و بسک  ",
+    "fr" : "'Quelle est Donald Trump principale Entreprise?' ",
+    "ro" : "'Ce este Donald lui Trump principal Afaceri?' ",
+    "es" : "'Qué es Donald Trump principal ¿negocio?' ",
+    "nl" : "'Wat is Donald Trump hoofd bedrijf?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 27,
+  "languageToQuestion" : {
+    "de" : "'Geben mich das Hauptstädte von alle US Zustände.' ",
+    "ru" : "'Дайте меня  столицы из все У.С. состояния.' ",
+    "pt" : "'Dar mim a capitais do todos EUA estados. ",
+    "en" : "Give me the capitals of all U.S. states.",
+    "hi_IN" : "'दे दो मुझे  राजधानियों का सब अमेरिका राज्यों। ' ",
+    "it" : "'Dare me il capitali di tutti Stati Uniti stati.' ",
+    "fa" : "نداد'  نم  نیا  اه تختیاپ  زا  همه  هدحتم تالایا  '.اه تلایا  ",
+    "fr" : "'Donner moi la capitaux de tout US États.' ",
+    "ro" : "'Da pe mine  capitale de toate SUA state.“ ",
+    "es" : "'Dar yo el capiteles de todas Nosotros estados '. ",
+    "nl" : "'Geven me de hoofdsteden van alle US staten.' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 28,
+  "languageToQuestion" : {
+    "de" : "'Wer ist namens Dana? « ",
+    "ru" : "'Кто является называется Дана? ",
+    "pt" : "'Quem é chamado Dana? ",
+    "en" : "Who is called Dana?",
+    "hi_IN" : "'कौन है बुलाया दाना? ' ",
+    "it" : "'Chi è chiamato Dana?' ",
+    "fa" : "هک'  تسا  مان هب  ؟اناد  ",
+    "fr" : "'Qui est appelé Dana? ",
+    "ro" : "'Care este denumit Dana? ",
+    "es" : "'Quien es llamado ¿Dana? ",
+    "nl" : "'Wie is riep Dana?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'letzte Folge' ", "Freunde Fernseher Show' " ],
+    "ru" : [ "'последний эпизод' ", "«Друзья ТВ показать' " ],
+    "pt" : [ "'último episódio' ", "'Amigos Televisão exposição' " ],
+    "en" : [ "last episode", "Friends Tv show" ],
+    "hi_IN" : [ "'पिछले प्रकरण ' ", "'दोस्त टीवी प्रदर्शन' " ],
+    "it" : [ "'ultimo episodio' ", "'Amici Tv mostrare' " ],
+    "fa" : [ "رخآ'  'تمسق  ", "ناتسود'  نویزیولت  ' شیامن  " ],
+    "fr" : [ "'dernier épisode' ", "'Copains La télé montrer' " ],
+    "ro" : [ "'ultimul episod' ", "'Prieteni Televizor spectacol' " ],
+    "es" : [ "'último episodio' ", "'Amigos Televisión espectáculo' " ],
+    "nl" : [ "'laatste aflevering' ", "'Friends TV laten zien' " ]
+  },
+  "id" : 29,
+  "languageToQuestion" : {
+    "de" : "'Wann war das letzte Folge von das Fernseher Serie Freunde ausgestrahlt? ",
+    "ru" : "'Когда был  последний эпизод из  ТВ серии друзья эфир? ",
+    "pt" : "'Quando estava a último episódio do a televisão Series Amigos arejado? ",
+    "en" : "When was the last episode of the TV series Friends aired?",
+    "hi_IN" : "'कब था  अंतिम प्रकरण का  टीवी शृंखला दोस्त प्रसारित? ' ",
+    "it" : "'Quando era il ultimo episodio di il tv serie Amici in onda?' ",
+    "fa" : "ینامز هچ'  دوب  نیا  رخآ  تمسق  زا  نیا  نویزیولت  هلسلس  ناتسود  :تشاد راهظا  ",
+    "fr" : "'Quand était la dernier épisode de la la télé séries copains aéré? ",
+    "ro" : "'Cand a fost  ultimul episod de  televizor serie Prieteni difuzat?“ ",
+    "es" : "'Cuando estaba el último episodio de el televisión serie Amigos aireado? ' ",
+    "nl" : "'Wanneer was de laatste aflevering van de TV serie vrienden uitgezonden?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Träume' " ],
+    "ru" : [ "«Мечта» " ],
+    "pt" : [ "'Sonhos' " ],
+    "en" : [ "Dreams" ],
+    "hi_IN" : [ "'सपने' " ],
+    "it" : [ "'Sogni' " ],
+    "fa" : [ "اهایور  " ],
+    "fr" : [ "'Rêves' " ],
+    "ro" : [ "'Dreams' " ],
+    "es" : [ "'Sueños' " ],
+    "nl" : [ "'Dromen' " ]
+  },
+  "id" : 30,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Original Titel von das Deutung von Träume?' ",
+    "ru" : "'Какие является  оригинал заглавие из  интерпретация из мечты?» ",
+    "pt" : "'O que é a original título do a interpretação do sonhos? ",
+    "en" : "What is the original title of the interpretation of dreams?",
+    "hi_IN" : "'क्या है  मूल शीर्षक का  व्याख्या का सपने?' ",
+    "it" : "'Che cosa è il originale titolo di il interpretazione di sogni?' ",
+    "fa" : "یچ'  تسا  نیا  یلصا  ناونع  زا  نیا  ریسفت  زا  ؟یاهایور  ",
+    "fr" : "'Quelle est la original Titre de la interprétation de rêves?' ",
+    "ro" : "'Ce este  original titlu de  interpretare de vise?“ ",
+    "es" : "'Qué es el original título de el interpretación de ¿Sueños?' ",
+    "nl" : "'Wat is de origineel titel van de interpretatie van dromen?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 31,
+  "languageToQuestion" : {
+    "de" : "Ist es? Natalie Portman ein Darstellerin?' ",
+    "ru" : "'Является Натали Портман  актриса?' ",
+    "pt" : "'É Natalie Portman a atriz?' ",
+    "en" : "Is Natalie Portman an actress?",
+    "hi_IN" : "'है नेटली पोर्टमैन एक अभिनेत्री? ' ",
+    "it" : "'È Natalie Portman un attrice?' ",
+    "fa" : "تسا'  یلاتان  نمتروپ  کی  '؟رگیزاب  ",
+    "fr" : "'Est Natalie Portman un actrice?' ",
+    "ro" : "'Este Natalie Portman un actriţă?' ",
+    "es" : "'Es Natalie Portman un ¿Actriz?' ",
+    "nl" : "'Is Natalie Portman een actrice?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'europäisch Union' " ],
+    "ru" : [ "«Европейский объединение» " ],
+    "pt" : [ "'europeu União' " ],
+    "en" : [ "european union" ],
+    "hi_IN" : [ "'यूरोपीय संघ ' " ],
+    "it" : [ "'europeo unione' " ],
+    "fa" : [ "ییاپورا  هیداحتا  " ],
+    "fr" : [ "'européen syndicat' " ],
+    "ro" : [ "'european uniune' " ],
+    "es" : [ "'europeo Unión' " ],
+    "nl" : [ "'Europese unie' " ]
+  },
+  "id" : 32,
+  "languageToQuestion" : {
+    "de" : "'Wie viel ist das gesamt Population von europäisch Union?' ",
+    "ru" : "'как много является  Всего Население из Европейская союз? ",
+    "pt" : "'como Muito de é a total população do europeu União?' ",
+    "en" : "how much is the total population of  european union?",
+    "hi_IN" : "'किस तरह बहुत है  कुल आबादी का यूरोपीय संघ? ' ",
+    "it" : "'Come tanto è il totale popolazione di europeo unione?' ",
+    "fa" : "روطچ  یلیخ  تسا  نیا  عمج  تیعمج  زا  ییاپورا  ' ؟هیداحتا  ",
+    "fr" : "'Comment beaucoup est la total population de européen syndicat?' ",
+    "ro" : "'Cum mult este  total populație de european uniune?' ",
+    "es" : "'cómo mucho es el total población de europeo ¿Unión?' ",
+    "nl" : "'hoe veel is de totaal bevolking van Europese unie?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 33,
+  "languageToQuestion" : {
+    "de" : "'Wann hat getan Deutschland Beitreten das EU? ",
+    "ru" : "'Когда сделал Германия присоединиться  ЕС? ",
+    "pt" : "'Quando fez Alemanha Junte-se a EU?' ",
+    "en" : "When did Germany join the EU?",
+    "hi_IN" : "'कब किया जर्मनी में शामिल होने के  यूरोपीय संघ? ' ",
+    "it" : "'Quando fatto Germania aderire il UE? \" ",
+    "fa" : "ینامز هچ'  داد ماجنا  ناملآ  نتسویپ  نیا  ؟اپورا هیداحتا  ",
+    "fr" : "'Quand fait Allemagne joindre la UE? ",
+    "ro" : "'Cand făcut Germania a adera  UE? ",
+    "es" : "'Cuando hizo Alemania unirse el I? ' ",
+    "nl" : "'Wanneer deed Duitsland toetreden de EU? ' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'ein Lied von Eis und Feuer' " ],
+    "ru" : [ "«а песня из лед а также Огонь' " ],
+    "pt" : [ "'uma canção do gelo e fogo' " ],
+    "en" : [ "a song of ice and fire" ],
+    "hi_IN" : [ "'ए गाना का बर्फ तथा आग' " ],
+    "it" : [ "'un canzone di ghiaccio e fuoco' " ],
+    "fa" : [ "a'  هنارت  زا  خی  و  'شتآ  " ],
+    "fr" : [ "'une chanson de la glace et Feu' " ],
+    "ro" : [ "'A cântec de gheaţă și foc' " ],
+    "es" : [ "'un canción de hielo y fuego' " ],
+    "nl" : [ "'een lied van ijs- en brand' " ]
+  },
+  "id" : 34,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Romanschriftsteller von das Arbeit ein Lied von Eis und Feuer?' ",
+    "ru" : "'Кто является  романист из  Работа  песня из лед а также Огонь?' ",
+    "pt" : "'Quem é a romancista do a trabalhos uma canção do gelo e fogo?' ",
+    "en" : "Who is the novelist of the work a song of ice and fire?",
+    "hi_IN" : "'कौन है  उपन्यासकार का  काम ए गाना का बर्फ तथा आग?' ",
+    "it" : "'Chi è il romanziere di il lavoro un canzone di ghiaccio e fuoco?' ",
+    "fa" : "هک'  تسا  نیا  سیون نامر  زا  نیا  راک  a  هنارت  زا  خی  و  '؟شتآ  ",
+    "fr" : "'Qui est la romancier de la travail une chanson de la glace et Feu?' ",
+    "ro" : "'Care este  romancier de  muncă A cântec de gheaţă și foc?' ",
+    "es" : "'Quien es el novelista de el trabajo un canción de hielo y ¿fuego?' ",
+    "nl" : "'Wie is de romanschrijver van de werk een lied van ijs- en brand?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 35,
+  "languageToQuestion" : {
+    "de" : "'Was ist das offiziell Webseite von Tom Hanks? ",
+    "ru" : "'Какие является  официальный Веб-сайт из Том Хэнкс? ",
+    "pt" : "'O que é a oficial local na rede Internet do Tom Hanks? ",
+    "en" : "What is the official website of Tom Hanks?",
+    "hi_IN" : "'क्या है  आधिकारिक वेबसाइट का टॉम हैंक्स? ' ",
+    "it" : "'Che cosa è il ufficiale sito web di Tom Hanks?' ",
+    "fa" : "یچ'  تسا  نیا  یمسر  یتنرتنیا تیاس  زا  مات  ؟کناه  ",
+    "fr" : "'Quelle est la officiel site Internet de À M Hanks? ",
+    "ro" : "'Ce este  oficial website de Tom Hanks?“ ",
+    "es" : "'Qué es el oficial sitio web de Tom ¿Hanks? ",
+    "nl" : "'Wat is de officieel website van Tom Hanks?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 36,
+  "languageToQuestion" : {
+    "de" : "'Welche Firmen sind im das Computer Software Industrie?' ",
+    "ru" : "'Который компании находятся в  компьютер программного обеспечения промышленность?' ",
+    "pt" : "'Qual empresas estamos dentro a computador Programas indústria?' ",
+    "en" : "Which companies are in the computer software industry?",
+    "hi_IN" : "'कौन कौन से कंपनियों कर रहे हैं में  कंप्यूटर सॉफ्टवेयर उद्योग? ' ",
+    "it" : "'Quale aziende siamo in il computer Software industria?' ",
+    "fa" : "مادک  اه تکرش  دنتسه  رد هک  نیا  رتویپماک  رازفا مرن  '؟تعنص  ",
+    "fr" : "'Lequel entreprises sont dans la ordinateur Logiciel industrie?' ",
+    "ro" : "'Care companii sunt în  calculator software-ul industrie?' ",
+    "es" : "'Cual compañías son en el computadora software ¿industria?' ",
+    "nl" : "'Welke bedrijven zijn in de computer software industrie?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "U.S. state", "abbreviation", "MN" ],
+    "de" : [ "L.U. Zustand' ", "'Abkürzung' ", "Wir haben es getan " ],
+    "ru" : [ "ЬУ.С. государство' ", "'сокращение' ", "Мы сделали " ],
+    "pt" : [ "L.U. Estado' ", "'abreviação' ", "Nós fizemos " ],
+    "hi_IN" : [ "अमेरिका राज्य ' ", "'संक्षिप्त नाम' ", "हमने किया " ],
+    "it" : [ "Stati Uniti stato' ", "'abbreviazione' ", "Abbiamo fatto " ],
+    "fa" : [ ".U.L  'تلاح  ", " ", "میداد ماجنا ام  " ],
+    "fr" : [ "L.U. Etat' ", "'abréviation' ", "Nous avons fait " ],
+    "ro" : [ "S.U.A. stat' ", "'abreviere' ", "Am făcut-o " ],
+    "es" : [ "L.U. estado' ", "'abreviatura' ", "Nosotros lo hicimos " ],
+    "nl" : [ "Het Amerikaanse staat' ", "'afkorting' ", "Dat hebben we gedaan " ]
+  },
+  "id" : 37,
+  "languageToQuestion" : {
+    "de" : "'Welche US Zustand hat das Abkürzung Von ",
+    "ru" : "'Который У.С. состояние имеет  сокращение Кто? ",
+    "pt" : "'Qual EUA Estado tem a abreviação De ",
+    "en" : "Which U.S. State has the abbreviation MN?",
+    "hi_IN" : "'कौन कौन से अमेरिका राज्य है  संक्षिप्त नाम कौन? एक ",
+    "it" : "'Quale Stati Uniti Stato ha il abbreviazione Chi? A ",
+    "fa" : "مادک  هدحتم تالایا  تلود  یاراد  نیا  راصتخا  زا  ",
+    "fr" : "'Lequel US Etat a la abréviation De ",
+    "ro" : "'Care SUA Stat are  abreviere Cine? A ",
+    "es" : "'Cual Nosotros Estado tiene el abreviatura De ",
+    "nl" : "'Welke US Staat heeft de afkorting Wie? Een "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "»Bertrand Russell " ],
+    "ru" : [ "«Bertrand Рассел' " ],
+    "pt" : [ "Bertrand Russell ' " ],
+    "en" : [ "Bertrand Russell" ],
+    "hi_IN" : [ "'बर्ट्रेंड रसेल ' " ],
+    "it" : [ "'Bertrand Russell' " ],
+    "fa" : [ "دنارترب  لسار  " ],
+    "fr" : [ "Bertrand Russell " ],
+    "ro" : [ "„Bertrand Russell " ],
+    "es" : [ "'Bertrand Russell ' " ],
+    "nl" : [ "'Bertrand Russell' " ]
+  },
+  "id" : 38,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Auszeichnungen hat Bertrand Russell? « ",
+    "ru" : "'как многие награды имеет Bertrand Рассел?' ",
+    "pt" : "'como muitos prêmios tem Bertrand Russell? ",
+    "en" : "how many awards has Bertrand Russell?",
+    "hi_IN" : "'किस तरह अनेक पुरस्कार है बर्ट्रेंड रसेल? ' ",
+    "it" : "'Come molti premi ha Bertrand Russell?' ",
+    "fa" : "روطچ  یرایسب  زیاوج  یاراد  دنارترب  ؟لسار  ",
+    "fr" : "'Comment beaucoup prix a Bertrand Russell? ",
+    "ro" : "'Cum mulți premii are Bertrand Russell?“ ",
+    "es" : "'cómo muchos premios tiene Bertrand ¿Russell? ",
+    "nl" : "'hoe veel awards heeft Bertrand Russell?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Adele\" " ],
+    "ru" : [ "«Адель» " ],
+    "pt" : [ "'Adele' " ],
+    "en" : [ "Adele" ],
+    "hi_IN" : [ "'एडेल' " ],
+    "it" : [ "'Adele' " ],
+    "fa" : [ " " ],
+    "fr" : [ "'Adele' " ],
+    "ro" : [ "'Adele' " ],
+    "es" : [ "'Adele' " ],
+    "nl" : [ "'Adele' " ]
+  },
+  "id" : 39,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Geburt Name von Adele? ",
+    "ru" : "'Какие является  рождение имя из Адель? ",
+    "pt" : "'O que é a nascimento nome do Adele? ",
+    "en" : "What is the birth name of Adele?",
+    "hi_IN" : "'क्या है  जन्म नाम का एडेल? ' ",
+    "it" : "'Che cosa è il nascita nome di Adele?' ",
+    "fa" : "یچ'  تسا  نیا  دلوت  مان  زا  ؟لدآ  ",
+    "fr" : "'Quelle est la naissance prénom de Adele? ",
+    "ro" : "'Ce este  naștere Nume de Adele? ",
+    "es" : "'Qué es el nacimiento nombre de Adele? ",
+    "nl" : "'Wat is de geboorte naam van Adele?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Netz Ontologie Sprache' " ],
+    "ru" : [ "«Web онтология Язык» " ],
+    "pt" : [ "'Rede Ontologia Língua' " ],
+    "en" : [ "Web Ontology Language" ],
+    "hi_IN" : [ "'वेब आंटलजी भाषा ' " ],
+    "it" : [ "'Web Ontologia Linguaggio' " ],
+    "fa" : [ "بو  یسانش یتسه  ' نابز  " ],
+    "fr" : [ "'Web Ontologie La langue' " ],
+    "ro" : [ "'Web Ontologie Limba' " ],
+    "es" : [ "'Web Ontología Idioma' " ],
+    "nl" : [ "'Web Ontologie Taal' " ]
+  },
+  "id" : 40,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Beziehung zwischen Ressource Beschreibung Rahmen und Netz Ontologie Sprache?' ",
+    "ru" : "'Какие является  связь между Ресурс Описание Фреймворк а также Web онтология Язык? ",
+    "pt" : "'O que é a relação entre Recurso Descrição Estrutura e Rede Ontologia Língua?' ",
+    "en" : "What is the relation between Resource Description Framework and Web Ontology Language?",
+    "hi_IN" : "'क्या है  रिश्ता के बीच संसाधन विवरण ढांचा तथा वेब आंटलजी भाषा? ' ",
+    "it" : "'Che cosa è il relazione fra Risorsa Descrizione Struttura e web Ontologia Linguaggio?' ",
+    "fa" : "یچ'  تسا  نیا  هطبار  نیب  عبانم  حرش  بوچراچ  و  بو  یسانش یتسه  ' ؟نابز  ",
+    "fr" : "'Quelle est la relation entre Ressource La description Cadre et Web Ontologie La langue?' ",
+    "ro" : "'Ce este  relație între Resursă Descriere Cadru și Web Ontologie Limba?' ",
+    "es" : "'Qué es el relación Entre Recurso Descripción Marco de referencia y Web Ontología ¿Idioma?' ",
+    "nl" : "'Wat is de relatie tussen hulpbron Beschrijving Kader en Web Ontologie Taal?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 41,
+  "languageToQuestion" : {
+    "de" : "'Geben mich alle Filme mit Tom Kreuzfahrt!' ",
+    "ru" : "'Дайте меня все кино с Том Круиз!' ",
+    "pt" : "'Dar mim todos filmes com Tom Cruzeiro!' ",
+    "en" : "Give me all movies with Tom Cruise!",
+    "hi_IN" : "'दे दो मुझे सब चलचित्र साथ में टॉम क्रूज! ' ",
+    "it" : "'Dare me tutti film con Tom Crociera!' ",
+    "fa" : "نداد'  نم  همه  اه ملیف  اب  مات  '!یحیرفت یتشک  ",
+    "fr" : "'Donner moi tout films avec À M Croisière!' ",
+    "ro" : "'Da pe mine toate filme cu Tom Croazieră!' ",
+    "es" : "'Dar yo todas películas con Tom ¡Crucero!' ",
+    "nl" : "'Geven me alle films met Tom Cruise!' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 42,
+  "languageToQuestion" : {
+    "de" : "'Wer sind das Präsidenten von das Vereinigt Zustände?' ",
+    "ru" : "'Кто находятся  президенты из  объединенный Состояния?' ",
+    "pt" : "'Quem estamos a presidentes do a Unidos Estados Unidos? ",
+    "en" : "Who are the presidents of the United States?",
+    "hi_IN" : "'कौन कर रहे हैं  राष्ट्रपतियों का  यूनाइटेड राज्य अमेरिका? ' ",
+    "it" : "'Chi siamo il presidenti di il Unito Stati?' ",
+    "fa" : "هک'  دنتسه  نیا  روهمج سیئر  زا  نیا  دتیانوی  '؟اه تلایا  ",
+    "fr" : "'Qui sont la présidents de la Uni États?' ",
+    "ro" : "'Care sunt  președinți de  Unit Statele?“ ",
+    "es" : "'Quien son el presidentes de el Unido ¿Estados? ",
+    "nl" : "'Wie zijn de presidenten van de Verenigd Staten?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Französisch fünfte Republik' " ],
+    "ru" : [ "'Французский пятый республика» " ],
+    "pt" : [ "'francês quinto república' " ],
+    "en" : [ "french fifth republic" ],
+    "hi_IN" : [ "'फ्रेंच पांचवां गणतंत्र ' " ],
+    "it" : [ "'francese quinto repubblica' " ],
+    "fa" : [ "یوسنارف  مجنپ  ' یروهمج  " ],
+    "fr" : [ "'français cinquième république' " ],
+    "ro" : [ "'limba franceza a cincea republică' " ],
+    "es" : [ "'francés quinto república' " ],
+    "nl" : [ "'Frans vijfde republiek' " ]
+  },
+  "id" : 43,
+  "languageToQuestion" : {
+    "de" : "'wann war das Gründung Datum von Französisch fünfte Republik?' ",
+    "ru" : "'когда был  учредительный Дата из Французский пятый республика? ",
+    "pt" : "'quando estava a fundando encontro do francês quinto república?' ",
+    "en" : "when was the founding date of french fifth republic?",
+    "hi_IN" : "'कब था  स्थापना तारीख का फ्रेंच पांचवां गणतंत्र? ' ",
+    "it" : "'quando era il fondazione Data di francese quinto repubblica?' ",
+    "fa" : "ینامز هچ'  دوب  نیا  سیسات  خیرات  زا  یوسنارف  مجنپ  ؟یروهمج  ",
+    "fr" : "'quand était la fonder rendez-vous amoureux de français cinquième république?' ",
+    "ro" : "'cand a fost  fondator Data de limba franceza a cincea republică?' ",
+    "es" : "'cuando estaba el establecimiento fecha de francés quinto ¿república?' ",
+    "nl" : "'wanneer was de oprichten datum van Frans vijfde republiek?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "»Daniel Jurafsky ' " ],
+    "ru" : [ "«Даниель jurafsky» " ],
+    "pt" : [ "'daniel jurafsky ' " ],
+    "en" : [ "daniel jurafsky" ],
+    "hi_IN" : [ "'डैनियल jurafsky ' " ],
+    "it" : [ "'daniel jurafsky' " ],
+    "fa" : [ "لیناد  ' yksfaruj  " ],
+    "fr" : [ "Daniel Jurafski " ],
+    "ro" : [ "„daniel jurafsky“ " ],
+    "es" : [ "Daniel jurafsky ' " ],
+    "nl" : [ "'daniel Jurafsky' " ]
+  },
+  "id" : 44,
+  "languageToQuestion" : {
+    "de" : "'Wer ist Daniel Jurafsky? ",
+    "ru" : "'Кто является Даниил jurafsky? ",
+    "pt" : "'Quem é daniel jurafsky? ",
+    "en" : "Who is daniel jurafsky?",
+    "hi_IN" : "'कौन है डैनियल jurafsky? ' ",
+    "it" : "'Chi è daniel jurafsky?' ",
+    "fa" : "هک'  تسا  لیناد  ؟یکسفاروی  ",
+    "fr" : "'Qui est daniel jurafsky? ",
+    "ro" : "'Care este daniel jurafsky?“ ",
+    "es" : "'Quien es daniel jurafsky? ' ",
+    "nl" : "'Wie is daniel Jurafsky?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Area 51", "located", "U.S. state" ],
+    "de" : [ "'Bereich 51 ' ", "'gelegen' ", "L.U. Zustand' " ],
+    "ru" : [ "'Площадь 51' ", "'располагается' ", "ЬУ.С. государство' " ],
+    "pt" : [ "'Área 51 ' ", "'localizado' ", "L.U. Estado' " ],
+    "hi_IN" : [ "'क्षेत्र 51 ' ", "'स्थित' ", "अमेरिका राज्य ' " ],
+    "it" : [ "'La zona 51' ", "'Trova' ", "Stati Uniti stato' " ],
+    "fa" : [ "هزوح'  ' 15  ", "'هدش  ", ".U.L  'تلاح  " ],
+    "fr" : [ "'Région 51 ' ", "'situé' ", "L.U. Etat' " ],
+    "ro" : [ "'Zonă 51' ", "'situat' ", "S.U.A. stat' " ],
+    "es" : [ "'Zona 51 ' ", "'situado' ", "L.U. estado' " ],
+    "nl" : [ "'Gebied 51' ", "'gelegen' ", "Het Amerikaanse staat' " ]
+  },
+  "id" : 45,
+  "languageToQuestion" : {
+    "de" : "'Im welche US Zustand ist Bereich 51 gelegen?' ",
+    "ru" : "'В который У.С. государство является Площадь 51 располагается?' ",
+    "pt" : "'Dentro qual EUA Estado é Área 51 localizado?' ",
+    "en" : "In which U.S. state is Area 51 located?",
+    "hi_IN" : "'में कौन कौन से अमेरिका राज्य है क्षेत्र 51 स्थित? ' ",
+    "it" : "'In quale Stati Uniti stato è La zona 51 trova?' ",
+    "fa" : "رد هک'  هک  هدحتم تالایا  تلاح  تسا  هزوح  15  '؟هدش عقاو  ",
+    "fr" : "'Dans lequel US Etat est Région 51 situé?' ",
+    "ro" : "'În care SUA stat este Zonă 51 situat?' ",
+    "es" : "'En cual Nosotros estado es Zona 51 ¿situado?' ",
+    "nl" : "'In welke US staat is Gebied 51 gelegen?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "wrote", "book", "The pillars of the Earth" ],
+    "de" : [ "'schrieb' ", "'Buch' ", "'Das Säulen von das Erde' " ],
+    "ru" : [ "«Написал» ", "'книга' ", "«The столбы из  Земля' " ],
+    "pt" : [ "'escrevi' ", "'livro' ", "'O pilares do a Terra' " ],
+    "hi_IN" : [ "'लिखा था' ", "'किताब' ", "' खंभे का  पृथ्वी ' " ],
+    "it" : [ "'Scritto' ", "'libro' ", "'Il pilastri di il Terra' " ],
+    "fa" : [ " ", " ", " اه نوتس  زا  نیا  'نیمز  " ],
+    "fr" : [ "'a écrit' ", "'livre' ", "'Le piliers de la Terre' " ],
+    "ro" : [ "„A scris“ ", "'carte' ", "„The piloni de  Pământ' " ],
+    "es" : [ "'escribió' ", "'libro' ", "'Los pilares de el Tierra' " ],
+    "nl" : [ "'Schreef' ", "'boek' ", "'De pijlers van de Aarde' " ]
+  },
+  "id" : 46,
+  "languageToQuestion" : {
+    "de" : "'Wer schrieb das Buch Das Säulen von das Erde?' ",
+    "ru" : "'Кто писал  книга  столбы из  Земля?' ",
+    "pt" : "'Quem escrevi a livro o pilares do a Terra?' ",
+    "en" : "Who wrote the book The pillars of the Earth?",
+    "hi_IN" : "'कौन लिखा था  किताब  खंभे का  पृथ्वी? ' ",
+    "it" : "'Chi ha scritto il libro Il pilastri di il Terra?' ",
+    "fa" : "هک'  تشون  نیا  باتک  نیا  اه نوتس  زا  نیا  '؟نیمز  ",
+    "fr" : "'Qui a écrit la livre le piliers de la Terre?' ",
+    "ro" : "'Care a scris  carte  piloni de  Pământ?' ",
+    "es" : "'Quien escribió el libro los pilares de el ¿Tierra?' ",
+    "nl" : "'Wie schreef de boek De pijlers van de Aarde?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 47,
+  "languageToQuestion" : {
+    "de" : "'Wer war das Ehefrau von Präsident Lincoln? ",
+    "ru" : "'Кто был  жена из президент Линкольн? ",
+    "pt" : "'Quem estava a esposa do Presidente Lincoln? ",
+    "en" : "Who was the wife of President Lincoln?",
+    "hi_IN" : "'कौन था  पत्नी का अध्यक्ष लिंकन? ' ",
+    "it" : "'Chi era il moglie di Presidente Lincoln?' ",
+    "fa" : "هک'  دوب  نیا  رسمه  زا  روهمج سيئر  ؟نلکنیل  ",
+    "fr" : "'Qui était la femme de Président Lincoln? ",
+    "ro" : "'Care a fost  soție de Președintele Lincoln?“ ",
+    "es" : "'Quien estaba el esposa de presidente ¿Lincoln? ",
+    "nl" : "'Wie was de vrouw van President Lincoln?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Population' ", "'Kairo' " ],
+    "ru" : [ "'Население' ", "'Каир' " ],
+    "pt" : [ "'população' ", "'Cairo' " ],
+    "en" : [ "population", "Cairo" ],
+    "hi_IN" : [ "'आबादी' ", "'काहिरा' " ],
+    "it" : [ "'popolazione' ", "'Cairo' " ],
+    "fa" : [ " ", "هرهاق  " ],
+    "fr" : [ "'population' ", "'Caire' " ],
+    "ro" : [ "„Populație“ ", "'Cairo' " ],
+    "es" : [ "'población' ", "'El Cairo' " ],
+    "nl" : [ "'bevolking' ", "'Cairo' " ]
+  },
+  "id" : 48,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Population von Kairo?' ",
+    "ru" : "'Какие является  Население из Каир?' ",
+    "pt" : "'O que é a população do Cairo?' ",
+    "en" : "What is the population of Cairo?",
+    "hi_IN" : "'क्या है  आबादी का काहिरा? ' ",
+    "it" : "'Che cosa è il popolazione di Cairo?' ",
+    "fa" : "یچ'  تسا  نیا  تیعمج  زا  ؟هرهاق  ",
+    "fr" : "'Quelle est la population de Caire?' ",
+    "ro" : "'Ce este  populație de Cairo?“ ",
+    "es" : "'Qué es el población de ¿El Cairo?' ",
+    "nl" : "'Wat is de bevolking van Cairo?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Finland", "European Union", "join" ],
+    "de" : [ "'Finnland' ", "'Europäisch Union' ", "'Beitreten' " ],
+    "ru" : [ "'Финляндия' ", "«Европейский Союз» ", "'присоединиться' " ],
+    "pt" : [ "'Finlândia' ", "'Europeu União' ", "'Junte-se' " ],
+    "hi_IN" : [ "'फिनलैंड' ", "'यूरोपीय संघ ' ", "'में शामिल होने' " ],
+    "it" : [ "'Finlandia' ", "'Europeo Unione' ", "'aderire' " ],
+    "fa" : [ " ", "ییاپورا  هیداحتا  ", " " ],
+    "fr" : [ "'Finlande' ", "'Européen Syndicat' ", "'joindre' " ],
+    "ro" : [ "'Finlanda' ", "'European Uniune' ", "'a adera' " ],
+    "es" : [ "'Finlandia' ", "'Europeo Unión' ", "'unirse' " ],
+    "nl" : [ "'Finland' ", "'Europese Unie' ", "'Meedoen' " ]
+  },
+  "id" : 49,
+  "languageToQuestion" : {
+    "de" : "'Wann hat getan Finnland Beitreten das EU? ",
+    "ru" : "'Когда сделал Финляндия присоединиться  ЕС? ",
+    "pt" : "'Quando fez Finlândia Junte-se a EU?' ",
+    "en" : "When did Finland join the EU?",
+    "hi_IN" : "'कब किया फिनलैंड में शामिल होने के  यूरोपीय संघ? ' ",
+    "it" : "'Quando fatto Finlandia aderire il UE? \" ",
+    "fa" : "ینامز هچ'  داد ماجنا  دنالنف  نتسویپ  نیا  ؟اپورا هیداحتا  ",
+    "fr" : "'Quand fait Finlande joindre la UE? ",
+    "ro" : "'Cand făcut Finlanda a adera  UE? ",
+    "es" : "'Cuando hizo Finlandia unirse el I? ' ",
+    "nl" : "'Wanneer deed Finland toetreden de EU? ' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Deutsche Fußball Mannschaft' " ],
+    "ru" : [ "'Немецкий футбол команда» " ],
+    "pt" : [ "'Alemão futebol equipe' " ],
+    "en" : [ "German football team" ],
+    "hi_IN" : [ "'जर्मन फ़ुटबॉल टीम ' " ],
+    "it" : [ "'Tedesco calcio squadra' " ],
+    "fa" : [ "یناملآ  لابتوف  میت  " ],
+    "fr" : [ "'Allemand Football équipe' " ],
+    "ro" : [ "'Limba germana fotbal echipă' " ],
+    "es" : [ "'Alemán fútbol equipo' " ],
+    "nl" : [ "'Duitse voetbal team' " ]
+  },
+  "id" : 50,
+  "languageToQuestion" : {
+    "de" : "'Wie viele mal das Deutsche Fußball Mannschaft gewonnen das Welt Tasse?' ",
+    "ru" : "'как многие раз  Немецкий футбол команда выиграл  Мир кружка?' ",
+    "pt" : "'como muitos vezes a alemão futebol equipe Ganhou a mundo copo?' ",
+    "en" : "how many times the German football team won the world cup?",
+    "hi_IN" : "'किस तरह अनेक बार  जर्मन फ़ुटबॉल टीम जीत लिया  विश्व कप? ' ",
+    "it" : "'Come molti volte il Tedesco calcio squadra ha vinto il mondo tazza?' ",
+    "fa" : "روطچ  یرایسب  راب  نیا  یناملآ  لابتوف  میت  دش هدنرب  نیا  ناهج  ؟ناجنف  ",
+    "fr" : "'Comment beaucoup fois la allemand Football équipe a gagné la monde Coupe?' ",
+    "ro" : "'Cum mulți ori  limba germana fotbal echipă castigat  lume ceașcă?' ",
+    "es" : "'cómo muchos veces el alemán fútbol equipo won el mundo ¿vaso?' ",
+    "nl" : "'hoe veel tijden de Duitse voetbal team won de wereld- kop?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 51,
+  "languageToQuestion" : {
+    "de" : "'Welche Menschen haben wie ihr gegeben Name Jimmy?' ",
+    "ru" : "'Который люди иметь в виде их данный имя Джимми?' ",
+    "pt" : "'Qual pessoas ter Como deles dado nome Jimmy? ",
+    "en" : "Which people have as their given name Jimmy?",
+    "hi_IN" : "'कौन कौन से लोग है जैसा जो अपने दिया हुआ नाम जिमी? ' ",
+    "it" : "'Quale persone avere come loro dato nome Jimmy?' ",
+    "fa" : "مادک  مدرم  دنراد  دننام  ناشدوخ  هدش هداد  مان  ؟یمیج  ",
+    "fr" : "'Lequel gens avoir comme leur donné prénom Jimmy?' ",
+    "ro" : "'Care oameni avea la fel de al lor dat Nume Jimmy?“ ",
+    "es" : "'Cual gente tener como su dado nombre ¿Palanqueta?' ",
+    "nl" : "'Welke mensen hebben als hun gegeven naam Jimmy?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Deutsche Sprache' " ],
+    "ru" : [ "'Немецкий язык» " ],
+    "pt" : [ "'Alemão língua' " ],
+    "en" : [ "German language" ],
+    "hi_IN" : [ "'जर्मन भाषा ' " ],
+    "it" : [ "'Tedesco linguaggio' " ],
+    "fa" : [ "یناملآ  ' نابز  " ],
+    "fr" : [ "'Allemand la langue' " ],
+    "ro" : [ "'Limba germana limba' " ],
+    "es" : [ "'Alemán idioma' " ],
+    "nl" : [ "'Duitse taal' " ]
+  },
+  "id" : 52,
+  "languageToQuestion" : {
+    "de" : "'Wie viele Ausländer sprechen Deutsche?' ",
+    "ru" : "'как многие иностранцы говорить Немецкий?' ",
+    "pt" : "'como muitos estrangeiros falar Alemão?' ",
+    "en" : "how many foreigners speak German?",
+    "hi_IN" : "'किस तरह अनेक विदेशियों बोले जर्मन? ' ",
+    "it" : "'Come molti stranieri parlare Tedesco?' ",
+    "fa" : "روطچ  یرایسب  یجراخ عابتا  تبحص  ؟یناملآ  ",
+    "fr" : "'Comment beaucoup les étrangers parler Allemand?' ",
+    "ro" : "'Cum mulți străini vorbi Limba germana?' ",
+    "es" : "'cómo muchos extranjeros hablar ¿Alemán?' ",
+    "nl" : "'hoe veel buitenlanders spreken Duitse?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Blablacar\" " ],
+    "ru" : [ "'Blablacar' " ],
+    "pt" : [ "'blablacar' " ],
+    "en" : [ "blablacar" ],
+    "hi_IN" : [ "'BlaBlaCar' " ],
+    "it" : [ "'Sull'utente' " ],
+    "fa" : [ " " ],
+    "fr" : [ "'blablacar' " ],
+    "ro" : [ "'Blablacar' " ],
+    "es" : [ "'blablacar' " ],
+    "nl" : [ "'Blablacar' " ]
+  },
+  "id" : 53,
+  "languageToQuestion" : {
+    "de" : "'Wer sind das Gründer von BlaBlaCar? ",
+    "ru" : "'Кто находятся  учредители из BlaBlaCar? ",
+    "pt" : "'Quem estamos a fundadores do BlaBlaCar? ",
+    "en" : "Who are the founders of  BlaBlaCar?",
+    "hi_IN" : "'कौन कर रहे हैं  संस्थापकों का BlaBlaCar? ' ",
+    "it" : "'Chi siamo il fondatori di Sull'utente?' ",
+    "fa" : "هک'  دنتسه  نیا  ناراذگناینب  زا  ' ؟raCalBalB  ",
+    "fr" : "'Qui sont la fondateurs de BlaBlaCar? ",
+    "ro" : "'Care sunt  fondatorii de BlaBlaCar?“ ",
+    "es" : "'Quien son el fundadores de BlaBlaCar? ' ",
+    "nl" : "'Wie zijn de oprichters van BlaBlaCar?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Brauen Firmen' ", "'Norden Rhein Westfalen' " ],
+    "ru" : [ "«пивоварения компании ", "'Север рейн Вестфалия» " ],
+    "pt" : [ "'fabricação de cerveja empresas ", "'Norte Reno Westphalia ' " ],
+    "en" : [ "brewing companies", "North rhine Westphalia" ],
+    "hi_IN" : [ "'पक कंपनियों के ", "'उत्तरी राइन वेस्टफेलिया ' " ],
+    "it" : [ "'della birra aziende' ", "'Nord Reno Westfalia' " ],
+    "fa" : [ "وجبآ  اه تکرش  ", "لامش  نیار  نلافتسو  " ],
+    "fr" : [ "'brassage entreprises' ", "'Nord Rhin Westphalie " ],
+    "ro" : [ "„berii companii ", "'Nord Rinul Westfalia“ " ],
+    "es" : [ "'fabricación de cerveza compañías' ", "'Norte Rin Westfalia " ],
+    "nl" : [ "'brouwen bedrijven ", "'Noorden Rijn Westfalen' " ]
+  },
+  "id" : 54,
+  "languageToQuestion" : {
+    "de" : "'Welche Bier Brauen Firmen sind gelegen im Nordrhein Westfalen?' ",
+    "ru" : "'Который пиво пивоварение компании находятся располагается в Северный Рейн Вестфалия? ",
+    "pt" : "'Qual Cerveja fabricação de cerveja empresas estamos localizado dentro North Rhine Vestfália? ",
+    "en" : "Which beer brewing comapnies are located in North-Rhine Westphalia?",
+    "hi_IN" : "'कौन कौन से बीयर मदिरा बनाना कंपनियों कर रहे हैं स्थित में उत्तर राइन वेस्टफेलिया? ' ",
+    "it" : "'Quale birra birra aziende siamo collocato in Nord-Reno Westfalia?' ",
+    "fa" : "مادک  وجبآ  ندیمد  اه تکرش  دنتسه  هدش عقاو  رد هک  نیار لامش  ؟نلافتسو  ",
+    "fr" : "'Lequel Bière brassage entreprises sont situé dans Rhénanie du Nord Westphalie? ",
+    "ro" : "'Care bere fabricarea berii companii sunt situat în Nord-Rin Westfalia? ",
+    "es" : "'Cual cerveza fabricación de cerveza compañías son situado en Renania del Norte ¿Westfalia? ",
+    "nl" : "'Welke bier bierbrouwerij bedrijven zijn gelegen in Noord-Rijn Westfalen?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 55,
+  "languageToQuestion" : {
+    "de" : "'Welche Software hat gewesen veröffentlicht durch Bedeuten Hamster Software?' ",
+    "ru" : "'Который программного обеспечения имеет было опубликованный от Имею в виду хомяк Программного обеспечения?' ",
+    "pt" : "'Qual Programas tem fui Publicados de Significar Hamster Programas?' ",
+    "en" : "Which software has been published by Mean Hamster Software?",
+    "hi_IN" : "'कौन कौन से सॉफ्टवेयर है गया प्रकाशित द्वारा मतलब हम्सटर सॉफ्टवेयर?' ",
+    "it" : "'Quale Software ha stato pubblicato di Significare Criceto Software?' ",
+    "fa" : "مادک  رازفا مرن  یاراد  هدوب  هدش رشتنم  طسوت  نتشاد روظنم  رتسماه  '؟رازفا مرن  ",
+    "fr" : "'Lequel Logiciel a été publié par Signifier Hamster Logiciel?' ",
+    "ro" : "'Care software-ul are fost publicat de Însemna Hamster Software-ul?“ ",
+    "es" : "'Cual software tiene estado publicado por Media Hámster ¿Software?' ",
+    "nl" : "'Welke software heeft geweest gepubliceerd door Gemiddelde Hamster Software?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Ich rannte' ", "\"Grenzen\" " ],
+    "ru" : [ "'Иран' ", "«границы» " ],
+    "pt" : [ "'Irã' ", "'fronteiras' " ],
+    "en" : [ "Iran", "borders" ],
+    "hi_IN" : [ "'ईरान' ", "'सीमाओं' " ],
+    "it" : [ "'Ho corso' ", "'frontiere' " ],
+    "fa" : [ " ", "'اه  " ],
+    "fr" : [ "'Iran' ", "'les frontières' " ],
+    "ro" : [ "'Iran' ", "„frontiere“ " ],
+    "es" : [ "'Corrí' ", "'fronteras' " ],
+    "nl" : [ "'Ik rende' ", "'Grenzen' " ]
+  },
+  "id" : 56,
+  "languageToQuestion" : {
+    "de" : "'Mit Wie viele Länder Ich rannte hat Grenzen? ' ",
+    "ru" : "'С как многие страны Иран имеет границы?» ",
+    "pt" : "'Com como muitos paises Irã tem fronteiras?' ",
+    "en" : "With how many countries Iran has borders?",
+    "hi_IN" : "'साथ में किस तरह अनेक देशों ईरान है सीमाओं?' ",
+    "it" : "'Con Come molti paesi Ho corso ha frontiere?' ",
+    "fa" : "اب'  روطچ  یرایسب  اهروشک  ناریا  یاراد  '؟اه زرم  ",
+    "fr" : "'Avec Comment beaucoup des pays Iran a les frontières?' ",
+    "ro" : "'Cu Cum mulți țări Iran are frontiere?“ ",
+    "es" : "'Con cómo muchos países Corrí tiene ¿fronteras? ",
+    "nl" : "'Met hoe veel landen Ik rende heeft grenzen?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Sungkyunkwan\" ", "'Universität' " ],
+    "ru" : [ "'Sungkyunkwan' ", "'Университет' " ],
+    "pt" : [ "'Sungkyunkwan' ", "'Universidade' " ],
+    "en" : [ "Sungkyunkwan", "University" ],
+    "hi_IN" : [ "'Sungkyunkwan' ", "'विश्वविद्यालय' " ],
+    "it" : [ "'Sungkyunkwan' ", "'Università' " ],
+    "fa" : [ " ", " " ],
+    "fr" : [ "'Sungkyunkwan' ", "'Université' " ],
+    "ro" : [ "'Sungkyunkwan' ", "'Universitate' " ],
+    "es" : [ "'Sungkyunkwan' ", "'Universidad' " ],
+    "nl" : [ "'Sungkyunkwan' ", "'Universiteit' " ]
+  },
+  "id" : 57,
+  "languageToQuestion" : {
+    "de" : "'Woher ist Sungkyunkwan Universität?' ",
+    "ru" : "'Где является Sungkyunkwan Университет?' ",
+    "pt" : "'Onde é Sungkyunkwan Universidade?' ",
+    "en" : "Where is Sungkyunkwan University?",
+    "hi_IN" : "'कहा पे है Sungkyunkwan विश्वविद्यालय?' ",
+    "it" : "'Dove è Sungkyunkwan Università?' ",
+    "fa" : "هک ییاج'  تسا  nawknuykgnuS  ؟هاگشناد  ",
+    "fr" : "'Où est Sungkyunkwan Université?' ",
+    "ro" : "'Unde este Sungkyunkwan Universitate?' ",
+    "es" : "'Dónde es Sungkyunkwan ¿Universidad?' ",
+    "nl" : "'Waar is Sungkyunkwan Universiteit?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "boardgame", "GMT" ],
+    "de" : [ "'Brettspiel' ", "'MITTLERE GREENWICH-ZEIT' " ],
+    "ru" : [ "'настольная игра' ", "'ВРЕМЯ ПО ГРИНВИЧУ' " ],
+    "pt" : [ "'jogo de tabuleiro' ", "'GMT' " ],
+    "hi_IN" : [ "'विशेष प्रकार के बोर्ड या पट्टे के खेल जैसे शतरंज, साँप सीढ़ी आदि' ", "'GMT' " ],
+    "it" : [ "'gioco da tavolo' ", "'GMT' " ],
+    "fa" : [ "'هتخت  ", " " ],
+    "fr" : [ "'jeu de plateau' ", "'GMT' " ],
+    "ro" : [ "„Jocuri pe“ ", "'GMT' " ],
+    "es" : [ "'juego de mesa' ", "'GMT' " ],
+    "nl" : [ "'bordspel' ", "'GMT' " ]
+  },
+  "id" : 58,
+  "languageToQuestion" : {
+    "de" : "'Liste alle Brettspiele durch MITTLERE GREENWICH-ZEIT.' ",
+    "ru" : "'Список все настольные игры от ВРЕМЯ ПО ГРИНВИЧУ.' ",
+    "pt" : "'Lista todos jogos de tabuleiro de GMT.' ",
+    "en" : "List all boardgames by GMT.",
+    "hi_IN" : "'सूची सब बोर्ड खेल द्वारा GMT।' ",
+    "it" : "'Elenco tutti giochi da tavolo di GMT.' ",
+    "fa" : "تسرهف  همه  یا هتخت یاه یزاب  طسوت  ' .TMG  ",
+    "fr" : "'Liste tout jeux de plateau par GMT.' ",
+    "ro" : "'Listă toate jocuri de masă de GMT.' ",
+    "es" : "'Lista todas juegos de mesa por GMT.' ",
+    "nl" : "'Lijst alle bordspellen door GMT.' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Düsseldorf Flughafen' " ],
+    "ru" : [ "«Дюссельдорф Аэропорт» " ],
+    "pt" : [ "'Düsseldorf Aeroporto' " ],
+    "en" : [ "Düsseldorf Airport" ],
+    "hi_IN" : [ "'डसेलडोर्फ हवाई अड्डा' " ],
+    "it" : [ "'Düsseldorf Aeroporto' " ],
+    "fa" : [ "فرودلسود'  ' هاگدورف  " ],
+    "fr" : [ "Düsseldorf Aéroport' " ],
+    "ro" : [ "„Düsseldorf Aeroport' " ],
+    "es" : [ "'Düsseldorf Aeropuerto' " ],
+    "nl" : [ "'Düsseldorf Luchthaven' " ]
+  },
+  "id" : 59,
+  "languageToQuestion" : {
+    "de" : "'Wie viel ist das Elevation von Düsseldorf Flughafen ? ' ",
+    "ru" : "'как много является  высота из Дюссельдорф аэропорт ? ",
+    "pt" : "'como Muito de é a elevação do Düsseldorf Aeroporto ? ",
+    "en" : "how much is the elevation of Düsseldorf Airport ?",
+    "hi_IN" : "'किस तरह बहुत है  ऊंचाई का डसेलडोर्फ हवाई अड्डा ? ' ",
+    "it" : "'Come tanto è il elevazione di Düsseldorf Aeroporto ?' ",
+    "fa" : "روطچ  یلیخ  تسا  نیا  عافترا  زا  فرودلسود  هاگدورف  ' ؟  ",
+    "fr" : "'Comment beaucoup est la élévation de Düsseldorf Aéroport ? ' ",
+    "ro" : "'Cum mult este  elevație de Düsseldorf Aeroport ?“ ",
+    "es" : "'cómo mucho es el elevación de Düsseldorf Aeropuerto ? ' ",
+    "nl" : "'hoe veel is de verhoging van Düsseldorf Luchthaven ?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Goethe' " ],
+    "ru" : [ "«Гете» " ],
+    "pt" : [ "'Goethe' " ],
+    "en" : [ "Goethe" ],
+    "hi_IN" : [ "'गेटे' " ],
+    "it" : [ "'Goethe' " ],
+    "fa" : [ "هتوگ  " ],
+    "fr" : [ "'Goethe' " ],
+    "ro" : [ "'Goethe' " ],
+    "es" : [ "'Goethe' " ],
+    "nl" : [ "'Goethe' " ]
+  },
+  "id" : 60,
+  "languageToQuestion" : {
+    "de" : "'Woher ist das Geburtsort von Goethe?' ",
+    "ru" : "'Где является  место рождения из Гете? ",
+    "pt" : "'Onde é a berço do Goethe? ",
+    "en" : "Where is the birthplace of Goethe?",
+    "hi_IN" : "'कहा पे है  जन्मस्थल का गेटे? ' ",
+    "it" : "'Dove è il luogo di nascita di Goethe?' ",
+    "fa" : "هک ییاج'  تسا  نیا  هاگداز  زا  ؟هتوگ  ",
+    "fr" : "'Où est la Lieu de naissance de Goethe? ",
+    "ro" : "'Unde este  locul naşterii de Goethe?“ ",
+    "es" : "'Dónde es el lugar de nacimiento de ¿Goethe? ",
+    "nl" : "'Waar is de geboorteplaats van Goethe?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Fußball Welt Tasse 2018 ' " ],
+    "ru" : [ "'футбол Мир кружка 2018' " ],
+    "pt" : [ "'futebol mundo copo 2018 ' " ],
+    "en" : [ "football world cup 2018" ],
+    "hi_IN" : [ "'फुटबॉल विश्व कप 2018 ' " ],
+    "it" : [ "'calcio mondo tazza 2018' " ],
+    "fa" : [ "لابتوف'  ناهج  ناجنف  ' 8102  " ],
+    "fr" : [ "'Football monde Coupe 2018 ' " ],
+    "ro" : [ "'fotbal lume ceașcă 2018' " ],
+    "es" : [ "'fútbol mundo vaso 2018 ' " ],
+    "nl" : [ "'voetbal wereld- kop 2018' " ]
+  },
+  "id" : 61,
+  "languageToQuestion" : {
+    "de" : "'Wann werden Anfang das Finale Spiel von das Fußball Welt Tasse 2018? ",
+    "ru" : "'Когда будем Начало  окончательный совпадение из  футбол Мир кружка 2018? ",
+    "pt" : "'Quando vai começar a final partida do a futebol mundo copo 2018? ",
+    "en" : "When will start the final match of the football world cup 2018?",
+    "hi_IN" : "'कब मर्जी प्रारंभ  अंतिम मैच का  फ़ुटबॉल विश्व कप 2018? ' ",
+    "it" : "'Quando volere inizio il finale incontro di il calcio mondo tazza 2018?' ",
+    "fa" : "ینامز هچ'  هدارا  نک عورش  نیا  ییاهن  نتشاد یناوخمه  زا  نیا  لابتوف  ناهج  ناجنف  ؟8102  ",
+    "fr" : "'Quand volonté début la final rencontre de la Football monde Coupe 2018? ",
+    "ro" : "'Cand voi start  final Meci de  fotbal lume ceașcă 2018?“ ",
+    "es" : "'Cuando será comienzo el final partido de el fútbol mundo vaso 2018? ' ",
+    "nl" : "'Wanneer zullen begin de laatste bij elkaar passen van de voetbal wereld- kop 2018?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Batman Begins", "actor", "starring" ],
+    "de" : [ "'Batman Beginnt' ", "'Darsteller' ", "'mit' " ],
+    "ru" : [ "'Бэтмен Начинается ", "'актер' ", "'в главной роли' " ],
+    "pt" : [ "'Homem Morcego Começa ", "'ator' ", "'estrelando' " ],
+    "hi_IN" : [ "'बैटमैन शुरू करना' ", "'अभिनेता' ", "'अभिनीत' " ],
+    "it" : [ "'Batman inizia ", "'attore' ", "'Interpretato' " ],
+    "fa" : [ "نمتب  دوش یم عورش  ", " ", "ندرک یزاب  " ],
+    "fr" : [ "'Homme chauve-souris Commence' ", "'acteur' ", "'vedette' " ],
+    "ro" : [ "„Batman începe ", "'actor' ", "„Încearcă“ " ],
+    "es" : [ "'Ordenanza Comienza ' ", "'actor' ", "'protagonizando' " ],
+    "nl" : [ "'Batman Begins' ", "'acteur' ", "'met in de hoofdrol' " ]
+  },
+  "id" : 62,
+  "languageToQuestion" : {
+    "de" : "'Geben mich alle Schauspieler mit im Batman Beginnt.' ",
+    "ru" : "'Дайте меня все актеры в главной роли в Бэтмен Начинается «. ",
+    "pt" : "'Dar mim todos atores estrelando dentro homem Morcego Começa. ",
+    "en" : "Give me all actors starring in Batman Begins.",
+    "hi_IN" : "'दे दो मुझे सब अभिनेताओं अभिनीत में बैटमैन शुरू करना।' ",
+    "it" : "'Dare me tutti attori starring in Batman Inizia.' ",
+    "fa" : "نداد'  نم  همه  نارگیزاب  نارگیزاب  رد هک  نمتب  .دوش یم عورش  ",
+    "fr" : "'Donner moi tout acteurs en vedette dans Homme chauve-souris Commence.' ",
+    "ro" : "'Da pe mine toate actori încearcă în Batman Începe.“ ",
+    "es" : "'Dar yo todas actores protagonizando en Ordenanza Comienza. ' ",
+    "nl" : "'Geven me alle acteurs met in de hoofdrol in oppasser Begint.' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 63,
+  "languageToQuestion" : {
+    "de" : "'Wer erstellt Englisch Wikipedia? ' ",
+    "ru" : "'Кто созданный английский Википедия? ",
+    "pt" : "'Quem criada Inglês Wikipédia? ",
+    "en" : "Who created English Wikipedia?",
+    "hi_IN" : "'कौन बनाया था अंग्रेज़ी विकिपीडिया? ' ",
+    "it" : "'Chi creato Inglese Wikipedia?' ",
+    "fa" : "هک'  هدش داجیا  یسیلگنا  '؟ایدپیکیو  ",
+    "fr" : "'Qui créé Anglais Wikipédia?' ",
+    "ro" : "'Care creată Engleză Wikipedia?“ ",
+    "es" : "'Quien creado Inglés Wikipedia? ' ",
+    "nl" : "'Wie aangemaakt Engels Wikipedia?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 64,
+  "languageToQuestion" : {
+    "de" : "'Welche Bücher wurden geschrieben durch Danielle Stehlen?' ",
+    "ru" : "'Который книги мы написано от Danielle Стали?' ",
+    "pt" : "'Qual livros estavam escrito de Danielle Aço?' ",
+    "en" : "Which books were written by Danielle Steel?",
+    "hi_IN" : "'कौन कौन से पुस्तकें थे लिखा हुआ द्वारा डेनिएल स्टील? ' ",
+    "it" : "'Quale libri erano scritto di Danielle Acciaio?' ",
+    "fa" : "مادک  اه باتک  دوب  تسا هدش هتشون  طسوت  لیناد  '؟دالوف  ",
+    "fr" : "'Lequel livres étaient écrit par Danielle Acier?' ",
+    "ro" : "'Care cărți au fost scris de Danielle Oţel?' ",
+    "es" : "'Cual libros fueron escrito por Danielle ¿Acero?' ",
+    "nl" : "'Welke boeken waren geschreven door Danielle Staal?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'größten' ", "'Stadt' ", "'Amerika' " ],
+    "ru" : [ "«Самый большой» ", "'город' ", "'Америка' " ],
+    "pt" : [ "'maior' ", "'cidade' ", "'América' " ],
+    "en" : [ "largest", "city", "america" ],
+    "hi_IN" : [ "'विशालतम' ", "'शहर' ", "'अमेरिका' " ],
+    "it" : [ "'maggiore' ", "'città' ", "'America' " ],
+    "fa" : [ " ", " ", " " ],
+    "fr" : [ "«plus grand» ", "'ville' ", "'Amérique' " ],
+    "ro" : [ "„Cea mai mare“ ", "'oraș' ", "'America' " ],
+    "es" : [ "'más grande' ", "'ciudad' ", "'America' " ],
+    "nl" : [ "'Grootste' ", "'stad' ", "'Amerika' " ]
+  },
+  "id" : 65,
+  "languageToQuestion" : {
+    "de" : "'Was ist das größten Stadt im Amerika?' ",
+    "ru" : "'Какие является  крупнейший город в Америка?' ",
+    "pt" : "'O que é a maiores cidade dentro América?' ",
+    "en" : "What is the largest city in america?",
+    "hi_IN" : "'क्या है  विशालतम शहर में अमेरिका? ' ",
+    "it" : "'Che cosa è il maggiore città in America?' ",
+    "fa" : "یچ'  تسا  نیا  نیرتگرزب  رهش  رد هک  ؟اكیرمآ  ",
+    "fr" : "'Quelle est la plus grand ville dans Amérique?' ",
+    "ro" : "'Ce este  cea mai mare oraș în America?' ",
+    "es" : "'Qué es el más grande ciudad en ¿America?' ",
+    "nl" : "'Wat is de De grootste stad in Amerika?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Denken von Java' " ],
+    "ru" : [ "«Мышление из Ява' " ],
+    "pt" : [ "'Pensando do Java' " ],
+    "en" : [ "Thinking of java" ],
+    "hi_IN" : [ "'विचारधारा का जावा' " ],
+    "it" : [ "'Pensiero di Giava' " ],
+    "fa" : [ "ندرك ركف'  زا  ' avaj  " ],
+    "fr" : [ "'En pensant de Java' " ],
+    "ro" : [ "'Gândire de java“ " ],
+    "es" : [ "'Pensando de Java' " ],
+    "nl" : [ "'Denken van Java' " ]
+  },
+  "id" : 66,
+  "languageToQuestion" : {
+    "de" : "'Wer schrieb Denken Im Java? ( Dosis nicht existieren im dbpedia) ' ",
+    "ru" : "'Кто писал мышление В Ява? ( дозировать не существовать в DBpedia)» ",
+    "pt" : "'Quem escrevi Pensando Dentro Java? ( dose não existir dentro dbpedia) ' ",
+    "en" : "Who wrote Thinking In Java? ( dose not exist in dbpedia)",
+    "hi_IN" : "'कौन लिखा था विचारधारा में जावा? ( औषधि की मात्रा नहीं मौजूद में dbpedia) ' ",
+    "it" : "'Chi ha scritto Pensiero In Giava? ( dose non esistere in DBpedia)' ",
+    "fa" : "هک'  تشون  ندرك ركف  رد هک  اواج  (  زود  هن  دراد دوجو  رد هک  ' )aidepbd  ",
+    "fr" : "'Qui a écrit En pensant Dans Java? ( dose ne pas exister dans dbpedia) ' ",
+    "ro" : "'Care a scris Gândire În Java? ( doza nu exista în dbpedia)“ ",
+    "es" : "'Quien escribió Pensando En ¿Java? ( dosis no existe en dbpedia) ' ",
+    "nl" : "'Wie schreef het denken In Java? ( dosis niet bestaan in dbpedia)' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Carolina Sensenmann' " ],
+    "ru" : [ "«Каролина жнец» " ],
+    "pt" : [ "Carolina reaper ' " ],
+    "en" : [ "Carolina reaper" ],
+    "hi_IN" : [ "'कैरोलिना काटनेवाला ' " ],
+    "it" : [ "'Carolina mietitrice' " ],
+    "fa" : [ "انیلوراک  زاب ورد  " ],
+    "fr" : [ "Caroline moissonneuse' " ],
+    "ro" : [ "„Carolina secerător' " ],
+    "es" : [ "'Carolina segador' " ],
+    "nl" : [ "'Carolina maaimachine' " ]
+  },
+  "id" : 67,
+  "languageToQuestion" : {
+    "de" : "'Woher ist das Ursprung von Carolina Sensenmann?' ",
+    "ru" : "'Где является  происхождения из Каролина Жнец? ",
+    "pt" : "'Onde é a origem do Carolina ceifador? ",
+    "en" : "Where is the origin of Carolina reaper?",
+    "hi_IN" : "'कहा पे है  मूल का कैरोलिना लावक? ' ",
+    "it" : "'Dove è il origine di Carolina mietitrice?' ",
+    "fa" : "هک ییاج'  تسا  نیا  بسن و لصا  زا  انیلوراک  ؟زاب ورد  ",
+    "fr" : "'Où est la origine de Carolina moissonneuse?' ",
+    "ro" : "'Unde este  origine de Carolina secerător?' ",
+    "es" : "'Dónde es el origen de Carolina ¿segador?' ",
+    "nl" : "'Waar is de oorsprong van Carolina maaimachine?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Bagdad' " ],
+    "ru" : [ "«Багдадский» " ],
+    "pt" : [ "'Bagdá' " ],
+    "en" : [ "Baghdad" ],
+    "hi_IN" : [ "'बगदाद' " ],
+    "it" : [ "'Baghdad' " ],
+    "fa" : [ "دادغب  " ],
+    "fr" : [ "Bagdad " ],
+    "ro" : [ "'Bagdad' " ],
+    "es" : [ "'Bagdad' " ],
+    "nl" : [ "'Bagdad' " ]
+  },
+  "id" : 68,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Nickname Name von Bagdad?' ",
+    "ru" : "'какие является  Ник имя из Багдад? ",
+    "pt" : "'o que é a usuario nome do Bagdá?' ",
+    "en" : "what is the nick name of Baghdad?",
+    "hi_IN" : "'क्या है  छेद नाम का बगदाद? ' ",
+    "it" : "'che cosa è il tacca nome di Baghdad?' ",
+    "fa" : "یچ'  تسا  نیا  کین  مان  زا  ؟دادغب  ",
+    "fr" : "'quelle est la entaille prénom de Bagdad? ",
+    "ro" : "'ce este  nick Nume de Bagdad?' ",
+    "es" : "'qué es el mella nombre de ¿Bagdad? ",
+    "nl" : "'wat is de Nick naam van Bagdad?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 69,
+  "languageToQuestion" : {
+    "de" : "'Geben mich alle weiblich Deutsche Kanzler! ' ",
+    "ru" : "'Дайте меня все женский пол Немецкий ректоры!» ",
+    "pt" : "'Dar mim todos fêmea alemão chanceleres! ",
+    "en" : "Give me all female German chancellors!",
+    "hi_IN" : "'दे दो मुझे सब महिला जर्मन कुलपति! ' ",
+    "it" : "'Dare me tutti femmina Tedesco cancellieri!' ",
+    "fa" : "نداد'  نم  همه  نز  یناملآ  !مظعاردص  ",
+    "fr" : "'Donner moi tout femelle allemand chanceliers! ",
+    "ro" : "'Da pe mine toate Femeie limba germana Cancelari!“ ",
+    "es" : "'Dar yo todas hembra alemán ¡Rectores! ",
+    "nl" : "'Geven me alle vrouw Duitse kanseliers!' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 70,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Autor von WikiLeaks? ",
+    "ru" : "'Кто является  автор из WikiLeaks? ",
+    "pt" : "'Quem é a autor do WikiLeaks? ",
+    "en" : "Who is the author of WikiLeaks?",
+    "hi_IN" : "'कौन है  लेखक का विकिलीक्स?' ",
+    "it" : "'Chi è il autore di WikiLeaks?' ",
+    "fa" : "هک'  تسا  نیا  هدنسیون  زا  ؟سکیل یکیو  ",
+    "fr" : "'Qui est la auteur de Wikileaks? ",
+    "ro" : "'Care este  autor de WikiLeaks?“ ",
+    "es" : "'Quien es el autor de WikiLeaks? ' ",
+    "nl" : "'Wie is de auteur van WikiLeaks?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Bundes Minister von Finanzen' ", "'Deutschland' " ],
+    "ru" : [ "«федеральный министр из финансы» ", "'Германия' " ],
+    "pt" : [ "'Federal ministro do finança' ", "'Alemanha' " ],
+    "en" : [ "federal minister of finance", "germany" ],
+    "hi_IN" : [ "'संघीय मंत्री का वित्त' ", "'जर्मनी' " ],
+    "it" : [ "'federale ministro di finanza' ", "'Germania' " ],
+    "fa" : [ "لاردف  ریزو  زا  'یراذگ هیامرس ،هیلام ،ییاراد  ", " " ],
+    "fr" : [ "'fédéral ministre de la finance' ", "'Allemagne' " ],
+    "ro" : [ "'federal ministru de finanţa' ", "'Germania' " ],
+    "es" : [ "'federal ministro de financiar' ", "'Alemania' " ],
+    "nl" : [ "'federaal minister van financiën' ", "'Duitsland' " ]
+  },
+  "id" : 71,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Strom Bundes Minister von Finanzen im Deutschland?' ",
+    "ru" : "'Кто является  текущий федеральный министр из финансы в Германия?' ",
+    "pt" : "'Quem é a atual Federal ministro do finança dentro Alemanha?' ",
+    "en" : "Who is the current federal minister of finance in Germany?",
+    "hi_IN" : "'कौन है  वर्तमान संघीय मंत्री का वित्त में जर्मनी? ' ",
+    "it" : "'Chi è il attuale federale ministro di finanza in Germania?' ",
+    "fa" : "هک'  تسا  نیا  یراج  لاردف  ریزو  زا  یراذگ هیامرس ،هیلام ،ییاراد  رد هک  ؟ناملآ  ",
+    "fr" : "'Qui est la actuel fédéral ministre de la finance dans Allemagne?' ",
+    "ro" : "'Care este  actual federal ministru de finanţa în Germania?' ",
+    "es" : "'Quien es el corriente federal ministro de financiar en ¿Alemania?' ",
+    "nl" : "'Wie is de actueel federaal minister van financiën in Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 72,
+  "languageToQuestion" : {
+    "de" : "'Was Sprachen sind gesprochen im Estland?' ",
+    "ru" : "'Какие языки находятся разговорный в Эстония?' ",
+    "pt" : "'O que línguas estamos falada dentro Estônia?' ",
+    "en" : "What languages are spoken in Estonia?",
+    "hi_IN" : "'क्या भाषाओं कर रहे हैं बोली जाने में एस्टोनिया? ' ",
+    "it" : "'Che cosa le lingue siamo verbale in Estonia?' ",
+    "fa" : "یچ'  اه نابز  دنتسه  درک تبحص  رد هک  ؟ینوتسا  ",
+    "fr" : "'Quelle langues sont parlé dans Estonie?' ",
+    "ro" : "'Ce limbi sunt vorbit în Estonia?' ",
+    "es" : "'Qué idiomas son hablado en ¿Estonia?' ",
+    "nl" : "'Wat talen zijn mondeling in Estland?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Sam Reimi", "direct", "movie", "after", "Army of Darkness" ],
+    "de" : [ "'Sam Realität ' ", "'Direkte' ", "'Film' ", "'nach' ", "'Armee von Dunkelheit' " ],
+    "ru" : [ "'Сэм Реальность ' ", "'непосредственный' ", "'кино' ", "'после' ", "«Армия из Тьма " ],
+    "pt" : [ "'Sam Realidade ", "'direto' ", "'filme' ", "'depois de' ", "'Exército do Trevas' " ],
+    "hi_IN" : [ "'सैम वास्तविकता ' ", "'प्रत्यक्ष' ", "'चलचित्र' ", "'बाद' ", "'सेना का अंधेरे ' " ],
+    "it" : [ "'Sam Realtà ' ", "'diretto' ", "'film' ", "'dopo' ", "'Esercito di Buio' " ],
+    "fa" : [ "ماس  ' تیعقاو  ", " ", "'امنیس  ", "'زا  ", "شترا'  زا  'یکیرات  " ],
+    "fr" : [ "Sam Réalité ", "'direct' ", "'film' ", "'après' ", "'Armée de Obscurité' " ],
+    "ro" : [ "„Sam Realitatea ", "'direct' ", "'film' ", "'după' ", "'Armată de Întuneric' " ],
+    "es" : [ "'Sam Realidad ", "'directo' ", "'película' ", "'después' ", "'Ejército de Oscuridad' " ],
+    "nl" : [ "'Sam Realiteit ' ", "'Directe' ", "'film' ", "'na' ", "'Leger van Duisternis' " ]
+  },
+  "id" : 73,
+  "languageToQuestion" : {
+    "de" : "'Welche Filme hat getan Sam Raimi Direkte nach Armee von Dunkelheit?' ",
+    "ru" : "'Который кино сделал Сэм Рэйми непосредственный после армия из Тьма? ",
+    "pt" : "'Qual filmes fez Sam Raimi direto depois de Exército do Trevas?' ",
+    "en" : "Which movies did Sam Raimi direct after Army of Darkness?",
+    "hi_IN" : "'कौन कौन से चलचित्र किया सैम रैमी प्रत्यक्ष बाद सेना का अंधेरे? ' ",
+    "it" : "'Quale film fatto Sam Raimi diretto dopo Esercito di Buio?' ",
+    "fa" : "مادک  اه ملیف  داد ماجنا  مس  یمار  میقتسم  زا دعب  شترا  زا  '؟یکیرات  ",
+    "fr" : "'Lequel films fait Sam Raimi direct après Armée de Obscurité?' ",
+    "ro" : "'Care filme făcut Sam Raimi direct după Armată de Întuneric?' ",
+    "es" : "'Cual películas hizo Sam Raimi directo después Ejército de ¿Oscuridad?' ",
+    "nl" : "'Welke films deed Sam Raimi direct na Leger van Duisternis?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 74,
+  "languageToQuestion" : {
+    "de" : "'Welche europäisch Länder sind ein verfassungsgemäß Monarchie?' ",
+    "ru" : "'Который Европейская страны находятся  конституционная монархия? ",
+    "pt" : "'Qual europeu paises estamos uma constitucional monarquia?' ",
+    "en" : "Which European countries are a constitutional monarchy?",
+    "hi_IN" : "'कौन कौन से यूरोपीय देशों कर रहे हैं ए संवैधानिक राजशाही? ' ",
+    "it" : "'Quale europeo paesi siamo un costituzionale monarchia?' ",
+    "fa" : "مادک  ییاپورا  اهروشک  دنتسه  a  هطورشم  ؟یهاشداپ  ",
+    "fr" : "'Lequel européen des pays sont une constitutionnel la monarchie?' ",
+    "ro" : "'Care european țări sunt A constituţional monarhie?' ",
+    "es" : "'Cual europeo países son un constitucional ¿monarquía?' ",
+    "nl" : "'Welke Europese landen zijn een grondwettelijk monarchie?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Bill Clinton", "daughter", "married" ],
+    "de" : [ "'Rechnung Clintons ", "'Tochter' ", "'verheiratet' " ],
+    "ru" : [ "'Билл Клинтон ", "'дочь' ", "'в браке' " ],
+    "pt" : [ "'Conta Clinton ", "'filha' ", "'casado' " ],
+    "hi_IN" : [ "'विधेयक क्लिंटन ' ", "'बेटी' ", "'शादी हो ग' " ],
+    "it" : [ "'Conto Clinton' ", "'figlia' ", "'sposato' " ],
+    "fa" : [ "لیب  نوتنیلک  ", "'رتخد  ", " " ],
+    "fr" : [ "'Facture Clinton ' ", "'fille' ", "'marié' " ],
+    "ro" : [ "'Factură Clinton ", "„Fiica“ ", "'căsătorit' " ],
+    "es" : [ "'Cuenta Clinton ", "'hija' ", "'casado' " ],
+    "nl" : [ "'Bill Clinton' ", "'dochter' ", "'getrouwd' " ]
+  },
+  "id" : 75,
+  "languageToQuestion" : {
+    "de" : "'Wer ist das Tochter von Rechnung Clinton verheiratet zu?' ",
+    "ru" : "'Кто является  дочь из Билл Клинтон в браке к? ",
+    "pt" : "'Quem é a filha do Conta Clinton casado para?' ",
+    "en" : "Who is the daughter of Bill Clinton married to?",
+    "hi_IN" : "'कौन है  बेटी का बिल क्लिंटन शादी हो ग सेवा मेरे?' ",
+    "it" : "'Chi è il figlia di Conto Clinton sposato a?' ",
+    "fa" : "هک'  تسا  نیا  رتخد دنزرف  زا  لیب  نوتنیلک  لهاتم  '؟هب  ",
+    "fr" : "'Qui est la fille de Facture Clinton marié à?' ",
+    "ro" : "'Care este  fiică de Factură Clinton căsătorit la?' ",
+    "es" : "'Quien es el hija de Cuenta Clinton casado ¿a?' ",
+    "nl" : "'Wie is de dochter van Bill Clinton getrouwd naar?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "8. Präsident' ", "'USA' " ],
+    "ru" : [ "«восьмые Президент» ", "'США' " ],
+    "pt" : [ "'8 Presidente' ", "'EUA' " ],
+    "en" : [ "8th President", "USA" ],
+    "hi_IN" : [ "'8 राष्ट्रपति ' ", "'अमेरीका' " ],
+    "it" : [ "'8 ° Presidente' ", "'STATI UNITI D'AMERICA' " ],
+    "fa" : [ "متشه  'روهمج سيئر  ", "'اکیرمآ هدحتم  " ],
+    "fr" : [ "8ème Président' ", "'ETATS-UNIS' " ],
+    "ro" : [ "„8- Președintele“ ", "'STATELE UNITE ALE AMERICII' " ],
+    "es" : [ "'8th Presidente' ", "'ESTADOS UNIDOS' " ],
+    "nl" : [ "'8th President' ", "'VERENIGDE STATEN VAN AMERIKA' " ]
+  },
+  "id" : 76,
+  "languageToQuestion" : {
+    "de" : "'Wer ist 8. Präsident von UNS?' ",
+    "ru" : "'Кто является восьмых президент из НАС?' ",
+    "pt" : "'Quem é 8º Presidente do NOS?' ",
+    "en" : "Who is 8th president of US?",
+    "hi_IN" : "'कौन है 8 अध्यक्ष का अमेरिका? ' ",
+    "it" : "'Chi è 8 ° Presidente di NOI?' ",
+    "fa" : "هک'  تسا  متشه  روهمج سيئر  زا  ؟هدحتم تالایا  ",
+    "fr" : "'Qui est 8ème Président de NOUS?' ",
+    "ro" : "'Care este a 8- președinte de S.U.A?' ",
+    "es" : "'Quien es Octavo presidente de ¿NOS?' ",
+    "nl" : "'Wie is 8ste president van ONS?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 77,
+  "languageToQuestion" : {
+    "de" : "'Welche Vögel sind Dort im das Vereinigt Zustände?' ",
+    "ru" : "'Который птицы находятся там в  объединенный Состояния?' ",
+    "pt" : "'Qual passarinhos estamos há dentro a Unidos Estados Unidos? ",
+    "en" : "Which birds are there in the United States?",
+    "hi_IN" : "'कौन कौन से पक्षियों कर रहे हैं क्या आप वहां मौजूद हैं में  यूनाइटेड राज्य अमेरिका? ' ",
+    "it" : "'Quale uccelli siamo Là in il Unito Stati?' ",
+    "fa" : "مادک  اه هدنرپ  دنتسه  اجنآ  رد هک  نیا  دتیانوی  '؟اه تلایا  ",
+    "fr" : "'Lequel des oiseaux sont Là dans la Uni États?' ",
+    "ro" : "'Care păsări sunt Acolo în  Unit Statele?“ ",
+    "es" : "'Cual aves son ahí en el Unido ¿Estados? ",
+    "nl" : "'Welke vogelstand zijn er in de Verenigd Staten?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 78,
+  "languageToQuestion" : {
+    "de" : "'Welche Städte haben Mehr als 2 Million Bewohner?' ",
+    "ru" : "'Который города иметь Больше чем 2 миллиона жители?» ",
+    "pt" : "'Qual cidades ter Mais do que 2 milhão habitantes?' ",
+    "en" : "Which cities have more than 2 million inhabitants?",
+    "hi_IN" : "'कौन कौन से शहरों है अधिक से 2 दस लाख निवासियों? ' ",
+    "it" : "'Quale città avere Di Più di 2 milione abitanti?' ",
+    "fa" : "مادک  اهرهش  دنراد  رتشیب  زا  2  نویلیم  '؟نانکاس  ",
+    "fr" : "'Lequel villes avoir plus que 2 million habitants? ",
+    "ro" : "'Care orase avea Mai Mult decât 2 milion locuitori?“ ",
+    "es" : "'Cual ciudades tener Más que 2 millón ¿Habitantes? ",
+    "nl" : "'Welke steden hebben meer dan 2 miljoen inwoners?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Brasilien' " ],
+    "ru" : [ "'Бразилия' " ],
+    "pt" : [ "'Brasil' " ],
+    "en" : [ "Brazil" ],
+    "hi_IN" : [ "'ब्राज़ील' " ],
+    "it" : [ "'Brazil' " ],
+    "fa" : [ "لیزرب  " ],
+    "fr" : [ "'Brésil' " ],
+    "ro" : [ "'Brazilia' " ],
+    "es" : [ "'Brasil' " ],
+    "nl" : [ "'Brazilië' " ]
+  },
+  "id" : 79,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Prozentsatz von Bereich Wasser im Brasilien?' ",
+    "ru" : "'Какие является  процент из площадь воды в Бразилия?' ",
+    "pt" : "'O que é a percentagem do área agua dentro Brasil?' ",
+    "en" : "What is the percentage of area water in Brazil?",
+    "hi_IN" : "'क्या है  प्रतिशत का क्षेत्र पानी में ब्राजील? ' ",
+    "it" : "'Che cosa è il percentuale di la zona acqua in Brasile?' ",
+    "fa" : "یچ'  تسا  نیا  دصرد  زا  هزوح  با  رد هک  ؟لیزرب  ",
+    "fr" : "'Quelle est la pourcentage de région eau dans Brésil?' ",
+    "ro" : "'Ce este  procent de zonă apă în Brazilia?' ",
+    "es" : "'Qué es el porcentaje de zona agua en ¿Brasil?' ",
+    "nl" : "'Wat is de percentage van Gebied water in Brazilië?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 80,
+  "languageToQuestion" : {
+    "de" : "'Geben mich alle europäisch Hauptstädte! \" ",
+    "ru" : "'Дайте меня все Европейская Столицы!» ",
+    "pt" : "'Dar mim todos europeu Capitais! ",
+    "en" : "Give me all European Capitals!",
+    "hi_IN" : "'दे दो मुझे सब यूरोपीय राजधानियों! ' ",
+    "it" : "'Dare me tutti europeo Capitals!' ",
+    "fa" : "نداد'  نم  همه  ییاپورا  !اه تختیاپ  ",
+    "fr" : "'Donner moi tout européen Capitales! ",
+    "ro" : "'Da pe mine toate european Capitalele!“ ",
+    "es" : "'Dar yo todas europeo ¡Capitales! ",
+    "nl" : "'Geven me alle Europese Capitals!' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "»Angela Merkel ' " ],
+    "ru" : [ "«Angela Меркель " ],
+    "pt" : [ "'Angela Merkel " ],
+    "en" : [ "Angela Merkel" ],
+    "hi_IN" : [ "'एंजेला मार्केल ' " ],
+    "it" : [ "'Angela Merkel' " ],
+    "fa" : [ "الجنآ  لکرم  " ],
+    "fr" : [ "Angela Merkel " ],
+    "ro" : [ "„Angela Merkel“ " ],
+    "es" : [ "'Angela Merkel " ],
+    "nl" : [ "'Angela Merkel " ]
+  },
+  "id" : 81,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Alma mater von das Kanzler von Deutschland Angela Merkel? ",
+    "ru" : "'Какие является  альма мать из  канцлер из Германия Angela Меркель? ",
+    "pt" : "'O que é a alma mater do a chanceler do Alemanha Angela Merkel? ",
+    "en" : "What is the alma mater of the chancellor of Germany Angela Merkel?",
+    "hi_IN" : "'क्या है  अल्मा मेटर का  कुलाधिपति का जर्मनी एंजेला मार्केल? ' ",
+    "it" : "'Che cosa è il alma mater di il cancelliere di Germania Angela Merkel?' ",
+    "fa" : "یچ'  تسا  نیا  amla  ردام  زا  نیا  مظعاردص  زا  ناملآ  الجنآ  ؟لکرم  ",
+    "fr" : "'Quelle est la alma mater de la chancelier de Allemagne Angela Merkel? ",
+    "ro" : "'Ce este  alma mamă de  cancelar de Germania Angela Merkel?“ ",
+    "es" : "'Qué es el alma mater de el canciller de Alemania Angela Merkel? ",
+    "nl" : "'Wat is de alma mater van de kanselier van Duitsland Angela Merkel?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Irak' " ],
+    "ru" : [ "'Ирак' " ],
+    "pt" : [ "'Iraque' " ],
+    "en" : [ "Iraq" ],
+    "hi_IN" : [ "'इराक' " ],
+    "it" : [ "'Iraq' " ],
+    "fa" : [ " " ],
+    "fr" : [ "'Irak' " ],
+    "ro" : [ "„Irak“ " ],
+    "es" : [ "'Irak' " ],
+    "nl" : [ "'Irak' " ]
+  },
+  "id" : 82,
+  "languageToQuestion" : {
+    "de" : "'Wie viel ist das Population Irak?' ",
+    "ru" : "'как много является  Население Ирак?' ",
+    "pt" : "'como Muito de é a população Iraque?' ",
+    "en" : "how much is the population  Iraq?",
+    "hi_IN" : "'किस तरह बहुत है  आबादी इराक? ' ",
+    "it" : "'Come tanto è il popolazione Iraq?' ",
+    "fa" : "روطچ  یلیخ  تسا  نیا  تیعمج  ؟قارع  ",
+    "fr" : "'Comment beaucoup est la population Irak?' ",
+    "ro" : "'Cum mult este  populație Irak?“ ",
+    "es" : "'cómo mucho es el población ¿Irak?' ",
+    "nl" : "'hoe veel is de bevolking Irak?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 83,
+  "languageToQuestion" : {
+    "de" : "'Welche Menschen wurden geboren im Heraklion? ",
+    "ru" : "'Который люди мы Родился в Ираклион? ",
+    "pt" : "'Qual pessoas estavam nascermos dentro Heraklion? ",
+    "en" : "Which people were born in Heraklion?",
+    "hi_IN" : "'कौन कौन से लोग थे उत्पन्न होने वाली में हेराक्लिओन? ' ",
+    "it" : "'Quale persone erano Nato in Candia?' ",
+    "fa" : "مادک  مدرم  دوب  ندمآ ایندب  رد هک  ؟نویلکره  ",
+    "fr" : "'Lequel gens étaient née dans Héraklion? ",
+    "ro" : "'Care oameni au fost născut în Heraklion?“ ",
+    "es" : "'Cual gente fueron nacido en Heraklion? ' ",
+    "nl" : "'Welke mensen waren geboren in Heraklion?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 84,
+  "languageToQuestion" : {
+    "de" : "'Was ist das höchste Berg im Deutschland?' ",
+    "ru" : "'Какие является  наибольший гора в Германия?' ",
+    "pt" : "'O que é a maior montanha dentro Alemanha?' ",
+    "en" : "What is the highest mountain in Germany?",
+    "hi_IN" : "'क्या है  उच्चतम पर्वत में जर्मनी? ' ",
+    "it" : "'Che cosa è il massimo montagna in Germania?' ",
+    "fa" : "یچ'  تسا  نیا  نیرتالاب  هوک  رد هک  ؟ناملآ  ",
+    "fr" : "'Quelle est la le plus élevé Montagne dans Allemagne?' ",
+    "ro" : "'Ce este  cel mai inalt Munte în Germania?' ",
+    "es" : "'Qué es el más alto montaña en ¿Alemania?' ",
+    "nl" : "'Wat is de hoogst berg- in Duitsland?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 85,
+  "languageToQuestion" : {
+    "de" : "'Welche Genre tut DBpedia gehören zu?' ",
+    "ru" : "'Который жанр делает DBpedia принадлежать к? ",
+    "pt" : "'Qual gênero faz DBpedia pertencer para?' ",
+    "en" : "Which genre does DBpedia belong to?",
+    "hi_IN" : "'कौन कौन से शैली कर देता है DBpedia संबंधित सेवा मेरे?' ",
+    "it" : "'Quale genere fa DBpedia appartenere a?' ",
+    "fa" : "مادک  رناژ  دنکیم  aidepBD  نتشاد قلعت  '؟هب  ",
+    "fr" : "'Lequel genre Est-ce que DBpedia appartenir à?' ",
+    "ro" : "'Care gen literar face DBpedia aparține la?' ",
+    "es" : "'Cual género hace DBpedia pertenecer a ¿a?' ",
+    "nl" : "'Welke genre doet DBpedia behoren naar?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "'Mexiko Stadt' " ],
+    "ru" : [ "'Мексика город' " ],
+    "pt" : [ "'México cidade' " ],
+    "en" : [ "mexico city" ],
+    "hi_IN" : [ "'मेक्सिको शहर' " ],
+    "it" : [ "'Messico città' " ],
+    "fa" : [ "وکیزکم   " ],
+    "fr" : [ "'Mexique ville' " ],
+    "ro" : [ "'Mexic oraș' " ],
+    "es" : [ "'Méjico ciudad' " ],
+    "nl" : [ "'Mexico stad' " ]
+  },
+  "id" : 86,
+  "languageToQuestion" : {
+    "de" : "'Wie viel ist das Population von Mexiko Stadt ? ' ",
+    "ru" : "'Как много является  Население из Мексика город ? ",
+    "pt" : "'Como Muito de é a população do México cidade ? ",
+    "en" : "How much is the population of mexico city ?",
+    "hi_IN" : "'किस तरह बहुत है  आबादी का मेक्सिको शहर ? ' ",
+    "it" : "'Come tanto è il popolazione di Messico città ?' ",
+    "fa" : "؟روطچ  یلیخ  تسا  نیا  تیعمج  زا  وکیزکم  رهش  ' ؟  ",
+    "fr" : "'Comment beaucoup est la population de Mexique ville ? ' ",
+    "ro" : "'Cum mult este  populație de Mexic oraș ?“ ",
+    "es" : "'Cómo mucho es el población de Méjico ciudad ? ' ",
+    "nl" : "'Hoe veel is de bevolking van Mexico stad ?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 87,
+  "languageToQuestion" : {
+    "de" : "'Geben mich das offiziell Websites von Schauspieler von das Fernsehen Show Fasziniert.' ",
+    "ru" : "'Дайте меня  официальный сайты из актеры из  телевидение показать Зачарованные.' ",
+    "pt" : "'Dar mim a oficial websites do atores do a televisão exposição Encantado.' ",
+    "en" : "Give me the official websites of actors of the television show Charmed.",
+    "hi_IN" : "'दे दो मुझे  आधिकारिक वेबसाइटों का अभिनेताओं का  टेलीविजन प्रदर्शन मन प्रसन्न कर दिया।' ",
+    "it" : "'Dare me il ufficiale siti web di attori di il televisione mostrare Ammaliato.' ",
+    "fa" : "نداد'  نم  نیا  یمسر  اه تیاس بو  زا  نارگیزاب  زا  نیا  نویزیولت  هدب ناشن  .نونمم  ",
+    "fr" : "'Donner moi la officiel sites Internet de acteurs de la télévision montrer Charmé.' ",
+    "ro" : "'Da pe mine  oficial site-uri web de actori de  televiziune spectacol Fermecat.' ",
+    "es" : "'Dar yo el oficial sitios web de actores de el televisión espectáculo Encantado.' ",
+    "nl" : "'Geven me de officieel websites van acteurs van de televisie laten zien Charmed.' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 88,
+  "languageToQuestion" : {
+    "de" : "'Was ist das Beruf von Frank Herbert? ",
+    "ru" : "'Какие является  профессия из Фрэнк Герберт? ",
+    "pt" : "'O que é a profissão do Frank Herbert? ",
+    "en" : "What is the profession of Frank Herbert?",
+    "hi_IN" : "'क्या है  व्यवसाय का फ्रैंक हर्बर्ट? ' ",
+    "it" : "'Che cosa è il professione di Franco Herbert?' ",
+    "fa" : "یچ'  تسا  نیا  هفرح  زا  حیرص  ؟تربره  ",
+    "fr" : "'Quelle est la métier de Franc Herbert? ",
+    "ro" : "'Ce este  profesie de Sincer Herbert? ",
+    "es" : "'Qué es el profesión de Franco ¿Herbert? ",
+    "nl" : "'Wat is de beroep van openhartig Herbert?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "de" : [ "\"Shakespeare\" " ],
+    "ru" : [ "«Шекспир» " ],
+    "pt" : [ "Shakespeare " ],
+    "en" : [ "Shakespeare" ],
+    "hi_IN" : [ "'शेक्सपियर' " ],
+    "it" : [ "'Shakespeare' " ],
+    "fa" : [ "ریپسکش  " ],
+    "fr" : [ "'Shakespeare' " ],
+    "ro" : [ "'Shakespeare' " ],
+    "es" : [ "'Shakespeare' " ],
+    "nl" : [ "'Shakespeare' " ]
+  },
+  "id" : 89,
+  "languageToQuestion" : {
+    "de" : "'Wann war das Tod von Shakespeare? ",
+    "ru" : "'Когда был  смерть из Шекспир? ",
+    "pt" : "'Quando estava a morte do Shakespeare? ",
+    "en" : "When was the death  of  Shakespeare?",
+    "hi_IN" : "'कब था  मौत का शेक्सपियर? ' ",
+    "it" : "'Quando era il Morte di Shakespeare?' ",
+    "fa" : "ینامز هچ'  دوب  نیا  گرم  زا  ؟ریپسکش  ",
+    "fr" : "'Quand était la décès de Shakespeare? ",
+    "ro" : "'Cand a fost  moarte de Shakespeare?“ ",
+    "es" : "'Cuando estaba el muerte de ¿Shakespeare? ",
+    "nl" : "'Wanneer was de dood van Shakespeare?' "
+  }
+}, {
+  "languageToKeyword" : {
+    "" : [ "Harry", "William", "Prince of Wales", "same", "mother" ],
+    "de" : [ "\"Harry\" ", "'Wilhelm' ", "'Prinz von Wales' ", "'gleich' ", "'Mutter' " ],
+    "ru" : [ "'Гарри' ", "«Уильям» ", "«Принц из Уэльс' ", "'одна и та же' ", "'мама' " ],
+    "pt" : [ "'Harry' ", "'William' ", "'Principe do Wales ' ", "'mesmo' ", "'mãe' " ],
+    "hi_IN" : [ "'हैरी' ", "'विलियम' ", "'राजकुमार का वेल्स ' ", "'वही' ", "'मां' " ],
+    "it" : [ "'Harry' ", "'William' ", "'Principe di Galles' ", "'stesso' ", "'madre' " ],
+    "fa" : [ "یره  ", "مایلیو  ", "هدازهاش'  زا  زلو  ", " ", " " ],
+    "fr" : [ "'Harry' ", "'William' ", "'Prince de Pays de Galles' ", "'même' ", "'mère' " ],
+    "ro" : [ "'Harry' ", "'William' ", "'Prinţ de Țara Galilor' ", "'la fel' ", "'mamă' " ],
+    "es" : [ "'Acosar' ", "'Guillermo' ", "'Príncipe de Gales' ", "'mismo' ", "'madre' " ],
+    "nl" : [ "'Harry' ", "'William' ", "'Prins van Wales' ", "'dezelfde' ", "'moeder' " ]
+  },
+  "id" : 90,
+  "languageToQuestion" : {
+    "de" : "'Machen Harry und Wilhelm, Prinzen von Wales, haben das gleich Mutter?' ",
+    "ru" : "'Делать Гарри а также Уильям, Князья из Уэльс, иметь  одна и та же мама?' ",
+    "pt" : "'Faz Harry e William, Príncipes do País de Gales, ter a mesmo mãe?' ",
+    "en" : "Do Harry and William, Princes of Wales, have the same mother?",
+    "hi_IN" : "'कर सताना तथा विलियम, प्रिंसेस का वेल्स, है  वही मां?' ",
+    "it" : "'Fare Harry e William, principi di Galles, avere il stesso madre?' ",
+    "fa" : "نداد ماجنا'  یره  و  مایلیو  ناگدازهاش  زا  زلیو  دنراد  نیا  ناسکی  '؟ردام  ",
+    "fr" : "'Faire Harry et William, Princes de Pays de Galles, avoir la même mère?' ",
+    "ro" : "'Do dezgoli și William, Princes de Țara Galilor, avea  la fel mamă?' ",
+    "es" : "'Hacer Acosar y Guillermo, Príncipes de Gales, tener el mismo ¿madre?' ",
+    "nl" : "'Do Harry en William, Princes van Wales, hebben de dezelfde moeder?' "
+  }
+}, {
+  "languageToKeyword" : { },
+  "id" : 91,
+  "languageToQuestion" : {
+    "de" : "'Wann war DBpedia freigegeben?' ",
+    "ru" : "'Когда был DBpedia выпущенный?' ",
+    "pt" : "'Quando estava DBpedia liberado?' ",
+    "en" : "When was DBpedia released?",
+    "hi_IN" : "'कब था DBpedia जारी किया गया? ' ",
+    "it" : "'Quando era DBpedia rilasciato?' ",
+    "fa" : "ینامز هچ'  دوب  aidepBD  '؟دش رشتنم  ",
+    "fr" : "'Quand était DBpedia libéré?' ",
+    "ro" : "'Cand a fost DBpedia eliberată?' ",
+    "es" : "'Cuando estaba DBpedia ¿liberado?' ",
+    "nl" : "'Wanneer was DBpedia vrijgelaten?' "
+  }
+} ]

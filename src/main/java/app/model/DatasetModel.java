@@ -39,6 +39,7 @@ public class DatasetModel {
 			Map<String, List<String>> languageToKeyword,
 			Set<String> goldenAnswer			
 			) {
+		this.datasetVersion = datasetVersion;
 		this.id = id;
 		this.answerType = answerType;
 		this.aggregation = aggregation;

@@ -34,7 +34,7 @@ public class DashboardController {
 		//String Name = user.getName();
 		//mav.addObject("cokie", cookieDao.getAuth(cks));
 		mav.addObject("name", user.getName());
-		mav.addObject("role", user.getRole());
+		mav.addObject("role", user.getRole());//define role
 		if (cookieDao.isValidate(cks)) {
 			DocumentDAO documentDao = new DocumentDAO();
 			int qald1 = documentDao.countQaldDataset("QALD1_Test_dbpedia") + documentDao.countQaldDataset("QALD1_Train_dbpedia");
@@ -58,9 +58,22 @@ public class DashboardController {
 			int qald1Correction = udcDao.countQaldDataset(user.getId(), "QALD1_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD1_Train_dbpedia");
 			int qald2Correction = udcDao.countQaldDataset(user.getId(), "QALD2_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD2_Train_dbpedia");
 			int qald3Correction = udcDao.countQaldDataset(user.getId(), "QALD3_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD3_Train_dbpedia");
+			int qald4Correction = udcDao.countQaldDataset(user.getId(), "QALD4_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD4_Train_Multilingual");
+			int qald5Correction = udcDao.countQaldDataset(user.getId(), "QALD5_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD5_Train_Multilingual");
+			int qald6Correction = udcDao.countQaldDataset(user.getId(), "QALD6_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD6_Train_Multilingual");
+			int qald7Correction = udcDao.countQaldDataset(user.getId(), "QALD7_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD7_Train_Multilingual");
+			int qald8Correction = udcDao.countQaldDataset(user.getId(), "QALD8_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD8_Train_Multilingual");
+			
 			mav.addObject("qald1Correction", qald1Correction);
 			mav.addObject("qald2Correction", qald2Correction);
 			mav.addObject("qald3Correction", qald3Correction);
+			mav.addObject("qald4Correction", qald4Correction);
+			mav.addObject("qald5Correction", qald5Correction);
+			mav.addObject("qald6Correction", qald6Correction);
+			mav.addObject("qald7Correction", qald7Correction);
+			mav.addObject("qald8Correction", qald8Correction);
+			
+			mav.addObject("csList", udcDao.getCorrectionSummary());
 			
 		}else {
 			redirectAttributes.addFlashAttribute("message","Session Expired.");

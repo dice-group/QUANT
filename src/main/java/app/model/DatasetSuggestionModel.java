@@ -1,12 +1,5 @@
 package app.model;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 public class DatasetSuggestionModel {
 	String answerTypeSugg;
 	String aggregationSugg;
@@ -15,10 +8,6 @@ public class DatasetSuggestionModel {
 	String outOfScopeSugg;
 	
 	
-	public DatasetSuggestionModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 	public String getAnswerTypeSugg() {
 		return answerTypeSugg;
