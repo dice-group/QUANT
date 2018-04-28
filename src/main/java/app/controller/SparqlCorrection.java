@@ -20,19 +20,19 @@ import org.apache.jena.query.ResultSet;
 
 /**
  * Reasons for Sparql Query to not work:
- * 1) Property changes: Returns a new predicate if there is a change in 'prefix' part of the predicate
- * 2) Property not present anymore: (reason could be) 
+ * 1) Property changes: Returns a new predicate if there is a change in 'prefix' part of the predicate. Suggestion: new sparql query
+ * 2) Property not present anymore: (reason could be)  Suggestion : Remove the question
  * 		a) Entity Missing : Checks if the corresponding entity is present
  * 		b) Property removed : Informs about the same
- * 3) Entity's renamed : Checks for redirects and returns the new name. 
+ * 3) Entity's renamed : Checks for redirects and returns the new name. Suggestion: new sparql query
  * 4) In case of hybrid queries: use of homophones/wrong spellings!    
  * @author rricha
  * 
  */
 
 public class SparqlCorrection {
-	// sparql endpoint URL
-	String endpoint="http://dbpedia.org/sparql"; 
+	
+	String endpoint="http://dbpedia.org/sparql"; // sparql endpoint URL
 	
 	private static final String[] BLACKLIST = { "UNION", "}"};
 	
@@ -42,7 +42,7 @@ public class SparqlCorrection {
 	 * @param subject
 	 * @param predicate
 	 * @param object
-	 * @return
+	 * @return entity if it's not present, else null. 
 	 */
 	public String isEntityPresent(String prefixString, String subject, String predicate, String object) {
 		String entityToBeChecked = subject; 
@@ -65,6 +65,48 @@ public class SparqlCorrection {
 		}
 		
 		return entityToBeChecked;
+	}
+	
+	/**
+	 * Handles redirects i.e. checks if the entity name has got changed.
+	 * @param prefixString
+	 * @param subject
+	 * @param predicate
+	 * @param object
+	 * @return new triple if a redirect is found, else null. 
+	 */
+	public String checkEntityName(String prefixString, String subject, String predicate, String object) {
+		String entityToBeChecked = subject; 
+		String query = prefixString;
+		if (subject.startsWith("?") && !object.startsWith("?")) {
+			entityToBeChecked = object;
+			query += "select ?redirect where { " + entityToBeChecked + " <http://dbpedia.org/ontology/wikiPageRedirects> ?redirect. }";
+		}
+		else if (object.startsWith("?") && !subject.startsWith("?")) {
+			query += "select ?redirect where { " + entityToBeChecked + " <http://dbpedia.org/ontology/wikiPageRedirects> ?redirect. }";
+		}
+		else 
+			return null;
+		System.out.println(query);
+		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
+		ResultSet rs = qe.execSelect(); //execute query
+		String changedName = new String();
+		
+		while (rs.hasNext()) {
+             QuerySolution s = rs.nextSolution();     
+             Iterator<String> varNames = s.varNames();
+             for (Iterator<String> it = varNames; it.hasNext(); ) {
+                 String varName = it.next();
+                 changedName = s.get(varName).toString();
+             }
+		}
+		if(!changedName.isEmpty()) {
+			if (entityToBeChecked == subject) {
+				return changedName + " " + predicate + " " + object;
+			}
+			return subject + " " + predicate + " " + changedName;
+		}
+		else return null;
 	}
 	
 	//case: property change 
@@ -161,16 +203,21 @@ public class SparqlCorrection {
 			System.out.println(modifiedQuery);
 			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, modifiedQuery); //put query to jena sparql library
 			ResultSet rs = qe.execSelect(); //execute query
-			List<String> result = new ArrayList<>();
+			List<String> predicatesMatched = new ArrayList<>();
+			List<String> possiblePredicates = new ArrayList<>();
 			
-			while (rs.hasNext()) {
+ 			while (rs.hasNext()) {
                  QuerySolution s = rs.nextSolution();     
                  Iterator<String> varNames = s.varNames();
                  for (Iterator<String> it = varNames; it.hasNext(); ) {
                      String varName = it.next();
                      //adds to result only if the value contains predMatch string
                      if (s.get(varName).toString().contains(predMatch)) {
-                    	 result.add(s.get(varName).toString());
+                    	 predicatesMatched.add(s.get(varName).toString());
+                     }
+                     //if there is a change in the predicate itself!
+                     if (s.get(varName).toString().toLowerCase().contains(predMatch.toLowerCase())){
+                    	 possiblePredicates.add(s.get(varName).toString());
                      }
                  }
 			}
@@ -178,20 +225,34 @@ public class SparqlCorrection {
 			
 			Boolean prefixFound = false;
 			//analyze the result obtained
-            if(result.isEmpty()) { //property missing case
-            	//check if entity is missing/entity's name has changed
+            if(predicatesMatched.isEmpty()) { 
+            	//property missing case
+            	//check if entity is missing
             	String entityMissing = isEntityPresent(prefixString, subject, predicate, object); 
             	if(entityMissing != null) {
             		changedTriples.add("The entity " + entityMissing + " is missing in " + splitTriples[i]);
             		break;
             	}
+            	
             	else {
-            		changedTriples.add("The predicate " + predicate + " is missing in " + splitTriples[i]);
+            		//check if entity's name has changed
+            		String returnedTriple = checkEntityName(prefixString, subject, predicate, object);
+            		if (returnedTriple != null) {
+                		changedTriples.add(returnedTriple);
+                	}
+            		else { 
+            			//property missing; return the possible predicates
+            			for (String pred : possiblePredicates) {
+            				changedTriples.add(subject + " <" + pred + "> " + object);
+            			}
+            			if (possiblePredicates.isEmpty())
+            				changedTriples.add("The predicate " + predicate + " is missing in " + splitTriples[i]);
+            		}
             	}
             	
             }
             else {
-            	for (String str : result) {
+            	for (String str : predicatesMatched) {
             		int predAt = str.indexOf(predMatch);
             		String prefix = str.substring(0, predAt);
             		
@@ -209,7 +270,7 @@ public class SparqlCorrection {
 //            		}
             	}
             	if (prefixFound == false) {
-            		for (String str: result) {
+            		for (String str: predicatesMatched) {
             			int predAt = str.indexOf(predMatch);
                 		String prefix = str.substring(0, predAt);
                 		
@@ -235,11 +296,11 @@ public class SparqlCorrection {
 		//String queryString = "PREFIX res: <http://dbpedia.org/resource/> select distinct ?s ?x where {  res:New_Delhi dbo:country ?s ; dbo:areaCode ?x .}";
 		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
-		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:EuropeanCountries ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
+		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:EuropeanCountries ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//property change example 
-		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT  ?uri ?string WHERE  { ?person  rdfs:label   \"Tom Hanks\"@en ; prop:spouse  ?string   OPTIONAL { ?uri  rdfs:label  ?string }  }";  
+		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT  ?uri ?string WHERE  { ?person  rdfs:label   \"Tom Hanks\"@en ; prop:spouse  ?string   OPTIONAL { ?uri  rdfs:label  ?string }  }";  
 		//to be handled
-		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT  ?date WHERE { ?website  rdf:type          onto:Software ; onto:releaseDate  ?date ;              rdfs:label        \"DBpedia\"@en }";
+		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT  ?date WHERE { ?website rdf:type onto:Software ; rdfs:label \"DBpedia\"@en ; onto:releaseDate ?date. }";
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:CapitalsInEurope   OPTIONAL ?uri  rdfs:label  ?string   FILTER ( lang(?string) = \"en\" ) }  }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
