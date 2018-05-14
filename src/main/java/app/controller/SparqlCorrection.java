@@ -148,6 +148,7 @@ public class SparqlCorrection {
 		String[] splitTriples = triples.split("\\s+[\\.]\\s+|\\s+[\\.]|\\; |\\s+[\\{]\\s+|OPTIONAL ");
 		String subject = new String();
 		String predicate = new String(), object = new String();
+		int numOfEntitiesInOldTriple = 0; //for sparql suggestion function 
 		
 		//extract subject, predicate and object from the triple 
 		for (int i= 0; i < splitTriples.length ; i++) {
@@ -155,6 +156,7 @@ public class SparqlCorrection {
 			System.out.println(splitTriples[i]);
 			String modifiedQuery = prefixString + " select distinct ?p where { ";
 			String[] words = splitTriples[i].split("[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+			numOfEntitiesInOldTriple = words.length;
 			
 			//the triple just has s,p,o and either s or o is unknown
 			if (words.length == 3 && ((words[0].startsWith("?") && !words[2].startsWith("?")) || (!words[0].startsWith("?") && words[2].startsWith("?")))  ) {  
@@ -245,20 +247,20 @@ public class SparqlCorrection {
             		String returnedTriple = checkEntityName(prefixString, subject, predicate, object);
             		if (returnedTriple != null) {
             			if (!queryString.contains(splitTriples[i])) {
-            				changedTriples.add(suggest.reframeSparql(predicate + " " + object, returnedTriple, queryString));
+            				changedTriples.add(suggest.reframeSparql(predicate + " " + object, returnedTriple, queryString, numOfEntitiesInOldTriple));
             			}
             			else 
-            				changedTriples.add(suggest.reframeSparql(splitTriples[i], returnedTriple, queryString));
+            				changedTriples.add(suggest.reframeSparql(splitTriples[i], returnedTriple, queryString, numOfEntitiesInOldTriple));
                 	}
             		else { 
             			//property missing; return the possible predicates
             			for (String pred : possiblePredicates) {
             				String changedTriple = subject + " <" + pred + "> " + object;
             				if (!queryString.contains(splitTriples[i])) {
-                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, returnedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, changedTriple, queryString, numOfEntitiesInOldTriple));
                 			}
                 			else 
-                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString, numOfEntitiesInOldTriple));
             			}
             			if (possiblePredicates.isEmpty())
             				changedTriples.add("The predicate " + predicate + " is missing in " + splitTriples[i]);
@@ -292,18 +294,18 @@ public class SparqlCorrection {
             			if  (!prefixString.isEmpty() && !prefixString.contains(prefix)) {
             				String changedTriple = subject + " <" + str + "> " + object;
             				if (!queryString.contains(splitTriples[i])) {
-                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, changedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, changedTriple, queryString, numOfEntitiesInOldTriple));
                 			}
                 			else 
-                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString, numOfEntitiesInOldTriple));
                 		}
                 		else if (!alternatePrefixString.isEmpty() && !alternatePrefixString.equals(prefix)) {
                 			String changedTriple = subject + " <" + str + "> " + object;
                 			if (!queryString.contains(splitTriples[i])) {
-                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, changedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(predicate + " " + object, changedTriple, queryString, numOfEntitiesInOldTriple));
                 			}
                 			else 
-                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString));
+                				changedTriples.add(suggest.reframeSparql(splitTriples[i], changedTriple, queryString, numOfEntitiesInOldTriple));
                 		}
             		}
             	}
@@ -323,14 +325,15 @@ public class SparqlCorrection {
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:EuropeanCountries ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//property change example 
-		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
-		//to be handled
+		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
+		//new property suggestion example
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT  ?date WHERE { ?website rdf:type onto:Software ; rdfs:label \"DBpedia\"@en ; onto:releaseDate ?date. }";
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:CapitalsInEurope   OPTIONAL ?uri  rdfs:label  ?string   FILTER ( lang(?string) = \"en\" ) }  }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri  rdf:type     yago:FemaleHeadsOfGovernment ; prop:office  ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri  rdfs:label  ?stringFILTER ( lang(?string) = \"en\" )}}";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:StatesOfTheUnitedStates ; dbpedia2:densityrank  ?density    OPTIONAL      { ?uri  rdfs:label  ?string       FILTER ( lang(?string) = \"en\" )      }  } ORDER BY ASC(?density) LIMIT   1";
+		String queryString = "PREFIX res:<http://dbpedia.org/resource/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX dbpedia2: <http://dbpedia.org/property/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT DISTINCT ?uri ?string WHERE { ?uri rdf:type onto:Company ; dbpedia2:industry ?indus FILTER regex(?indus, \"Computer\") FILTER regex(?indus, \"software\", \"i\") OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" ) } }";
 		System.out.println(sc.findNewProperty(queryString));
 	}
 }
