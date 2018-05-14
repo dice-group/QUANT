@@ -154,7 +154,7 @@ public class SparqlCorrection {
 			splitTriples[i] = splitTriples[i].replace("{", "").trim();
 			System.out.println(splitTriples[i]);
 			String modifiedQuery = prefixString + " select distinct ?p where { ";
-			String[] words = splitTriples[i].split("(?=((\\S*\\s){2})*\\S*$)[\\s]+");
+			String[] words = splitTriples[i].split("[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 			
 			//the triple just has s,p,o and either s or o is unknown
 			if (words.length == 3 && ((words[0].startsWith("?") && !words[2].startsWith("?")) || (!words[0].startsWith("?") && words[2].startsWith("?")))  ) {  
@@ -323,7 +323,7 @@ public class SparqlCorrection {
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:EuropeanCountries ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//property change example 
-		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT  ?uri ?string WHERE  { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }  }";  
+		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
 		//to be handled
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT  ?date WHERE { ?website rdf:type onto:Software ; rdfs:label \"DBpedia\"@en ; onto:releaseDate ?date. }";
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
