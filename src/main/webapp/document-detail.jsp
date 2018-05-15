@@ -102,8 +102,8 @@
         <div id="page-wrapper">
         	<div class="row">
                 <div class="col-lg-12">
-                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idPrevious}/${datasetVersionPrevious}${addUrlParameter}" class="btn btn-default" ${previousStatus }><< PREVIOUS</a>
-                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idNext}/${datasetVersionNext}${addUrlParameter}" class="btn btn-default" ${nextStatus }>NEXT >></a>
+                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idPrevious}/${datasetVersionPrevious}${addUrlParameter}/prev" class="btn btn-default" ${previousStatus }><< PREVIOUS</a>
+                    <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idNext}/${datasetVersionNext}${addUrlParameter}/next" class="btn btn-default" ${nextStatus }>NEXT >></a>
                     ${previousCollection }
                 </div>
                 <!-- /.col-lg-12 -->
@@ -119,7 +119,8 @@
             </div>
             <!-- /.row -->
             <div class="row">
-            	
+           <%-- answer Type = ${answerType }                
+           answerTypeSugg = ${answerTypeSugg }  --%>       	
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                     	<c:if test="${isExist=='yes'}">
@@ -145,7 +146,7 @@
                         			<div class="form-group">                        					
 	                                    <div class="col-lg-1" style="text-align:left; vertical-align: middle;">
 	                                    	<label>Question</label>
-	                                    </div>
+	                                    </div>	                                    
 	                                    <div class="col-lg-11" style="text-align:left">
 		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" readonly="readonly">
 		                                    <!--  <p class="font-italic">Question is displayed in English (as default)</p> -->
@@ -155,9 +156,16 @@
                                 <div class="col-lg-6">
                                     
                                         <div class="form-group">
-                                            <label>SPARQL</label>
-                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
-                                            <p class="help-block"><button type="button" class="btn btn-outline-primary" id="add-user" data-toggle="modal" data-target="#insert-user-modal">View Suggestion</button></p>
+                                            <label>SPARQL</label>                                            
+                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>  
+                                            size list ${sparqlSugg.size() }
+                                            Status result : ${resultStatus }
+                                            SPARQL : ${SPARQL }                                           
+                                            <c:if test="${resultStatus eq 'false'}">
+                                            	<c:if test="${sparqlSugg.size()>0}">
+                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View Suggestion</button></p>
+                                        		</c:if>
+                                        	</c:if>
                                         </div>
                                         
                                     
@@ -171,12 +179,7 @@
                                             <p class="help-block"></p>
                                         </div>
                                     	<div class="form-group">
-                                            <label>Answer from Current Endpoint</label> 
-                                            <!--  
-                                            <a href="#change-answer" class="change-answer btn btn-xs btn-default">
-                                            	<span class="glyphicon glyphicon-upload"></span>
-                                            </a>
-                                            -->
+                                            <label>Answer from Current Endpoint</label>                                            
                                             <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" readonly="readonly">${onlineAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
@@ -196,14 +199,17 @@
                             	</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        					<c:if test="${isAnswerTypeCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Answer Type</label>
                                             <input class="form-control" value="${fn:toUpperCase(fn:substring(answerType, 0, 1))}${fn:toLowerCase(fn:substring(answerType, 1,fn:length(answerType)))}" id="answerType" name="answerType" 
-                                            <c:if test="${not empty answerTypeSugg}">
+                                            <c:if test="${not (empty answerTypeSugg)}">
     										style="background-color:#E6E6FA"	
 											</c:if>
 											disabled="disabled"
  											>
-                                            <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not empty answerTypeSugg}">
+                                            <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not (empty answerTypeSugg)}">
     										Suggestion :	
 											${fn:toUpperCase(fn:substring(answerTypeSugg, 0, 1))}${fn:toLowerCase(fn:substring(answerTypeSugg, 1,fn:length(answerTypeSugg)))}
 											</c:if></i></p>
@@ -211,19 +217,22 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        					<c:if test="${isOutOfScopeCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Out of Scope</label>
-                                           	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
+                                           	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not (empty outOfScopeSugg)}" >
     										style="background-color:#E6E6FA"    											
 											</c:if> disabled="disabled">
                                                 <option value=""  <c:if test="${empty outOfScope}">selected="selected"</c:if>></option> 
                                                 <option value="true" ${outOfScope == "true" ? 'selected="selected"' : ''} >True</option>
                                                 <option value="false" ${outOfScope == "false" ? 'selected="selected"' : ''}>False</option>                                                
-                                            </select>
-                                            
-                                            <p class="text-danger" id="outOfScopeSugg"><c:if test="${not empty outOfScopeSugg}">
-                                            <em>Suggestion :												
-                                            ${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}</em>
-                                            </c:if></p>    												
+                                            </select>  
+                                            <p class="text-danger" id="outOfScopeSugg"><i></i><c:if test="${not (empty outOfScopeSugg)}">
+    										Suggestion :	
+											${fn:toUpperCase(fn:substring(outOfScopeSugg, 0, 1))}${fn:toLowerCase(fn:substring(outOfScopeSugg, 1,fn:length(outOfScopeSugg)))}
+											</c:if></i></p>                                
+                                             												
                                     </div>	
                         		</div>
                         		
@@ -231,6 +240,9 @@
                         	<div class="row">
                             	<div class="col-lg-4">
                         			<div class="form-group">
+                        					<c:if test="${isAggregationCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Aggregation</label>
                                            <select class="form-control" id="aggregation" name="aggregation" <c:if test="${not empty aggregationSugg}">
     										style="background-color:#E6E6FA"	
@@ -246,6 +258,9 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        					<c:if test="${isOnlydboCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Onlydbo</label>
                                            <select class="form-control" id="onlydbo" name="onlydbo" <c:if test="${not empty onlyDboSugg}">
     										style="background-color:#E6E6FA"	
@@ -262,6 +277,9 @@
                         		</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
+                        					<c:if test="${isHybridCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Hybrid</label>
                                            <select class="form-control" id="hybrid" name="hybrid" <c:if test="${not empty hybridSugg}">
     										style="background-color:#E6E6FA"	
@@ -296,19 +314,15 @@
 			                                     <c:forEach items="${languageToKeyword}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>
-				                                    		<%-- <td>
-				                                    			<button type="button" class="edit-movie-quote btn btn-xs btn-default" data-toggle="modal" data-target="#insert-keyword-modal">
-				                                    				<span class="glyphicon glyphicon-pencil"></span>
-				                                    				<div class="hidden entity-key">{{ moviequote.key.urlsafe() }}</div>
-													                <div class="hidden keyword-key">${map.getKey()}</div>
-													                <div class="hidden keyword-value">${map.getValue()}</div>
-				                                    			</button>
-				                                    		</td>  --%>
+				                                    		<td>${map.getValue()}</td>				                                    		
 				                                    	</tr>		                                    	
 			                                    </c:forEach>
-			                                </tbody>
-                        				</table>
+			                                </tbody>			                                
+                        				</table>     				
+                        				
+                        				<c:if test="${addKeywordsTranslationsStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations" disabled="disabled">Add Keywords Translations</button></p>
+                        				</c:if>
                         			</div>
                         		</div>
                         	</div>
@@ -330,17 +344,17 @@
 			                                </thead>
 			                                <tbody>
 			                                
-			                                     <c:forEach items="${languageToQuestion}" var="map">
-			                                     	
+			                                     <c:forEach items="${languageToQuestion}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>
-				                                    		
-				                                    	</tr>
-			                                    	
+				                                    		<td>${map.getValue()}</td>				                                    		
+				                                    	</tr>			                                    	
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				<c:if test="${addKeywordsTranslationsStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations" disabled="disabled">Add Question Translations</button></p>
+                        				</c:if>
                         			</div>
                         		</div>
                         	</div>

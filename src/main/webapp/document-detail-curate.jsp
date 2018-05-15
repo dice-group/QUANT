@@ -127,8 +127,9 @@
                         	 	<label class="checkbox-inline" id="chkLabel" ${displayStatus} ${statusNoChangeChk }>
 		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
 		                        </label>
+		                        <a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
                                 <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
-		                        
+		                        <a href="${pageContext.request.contextPath}/document-list/detail/${id}/${datasetVersion}" class="btn btn-warning">Cancel</a>
 		                        </div>
                         	
                         </div>
@@ -151,10 +152,16 @@
                                     
                                         <div class="form-group">
                                             <label>SPARQL</label>
-                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" ${disabledForm }>${sparqlQuery}</textarea>
-                                            <p class="help-block"></p>
-                                        </div>
-                                        
+                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" ${disabledForm }>${sparqlQuery}</textarea>     
+                                            size list ${sparqlSugg.size() }
+                                            Sparql: ${sparqlQuery }
+                                            Status result : ${resultStatus }                            
+                                            <c:if test="${resultStatus eq 'false'}">
+                                            	<c:if test="${sparqlSugg.size()>0}">
+                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion">View Suggestion</button></p>
+                                            	</c:if>
+                                        	</c:if>
+                                        </div>                       
                                     
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
@@ -166,12 +173,7 @@
                                             <p class="help-block"></p>
                                         </div>
                                     	<div class="form-group">
-                                            <label>Answer from Current Endpoint</label> 
-                                            <!--  
-                                            <a href="#change-answer" class="change-answer btn btn-xs btn-default">
-                                            	<span class="glyphicon glyphicon-upload"></span>
-                                            </a>
-                                            -->
+                                            <label>Answer from Current Endpoint</label>                                            
                                             <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" ${disabledForm }>${onlineAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
@@ -321,19 +323,14 @@
 			                                     <c:forEach items="${languageToKeyword}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>
-				                                    		<%-- <td>
-				                                    			<button type="button" class="edit-movie-quote btn btn-xs btn-default" data-toggle="modal" data-target="#insert-keyword-modal">
-				                                    				<span class="glyphicon glyphicon-pencil"></span>
-				                                    				<div class="hidden entity-key">{{ moviequote.key.urlsafe() }}</div>
-													                <div class="hidden keyword-key">${map.getKey()}</div>
-													                <div class="hidden keyword-value">${map.getValue()}</div>
-				                                    			</button>
-				                                    		</td>  --%>
+				                                    		<td>${map.getValue()}</td>				                                    		
 				                                    	</tr>		                                    	
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				<c:if test="${addKeywordsTranslationsStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations">Add Keywords Translations</button></p>
+                        				</c:if>
                         			</div>
                         		</div>
                         	</div>
@@ -364,6 +361,9 @@
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				<c:if test="${addKeywordsTranslationsStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations">Add Question Translations</button></p>
+                        				</c:if>
                         			</div>
                         		</div>
                         	</div>
@@ -424,28 +424,40 @@
     	
     	<!-- end block myModal -->
     	<!-- start block editKeywordModal -->
-    	<div class="modal fade" id="insert-keyword-modal" role="dialog">
-	    	<div class="modal-dialog">
+    	<div class="modal fade" id="provideSparqlSuggestion" role="dialog">
+	    	<div class="modal-dialog" style="width:80%">
 	    		<div class="modal-content">
 	    			<div class="modal-header">
 			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-			          	<h4 class="modal-title">Keyword Correction</h4>
+			          	<h4 class="modal-title">SPARQL Suggestion</h4>
 			        </div>
 			        <div class="modal-body">
-			        	<div class="form-group">
-			                <label for="quote-input" class="col-sm-2 control-label">Language:</label>
-			                <div class="col-sm-10">
-			                  <input id="keyword_key-input" name="keyword_key" type="text" class="form-control" placeholder="Quote">
-			                </div>
-			            </div>
-			            
-			            <div class="form-group">
-			                <label for="movie-input" class="col-sm-2 control-label">Movie: </label>
-			                <div class="col-sm-10">
-			                  <input id="keyword_value-input" name="keyword_value" type="text" class="form-control" placeholder="Title">
-			                </div>
-			            </div>
-			        </div>
+			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Suggestion</th>
+                                        <th class="text-center">Answers from Current Endpoint</th> 
+                                        <th></th>                                       
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <c:forEach var="sparqlSuggestion" items="${sparqlSugg}" varStatus="loop">
+                                    	<tr>
+                                    		<td>${loop.index+1}</td>
+                                    		<td><c:out value="${sparqlSuggestion}"/></td> 
+                                    		<td><c:out value=""/></td>                                   		
+                                    		<td>
+                                    			<button type="button" class="edit-user-modal btn btn-xs btn-default" data-toggle="modal" data-target="#acceptSuggestion">Accept</button>
+                                    		</td>
+                                    		<td>
+                                    			<button type="button" class="edit-user-modal btn btn-xs btn-default" data-toggle="modal" data-target="#rejectSuggestion">Reject</button>
+                                    		</td>                                    		                                  		
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
 			        <div class="modal-footer">
 			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        </div>
@@ -454,10 +466,101 @@
 	    </div>
     	<!-- end block editKeywordModal -->
     </div>
+    <!-- start block keywords translations -->
+    	<div class="modal fade" id="provideKeywordsTranslations" role="dialog">
+	    	<div class="modal-dialog" style="width:80%">
+	    		<div class="modal-content">
+	    			<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<h4 class="modal-title">Keywords Translations Suggestion</h4>
+			        </div>
+			        <div class="modal-body">
+			        <form method="get" action="${pageContext.request.contextPath}/document-list/save-keywords-suggestion/${id }/${datasetVersion}">
+			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                    	<th><input type="checkbox" id="checkBoxAll" /></th>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Language Code</th>
+                                        <th class="text-center">Keywords Translation</th> 
+                                        <th></th>                                       
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+<!--                                 	<form action=""                               		 -->
+                                     <c:forEach  items="${keywordsTranslation}" var="map" varStatus="loop">
+                                    	<tr id="${map.getKey()}">
+                                    		<td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>
+                                    		<td>${loop.index+1}</td>
+				                            <td>${map.getKey()}</td>
+				                            <td>${map.getValue()}</td>              				         
+                                    		                                  		
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+			        <div class="modal-footer">
+			        	<input type="submit" class="btn btn-primary" value="Add" onclick="return confirm('Are you sure add this item? ')" />
+ 			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+			        </form>
+	    		</div>
+	    	</div>
+	    </div>
+	     </div>
+    	<!-- end block keywords translation -->
+    <!-- start block question translations -->
+    	<div class="modal fade" id="provideQuestionTranslations" role="dialog">
+	    	<div class="modal-dialog" style="width:80%">
+	    		<div class="modal-content">
+	    			<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<h4 class="modal-title">Question Translations Suggestion</h4>
+			        </div>
+			        <div class="modal-body">
+			        <form method="get" action="${pageContext.request.contextPath}/document-list/save-question-suggestion/${id }/${datasetVersion}">
+			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                    	<th><input type="checkbox" id="checkBoxAll" /></th>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Language Code</th>
+                                        <th class="text-center">Question Translation</th> 
+                                        <th></th>                                       
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+<!--                                 	<form action=""                               		 -->
+                                     <c:forEach  items="${questionTranslation}" var="map" varStatus="loop">
+                                    	<tr id="${map.getKey()}">
+                                    		<td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>
+                                    		<td>${loop.index+1}</td>
+				                            <td>${map.getKey()}</td>
+				                            <td>${map.getValue()}</td>              				         
+                                    		                                  		
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+			        <div class="modal-footer">
+			        	<input type="submit" class="btn btn-primary" value="Add" onclick="return confirm('Are you sure add this item? ')" />
+ 			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+			        </form>
+	    		</div>
+	    	</div>
+	    </div>
+	     </div>
+    	<!-- end block question translation -->
+    </div>
+    
     <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="<c:url value="/resources/vendor/jquery/jquery.min.js" />"></script>
+    <script src="<c:url value="/resources/vendor/jquery/jquery.js" />"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<c:url value="/resources/vendor/bootstrap/js/bootstrap.min.js" />"></script>
@@ -477,7 +580,6 @@
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.validate.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables/js/dataTables.jqueryui.js" />"></script>
 	<script>
-	var url = "${pageContext.request.contextPath}/document-list/detail-correction/${id}/${datasetVersion}";
 	  $(document).ready($('.form-control').change(function() {
 	   $.ajax({
 	    type : "post",
@@ -487,7 +589,7 @@
 	    success : function(response) {
 	    	
 	    	window.location.reload(true);
-	    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data saved</div>')
+	    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data is saved</div>')
 	    },
 	    error : function() {
 	     alert('Error while request..');
@@ -526,19 +628,7 @@
 	     "filter" : false
 	 }).makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-keyword/${id}/${datasetVersion}"}); 
 
- </script>
- <script>
- $(".edit-movie-quote").click(function() {
-	    keywordKey = $(this).find(".keyword-key").html();
-	    keywordValue = $(this).find(".keyword-value").html();
-	    entityKey = $(this).find(".entity-key").html();
-	    $("#insert-keyword-modal input[name=keyword_key]").val(keywordKey);
-	    $("#insert-keyword-modal input[name=keyword_value]").val(keywordValue);
-	    $("#insert-keyword-modal input[name=entity_key]").val(entityKey).prop("disabled", false);
-	    $("#insert-keyword-modal .modal-title").html("Edit this MovieQuote");
-	    $("#insert-keyword-modal button[type=submit]").html("Edit Quote");
-	  });
- </script>
+ </script> 
  
  <script>
 $(function(){
@@ -554,8 +644,18 @@ $(function(){
          $('#startButton').val('Start Curate');
          document.getElementById("doneButton").style.display='none';
          document.getElementById("chkLabel").style.display='none';
-      });
+      });     
 });
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#checkBoxAll').click(function(){
+			if ($(this).is(':checked'))	
+				$('.chkCheckBoxId').prop('checked', true);
+			else
+				$('.chkCheckBoxId').prop('checked', false);
+		});
+	});
 </script>
 </body>
 

@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- charset utf-8 for apply encoding multilingual -->
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -124,10 +126,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
+                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">                                               
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"> <i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -149,7 +151,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD2_Test_dbpedia/QALD2_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -171,7 +173,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD3_Test_dbpedia/QALD3_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -193,7 +195,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD4_Test_Multilingual/QALD4_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD4_Test_Multilingual/QALD4_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -215,7 +217,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD5_Test_Multilingual/QALD5_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD5_Test_Multilingual/QALD5_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -237,7 +239,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD6_Test_Multilingual/QALD6_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD6_Test_Multilingual/QALD6_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -259,7 +261,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD7_Test_Multilingual/QALD7_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD7_Test_Multilingual/QALD7_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -281,7 +283,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD8_Test_Multilingual/QALD8_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD8_Test_Multilingual/QALD8_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -312,10 +314,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -334,10 +336,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD2_Test_dbpedia/QALD2_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -356,10 +358,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD3_Test_dbpedia/QALD3_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -378,10 +380,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD4_Test_Multilingual/QALD4_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD4_Test_Multilingual/QALD4_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -400,10 +402,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD5_Test_Multilingual/QALD5_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD5_Test_Multilingual/QALD5_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -422,10 +424,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD6_Test_Multilingual/QALD6_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD6_Test_Multilingual/QALD6_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -444,10 +446,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD7_Test_Multilingual/QALD7_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD7_Test_Multilingual/QALD7_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -466,10 +468,10 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD8_Test_Multilingual/QALD8_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD8_Test_Multilingual/QALD8_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>

@@ -56,7 +56,7 @@ public class SparqlCorrection {
 		}
 		else 
 			return null;
-		System.out.println(query);
+		//System.out.println(query);
 		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query); //put query to jena sparql library
 		boolean rs = qe.execAsk(); //execute query
 		
@@ -89,12 +89,12 @@ public class SparqlCorrection {
 		//remove everything that can't be spo
 		for (String blacklisted : BLACKLIST) { 
 			triples = triples.replace(" " + blacklisted + " ", " ").trim();
-			System.out.println(triples);
+			//System.out.println(triples);
 			}
 		if (triples.contains("FILTER")) {
 			int removeFrom = triples.indexOf("FILTER");
 			triples = triples.substring(0, removeFrom);
-			System.out.println(triples);
+			//System.out.println(triples);
 		}
 		
 		String[] splitTriples = triples.split("\\s+[\\.]\\s+|\\s+[\\.]|\\; |\\s+[\\{]\\s+|OPTIONAL ");
@@ -104,7 +104,7 @@ public class SparqlCorrection {
 		//extract subject, predicate and object from the triple 
 		for (int i= 0; i < splitTriples.length ; i++) {
 			splitTriples[i] = splitTriples[i].replace("{", "").trim();
-			System.out.println(splitTriples[i]);
+			//System.out.println(splitTriples[i]);
 			String modifiedQuery = prefixString + " select distinct ?p where { ";
 			String[] words = splitTriples[i].split("\\s+");
 			
@@ -150,14 +150,14 @@ public class SparqlCorrection {
 				propertyBeginsAt = predicate.lastIndexOf("/");
 				predMatch = predicate.substring(propertyBeginsAt+1, predicate.length()-1);
 				alternatePrefixString = predicate.substring(1, propertyBeginsAt+1);
-				System.out.println(alternatePrefixString);
+				//System.out.println(alternatePrefixString);
 			}
 			//for preds with abbrev. (rdf:type)
 			else {
 				propertyBeginsAt = predicate.indexOf(":");
 				predMatch = predicate.substring(propertyBeginsAt+1);
 			}
-			System.out.println(predMatch);
+			//System.out.println(predMatch);
 			
 			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, modifiedQuery); //put query to jena sparql library
 			ResultSet rs = qe.execSelect(); //execute query
@@ -174,7 +174,7 @@ public class SparqlCorrection {
                      }
                  }
 			}
-			//System.out.println(result);
+			System.out.println(result);
 			
 			Boolean prefixFound = false;
 			//analyze the result obtained
@@ -225,20 +225,21 @@ public class SparqlCorrection {
             }
             
 		}
-
+		System.out.println("The Suggestion is "+changedTriples);
 		return changedTriples;
 	}
 	
 	public static void main(String[] args) throws ParseException {
 		SparqlCorrection sc = new SparqlCorrection();
 		//String queryString = "SELECT DISTINCT ?n WHERE { <http://dbpedia.org/resource/FC_Porto> <http://dbpedia.org/ontology/ground> ?x . ?x <http://dbpedia.org/ontology/seatingCapacity> ?n .}";
+		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT  ?date WHERE { ?website  rdf:type          onto:Software ; onto:releaseDate  ?date ;              rdfs:label        \"DBpedia\"@en }";
 		//String queryString = "PREFIX res: <http://dbpedia.org/resource/> select distinct ?s ?x where {  res:New_Delhi dbo:country ?s ; dbo:areaCode ?x .}";
 		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
-		String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  res:European_Union ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
+		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  res:European_Union ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri  rdf:type     yago:FemaleHeadsOfGovernment ; prop:office  ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri  rdfs:label  ?stringFILTER ( lang(?string) = \"en\" )}}";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:StatesOfTheUnitedStates ; dbpedia2:densityrank  ?density    OPTIONAL      { ?uri  rdfs:label  ?string       FILTER ( lang(?string) = \"en\" )      }  } ORDER BY ASC(?density) LIMIT   1";
-		System.out.println(sc.findNewProperty(queryString));
+		System.out.println("The suggestion is this "+sc.findNewProperty(queryString));
 	}
 }

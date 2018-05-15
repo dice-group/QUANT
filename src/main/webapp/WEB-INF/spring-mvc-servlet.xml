@@ -27,7 +27,8 @@
     </bean>
     
     <mvc:resources mapping="/resources/**" location="/resources/bootstrap/" cache-period="31556926"/>
-     <mvc:resources mapping="/json/**" location="/resources/json/" />
+    <mvc:resources mapping="/json/**" location="/resources/json/" />
+    <mvc:resources mapping="/file-upload/**" location="/resources/file-upload/" />
     <mvc:annotation-driven />
   	<!-- apply encoding multilingual -->
   	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource"
@@ -41,4 +42,11 @@
 	    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
 	</mvc:interceptors>
 	<!-- end apply encoding multilingual -->
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		 <!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="100000" />
+	</bean>
+	
+	
 </beans>
