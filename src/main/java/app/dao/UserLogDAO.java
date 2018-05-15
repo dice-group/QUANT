@@ -12,18 +12,14 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import app.config.MongoDBManager;
-import app.model.UserDatasetCorrection;
 import app.model.UserLog;
 
 public class UserLogDAO {
 	public void addLogCurate(UserLog userLog) {		
-		try {
-			
+		try {		
 			BasicDBObject newDbObj = toBasicDBObject(userLog);
-			
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 			DBCollection coll = db.getCollection("UserLog");
-			
 			coll.save(newDbObj);
 		 } catch (Exception e) {}
 	}

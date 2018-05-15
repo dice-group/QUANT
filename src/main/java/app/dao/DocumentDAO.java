@@ -1,6 +1,7 @@
 package app.dao;
 //package org.dice.qa;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,15 +11,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.simple.parser.ParseException;
 import org.openrdf.query.algebra.evaluation.function.string.LowerCase;
 
-/*
-import org.zkoss.mongodb.model.Question;
-import org.zkoss.mongodb.model.Questions;
-import org.zkoss.sparql.Query;
-import org.zkoss.zk.ui.event.SelectEvent;
-import org.zkoss.zul.ListModelList;
-*/
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
@@ -28,11 +23,13 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import app.config.MongoDBManager;
+import app.controller.SparqlCorrection;
 import app.model.Dataset;
 import app.model.DatasetList;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
 import app.model.DocumentList;
+import app.model.Question;
 import app.model.UserDatasetCorrection;
 import app.sparql.SparqlService;
 import rationals.properties.isEmpty;
@@ -59,7 +56,7 @@ public class DocumentDAO {
 					item.setId(q.getId());
 					item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
 					item.setKeywords(q.getLanguageToKeyword());
-					item.setIsCurate(udcDao.isDocumentExist(userId, q.getId(), listDataset.get(x).getName()));				
+					item.setIsCurate(false);				
 					tasks.add(item);
 				}						
 			} catch (Exception e) {}
@@ -252,24 +249,63 @@ public class DocumentDAO {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
 					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);					 
-					String answerType = q.getAnswerType();				
-					//String[] strArray = (String[]) q.getGoldenAnswer().toArray(new String[ q.getGoldenAnswer().size()]);
-					//Set<String> answers = q.getGoldenAnswer();
-					//String answer=strArray[0];					
-					String query = q.getSparqlQuery().toString();
+					String answerType = q.getAnswerType();					
+					
+					boolean answerStatus=false;					
+					String query = q.getSparqlQuery();					
 					String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();
 					if (ss.isASKQuery(languageToQuestionEn)) {
 						String answer = ss.getResultAskQuery(query);
-						if (!answerType.equals(booleanAnswerTypeChecking(answer))) {						
-							item.setAnswerTypeSugg(booleanAnswerTypeChecking(answer));						
-						}
+						if (answer.equals(null)) {
+							answerStatus = false; 
+						}else {
+							answerStatus = true;
+							if (!answerType.equals(booleanAnswerTypeChecking(answer)) || (answerType.equals(null))) {						
+								item.setAnswerTypeSugg(booleanAnswerTypeChecking(answer));						
+							}
+						}						
 					}else {
-						Set<String> answers = ss.getResultsFromCurrentEndpoint(query);	
-						System.out.println("The answers is: "+answers);
-						if (!answerType.equals(answerTypeChecking(answers))) {						
-							item.setAnswerTypeSugg(answerTypeChecking(answers));						
+						Set<String> answers = ss.getResultsFromCurrentEndpoint(query);
+						answerStatus = true;
+						System.out.println("The answers is "+answers);
+						if (answers.isEmpty() || answers.equals(null)) {
+							answerStatus = false;
+						}else {
+							for (String element:answers) {
+								System.out.println("The answer is "+element);
+								if (element == null) {
+									answerStatus = false;
+									break;
+								}
+							}
 						}
-					}			
+						if (answerStatus == true) {
+							if (!answerType.equals(answerTypeChecking(answers)) || (answerType.equals(null))) {	//					
+								item.setAnswerTypeSugg(answerTypeChecking(answers));						
+							}
+						}					
+					}
+					System.out.println("Answer Status: "+answerStatus);
+					
+					//check whether it needs to provide SPARQL suggestion
+					if (answerStatus == false) {	
+						try {
+							List<String> sparqlCorrectionResult = sparqlCorrection(query) ;
+							System.out.println("Sparql Suggestion is "+sparqlCorrectionResult);
+							item.setSparqlSugg(sparqlCorrectionResult);
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+												
+					}
+					
+					//Check whether it needs to display button View Suggestion
+					if (outOfScopeChecking(query, languageToQuestionEn).equals("false")) {
+						item.setResultStatus("false");
+					}else {
+						item.setResultStatus("true");
+					}
+						
 					
 					if (!AggregationChecking(query).equals(q.getAggregation().toString())) {
 						item.setAggregationSugg(AggregationChecking(query));
@@ -286,23 +322,31 @@ public class DocumentDAO {
 					}					
 							
 					String outOfScope = String.valueOf(q.getOutOfScope());					
-					String oos = outOfScope;					
+					String oos = "12";					
 					
 					if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("false")) {
 						oos ="true";
 					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("true")) {
-						oos="";
+						oos=null;
 					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("true") && outOfScope.equals("null")) {
 						oos="false";
 					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("null")) {
 						oos="true";
-					}					
-					item.setOutOfScopeSugg(oos);					
+					}				
+					item.setOutOfScopeSugg(oos);
+					//System.out.println("OOS value is "+oos);
 				}
 				
-		 } catch (Exception e) {}
+		 } catch (Exception e) { e.printStackTrace(); }
 		 return item;
 	 }
+	
+	//Apply SPARQL correction
+	public List<String> sparqlCorrection (String sparqlQuery) throws ParseException {
+		SparqlCorrection sparqlC = new SparqlCorrection();
+		return sparqlC.findNewProperty(sparqlQuery);
+		
+	}
 	
 	//Check whether the answer contains Umlaut character
 	public boolean isUmlaut(String input) {
@@ -351,6 +395,7 @@ public class DocumentDAO {
 		if(answers.size()>=1) {
 			//System.out.println("Answer size is "+answers.size());
 			Iterator<String> answerIt = answers.iterator();
+			
 			String answer = answerIt.next();
 			//System.out.println("answer is "+answer);			
 			if (isUmlaut(answer)) {				
@@ -387,7 +432,7 @@ public class DocumentDAO {
 				return "date";
 			}
 			//check if it is a number
-			if ((isNumeric(answer)) || (answer.matches("\\d.*"))) {
+			if ((isNumeric(answer)) || (answer.matches("\\d.*")) || ((reformatExponentialValue(answer)).toString().matches("\\d.*"))) {
 				return "number";
 			}				
 			//otherwise assume it is a string
@@ -397,51 +442,13 @@ public class DocumentDAO {
 		//otherwise its empty
 		return "";
 	}
-	/*public String AnswerTypeChecking (String answerType, String answerValue) {
-		String finalAnswerType = "";		
-		if (answerValue.toLowerCase().startsWith("http://")) {			
-			if (answerType.toLowerCase().equals("resource")) {
-				finalAnswerType = answerType;
-			}else
-			{				
-				finalAnswerType = "resource";
-			}	
-		}
-			else if (validateDateFormat(answerValue))
-			{				
-				if (answerType.toLowerCase().equals("date")) {
-					finalAnswerType = answerType;
-				}else
-				{
-					finalAnswerType =  "date";
-				}
-			}
-				else if ((isNumeric(answerValue)) || (answerValue.matches("\\d.*")))
-				{					
-					if (answerType.toLowerCase().equals("number")) {
-						finalAnswerType = answerType;
-					}else
-					{					
-						finalAnswerType = "number";
-					}
-				}else if ((answerValue.toString().equals("true")) || (answerValue.toString().equals("false"))){
-							if (answerType.toLowerCase().equals("boolean")) {
-								finalAnswerType = answerType;
-							}else
-							{					
-								finalAnswerType = "boolean";
-							}
-						}			
-						else if (answerValue.toLowerCase().matches("\\w.*")){
-							if (answerType.toLowerCase().equals("string")) {
-								finalAnswerType = answerType;
-							}else
-							{
-								finalAnswerType =  "string";
-							}
-						}		
-		return finalAnswerType;
-	}*/
+	
+	//Deal with exponential value
+	public Integer reformatExponentialValue(String exponentialValue){
+        BigDecimal myNumber= new BigDecimal(exponentialValue);
+        Integer result=myNumber.intValue(); 
+        return result;
+    }
 	
 	//Check Query Modifier on SPARQL query
 	public String queryModifierChecking (String partOfSparql) {
@@ -523,7 +530,7 @@ public class DocumentDAO {
 		SparqlService ss = new SparqlService();	
 		String resultStatus="";
 		if (ss.isASKQuery(languageToQuestionEn)) {			
-			if (ss.getResultAskQuery(sparqlQuery).equals("null")) {
+			if (ss.getResultAskQuery(sparqlQuery).equals(null)) {
 				resultStatus = "false";
 			}else {
 				resultStatus = "true";
@@ -534,8 +541,7 @@ public class DocumentDAO {
 				resultStatus = "false";
 			}else {
 				resultStatus = "true";
-			}
-						
+			}						
 		}
 		return resultStatus;
 	}
@@ -678,8 +684,7 @@ public class DocumentDAO {
 	public void updateDocument(DatasetModel document) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 searchObj.put("id", document.getId());
-		 try {
-			
+		 try {			
 			BasicDBObject newDbObj = toBasicDBObject(document);
 			
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
@@ -689,4 +694,44 @@ public class DocumentDAO {
 		 } catch (Exception e) {}
 	 }
 	
-}
+	//check whether a question needs translations
+	public boolean doesNeedTranslations (String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("allTranslations"); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1); 
+			while (cursor.hasNext()) {				
+				return true;
+			}
+		}catch (Exception e) {
+				// TODO: handle exception
+			}
+			return false;
+		}
+	
+	//provide question translations for the one that needs translations
+	public Question getQuestionTranslations (String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("allTranslations"); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1); 
+			Question q = new Question();
+			while (cursor.hasNext()) {				
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				q = gson.fromJson(dbobj.toString(), Question.class);	
+		
+			}
+			return q;
+		}catch (Exception e) {
+				// TODO: handle exception
+			}
+		return null;		
+	}
+}	
+	
+

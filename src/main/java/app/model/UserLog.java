@@ -9,6 +9,15 @@ public class UserLog {
 	Object logInfo;
 	String logDate;
 	String ipAddress;
+	Map<String,String> LogInfoEach;
+	public Map<String, String> getLogInfoEach() {
+		return LogInfoEach;
+	}
+
+	public void setLogInfoEach(Map<String, String> logInfoEach) {
+		LogInfoEach = logInfoEach;
+	}
+
 	public UserLog() {
 		super();
 		// TODO Auto-generated constructor stub
