@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="app.dao.UserDatasetCorrectionDAO" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,16 +127,16 @@
                                     		<c:forEach items="${datasets.getKeywords()}" var="map">
 			                                     	<c:if test="${map.getKey()=='en'}">
 			                                     		${map.getValue().toString()}
-			                                     	</c:if>      		
-			                                    	
+			                                     	</c:if>			                                    	
 			                                    </c:forEach>
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
-                                    		<td>
-                                    		
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Details"></span></a>
+                                    		<td> 
+                                    			<c:if test="${datasets.getIsCurate()==false}">                                   		
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-master/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Details"></span></a>
+                                    			</c:if>
                                     			<c:if test="${datasets.getIsCurate()==true}">
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/yes"><span class="fa fa-edit" title="View Correction Results"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Correction Result"></span></a>                                    			
                                     			</c:if>
                                     		</td>                                    		                                    		
                                     	</tr>

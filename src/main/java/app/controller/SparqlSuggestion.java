@@ -22,5 +22,8 @@ public class SparqlSuggestion {
 		String newSparqlQuery = sparqlQuery.substring(0, startOfTriple) + " " + newTriple + " " + sparqlQuery.substring(endOfTriple);
 		return newSparqlQuery;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5813ef86c20e9d6506235ba668827c89e550a38a
 }

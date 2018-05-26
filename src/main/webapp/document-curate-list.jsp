@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="app.dao.UserDatasetCorrectionDAO" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +99,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">
+            <div class="row">            	
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -132,7 +133,7 @@
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
                                     		<td>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-eye" title="View Details"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-edit" title="View Details"></span></a>
                                     			
                                     		</td>
                                     	</tr>
@@ -147,12 +148,14 @@
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-12 -->
+                <div class="col-lg-12">
+          			<a href="${pageContext.request.contextPath}/download-dataset-correction"/><i class="fa fa-download"> Download Curated Dataset</i>
+        		</div>
             </div>
-            <!-- /.row -->
-                                   
+            <!-- /.row --> 
+                                             
         </div>
-        <!-- /#page-wrapper -->
-
+        <!-- /#page-wrapper -->    
     </div>
     <!-- /#wrapper -->
 

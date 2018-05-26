@@ -1,7 +1,9 @@
 package app.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,9 +19,12 @@ import app.config.MongoDBManager;
 import app.model.CorrectionSummary;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
+import app.model.DocumentList;
 import app.model.User;
 import app.model.UserDatasetCorrection;
+import app.model.UserLog;
 import app.sparql.SparqlService;
+import app.dao.DocumentDAO;
 
 public class UserDatasetCorrectionDAO {
 	public UserDatasetCorrection getDocument(int userId, String id, String datasetVersion) {
@@ -85,6 +90,52 @@ public class UserDatasetCorrectionDAO {
 					item.setSparqlQuery(q.getSparqlQuery());
 					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
 					item.setGoldenAnswer(q.getGoldenAnswer());
+					tasks.add(item);
+				}
+							
+			} catch (Exception e) {}
+			return tasks;
+	}
+	
+	//Get curated questions in particular qald version
+	public List<DocumentList> getAllDatasetsInParticularVersion(int userId, String qaldTrain, String qaldTest) {
+		List<DocumentList> tasks = new ArrayList<DocumentList>();
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("userId", userId);
+		searchObj.put("datasetVersion", qaldTrain);
+		BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("id",1);
+			try {
+				//call mongoDb
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+				DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
+				UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();				
+					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+					DocumentList item = new DocumentList();
+					item.setDatasetVersion(qaldTrain);
+					item.setId(q.getId());
+					item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
+					item.setKeywords(q.getLanguageToKeyword());	
+					item.setIsCurate(udcDao.isDocumentExist(userId, q.getId(), qaldTrain));
+					tasks.add(item);
+				}
+				searchObj.put("userId", userId);
+				searchObj.put("datasetVersion", qaldTest);
+				DBCursor cursor1 = coll.find(searchObj).sort(sortObj); //Find All
+				while (cursor1.hasNext()) {
+					DBObject dbobj = cursor1.next();
+					Gson gson = new GsonBuilder().create();
+					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+					DocumentList item = new DocumentList();
+					item.setDatasetVersion(qaldTest);
+					item.setId(q.getId());
+					item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
+					item.setKeywords(q.getLanguageToKeyword());	
+					item.setIsCurate(udcDao.isDocumentExist(userId, q.getId(), qaldTest));
 					tasks.add(item);
 				}
 							
@@ -175,21 +226,62 @@ public class UserDatasetCorrectionDAO {
 					DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 					DBCollection coll = db.getCollection("UserDatasetCorrection");
 					DBCursor cursor = coll.find(searchObj);
+					SparqlService ss = new SparqlService();
+					DocumentDAO dDAO = new DocumentDAO();
 					while (cursor.hasNext()) {
 						DBObject dbobj = cursor.next();
 						Gson gson = new GsonBuilder().create();
 						UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
-						String answerType = q.getAnswerType();	
-						String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();
-						String[] strArray = (String[]) q.getGoldenAnswer().toArray(new String[ q.getGoldenAnswer().size()]);
-						String answer=strArray[0];
+						String answerType = q.getAnswerType();						
+						/*String[] strArray = (String[]) q.getGoldenAnswer().toArray(new String[ q.getGoldenAnswer().size()]);
+						String answer=strArray[0];*/
 						
-						if (!answerType.equals(AnswerTypeChecking(answerType,answer))) {						
-							item.setAnswerTypeSugg(AnswerTypeChecking(answerType, answer));						
+						//Check whether it needs to provide SPARQL suggestion
+						boolean answerStatus;					
+						String query = q.getSparqlQuery().toString();
+						String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();
+						if (ss.isASKQuery(languageToQuestionEn)) {
+							String answer = ss.getResultAskQuery(query);
+							if (answer.equals(null)) {
+								answerStatus = false; 
+							}else {
+								answerStatus = true;
+							}
+							if (!answerType.equals(dDAO.booleanAnswerTypeChecking(answer))) {						
+								item.setAnswerTypeSugg(dDAO.booleanAnswerTypeChecking(answer));						
+							}
 						}else {
-							item.setAnswerTypeSugg("");
+							Set<String> answers = ss.getResultsFromCurrentEndpoint(query);
+							answerStatus = true;
+							System.out.println("The answers is "+answers);
+							if (answers.isEmpty()) {
+								answerStatus = false;
+							}else {
+								for (String element:answers) {
+									System.out.println("The answer is "+element);
+									if (element == null) {
+										answerStatus = false;
+										break;
+									}
+								}
+							}
+							if (!answerType.equals(answerTypeChecking(answers))) {						
+								item.setAnswerTypeSugg(answerTypeChecking(answers));						
+							}
 						}
-						String query = q.getSparqlQuery();
+						if (answerStatus == false) {						
+							List<String> sparqlCorrectionResult = dDAO.sparqlCorrection(query) ;
+							//System.out.println("Sparql Suggestion is "+sparqlCorrectionResult);
+							item.setSparqlSugg(sparqlCorrectionResult);						
+						}
+						
+						//Check whether it needs to display button View Suggestion
+						if (outOfScopeChecking(query, languageToQuestionEn).equals("false")) {
+							item.setResultStatus("false");
+						}else {
+							item.setResultStatus("true");
+						}
+						
 						if (AggregationChecking(query).equals(q.getAggregation())) {
 							item.setAggregationSugg("");
 						}else {
@@ -228,52 +320,59 @@ public class UserDatasetCorrectionDAO {
 			 } catch (Exception e) {}
 			 return item;
 		 }
-		//Check Answer Type
-		public String AnswerTypeChecking (String answerType, String answerValue) {
-			String finalAnswerType = "";		
-			if (answerValue.toLowerCase().startsWith("http://")) {
-				//System.out.println("This is http");
-				if (answerType.toLowerCase().equals("resource")) {
-					finalAnswerType = answerType;
-				}else
-				{				
-					finalAnswerType = "resource";
-				}	
-			}
-			else if (validateDateFormat(answerValue))
-			{
-				//System.out.println("this is date");
-				if (answerType.toLowerCase().equals("date")) {
-					finalAnswerType = answerType;
-				}else
-				{
-					finalAnswerType =  "date";
-				}
-			}
-			else if ((isNumeric(answerValue)) || (answerValue.matches("\\d.*")))
-			{					
-				if (answerType.toLowerCase().equals("number")) {
-					finalAnswerType = answerType;
-				}else{					
-					finalAnswerType = "number";
-				}
-			}else if ((answerValue.toString().equals("true")) || (answerValue.toString().equals("false"))){
-				if (answerType.toLowerCase().equals("boolean")) {
-					finalAnswerType = answerType;
-				}else{					
-					finalAnswerType = "boolean";
-				}
-			}			
-			else if (answerValue.toLowerCase().matches("\\w.*")){
-				if (answerType.toLowerCase().equals("string")) {
-					finalAnswerType = answerType;
-				}else{
-					finalAnswerType =  "string";
-				}
-			}		
-			return finalAnswerType;
-		}
 		
+			 public String answerTypeChecking (Set<String> answers) {
+					final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
+					DocumentDAO dDAO = new DocumentDAO();
+					if(answers.size()>=1) {
+						//System.out.println("Answer size is "+answers.size());
+						Iterator<String> answerIt = answers.iterator();
+						String answer = answerIt.next();
+						//System.out.println("answer is "+answer);			
+						if (dDAO.isUmlaut(answer)) {				
+							answer = dDAO.replaceUmlaut(answer);
+						}		
+						int URIExist = 0;
+						boolean isUri=answer.matches(REGEX_URI);
+						if (isUri) {
+							URIExist = 1;
+						}
+						//System.out.println("isURI is "+isUri);
+						while(answerIt.hasNext()) {
+							if (isUri) {
+								URIExist = 1;
+							}				 
+							answer = answerIt.next().toLowerCase();
+							if (dDAO.isUmlaut(answer)) {
+								answer = dDAO.replaceUmlaut(answer);
+							}
+							isUri=answer.matches(REGEX_URI);
+						}
+						//System.out.println("last isURI is "+isUri);
+						if(URIExist == 1) {
+							//System.out.println("Regex URI is True");
+							return "resource";
+						}			
+						//check if all are date
+						boolean isDate = validateDateFormat(answer.toString());
+						while(answerIt.hasNext()&& isDate) {
+							answer = answerIt.next();
+							isUri &= validateDateFormat(answer.toString());
+						}
+						if (isDate) {
+							return "date";
+						}
+						//check if it is a number
+						if ((isNumeric(answer)) || (answer.matches("\\d.*"))) {
+							return "number";
+						}				
+						//otherwise assume it is a string
+						return "string";		
+					}
+					
+					//otherwise its empty
+					return "";
+				}
 		//Check Query Modifier on SPARQL query
 		public String queryModifierChecking (String partOfSparql) {
 			Pattern p = Pattern.compile("(GROUP BY|HAVING|ORDER BY|LIMIT)");
@@ -327,8 +426,7 @@ public class UserDatasetCorrectionDAO {
 			{
 				return ("false");
 			}
-		}
-		
+		}		
 		//Convert a string into a number	
 		public static boolean isNumeric(String str)  
 		{  
@@ -341,15 +439,12 @@ public class UserDatasetCorrectionDAO {
 		    return false;  
 		  }  
 		  return true;  
-		}
-		
+		}	
 		//Check whether a string is a date	
 		public static boolean validateDateFormat(String input) {
-
 	        return input.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})");
 	    }
 		
-		//Check Out of Scope Value
 		//Check Out of Scope Value
 		public String outOfScopeChecking(String sparqlQuery, String languageToQuestionEn) {		
 			SparqlService ss = new SparqlService();	
@@ -359,15 +454,13 @@ public class UserDatasetCorrectionDAO {
 					resultStatus = "false";
 				}else {
 					resultStatus = "true";
-				}
-					
+				}					
 			}else {
 				if (ss.isNullAnswerFromEndpoint(sparqlQuery)) {
 					resultStatus = "false";
 				}else {
 					resultStatus = "true";
-				}
-							
+				}							
 			}
 			return resultStatus;
 		}
@@ -389,6 +482,7 @@ public class UserDatasetCorrectionDAO {
 			}catch (Exception e) {}
 			return false;			
 		}
+		
 		public int countQaldDataset(int userId, String datasetVersion) {
 			BasicDBObject searchObj = new BasicDBObject();
 			searchObj.put("userId", userId);
@@ -523,6 +617,8 @@ public class UserDatasetCorrectionDAO {
 				 
 			 }
 			return null;
-		}
+		}		
+		
+		
 		
 }

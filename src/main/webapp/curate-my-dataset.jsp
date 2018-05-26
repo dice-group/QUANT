@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- charset utf-8 for apply encoding multilingual -->
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -103,23 +105,23 @@
 						<div class="row">	
 							<div class="panel-body">		                        
                         	</div>
-							<form class="form-horizontal">
+							<form class="form-horizontal" method="POST" action="uploadFile" enctype="multipart/form-data">
 				  				<div class="form-group">
 						    		<label for="inputDatabaseVersion" class="control-label col-xs-4"><h5>Database Origin Version:</h5></label>
 						    		<div class="col-xs-5">
-						    			<input type="text" class="form-control" id="databaseVersion" placeholder="Enter Database Origin Version">
+						    			<input name="databaseVersion" type="text" class="form-control" id="databaseVersion" placeholder="Enter Database Origin Version">
 						    		</div>			    		
 						  		</div>
 						  		<div class="form-group">
 						    		<label for="inputSparqlEndpoint" class="control-label col-xs-4"><h5>SPARQL Endpoint:</h5></label>
 						    		<div class="col-xs-5">
-						    			<input type="text" class="form-control" id="sparqlEndpoint" placeholder="Enter SPARQL Endpoint URL">
+						    			<input name="sparqlEndpoint" type="text" class="form-control" id="sparqlEndpoint" placeholder="Enter SPARQL Endpoint URL">
 						    		</div>
 						 		</div>
 						  		<div class="form-group">
 						    		<label for="inputDatasetFile" class="control-label col-xs-4"><h5>Dataset File (.json):</h5></label>
 						    		<div class="col-xs-5">
-						    			<input type="file" class="filestyle" data-buttonText="Select a File">
+						    			<input name="file" type="file" class="filestyle" data-buttonText="Select a File">
 						    		</div>
 						 		</div>
 						 		<div class="modal-footer">

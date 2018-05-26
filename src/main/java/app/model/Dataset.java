@@ -16,7 +16,7 @@ public class Dataset {
 		datasetVersionList.add(new DatasetList(4, "QALD2_Train_dbpedia"));
 		datasetVersionList.add(new DatasetList(5, "QALD3_Test_dbpedia"));
 		datasetVersionList.add(new DatasetList(6, "QALD3_Train_dbpedia"));
-		datasetVersionList.add(new DatasetList(7, "QALD4_Test_Multilingual"));
+		/*datasetVersionList.add(new DatasetList(7, "QALD4_Test_Multilingual"));
 		datasetVersionList.add(new DatasetList(8, "QALD4_Train_Multilingual"));
 		datasetVersionList.add(new DatasetList(9, "QALD5_Test_Multilingual"));
 		datasetVersionList.add(new DatasetList(10, "QALD5_Train_Multilingual"));
@@ -25,7 +25,7 @@ public class Dataset {
 		datasetVersionList.add(new DatasetList(13, "QALD7_Test_Multilingual"));
 		datasetVersionList.add(new DatasetList(14, "QALD7_Train_Multilingual"));
 		datasetVersionList.add(new DatasetList(15, "QALD8_Test_Multilingual"));
-		datasetVersionList.add(new DatasetList(16, "QALD8_Train_Multilingual"));
+		datasetVersionList.add(new DatasetList(16, "QALD8_Train_Multilingual"));*/
 	}
 	public List<DatasetList> getDatasetVersionLists() {
 		return datasetVersionList;

@@ -1,36 +1,42 @@
 package app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
-import org.json.JSONArray;
+//import org.json.JSONArray;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.davidsoergel.dsutils.Base64.OutputStream;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+//import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
@@ -44,14 +50,14 @@ import app.dao.DocumentDAO;
 import app.model.Dataset;
 import app.model.DatasetList;
 import app.model.DatasetModel;
-import app.model.DatasetModelShortVersion;
-import app.model.FailedQuestionModel;
+import app.model.Question;
+import app.model.UserLog;
 import app.response.BaseResponse;
 import app.response.QuestionResponse;
 import app.sparql.SparqlService;
 
 @RestController
-@RequestMapping("/document/datasets")
+@RequestMapping(value= {"/document/datasets"}, produces="application/json; charset=UTF-8")
 public class DocumentRestController {
 	private static final String SUCCESS_STATUS = "success";
 	private static final String ERROR_STATUS = "error";
@@ -60,70 +66,130 @@ public class DocumentRestController {
 	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 	/**
 	 * test
+	 * @return 
 	 * @return
-	 */
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	 public BaseResponse test() {
-	  BaseResponse response = new BaseResponse();
-	 
-	   // Return success response to the client.
-	   response.setStatus(SUCCESS_STATUS);
-	   response.setCode(CODE_SUCCESS);
-	   return response;
-	 }
+	 */	
 	
-	@RequestMapping(value="/exploreFailedQuestions/{questionId}/{databaseVersion}", method = RequestMethod.GET)
-	public void exploreFailedQuestions(@PathVariable("questionId") String questionId, @PathVariable("databaseVersion") String databaseVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		String service="http://dbpedia.org/sparql";
-		DocumentDAO documentDao = new DocumentDAO();
-		DatasetModel documentItem = documentDao.getDocument(questionId, databaseVersion);
-		String sprqlQuery = documentItem.getSparqlQuery();
-		String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
-		SparqlService ss = new SparqlService();		
-		String onlineAnswer;
-		try {            
-            File statText = new File("C:/Users/riagu/Documents/PhD Study/First Task/ExploredFailedQuestions.txt");
-            FileOutputStream is = new FileOutputStream(statText);
-            OutputStreamWriter osw = new OutputStreamWriter(is);    
-            Writer w = new BufferedWriter(osw);
-            
-            /** Retrieve answer from Virtuoso current endpoint **/
-			if (ss.isASKQuery(languageToQuestionEn)) {
-				onlineAnswer = Boolean.toString(ss.getResultAskQuery(sprqlQuery));			
-			}else {
-				//onlineAnswer = ss.getQuery(sprqlQuery);
-				String result = null;
-				 try {
-						//QueryExecution qe = QueryExecutionFactory.sparqlService(service, strQuery); //put query to jena sparql library
-					 	QueryEngineHTTP qe = new QueryEngineHTTP(service, sprqlQuery);
-						qe.setTimeout(30000, TimeUnit.MILLISECONDS);
-						ResultSet rs = qe.execSelect(); //execute query
-						//System.out.println("This is "+qe.getQuery());
-				        ResultSetFormatter.out(rs);
-				        Set<String> setResult = new HashSet();
-				        while(rs.hasNext()) {
-							QuerySolution s = rs.nextSolution(); //get record value
-							Iterator<String> itVars = s.varNames(); //get all variable of query
-							while (itVars.hasNext()) {
-				                String szVar = itVars.next().toString(); //get variable of query	
-				                String szVal = s.get(szVar).asNode().getLiteralValue().toString();
-				                setResult.add(szVal);
-				            }		            
-				        }
-				        result =setResult.toString();
-				        w.write("question ID: "+questionId+"\n");
-						w.write("Sparql: "+sprqlQuery+"\n");
-						w.write("Answer from : "+result+"\n");
-						w.close();				 
-				} catch (Exception e) {
-					result = null;}	
-			}
-		}catch (IOException e) {
-        	System.err.println("Problem writing to the file statsTest.txt");
-    		}	
+	@RequestMapping(value= "/addTranslations", method= RequestMethod.GET)
+	public List<DatasetModel> addTranslationResults() throws FileNotFoundException, IOException, ParseException {
+		BaseResponse response = new BaseResponse();
+		List<Question> tasks = new ArrayList<Question>();
+		
+		//read all translations from json file
+		String json;
+		JSONParser parser = new JSONParser();
+		JSONArray results = new JSONArray();		
+		JSONArray inFile = (JSONArray) parser.parse(new InputStreamReader(new FileInputStream("C:/Users/riagu/Documents/addedTranslations.json"),"UTF8"));
+
+		for (Object o: inFile) {
+			JSONObject obj = (JSONObject) o;
+			Gson gson = new GsonBuilder().create();
+			Question q = gson.fromJson(obj.toString(), Question.class);
+			Question task = new Question();
+			task.setId(q.getId());
+			task.setLanguageToQuestion(q.getLanguageToQuestion());
+			task.setLanguageToKeyword(q.getLanguageToKeyword());						
+            tasks.add(task);
+		}
+		
+		//Select question from MongoDB based on question from file. If its found, update the translation results
+		Dataset dataset = new Dataset();
+		List<DatasetList> listDataset = dataset.getDatasetVersionLists();
+		BasicDBObject questionFromDBObj = new BasicDBObject();	
+		List<DatasetModel> ListDM = new ArrayList<DatasetModel>();
+		List<String> listQuestion = new ArrayList<String>();		
+			for (Question q : tasks) {
+				for (int x=0; x<listDataset.size(); x++) {
+					BasicDBObject questionObj = new BasicDBObject();
+					try{
+						DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+						//DBCollection coll = db.getCollection(listDataset.get(x).getName());
+						DBCollection coll = db.getCollection("QALD7_Test_Multilingual");
+						String question = q.getLanguageToQuestion().get("en");					
+						String englishQuestionWithMoreTranslations = q.getLanguageToQuestion().get("en").replaceAll("^\'", "");
+						englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\\s+$", "");
+						englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\'$", "");
+						//listQuestion.add(englishQuestionWithMoreTranslations);
+						questionObj.put("languageToQuestion.en", englishQuestionWithMoreTranslations);
+						//BasicDBObject searchQuery = new BasicDBObject().append("languageToQuestion.en", "Give me all American presidents in the last 20 years.");
+						//if (!searchQuery.isEmpty()) {						
+							DBCursor cursor = coll.find(questionObj);						
+							while (cursor.hasNext()) {  
+								DBObject dbobj = cursor.next();
+			    				Gson gson = new GsonBuilder().create();
+			    				DatasetModel result = gson.fromJson(dbobj.toString(), DatasetModel.class);
+			    				DatasetModel questionItem = new DatasetModel();
+			    				questionItem.setId(result.getId());
+			    				questionItem.setDatasetVersion("QALD7_Test_Multilingual");
+			    				questionItem.setAnswerType(result.getAnswerType());
+			    				questionItem.setAggregation(result.getAggregation());
+			    				questionItem.setHybrid(result.getHybrid());
+			    				questionItem.setOnlydbo(result.getOnlydbo());
+			    				questionItem.setSparqlQuery(result.getSparqlQuery());		    				
+			    				questionItem.setPseudoSparqlQuery(result.getPseudoSparqlQuery());
+			    				questionItem.setOutOfScope(result.getOutOfScope());
+			    				questionItem.setLanguageToQuestion(q.getLanguageToQuestion());
+			    				questionItem.setLanguageToKeyword(q.getLanguageToKeyword());
+			    				questionItem.setGoldenAnswer(result.getGoldenAnswer());		    				
+			    				DocumentDAO documentDao = new DocumentDAO();
+								documentDao.updateDocument(questionItem);
+								ListDM.add(questionItem);
+							}						
+					}catch (Exception e) {}
+				}
+			}		
+		return ListDM;
 	}
 	
-	@RequestMapping(value= "/countFailedQuestions", method = RequestMethod.GET)
+	@RequestMapping(value= "/listFailedQuestions", method = RequestMethod.GET)
+	public List<DatasetModel> countFailedQuestions() {
+		BaseResponse response = new BaseResponse();
+		List<DatasetModel> tasks = new ArrayList<DatasetModel>();
+	 	Dataset dataset = new Dataset();
+	 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
+	 	BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("id",1);
+		int num_failed_questions = 0;
+		for (int x=0; x<listDataset.size(); x++) {
+    		try {   			
+    			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+    			DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
+    			DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
+    			while (cursor.hasNext()) {    				
+    				DBObject dbobj = cursor.next();
+    				Gson gson = new GsonBuilder().create();
+    				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);			
+    				String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();    
+    				String sprqlQuery = q.getSparqlQuery();
+    				
+    				//count how many questions failed returning answer from current endpoint
+    				DocumentDAO dDAO = new DocumentDAO();
+    				String resultStatus = dDAO.outOfScopeChecking(sprqlQuery, languageToQuestionEn);
+    				if (resultStatus == "false") {
+    					tasks.add(q);
+    					num_failed_questions++;
+    				}
+    				/*SparqlService ss = new SparqlService();
+    				Set<String> results = new HashSet(); 
+    				String result = null;
+    				//results.add(null);
+    				if (ss.isASKQuery(languageToQuestionEn)) {
+    					result = ss.getResultAskQuery(sprqlQuery);    					
+    				}else {				
+    					results = ss.getResultsFromCurrentEndpoint(sprqlQuery);    					
+    				}	
+    				if ((result == null) || (results.contains(null))) {				
+						num_failed_questions++;
+    					tasks.add(q);
+					}*/
+    			}								
+    			} catch (Exception e) {}
+    	 	}
+		System.out.println("Number of Failed Question= "+num_failed_questions);
+		return tasks;
+	}
+			
+	/*@RequestMapping(value= "/countFailedQuestions", method = RequestMethod.GET)
 	public void countFailedQuestions() {
 		BaseResponse response = new BaseResponse();
 		List<DatasetModel> tasks = new ArrayList<DatasetModel>();
@@ -133,16 +199,16 @@ public class DocumentRestController {
 		sortObj.put("id",1);		 		
 		
 		try {            
-            File statText = new File("C:/Users/riagu/Documents/PhD Study/First Task/ListFailedQuestionsWithSparql.txt");
+            File statText = new File("C:/Users/riagu/Documents/PhD Study/First Task/ListFailedQuestions.txt");
             FileOutputStream is = new FileOutputStream(statText);
             OutputStreamWriter osw = new OutputStreamWriter(is);    
             Writer w = new BufferedWriter(osw);
             
-            int numFailedQuestions = 1;
+            int numFailedQuestions = 0;
     		int xx=0;
+    		String onlineAnswer;
     	 	for (int x=0; x<listDataset.size(); x++) {
-    		try {    			
-    			//call mongoDb
+    		try {   			
     			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
     			DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
     			DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
@@ -151,47 +217,35 @@ public class DocumentRestController {
     				DBObject dbobj = cursor.next();
     				Gson gson = new GsonBuilder().create();
     				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);			
-    				String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();    				
+    				String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();    
+    				String sprqlQuery = q.getSparqlQuery();
     				
     				//count how many questions failed returning answer from current endpoint
     				SparqlService ss = new SparqlService();
-    				String sprqlQuery = q.getSparqlQuery();	
-    				System.out.println("This is Sparql: "+sprqlQuery);
+    				Set<String> results = new HashSet(); 
+    				String result = null;
     				if (ss.isASKQuery(languageToQuestionEn)) {
-    					Boolean onlineAnswer = ss.getResultAskQuery(sprqlQuery);
-    					System.out.println(onlineAnswer);	
-    					if (onlineAnswer == null) {					
-    						numFailedQuestions = numFailedQuestions+1;   						
-    						w.write("Id: "+q.getId()+"\n");
-    						w.write("Question Dataset Version: "+listDataset.get(x).getName()+"\n");
-    						w.write("Question: "+ languageToQuestionEn+"\n");
-    						w.write("Sparql Query: \n");
-    						w.write(sprqlQuery);	
-    						w.write("\n\n");
-    					}
-    				}else {
-    						String onlineAnswer = ss.getQuery(sprqlQuery);
-    						System.out.println(onlineAnswer);
-    						if (onlineAnswer == null) {					
-    							numFailedQuestions = numFailedQuestions+1;
-    							w.write("Id: "+q.getId()+"\n");
-        						w.write("Question Dataset Version: "+listDataset.get(x).getName()+"\n");
-        						w.write("Question: "+ languageToQuestionEn+"\n");
-        						w.write("Sparql Query: \n");
-        						w.write(sprqlQuery);		
-        						w.write("\n\n");
-    						}
-    					  }			
+    					result = ss.getResultAskQuery(sprqlQuery);    					
+    				}else {				
+    					results = ss.getQuery(sprqlQuery);    					
+    				}	
+    				if ((result == null) || (results == null)) {					
+						numFailedQuestions = numFailedQuestions+1;
+						w.write("Id: "+q.getId()+"\n");
+						w.write("Question Dataset Version: "+listDataset.get(x).getName()+"\n");
+						w.write("Question: "+ languageToQuestionEn+"\n");						
+						w.write("\n\n");
+					}
     			}								
     			} catch (Exception e) {}
     	 	}
+    	 	w.write("Number of failed questions is "+numFailedQuestions);
     	 	w.close();
 		}
         catch (IOException e) {
             	System.err.println("Problem writing to the file statsTest.txt");
-        		}	
-	 	//return numFailedQuestions;	 	
-	}
+        		}	 		 	
+	}*/
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<QuestionResponse> ShowAll() {
@@ -303,5 +357,22 @@ public class DocumentRestController {
 	    return tasks;
 	 	
 	}
-	
+	private static String readUrl(String urlString) throws Exception {
+	    BufferedReader reader = null;
+	    try {
+	        URL url = new URL(urlString);
+	        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+	        StringBuffer buffer = new StringBuffer();
+	        int read;
+	        char[] chars = new char[1024];
+	        while ((read = reader.read(chars)) != -1)
+	            buffer.append(chars, 0, read); 
+
+	        return buffer.toString();
+	    } finally {
+	        if (reader != null)
+	            reader.close();
+	    }
+	}
+
 }
