@@ -1,5 +1,6 @@
 package app.controller;
 
+import org.apache.commons.collections4.iterators.PermutationIterator;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
@@ -9,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -44,6 +46,24 @@ public class SparqlCorrection {
 	}
 	
 	private static final String[] BLACKLIST = { "UNION", "}"};
+	
+	public String queryPermutation(String[] allTriples) {
+		List<String> primaryTriples = new ArrayList<>();
+		for (int i =0; i < allTriples.length ; i++) {
+			if(!allTriples[i].startsWith("{")) {
+				primaryTriples.add(allTriples[i]);
+			}
+		}
+		PermutationIterator<String> perm = new PermutationIterator<>(primaryTriples);
+		Collection<String> permutedOrder = new ArrayList();
+		while (perm.hasNext()) {
+			permutedOrder = perm.next();
+			if (permutedOrder.size() == primaryTriples.size() && !permutedOrder.equals(primaryTriples)) {
+				System.out.println(permutedOrder);
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * This function is called if property is missing 
@@ -298,7 +318,6 @@ public class SparqlCorrection {
                 		String prefix = str.substring(0, predAt);
                 		
             			if  (!prefixString.isEmpty() && !prefixString.contains(prefix)) {
-                			//changedTriples.add(subject + " <" + str + "> " + object);
             				String changedTriple = subject + " <" + str + "> " + object;
             				if (!queryString.contains(splitTriples[i])) {
                 				suggestionQuery= suggest.reframeSparql(predicate + " " + object, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
@@ -307,7 +326,6 @@ public class SparqlCorrection {
                 				suggestionQuery= suggest.reframeSparql(splitTriples[i], changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
                 		}
                 		else if (!alternatePrefixString.isEmpty() && !alternatePrefixString.equals(prefix)) {
-                			//changedTriples.add(subject + " <" + str + "> " + object);
                 			String changedTriple = subject + " <" + str + "> " + object;
                 			if (!queryString.contains(splitTriples[i])) {
                 				suggestionQuery = suggest.reframeSparql(predicate + " " + object, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
@@ -325,6 +343,11 @@ public class SparqlCorrection {
 		if (!suggestionQuery.equals(queryString))
 			changedTriples.add(suggestionQuery);
 		
+		//if there's no suggestion, then permute the order of triples and check. 
+		if (changedTriples.isEmpty()) {
+			suggestionQuery= queryPermutation(splitTriples);
+		}
+		
 		return changedTriples;
 	}
 	
@@ -338,7 +361,7 @@ public class SparqlCorrection {
 		//property change example 
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
 		//to be handled
-		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?date WHERE { ?website rdf:type onto:Software ; rdfs:label \"DBpedia\"@en ; onto:releaseDate ?date. }";
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?date WHERE { ?website rdf:type onto:Software ; onto:releaseDate ?date; rdfs:label \"DBpedia\"@en . }";
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:CapitalsInEurope   OPTIONAL ?uri  rdfs:label  ?string   FILTER ( lang(?string) = \"en\" ) }  }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
