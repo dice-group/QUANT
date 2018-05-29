@@ -11,8 +11,10 @@ import org.json.simple.parser.ParseException;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.jena.query.QueryExecution;
@@ -47,19 +49,35 @@ public class SparqlCorrection {
 	
 	private static final String[] BLACKLIST = { "UNION", "}"};
 	
-	public String queryPermutation(String[] allTriples) {
+	/**
+	 * Permutes the order of triples and runs the pipeline again.
+	 * @param allTriples
+	 * @param queryString
+	 * @return sparqlSuggestion from permuted sparqlQuery
+	 * @throws ParseException
+	 */
+	
+	public List<String> queryPermutation(String[] allTriples, String queryString) throws ParseException {
 		List<String> primaryTriples = new ArrayList<>();
+		String prefixString = queryString.substring(0, queryString.indexOf("{")+1);
+		String newSparqlQuery = prefixString;
 		for (int i =0; i < allTriples.length ; i++) {
 			if(!allTriples[i].startsWith("{")) {
 				primaryTriples.add(allTriples[i]);
 			}
 		}
 		PermutationIterator<String> perm = new PermutationIterator<>(primaryTriples);
-		Collection<String> permutedOrder = new ArrayList();
+		Collection<String> permutedQuery = new ArrayList<String>();
 		while (perm.hasNext()) {
-			permutedOrder = perm.next();
-			if (permutedOrder.size() == primaryTriples.size() && !permutedOrder.equals(primaryTriples)) {
-				System.out.println(permutedOrder);
+			permutedQuery= perm.next();
+			if (permutedQuery.size() == primaryTriples.size() && !permutedQuery.equals(primaryTriples)) {
+				for (int i =0; i <permutedQuery.size() ; i++) {
+					newSparqlQuery += permutedQuery.toArray()[i] + " . ";
+				}
+				newSparqlQuery += "} ";
+				List<String> result = findNewProperty(newSparqlQuery);
+				if (!result.isEmpty())
+					return result;
 			}
 		}
 		return null;
@@ -85,7 +103,7 @@ public class SparqlCorrection {
 		}
 		else 
 			return null;
-		System.out.println(query);
+		//System.out.println(query);
 		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query); //put query to jena sparql library
 		boolean rs = qe.execAsk(); //execute query
 		
@@ -116,7 +134,7 @@ public class SparqlCorrection {
 		}
 		else 
 			return null;
-		System.out.println(query);
+		//System.out.println(query);
 		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
 		ResultSet rs = qe.execSelect(); //execute query
 		String changedName = new String();
@@ -161,12 +179,12 @@ public class SparqlCorrection {
 		//remove everything that can't be spo
 		for (String blacklisted : BLACKLIST) { 
 			triples = triples.replaceAll(" " + blacklisted, " ").trim();
-			System.out.println(triples);
+			//System.out.println(triples);
 			}
 		if (triples.contains("FILTER")) {
 			int removeFrom = triples.indexOf("FILTER");
 			triples = triples.substring(0, removeFrom);
-			System.out.println(triples);
+			//System.out.println(triples);
 		}
 		
 		String[] splitTriples = triples.split("\\s+[\\.]\\s+|\\s+[\\.]|\\; |\\s+[\\{]\\s+|OPTIONAL ");
@@ -177,7 +195,7 @@ public class SparqlCorrection {
 		//extract subject, predicate and object from the triple 
 		for (int i= 0; i < splitTriples.length ; i++) {
 			splitTriples[i] = splitTriples[i].replace("{", "").trim();
-			System.out.println(splitTriples[i]);
+			//System.out.println(splitTriples[i]);
 			String modifiedQuery = prefixString + " select distinct ?p where { ";
 			String[] words = splitTriples[i].split("[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 			numOfEntitiesInOldTriple = words.length;
@@ -188,7 +206,7 @@ public class SparqlCorrection {
 				predicate = words[1];
 				object = words[2];
 				modifiedQuery = modifiedQuery + subject + " ?p " + object + " }";
-				System.out.println(modifiedQuery);
+				//System.out.println(modifiedQuery);
 			}
 			
 			//subject remains the same as before, so add it in the triple as well.
@@ -197,7 +215,7 @@ public class SparqlCorrection {
 				object = words[1];
 				modifiedQuery = modifiedQuery + subject + " ?p " + object + " }";
 				splitTriples[i] = subject + " " + splitTriples[i];
-				System.out.println(modifiedQuery + "\n" + splitTriples[i]);
+				//System.out.println(modifiedQuery + "\n" + splitTriples[i]);
 			}
 			
 			//if both s and o unknown, include the previous splitTriple
@@ -206,14 +224,14 @@ public class SparqlCorrection {
 				predicate = words[1];
 				object = words[2];
 				modifiedQuery = modifiedQuery + splitTriples[i-1] + " . " + subject + " ?p " + object + " }";
-				System.out.println(modifiedQuery);
+				//System.out.println(modifiedQuery);
 			}
 			else if (words.length == 2 && i > 0) {
 				predicate = words[0];
 				object = words[1];
 				modifiedQuery = modifiedQuery + splitTriples[i-1] + " . " + subject + " ?p " + object + " }";
 				splitTriples[i] = subject + " " + splitTriples[i];
-				System.out.println(modifiedQuery + "\n" + splitTriples[i]);
+				//System.out.println(modifiedQuery + "\n" + splitTriples[i]);
 			}
 			
 			//extract that string from the predicate which has to be matched against the results from sparql endpoint
@@ -224,15 +242,14 @@ public class SparqlCorrection {
 				propertyBeginsAt = predicate.lastIndexOf("/");
 				predMatch = predicate.substring(propertyBeginsAt+1, predicate.length()-1);
 				alternatePrefixString = predicate.substring(1, propertyBeginsAt+1);
-				System.out.println(alternatePrefixString);
+				//System.out.println(alternatePrefixString);
 			}
 			//for preds with abbrev. (rdf:type)
 			else {
 				propertyBeginsAt = predicate.indexOf(":");
 				predMatch = predicate.substring(propertyBeginsAt+1);
 			}
-			System.out.println(predMatch);
-			System.out.println(modifiedQuery);
+			
 			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, modifiedQuery); //put query to jena sparql library
 			ResultSet rs = qe.execSelect(); //execute query
 			List<String> predicatesMatched = new ArrayList<>();
@@ -345,7 +362,7 @@ public class SparqlCorrection {
 		
 		//if there's no suggestion, then permute the order of triples and check. 
 		if (changedTriples.isEmpty()) {
-			suggestionQuery= queryPermutation(splitTriples);
+			changedTriples= queryPermutation(splitTriples, queryString);
 		}
 		
 		return changedTriples;
@@ -360,7 +377,7 @@ public class SparqlCorrection {
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:EuropeanCountries ; onto:governmentType  res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label  ?string FILTER ( lang(?string) = 'en' ) } }";
 		//property change example 
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
-		//to be handled
+		//triple-order example 
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?date WHERE { ?website rdf:type onto:Software ; onto:releaseDate ?date; rdfs:label \"DBpedia\"@en . }";
 		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:CapitalsInEurope   OPTIONAL ?uri  rdfs:label  ?string   FILTER ( lang(?string) = \"en\" ) }  }";
