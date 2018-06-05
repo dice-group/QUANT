@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
 import java.io.FileReader;
@@ -65,8 +67,8 @@ public class TranslatorService {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public JSONObject translateNewQuestion(String question) throws FileNotFoundException {
-		JSONObject result = new JSONObject();
+	public Map<String, String> translateNewQuestion(String question) throws FileNotFoundException {
+		Map<String, String> result = new HashMap<>();
         Vector<String> targetLanguages = getTargetLanguages();
         for (String lang : targetLanguages) {
         	if (lang.equals("en")) {
@@ -85,10 +87,10 @@ public class TranslatorService {
 	 * @return
 	 * @throws FileNotFoundException 
 	 */
-	public JSONObject translateNewKeywords(List<String> keywordList) throws FileNotFoundException {
+	public Map<String,List<String>> translateNewKeywords(List<String> keywordList) throws FileNotFoundException {
 		JSONArray newKeywordList = new JSONArray();
 		newKeywordList.addAll(keywordList);
-		JSONObject result = new JSONObject();
+		Map<String, List<String>> result = new HashMap<>();
 		Vector<String> targetLanguages = getTargetLanguages();
 		
         for (String lang : targetLanguages) {
@@ -210,12 +212,12 @@ public class TranslatorService {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		TranslatorService obj = new TranslatorService();
-		obj.translateQuestions();
+		//obj.translateQuestions();
 		//System.out.println("Files written.");
-//		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
-//		List<String> list = new ArrayList<String>();
-//		list.add("sky");
-//		list.add("blue");
-//		System.out.println(obj.translateNewKeywords(list));
+		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
+		List<String> list = new ArrayList<String>();
+		list.add("sky");
+		list.add("blue");
+		System.out.println(obj.translateNewKeywords(list));
 	}
 }
