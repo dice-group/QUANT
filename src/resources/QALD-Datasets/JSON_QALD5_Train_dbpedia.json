@@ -215,18 +215,7 @@
             "outOfScope": false,
             "languageToQuestion": "{en=Give me all members of Prodigy., de=Gib mir alle Bandmitglieder von Prodigy., es=Dame todos los miembros de la banda Prodigy., it=Dammi tutti i membri dei Prodigy., fr=Donne-moi tous les membres de Prodigy., nl=Noem alle leden van Prodigy., ro=Dă-mi toții membrii Prodigy.}"
         },
-        {
-            "languageToKeyword": "{en=[river, longest], de=[Fluss, längster], es=[río, más largo], it=[fiume, più lungo], fr=[cours d'eau, plus long], nl=[rivier, langste], ro=[fluviu, cel mai lung]}",
-            "hybrid": false,
-            "onlydbo": false,
-            "sparqlQuery": "PREFIX dbo: <http://dbpedia.org/ontology/> \nPREFIX dbp: <http://dbpedia.org/property/> \nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \nSELECT DISTINCT ?uri \nWHERE { \n        ?uri rdf:type dbo:River . \n      { ?uri dbo:length ?l . } \n      UNION \n      { ?uri dbp:length ?l . } \n} \nORDER BY DESC(?l) \nOFFSET 0 LIMIT 1",
-            "answerType": "resource",
-            "aggregation": false,
-            "goldenAnswer": "[http://dbpedia.org/resource/Lochbach_(Itter)]",
-            "id": "115",
-            "outOfScope": false,
-            "languageToQuestion": "{en=What is the longest river?, de=Was ist der längste Fluss?, es=¿Cuál es el río más largo?, it=Qual è il fiume più lungo?, fr=Quel est le cours d'eau le plus long?, nl=Wat is de langste rivier?, ro=Care este cel mai lung fluviu?}"
-        },
+        
         {
             "languageToKeyword": "{en=[Breaking Bad, episodes, more than, Game of Thrones], de=[Breaking Bad, Episoden, mehr als, Game of Thrones], es=[Breaking Bad, episodios, más que, Game of Thrones], it=[Breaking Bad, eposido, più di, Game of Thrones], fr=[Breaking Bad, épisodes plus que, Game of Thrones], nl=[Breaking Bad, afleveringen, meer dan, Game of Thrones], ro=[Breaking Bad, episoade, mai multe decât, Game of Thrones]}",
             "hybrid": false,
