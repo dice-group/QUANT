@@ -1,9 +1,17 @@
 package app.dao;
 //package org.dice.qa;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +19,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.openrdf.query.algebra.evaluation.function.string.LowerCase;
 
@@ -32,6 +42,7 @@ import app.model.DocumentList;
 import app.model.Question;
 import app.model.UserDatasetCorrection;
 import app.sparql.SparqlService;
+import app.util.TranslatorService;
 import rationals.properties.isEmpty;
 
 public class DocumentDAO {
@@ -191,6 +202,7 @@ public class DocumentDAO {
 					item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
 					item.setKeywords(q.getLanguageToKeyword());
 					item.setIsCurate(udcDao.isDocumentExist(userId, q.getId(), listDataset.get(x).getName()));
+					item.setIsRemoved(udcDao.isDocumentRemoved(userId, q.getId(), listDataset.get(x).getName()));
 					tasks.add(item);
 				}								
 			} catch (Exception e) {}
@@ -236,7 +248,7 @@ public class DocumentDAO {
 	}
 	
 	//Correction Parts
-	public DatasetSuggestionModel implementCorrection(String id, String datasetVersion) {
+	public DatasetSuggestionModel implementCorrection(String id, String datasetVersion) {		
 		 BasicDBObject searchObj = new BasicDBObject();
 		 DatasetSuggestionModel item = new DatasetSuggestionModel();
 		 searchObj.put("id", id);
@@ -279,33 +291,62 @@ public class DocumentDAO {
 								}
 							}
 						}
-						if (answerStatus == true) {
-							if (!answerType.equals(answerTypeChecking(answers)) || (answerType.equals(null))) {	//					
-								item.setAnswerTypeSugg(answerTypeChecking(answers));						
+						
+						System.out.println("Answers size is : "+answers.size());
+						
+						if (answerStatus) {
+							if (!(answerType.equals(answerTypeChecking(answers))) || (answerType.equals(""))) {	//					
+								item.setAnswerTypeSugg(answerTypeChecking(answers));								
 							}
 						}					
 					}
 					System.out.println("Answer Status: "+answerStatus);
+					//System.out.println("Answer Type: "+ answerType);					
 					
 					//check whether it needs to provide SPARQL suggestion
-					if (answerStatus == false) {	
+					if (!answerStatus) {	
 						try {
-							List<String> sparqlCorrectionResult = sparqlCorrection(query) ;
-							System.out.println("Sparql Suggestion is "+sparqlCorrectionResult);
-							item.setSparqlSugg(sparqlCorrectionResult);
+							List<String> sparqlSuggestion = sparqlCorrection(query) ;
+							ArrayList<String> listOfSuggestion = new ArrayList<>(sparqlSuggestion.size());
+							listOfSuggestion.addAll(sparqlSuggestion);							
+							Map<String,List<String>> sparqlAndAnswerList = new HashMap<String,List<String>>();							
+							for (String element: listOfSuggestion) {
+								if (element.contains("is missing")) {
+									String newElement = element + ". This question should be removed from the dataset.";
+									Collections.replaceAll(listOfSuggestion, element, newElement);	
+									List<String> noAFCE = new ArrayList<String>();
+									noAFCE.add("-");									
+									sparqlAndAnswerList.put(newElement,noAFCE);
+								}else {
+									
+									/** Retrieve answer from Virtuoso current endpoint **/
+									Set<String> results = new HashSet();	
+									List<String> resultList = new ArrayList<String>();
+									if (ss.isASKQuery(languageToQuestionEn)) {
+										String result = ss.getResultAskQuery(element);										
+										resultList.add(result);														
+									}else {				
+										results = ss.getQuery(element);
+										resultList.addAll(results);										
+									}									
+									sparqlAndAnswerList.put(element,resultList);
+								}								
+							}							
+							item.setSparqlAndAnswerList(sparqlAndAnswerList);
 						} catch (Exception e) {
 							// TODO: handle exception
-						}
-												
-					}
+						}												
+					}		
 					
 					//Check whether it needs to display button View Suggestion
 					if (outOfScopeChecking(query, languageToQuestionEn).equals("false")) {
+						//System.out.println("Result status is this: false");
 						item.setResultStatus("false");
 					}else {
+						//System.out.println("Result status is this: true");
 						item.setResultStatus("true");
 					}
-						
+					//item.setResultStatus("what's happening");
 					
 					if (!AggregationChecking(query).equals(q.getAggregation().toString())) {
 						item.setAggregationSugg(AggregationChecking(query));
@@ -392,55 +433,72 @@ public class DocumentDAO {
 	//Check Answer Type of select query
 	public String answerTypeChecking (Set<String> answers) {
 		final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
-		if(answers.size()>=1) {
-			//System.out.println("Answer size is "+answers.size());
-			Iterator<String> answerIt = answers.iterator();
-			
-			String answer = answerIt.next();
-			//System.out.println("answer is "+answer);			
-			if (isUmlaut(answer)) {				
-				answer = replaceUmlaut(answer);
-			}		
-			int URIExist = 0;
-			boolean isUri=answer.matches(REGEX_URI);
-			if (isUri) {
-				URIExist = 1;
-			}
-			//System.out.println("isURI is "+isUri);
-			while(answerIt.hasNext()) {
+		try {
+			if(answers.size()>=1) {
+				
+				Iterator<String> answerIt = answers.iterator();
+
+				//the first element
+				String answer = answerIt.next();
+				//System.out.println("answer is "+answer);			
+				if (isUmlaut(answer)) {				
+					answer = replaceUmlaut(answer);
+				}	
+				
+				//check whether the first element or the only one element is a URI
+				int URIExist = 0;
+				boolean isUri=answer.matches(REGEX_URI);
 				if (isUri) {
 					URIExist = 1;
-				}				 
-				answer = answerIt.next().toLowerCase();
-				if (isUmlaut(answer)) {
-					answer = replaceUmlaut(answer);
 				}
-				isUri=answer.matches(REGEX_URI);
+				
+				//System.out.println("isURI is "+isUri);
+				//check whether the second or next element (if there are some answers) is a URI
+				while((answerIt.hasNext()) && (URIExist == 0)) {
+					//get the next element
+					answer = answerIt.next().toLowerCase();
+					if (isUmlaut(answer)) {
+						answer = replaceUmlaut(answer);
+					}
+					isUri=answer.matches(REGEX_URI);
+					if (isUri) {
+						URIExist = 1;
+						break;
+					}
+				}
+				
+				//check whether the only one answer is a URI or there is at least one of answers is URI
+				if(URIExist == 1) {				
+					return "resource";
+				}			
+				//check if all are date
+				boolean isDate = validateDateFormat(answer.toString());
+				while(answerIt.hasNext()&& (!isDate)) {
+					answer = answerIt.next();
+					if (validateDateFormat(answer.toString())) {
+						isDate = true;
+						break;
+					}
+				}
+				
+				if (isDate) {
+					return "date";
+				}
+				//System.out.println("Answers in answerTypeChecking is "+answer);
+				//check if it is a number
+				if ((isNumeric(answer)) || (answer.matches("\\d.*"))) {
+					System.out.println("Answers in answerTypeChecking is "+answer);
+					return "number";
+				}		
+				
+				//otherwise assume it is a string
+				return "string";		
 			}
-			//System.out.println("last isURI is "+isUri);
-			if(URIExist == 1) {
-				//System.out.println("Regex URI is True");
-				return "resource";
-			}			
-			//check if all are date
-			boolean isDate = validateDateFormat(answer.toString());
-			while(answerIt.hasNext()&& isDate) {
-				answer = answerIt.next();
-				isUri &= validateDateFormat(answer.toString());
-			}
-			if (isDate) {
-				return "date";
-			}
-			//check if it is a number
-			if ((isNumeric(answer)) || (answer.matches("\\d.*")) || ((reformatExponentialValue(answer)).toString().matches("\\d.*"))) {
-				return "number";
-			}				
-			//otherwise assume it is a string
-			return "string";		
-		}
-		
+		}catch (Exception e) {
+			// TODO: handle exception
+		}		
 		//otherwise its empty
-		return "";
+		return "undefined";
 	}
 	
 	//Deal with exponential value
@@ -677,10 +735,43 @@ public class DocumentDAO {
 		return null;
 	}
 	
-	//generate keywords from question
-	public List<String> generateKeywords(String question){
-		return null;
+	//generate keywords from question that already has keywords 
+	public List<String> generateKeywords(String question) throws FileNotFoundException, IOException{	
+		//read a file that contains English stopwords		
+		FileReader fileReader = new FileReader("src/resources/englishStopwords.txt");
+        
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        List<String> englishStopwords = new ArrayList<String>();
+        String element = null;         
+        while ((element = bufferedReader.readLine()) != null) 
+        {
+        	englishStopwords.add(element);
+        }         
+        bufferedReader.close();
+        question = question.toLowerCase();
+        if (question.endsWith("?") || question.endsWith(".") || question.endsWith("!")) {
+			question = question.substring(0, question.length() - 1);
+		}
+		question = " " + question + " ";
+		System.out.println(question);		
+		for (String term : englishStopwords) {			
+			question = question.replace(" "+ term +" ", " ");			
+		}
+		question = question.substring(1, question.length() - 1);
+		String[] wordsList = question.split(" ");
+		List<String> keywordsSuggestion = Arrays.asList(wordsList);
+		return keywordsSuggestion;		
 	}
+	
+	//generate keywords translations from question that has no keywords before 
+	/*public Map<String, List<String>> generateKeywordsTranslations(List<String> keywords) throws FileNotFoundException, IOException{	
+		TranslatorService ts = new TranslatorService();
+		JSONObject keywordsTranslations = ts.translateNewKeywords(keywords);
+		Map<String, List<String>> retMap = new Gson().fromJson(
+			    jsonString, new TypeToken<HashMap<String, Object>>() {}.getType());
+		return keywordsTranslations;		
+	}*/
+	
 	public void updateDocument(DatasetModel document) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 searchObj.put("id", document.getId());
@@ -694,22 +785,71 @@ public class DocumentDAO {
 		 } catch (Exception e) {}
 	 }
 	
-	//check whether a question needs translations
-	public boolean doesNeedTranslations (String question) {
+	//check whether a question needs keywords translations
+	public boolean doesNeedKeywordsTranslations (String question) {
+	BasicDBObject searchObj = new BasicDBObject();
+	searchObj.put("languageToQuestion.en", question);
+	try {
+		DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+		DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
+		DBCursor cursor = coll.find(searchObj).limit(1); 
+		while (cursor.hasNext()) {				
+			DBObject dbobj = cursor.next();
+			Gson gson = new GsonBuilder().create();
+			DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+			if (!(q.getLanguageToKeyword().isEmpty())) {
+				return true;
+			}			
+		}
+	}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
+	}
+	
+	//check whether a question needs question translations
+	public boolean doesNeedQuestionTranslations (String question) {
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("languageToQuestion.en", question);
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-			DBCollection coll = db.getCollection("allTranslations"); //Collection
-			DBCursor cursor = coll.find(searchObj).limit(1); 
+			DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
 			while (cursor.hasNext()) {				
-				return true;
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				if (!(q.getLanguageToQuestion().isEmpty())) {
+					return true;
+				}				
 			}
 		}catch (Exception e) {
 				// TODO: handle exception
-			}
-			return false;
 		}
+		return false;
+	}
+	
+	//check whether a question needs keyword suggestion	
+	public boolean doesNeedKeywordSuggestions (String question, String datasetVersion) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection(datasetVersion); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1); 
+			while (cursor.hasNext()) {				
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				if (q.getLanguageToKeyword().isEmpty()) {
+					return true;
+				}
+			}
+		}catch (Exception e) {
+				// TODO: handle exception
+		}
+		return false;
+	}
 	
 	//provide question translations for the one that needs translations
 	public Question getQuestionTranslations (String question) {
@@ -717,14 +857,13 @@ public class DocumentDAO {
 		searchObj.put("languageToQuestion.en", question);
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-			DBCollection coll = db.getCollection("allTranslations"); //Collection
+			DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
 			DBCursor cursor = coll.find(searchObj).limit(1); 
 			Question q = new Question();
 			while (cursor.hasNext()) {				
 				DBObject dbobj = cursor.next();
 				Gson gson = new GsonBuilder().create();
-				q = gson.fromJson(dbobj.toString(), Question.class);	
-		
+				q = gson.fromJson(dbobj.toString(), Question.class);		
 			}
 			return q;
 		}catch (Exception e) {
@@ -732,6 +871,7 @@ public class DocumentDAO {
 			}
 		return null;		
 	}
+	
 }	
 	
 

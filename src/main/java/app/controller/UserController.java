@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,6 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
@@ -46,7 +52,9 @@ public class UserController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/user-list", method = RequestMethod.GET)
+	
+	
+	@RequestMapping (value = "/user-list", method = RequestMethod.GET)
 	public ModelAndView showUserList(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
@@ -135,7 +143,7 @@ public class UserController {
 	    return mav;  
 	}
 	@RequestMapping(value = "/download-dataset-correction", method = RequestMethod.GET)
-	public ModelAndView showDownloadDatasetCorrection(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showDownloadDatasetCorrection(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws JsonGenerationException, JsonMappingException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -174,11 +182,25 @@ public class UserController {
 					item.setGoldenAnswer(q.getGoldenAnswer());
 					BasicDBObject newDbObj = toBasicDBObject(item);
 					list.add(newDbObj);
-				}
-							
+				}							
 			} catch (Exception e) {}
 			
 			//contruct dataset information
+			JSONObject newdbobj = new JSONObject();
+			newdbobj.put("id", user.getName()+" dataset");
+			
+			JSONObject obj = new JSONObject();
+			obj.put("dataset", newdbobj);
+	        obj.put("questions", list);
+	        JSONArray objFinal = new JSONArray();
+	        objFinal.add(obj);
+	    
+	        //write dataset into a file in json format
+	        ObjectMapper mapper = new ObjectMapper();
+			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+			writer.writeValue(new File("C:\\exportCuratedDataset\\"+user.getName()+".json"), objFinal);
+			
+			/*//contruct dataset information
 			JSONObject newdbobj = new JSONObject();
 			newdbobj.put("id", user.getId()+"dataset");
 			
@@ -204,7 +226,7 @@ public class UserController {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         
 		ModelAndView mav = new ModelAndView("redirect:/user-dataset-correction");
 		return mav;

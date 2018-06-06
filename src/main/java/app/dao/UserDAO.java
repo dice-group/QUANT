@@ -3,6 +3,15 @@ package app.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
@@ -17,6 +26,19 @@ import app.model.Login;
 import app.model.User;
 
 public class UserDAO  {
+	
+	public ModelAndView isCookieValid(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		return null;
+	}
+		
 	public Boolean validateUser(Login login) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 searchObj.put("username", login.getUsername());

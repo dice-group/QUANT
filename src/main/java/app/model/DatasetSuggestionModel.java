@@ -1,6 +1,7 @@
 package app.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class DatasetSuggestionModel {
 	String answerTypeSugg;
@@ -9,7 +10,10 @@ public class DatasetSuggestionModel {
 	String hybridSugg;
 	String outOfScopeSugg;
 	String resultStatus;	
-	List<String> sparqlSugg;
+	Map<String, List<String>> sparqlAndAnswerList;
+	
+	
+	
 	
 	/*public DatasetSuggestionModel(String answerTypeSugg, String aggregationSugg, String onlyDboSugg, String hybridSugg,
 			String outOfScopeSugg, List<String> sparqlSuggestion) {		
@@ -21,6 +25,14 @@ public class DatasetSuggestionModel {
 		this.sparqlSuggestion = sparqlSuggestion;
 	}*/
 	
+	
+	public Map<String, List<String>> getSparqlAndAnswerList() {
+		return sparqlAndAnswerList;
+	}
+	public void setSparqlAndAnswerList(Map<String, List<String>> sparqlAndAnswerList) {
+		this.sparqlAndAnswerList = sparqlAndAnswerList;
+	}	
+	
 	public String getResultStatus() {
 		return resultStatus;
 	}
@@ -28,12 +40,7 @@ public class DatasetSuggestionModel {
 		this.resultStatus = resultStatus;
 	}
 	
-	public List<String> getSparqlSugg() {
-		return sparqlSugg;
-	}
-	public void setSparqlSugg(List<String> sparqlSugg) {
-		this.sparqlSugg = sparqlSugg;
-	}	
+		
 	public String getAnswerTypeSugg() {
 		return answerTypeSugg;
 	}

@@ -52,7 +52,7 @@ import app.model.DatasetModel;
 import app.model.DocumentList;
 import app.model.User;
 import app.model.UserDatasetCorrection;
-
+import app.sparql.SparqlService;
 
 @Controller
 public class DashboardController {
@@ -132,6 +132,8 @@ public class DashboardController {
 	        BasicDBObject searchObj = new BasicDBObject();
 			searchObj.put("id",1);	
 			String[] qaldName = qaldTrain.split("_");
+			SparqlService ss = new SparqlService();
+			
 				try {
 					//call mongoDb
 					DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
@@ -140,7 +142,10 @@ public class DashboardController {
 					while (cursor.hasNext()) {
 						DBObject dbobj = cursor.next();
 						Gson gson = new GsonBuilder().create();
-						DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);						
+						DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);	
+						String formatedSparqlQuery = q.getSparqlQuery().replaceAll("\r\n|\r|\n|\t", " ");
+						q.setDatasetVersion(qaldTrain);
+						q.setSparqlQuery(formatedSparqlQuery);
 						list.add(q);
 					}
 					//get QALD Test dataset
@@ -149,7 +154,10 @@ public class DashboardController {
 					while (cursor1.hasNext()) {
 						DBObject dbobj1 = cursor1.next();
 						Gson gson1 = new GsonBuilder().create();
-						DatasetModel q1 = gson1.fromJson(dbobj1.toString(), DatasetModel.class);						
+						DatasetModel q1 = gson1.fromJson(dbobj1.toString(), DatasetModel.class);	
+						String formatedSparqlQuery = q1.getSparqlQuery().replaceAll("\r\n|\r|\n|\t", " ");
+						q1.setDatasetVersion(qaldTest);
+						q1.setSparqlQuery(formatedSparqlQuery);
 						list.add(q1);
 					}
 								
@@ -230,7 +238,7 @@ public class DashboardController {
 	        JSONArray objFinal = new JSONArray();
 	        objFinal.add(obj);
 	    
-	        //write dataset into a file in json format
+	        //write the curated dataset into a file in json format
 	        ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 			writer.writeValue(new File("C:\\exportCuratedDataset\\"+qaldName[0]+".json"), objFinal);		        

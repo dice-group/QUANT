@@ -129,8 +129,14 @@
                         <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/start-correction/${id }/${datasetVersion}">
                         <div class="row">                        	
                         	 	<div class="col-md-6" style="text-align: left">
-                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>
-                        	 	</div>
+                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>                        	 	
+                        	 	<c:if test="${questionRemoveStatus }">
+                        	 	<a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
+                        	 	</c:if>
+                        	 	<c:if test="${removedStatus}">
+                        	 	<a href="#" class="btn btn-danger">Question is removed</a>
+                        	 	</c:if>
+                        	 	</div>                        	 	
                         	 	<div class="col-md-6" style="text-align: right">
                         	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
 		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk"> No changes needed
@@ -158,9 +164,8 @@
                                         <div class="form-group">
                                             <label>SPARQL</label>                                            
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>  
-                                            size list ${sparqlSugg.size() }
-                                            Status result : ${resultStatus }
-                                            SPARQL : ${SPARQL }                                           
+<%--                                             sparql suggestion: ${sparqlSugg}                                                                                        --%>
+<%--                                             SPARQL: ${sparqlQuery } --%>
                                             <c:if test="${resultStatus eq 'false'}">
                                             	<c:if test="${sparqlSugg.size()>0}">
                                             		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View Suggestion</button></p>
@@ -202,6 +207,7 @@
                         					<c:if test="${isAnswerTypeCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        		</c:if>
+                                       		<%-- Answer Type Suggestion is : ${answerTypeSugg } --%>
                                             <label>Answer Type</label>
                                             <input class="form-control" value="${fn:toUpperCase(fn:substring(answerType, 0, 1))}${fn:toLowerCase(fn:substring(answerType, 1,fn:length(answerType)))}" id="answerType" name="answerType" 
                                             <c:if test="${not (empty answerTypeSugg)}">
@@ -318,10 +324,13 @@
 				                                    	</tr>		                                    	
 			                                    </c:forEach>
 			                                </tbody>			                                
-                        				</table>     				
+                        				</table>                       				
+                        				<c:if test="${addKeywordsSuggestionStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsSuggestions" data-toggle="modal" data-target="#provideKeywordsSuggestions" disabled="disabled">View Keywords Suggestion</button></p>
+                        				</c:if>
                         				
-                        				<c:if test="${addKeywordsTranslationsStatus}">
-                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations" disabled="disabled">Add Keywords Translations</button></p>
+                        				<c:if test="${(not addKeywordsSuggestionStatus) and (addKeywordsTranslationsStatus)}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations" disabled="disabled">View Keywords Translations</button></p>
                         				</c:if>
                         			</div>
                         		</div>
@@ -352,8 +361,8 @@
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
-                        				<c:if test="${addKeywordsTranslationsStatus}">
-                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations" disabled="disabled">Add Question Translations</button></p>
+                        				<c:if test="${addQuestionTranslationsStatus}">
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations" disabled="disabled">View Question Translations Suggestion</button></p>
                         				</c:if>
                         			</div>
                         		</div>
