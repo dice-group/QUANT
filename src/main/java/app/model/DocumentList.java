@@ -9,6 +9,14 @@ public class DocumentList {
 	Map<String, List<String>> Keywords;
 	String datasetVersion;
 	Boolean isCurate;
+	Boolean isRemoved;
+	
+	public Boolean getIsRemoved() {
+		return isRemoved;
+	}
+	public void setIsRemoved(Boolean isRemoved) {
+		this.isRemoved = isRemoved;
+	}
 	public String getId() {
 		return id;
 	}

@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.jena.sparql.engine.http.Params;
 //import org.json.JSONArray;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +32,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,11 +54,13 @@ import app.dao.DocumentDAO;
 import app.model.Dataset;
 import app.model.DatasetList;
 import app.model.DatasetModel;
+import app.model.ModifiedSparqlManualEvaluation;
 import app.model.Question;
 import app.model.UserLog;
 import app.response.BaseResponse;
 import app.response.QuestionResponse;
 import app.sparql.SparqlService;
+import app.util.TranslatorService;
 
 @RestController
 @RequestMapping(value= {"/document/datasets"}, produces="application/json; charset=UTF-8")
@@ -69,13 +75,180 @@ public class DocumentRestController {
 	 * @return 
 	 * @return
 	 */	
+	@RequestMapping (value= "/combineAllQuestions", method = RequestMethod.GET)
+	public List<DatasetModel> combineAllQuestions(){
+		List<DatasetModel> questionList = new ArrayList<DatasetModel>();
+		BaseResponse response = new BaseResponse();
+		
+		Dataset dataset = new Dataset();
+	 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
+	 	
+	 	BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("id",1);
+		
+		
+		for (int x=0; x<listDataset.size(); x++) {
+    		try {   			
+    			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+    			DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
+    			DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
+    			while (cursor.hasNext()) {    				
+    				DBObject dbobj = cursor.next();
+    				Gson gson = new GsonBuilder().create();
+    				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+    				q.setDatasetVersion(listDataset.get(x).getName());
+    				questionList.add(q);
+    			}    			
+    		}catch (Exception e) {
+				// TODO: handle exception
+			}    		
+		}
+		return questionList;
+	}
 	
-	@RequestMapping(value= "/addTranslations", method= RequestMethod.GET)
-	public List<DatasetModel> addTranslationResults() throws FileNotFoundException, IOException, ParseException {
+	//Get sparql queries that have been modified in manual evaluation
+	@RequestMapping(value= "/getModifiedQueries", method= RequestMethod.GET)
+	public List<ModifiedSparqlManualEvaluation> getModifiedQueries() throws FileNotFoundException, IOException, ParseException{
+		BaseResponse response = new BaseResponse();
+		List<ModifiedSparqlManualEvaluation> listSparql = new ArrayList<ModifiedSparqlManualEvaluation>();
+		
+		JSONParser parser = new JSONParser();			
+		JSONArray inFile = (JSONArray) parser.parse(new InputStreamReader(new FileInputStream("C:/Users/riagu/Documents/Zafar/QALD1.json"), "UTF8"));
+		
+		for (Object o: inFile) {
+			JSONObject obj = (JSONObject) o;
+			Gson gson = new GsonBuilder().create();
+			ModifiedSparqlManualEvaluation mS = gson.fromJson(obj.toString(), ModifiedSparqlManualEvaluation.class);
+			ModifiedSparqlManualEvaluation data = new ModifiedSparqlManualEvaluation();
+			data.setSparqlQuery(mS.getSparqlQuery());
+			data.setSparqlQuery_c(mS.getSparqlQuery_c());
+			listSparql.add(data);
+		}
+		return listSparql;
+	}
+	
+	//call translation service class and get connected to translation shell on the server
+	@RequestMapping (value="/generateKeywordsTranslations", method= RequestMethod.POST)
+	public Map<String, List<String>> generateKeywordsTranslations(@RequestParam List<String> keywords, final HttpServletResponse response) throws FileNotFoundException
+	{
+		// CORS to allow for communication between https and http
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+		TranslatorService ts = new TranslatorService();
+		Map<String, List<String>> keywordsList = ts.translateNewKeywords(keywords);
+		return keywordsList;
+	}
+		
+	
+	//prepare a file that contains all question without any translations completed with the translation results
+	@RequestMapping(value= "/updateAllTranslationsResult", method= RequestMethod.GET)
+	public List<DatasetModel> updateAllTranslationsResult() throws FileNotFoundException, IOException, ParseException {
 		BaseResponse response = new BaseResponse();
 		List<Question> tasks = new ArrayList<Question>();
 		
 		//read all translations from json file
+		String json;
+		JSONParser parser = new JSONParser();
+		JSONArray results = new JSONArray();		
+		JSONArray inFile = (JSONArray) parser.parse(new InputStreamReader(new FileInputStream("C:/Users/riagu/Documents/allTranslations.json"),"UTF8"));
+
+		for (Object o: inFile) {
+			JSONObject obj = (JSONObject) o;
+			Gson gson = new GsonBuilder().create();
+			Question q = gson.fromJson(obj.toString(), Question.class);
+			Question task = new Question();
+			task.setId(q.getId());
+			//clean the english question			
+			task.setLanguageToQuestion(q.getLanguageToQuestion());
+			if (q.getLanguageToKeyword().isEmpty()) {
+				String englishQuestion = q.getLanguageToQuestion().get("en");
+				if (englishQuestion.startsWith("'")) {
+					englishQuestion = englishQuestion.replaceAll("^\'", "");
+				}					
+				//remove dot character
+				if (englishQuestion.endsWith(".")) {
+					englishQuestion = englishQuestion.substring(0, englishQuestion.lastIndexOf("."));
+					
+				}	
+				//replace many spaces with single space
+				englishQuestion = englishQuestion.replaceAll("\\s+", " ");
+				
+				englishQuestion = englishQuestion.toLowerCase();
+				if (englishQuestion.endsWith(" ")) {
+					englishQuestion = englishQuestion.replaceAll("\\s$", "");
+				}
+				
+				if (englishQuestion.endsWith("'")) {
+					englishQuestion = englishQuestion.replaceAll("\'$", "");
+				}
+				
+				if (englishQuestion.endsWith("?")) {
+					englishQuestion = englishQuestion.replaceAll("\\?$", "");
+				}				
+							
+				DocumentDAO dd = new DocumentDAO();
+				List<String> keywords = dd.generateKeywords(englishQuestion);
+				Map<String, List<String>> keywordsObj = new HashMap<String, List<String>>();
+				keywordsObj.put("en", keywords);
+				task.setLanguageToKeyword(keywordsObj);				 		
+			}else {
+				task.setLanguageToKeyword(q.getLanguageToKeyword());
+			}									
+            tasks.add(task);
+		}
+		
+		//Select question from MongoDB based on question from file. If its found, update the translation results
+		Dataset dataset = new Dataset();
+		List<DatasetList> listDataset = dataset.getDatasetVersionLists();
+		BasicDBObject questionFromDBObj = new BasicDBObject();	
+		List<DatasetModel> ListDM = new ArrayList<DatasetModel>();
+		List<String> listQuestion = new ArrayList<String>();		
+			for (Question q : tasks) {				
+				try{
+					DB db = MongoDBManager.getDB("QaldCuratorFiltered");					
+					DBCollection coll = db.getCollection("AllQuestions");
+					BasicDBObject questionObj = new BasicDBObject();
+					
+					String question = q.getLanguageToQuestion().get("en");					
+					String englishQuestionWithMoreTranslations = q.getLanguageToQuestion().get("en");									
+					questionObj.put("languageToQuestion.en", englishQuestionWithMoreTranslations);				
+					DBCursor cursor = coll.find(questionObj);						
+					while (cursor.hasNext()) {  
+						Map<String, String> map = q.getLanguageToQuestion();
+						Map<String, String> newMap = new HashMap<String, String>();
+						for (Map.Entry<String, String> entry : map.entrySet())
+						{
+							if (entry.getKey().equals("en")) {
+								newMap.put(entry.getKey(),englishQuestionWithMoreTranslations);
+							}else {
+								newMap.put(entry.getKey(),entry.getValue());
+							}						    
+						}
+						DBObject dbobj = cursor.next();
+	    				Gson gson = new GsonBuilder().create();
+	    				DatasetModel result = gson.fromJson(dbobj.toString(), DatasetModel.class);
+	    				DatasetModel questionItem = new DatasetModel();
+	    				questionItem.setId(result.getId());
+	    				questionItem.setDatasetVersion(result.getDatasetVersion());	    				
+	    				questionItem.setLanguageToQuestion(newMap);
+	    				questionItem.setLanguageToKeyword(q.getLanguageToKeyword());    				    				
+						ListDM.add(questionItem);
+					}						
+				}catch (Exception e) {}
+			}			
+		return ListDM;
+	}
+	
+	
+	@RequestMapping(value= "/updateAddedTranslationsResult", method= RequestMethod.GET)
+	public List<DatasetModel> updateAddedTranslationsResult() throws FileNotFoundException, IOException, ParseException {
+		BaseResponse response = new BaseResponse();
+		List<Question> tasks = new ArrayList<Question>();
+		
+		//read all translations from json file
+		
 		String json;
 		JSONParser parser = new JSONParser();
 		JSONArray results = new JSONArray();		
@@ -98,46 +271,41 @@ public class DocumentRestController {
 		BasicDBObject questionFromDBObj = new BasicDBObject();	
 		List<DatasetModel> ListDM = new ArrayList<DatasetModel>();
 		List<String> listQuestion = new ArrayList<String>();		
-			for (Question q : tasks) {
-				for (int x=0; x<listDataset.size(); x++) {
+			for (Question q : tasks) {				
+				try{
+					DB db = MongoDBManager.getDB("QaldCuratorFiltered");					
+					DBCollection coll = db.getCollection("AllQuestions");
 					BasicDBObject questionObj = new BasicDBObject();
-					try{
-						DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-						//DBCollection coll = db.getCollection(listDataset.get(x).getName());
-						DBCollection coll = db.getCollection("QALD7_Test_Multilingual");
-						String question = q.getLanguageToQuestion().get("en");					
-						String englishQuestionWithMoreTranslations = q.getLanguageToQuestion().get("en").replaceAll("^\'", "");
-						englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\\s+$", "");
-						englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\'$", "");
-						//listQuestion.add(englishQuestionWithMoreTranslations);
-						questionObj.put("languageToQuestion.en", englishQuestionWithMoreTranslations);
-						//BasicDBObject searchQuery = new BasicDBObject().append("languageToQuestion.en", "Give me all American presidents in the last 20 years.");
-						//if (!searchQuery.isEmpty()) {						
-							DBCursor cursor = coll.find(questionObj);						
-							while (cursor.hasNext()) {  
-								DBObject dbobj = cursor.next();
-			    				Gson gson = new GsonBuilder().create();
-			    				DatasetModel result = gson.fromJson(dbobj.toString(), DatasetModel.class);
-			    				DatasetModel questionItem = new DatasetModel();
-			    				questionItem.setId(result.getId());
-			    				questionItem.setDatasetVersion("QALD7_Test_Multilingual");
-			    				questionItem.setAnswerType(result.getAnswerType());
-			    				questionItem.setAggregation(result.getAggregation());
-			    				questionItem.setHybrid(result.getHybrid());
-			    				questionItem.setOnlydbo(result.getOnlydbo());
-			    				questionItem.setSparqlQuery(result.getSparqlQuery());		    				
-			    				questionItem.setPseudoSparqlQuery(result.getPseudoSparqlQuery());
-			    				questionItem.setOutOfScope(result.getOutOfScope());
-			    				questionItem.setLanguageToQuestion(q.getLanguageToQuestion());
-			    				questionItem.setLanguageToKeyword(q.getLanguageToKeyword());
-			    				questionItem.setGoldenAnswer(result.getGoldenAnswer());		    				
-			    				DocumentDAO documentDao = new DocumentDAO();
-								documentDao.updateDocument(questionItem);
-								ListDM.add(questionItem);
-							}						
-					}catch (Exception e) {}
-				}
-			}		
+					
+					String question = q.getLanguageToQuestion().get("en");					
+					String englishQuestionWithMoreTranslations = q.getLanguageToQuestion().get("en").replaceAll("^\'", "");
+					englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\\s+$", "");
+					englishQuestionWithMoreTranslations = englishQuestionWithMoreTranslations.replaceAll("\'$", "");					
+					questionObj.put("languageToQuestion.en", englishQuestionWithMoreTranslations);											
+					DBCursor cursor = coll.find(questionObj);						
+					while (cursor.hasNext()) {  
+						DBObject dbobj = cursor.next();
+	    				Gson gson = new GsonBuilder().create();
+	    				DatasetModel result = gson.fromJson(dbobj.toString(), DatasetModel.class);
+	    				DatasetModel questionItem = new DatasetModel();
+	    				questionItem.setId(result.getId());
+	    				questionItem.setDatasetVersion(result.getDatasetVersion());
+	    				questionItem.setAnswerType(result.getAnswerType());
+	    				questionItem.setAggregation(result.getAggregation());
+	    				questionItem.setHybrid(result.getHybrid());
+	    				questionItem.setOnlydbo(result.getOnlydbo());
+	    				questionItem.setSparqlQuery(result.getSparqlQuery());		    				
+	    				questionItem.setPseudoSparqlQuery(result.getPseudoSparqlQuery());
+	    				questionItem.setOutOfScope(result.getOutOfScope());
+	    				questionItem.setLanguageToQuestion(q.getLanguageToQuestion());
+	    				questionItem.setLanguageToKeyword(q.getLanguageToKeyword());
+	    				questionItem.setGoldenAnswer(result.getGoldenAnswer());		    				
+	    				DocumentDAO documentDao = new DocumentDAO();
+						documentDao.updateDocument(questionItem);
+						ListDM.add(questionItem);
+					}						
+				}catch (Exception e) {}
+			}			
 		return ListDM;
 	}
 	
@@ -168,20 +336,7 @@ public class DocumentRestController {
     				if (resultStatus == "false") {
     					tasks.add(q);
     					num_failed_questions++;
-    				}
-    				/*SparqlService ss = new SparqlService();
-    				Set<String> results = new HashSet(); 
-    				String result = null;
-    				//results.add(null);
-    				if (ss.isASKQuery(languageToQuestionEn)) {
-    					result = ss.getResultAskQuery(sprqlQuery);    					
-    				}else {				
-    					results = ss.getResultsFromCurrentEndpoint(sprqlQuery);    					
-    				}	
-    				if ((result == null) || (results.contains(null))) {				
-						num_failed_questions++;
-    					tasks.add(q);
-					}*/
+    				}    				
     			}								
     			} catch (Exception e) {}
     	 	}
@@ -189,64 +344,6 @@ public class DocumentRestController {
 		return tasks;
 	}
 			
-	/*@RequestMapping(value= "/countFailedQuestions", method = RequestMethod.GET)
-	public void countFailedQuestions() {
-		BaseResponse response = new BaseResponse();
-		List<DatasetModel> tasks = new ArrayList<DatasetModel>();
-	 	Dataset dataset = new Dataset();
-	 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
-	 	BasicDBObject sortObj = new BasicDBObject();
-		sortObj.put("id",1);		 		
-		
-		try {            
-            File statText = new File("C:/Users/riagu/Documents/PhD Study/First Task/ListFailedQuestions.txt");
-            FileOutputStream is = new FileOutputStream(statText);
-            OutputStreamWriter osw = new OutputStreamWriter(is);    
-            Writer w = new BufferedWriter(osw);
-            
-            int numFailedQuestions = 0;
-    		int xx=0;
-    		String onlineAnswer;
-    	 	for (int x=0; x<listDataset.size(); x++) {
-    		try {   			
-    			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-    			DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
-    			DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
-    			while (cursor.hasNext()) {
-    				xx++;
-    				DBObject dbobj = cursor.next();
-    				Gson gson = new GsonBuilder().create();
-    				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);			
-    				String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();    
-    				String sprqlQuery = q.getSparqlQuery();
-    				
-    				//count how many questions failed returning answer from current endpoint
-    				SparqlService ss = new SparqlService();
-    				Set<String> results = new HashSet(); 
-    				String result = null;
-    				if (ss.isASKQuery(languageToQuestionEn)) {
-    					result = ss.getResultAskQuery(sprqlQuery);    					
-    				}else {				
-    					results = ss.getQuery(sprqlQuery);    					
-    				}	
-    				if ((result == null) || (results == null)) {					
-						numFailedQuestions = numFailedQuestions+1;
-						w.write("Id: "+q.getId()+"\n");
-						w.write("Question Dataset Version: "+listDataset.get(x).getName()+"\n");
-						w.write("Question: "+ languageToQuestionEn+"\n");						
-						w.write("\n\n");
-					}
-    			}								
-    			} catch (Exception e) {}
-    	 	}
-    	 	w.write("Number of failed questions is "+numFailedQuestions);
-    	 	w.close();
-		}
-        catch (IOException e) {
-            	System.err.println("Problem writing to the file statsTest.txt");
-        		}	 		 	
-	}*/
-	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<QuestionResponse> ShowAll() {
 		List<QuestionResponse> tasks = new ArrayList<QuestionResponse>();

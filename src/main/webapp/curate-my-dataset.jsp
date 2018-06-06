@@ -131,11 +131,57 @@
 							</form>	
 						</div>				
 				</div>
+				 <div class="form-group">
+                        	<span style="font-style: italic; color: red">${message }</span>
+                        	
+                    	</div>
 			</div>
 		</div>
-		
-	
-	
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					 <div class="panel-heading">
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        		<thead>
+                                    <tr>
+                                        <th width="10%" class="text-center">No.</th>
+                                        <th class="text-center">Question</th>
+                                        <th class="text-center">Keywords</th>
+                                        <th class="text-center">Database Origin Version</th>
+                                        <th width="5%" ></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                	<c:forEach var="datasets" items="${datasets}" varStatus="loop">
+                                    	<tr>
+                                    		<td>${loop.index+1}</td>
+                                    		<td>${datasets.getLanguageToQuestion().get("en").toString()}</td>
+                                    		<td>
+                                    		
+                                    		<c:forEach items="${datasets.getLanguageToKeyword()}" var="map">
+			                                     	<c:if test="${map.getKey()=='en'}">
+			                                     		${map.getValue().toString()}
+			                                     	</c:if>
+				                                    		
+			                                    	
+			                                    </c:forEach>
+                                    		</td>
+                                    		<td>${datasets.getDatasetVersion()}</td>
+                                    		<td>
+                                    			<a href="${pageContext.request.contextPath}/curate-my-dataset/detail-collection/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Details"></span></a>
+                                    			
+                                    		</td>
+                                    	</tr>
+                                    </c:forEach>
+                                </tbody>
+                        	</table>
+                        </div>
+				</div>
+			</div>
+		</div>
 	
 	 <!-- jQuery -->
     <script src="<c:url value="/resources/vendor/jquery/jquery.min.js" />"></script>
@@ -153,5 +199,13 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
 </body>
 </html>

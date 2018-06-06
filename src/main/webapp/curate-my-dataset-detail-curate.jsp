@@ -127,9 +127,9 @@
                         	 	<label class="checkbox-inline" id="chkLabel" ${displayStatus} ${statusNoChangeChk }>
 		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
 		                        </label>
-		                        <a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
-                                <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
-		                        <a href="${pageContext.request.contextPath}/document-list/detail/${id}/${datasetVersion}" class="btn btn-warning">Cancel</a>
+		                        <a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="hidden">Remove Question</a>
+                                <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="hidden">Done</button>
+		                        <a href="${pageContext.request.contextPath}/curate-my-dataset/detail-collection/${id}/${datasetVersion}" class="btn btn-warning">Back</a>
 		                        </div>
                         	
                         </div>
@@ -623,7 +623,7 @@
 	  $(document).ready($('.form-control').change(function() {
 	   $.ajax({
 	    type : "post",
-	    url : "${pageContext.request.contextPath}/document-list/document/save",
+	    url : "${pageContext.request.contextPath}/curate-my-dataset/document/save",
 	    cache : false,
 	    data : $('#documentForm').serialize(),
 	    success : function(response) {

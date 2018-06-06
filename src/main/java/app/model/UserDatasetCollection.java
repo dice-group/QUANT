@@ -8,7 +8,8 @@ public class UserDatasetCollection {
 	String transId;
 	int userId;
 	String id;
-	String datasetVersion;	
+	String datasetVersion;
+	String sparqlEndpoint;
 	String answerType;
 	String aggregation;
 	String hybrid;
@@ -106,6 +107,12 @@ public class UserDatasetCollection {
 	}
 	public void setGoldenAnswer(Set<String> goldenAnswer) {
 		this.goldenAnswer = goldenAnswer;
+	}
+	public String getSparqlEndpoint() {
+		return sparqlEndpoint;
+	}
+	public void setSparqlEndpoint(String sparqlEndpoint) {
+		this.sparqlEndpoint = sparqlEndpoint;
 	}
 	
 }
