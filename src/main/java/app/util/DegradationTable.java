@@ -30,7 +30,7 @@ import org.json.simple.parser.ParseException;
  */
 public class DegradationTable {
 	
-	static String endpoint = "http://131.234.28.180:3030/ds/sparql";
+	static String endpoint = "http://dbpedia.org/sparql";
 	
 	public void runQALD(String endpoint) throws FileNotFoundException, IOException, ParseException, HttpException {
 		
