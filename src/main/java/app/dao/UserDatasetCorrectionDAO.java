@@ -55,7 +55,7 @@ public class UserDatasetCorrectionDAO {
 		 searchObj.put("userId", userId);
 		 try {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-				DBCollection coll = db.getCollection("UserDatasetCorrection");
+				DBCollection coll = db.getCollection("UserDatasetCorrectionTemp");
 				DBCursor cursor = coll.find(searchObj);
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
@@ -111,8 +111,7 @@ public class UserDatasetCorrectionDAO {
 					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
 					item.setGoldenAnswer(q.getGoldenAnswer());
 					tasks.add(item);
-				}
-							
+				}							
 			} catch (Exception e) {}
 			return tasks;
 	}
@@ -174,32 +173,36 @@ public class UserDatasetCorrectionDAO {
 			} catch (Exception e) {}
 			return tasks;
 	}
-	/*
-	  * This method is used to update document in MongoDB
-	  */
+	
+	//Store any update during curation process in a temporary table
 	 public void addDocument(UserDatasetCorrection document) {
-		 try {
-			
-			BasicDBObject newDbObj = toBasicDBObject(document);
-			
+		 try {		
+			BasicDBObject newDbObj = toBasicDBObject(document);		
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-			DBCollection coll = db.getCollection("UserDatasetCorrection");
-			
+			DBCollection coll = db.getCollection("UserDatasetCorrection");			
 			coll.save(newDbObj);
 		 } catch (Exception e) {}
 	 }
+	 
+	//Store final update of curation process in UserDatasetCorrection table
+	 public void addDocumentInTempTable(UserDatasetCorrection document) {
+		 try {		
+			BasicDBObject newDbObj = toBasicDBObject(document);		
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("UserDatasetCorrectionTemp");			
+			coll.save(newDbObj);
+		 } catch (Exception e) {}
+	 }
+	 
 	 public void updateDocument(UserDatasetCorrection document) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 searchObj.put("id", document.getId());
 		 searchObj.put("datasetVersion", document.getDatasetVersion());
 		 searchObj.put("userId", document.getUserId());
-		 try {
-			
-			BasicDBObject newDbObj = toBasicDBObject(document);
-			
+		 try {			
+			BasicDBObject newDbObj = toBasicDBObject(document);			
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-			DBCollection coll = db.getCollection("UserDatasetCorrection");
-			
+			DBCollection coll = db.getCollection("UserDatasetCorrection");			
 			coll.update(searchObj, newDbObj);
 		 } catch (Exception e) {}
 	 }

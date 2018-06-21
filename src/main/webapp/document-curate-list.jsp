@@ -133,7 +133,7 @@
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
                                     		<td>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-edit" title="View Details"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-edit" title="View Correction Result"></span></a>
                                     			
                                     		</td>
                                     	</tr>

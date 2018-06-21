@@ -96,7 +96,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">QALD Dataset Question List</h1>
+                    <h1 class="page-header">Question List</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -134,7 +134,7 @@
                                     		<td> 
                                     			
                                     			<c:if test="${datasets.getIsCurate()==false}">                                   		
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Details"></span></a>
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-eye" title="View Question Details"></span></a>
                                     			</c:if>
                                     			<c:if test="${ datasets.getIsCurate()==true && datasets.getIsRemoved()==false}">
                                     			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Correction Result"></span></a>                                    			

@@ -173,8 +173,7 @@ public class CurateMyDatasetController {
 							if (task.getQuestion().size()>0) {
 								for(int y=0; y<task.getQuestion().size(); y++) {
 								
-									hmQuestion.put(task.getQuestion().get(y).getLanguage(), task.getQuestion().get(y).getString());
-									
+									hmQuestion.put(task.getQuestion().get(y).getLanguage(), task.getQuestion().get(y).getString());									
 									String keyword = task.getQuestion().get(y).getKeywords();
 									String[] stringKeyword = keyword.split(",");
 									List<String> listKeywords = new ArrayList<String>();
@@ -201,8 +200,7 @@ public class CurateMyDatasetController {
 									if (vars.equals("string"))
 										setGoldenAnswers.add(task.getAnswers().get(0).getResults().getBindings().get(y).getString().getValue());
 									if (vars.equals("date"))
-										setGoldenAnswers.add(task.getAnswers().get(0).getResults().getBindings().get(y).getDate().getValue());
-									
+										setGoldenAnswers.add(task.getAnswers().get(0).getResults().getBindings().get(y).getDate().getValue());									
 								}
 							}
 							userDatasetCollection.setGoldenAnswer(setGoldenAnswers);
@@ -214,21 +212,16 @@ public class CurateMyDatasetController {
 						return mav;
 					
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					//redirectAttributes.addFlashAttribute("message","You failed to upload " + databaseVersion + " => " + e.getMessage());
-					//ModelAndView mav = new ModelAndView("redirect:/curate-my-dataset");
-					//return mav;
+					System.out.println(e.getMessage());					
 					return null;
 		        }
 				
-			} catch (Exception e) {
-				//return "You failed to upload " + databaseVersion + " => " + e.getMessage();
+			} catch (Exception e) {				
 				redirectAttributes.addFlashAttribute("message","You failed to upload " + databaseVersion + " => " + e.getMessage());
 				ModelAndView mav = new ModelAndView("redirect:/curate-my-dataset");
 				return mav;
 			}
-		} else {
-			//return "You failed to upload " + databaseVersion + " because the file was empty.";
+		} else {			
 			redirectAttributes.addFlashAttribute("message","You failed to upload " + databaseVersion + " because the file was empty.");
 			ModelAndView mav = new ModelAndView("redirect:/curate-my-dataset");
 			return mav;
@@ -248,8 +241,7 @@ public class CurateMyDatasetController {
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
 		UserDatasetCollectionDAO userDatasetCollectionDao = new UserDatasetCollectionDAO();		
-		ModelAndView mav = new ModelAndView("curate-my-dataset-detail");
-		
+		ModelAndView mav = new ModelAndView("curate-my-dataset-detail");		
 		
 		UserDatasetCollection documentItem = userDatasetCollectionDao.getDocument(user.getId(), id, datasetVersion); //get documents
 		/** Setting previous and next record **/
@@ -261,8 +253,7 @@ public class CurateMyDatasetController {
 		String idNext;
 		UserDatasetCollection documentNext = userDatasetCollectionDao.getNextDocument(user.getId(), id, datasetVersion); 
 		UserDatasetCollection documentPrevious = userDatasetCollectionDao.getPreviousDocument(user.getId(), id, datasetVersion);
-		String pageName = "detail-collection";
-		
+		String pageName = "detail-collection";		
 		
 		if (documentPrevious.equals(null)) {
 			previousStatus = "disabled=\"disabled\"";
@@ -331,8 +322,7 @@ public class CurateMyDatasetController {
 			}else {				
 				results = ss.getQuery(sprqlQuery);
 				mav.addObject("onlineAnswer", results);
-			}				
-			
+			}			
 			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
@@ -504,10 +494,10 @@ public class CurateMyDatasetController {
 			documentCorrection.setPseudoSparqlQuery(pseudoSparqlQuery);
 			documentCorrection.setOutOfScope(outOfScope);
 			userDatasetCollectionDao.updateDocument(documentCorrection); //update UserDatasetCorrection
-		}
-		
+		}		
 		return documentCorrection;
 	}
+	
 	@RequestMapping(value = "/curate-my-dataset/document/edit-question/{datasetId}/{datasetVersion}", method = RequestMethod.POST)
 	public @ResponseBody String editQuestion(@PathVariable("datasetId") String datasetId,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Cookie[] cks = request.getCookies();
@@ -533,15 +523,11 @@ public class CurateMyDatasetController {
 				}else {
 					mapLanguageToQuestion.put(mapEntry.getKey(), mapEntry.getValue());
 				}
-			}
-			
+			}			
 			documentCorrection.setLanguageToQuestion(mapLanguageToQuestion);//change value of languageToQuestion
-			userDatasetCollectionDao.updateDocument(documentCorrection);//update document
-			
-		}
-		
-		return "Dataset has been updated";
-		
+			userDatasetCollectionDao.updateDocument(documentCorrection);//update document			
+		}		
+		return "Dataset has been updated";		
 	}
 	
 	//Edit function of Question keyword 
