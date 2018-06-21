@@ -3,13 +3,19 @@
  */
 package app.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author rricha
  *
  */
 public class SparqlSuggestion {
 	
-	public String reframeSparql(String oldTriple, String newTriple, String sparqlQuery, int numOfEntitiesInOldTriple) {
+		public List<String> reframeSparql(String oldTriple, String newTriple, String sparqlQuery, int numOfEntitiesInOldTriple) {
+		List<String> newSparql = new ArrayList<>(); //first element in the list -> sparqlQuery ; second element -> changed Triple
 		int startOfTriple = sparqlQuery.indexOf(oldTriple);
 		int endOfTriple = sparqlQuery.indexOf(oldTriple) + oldTriple.length();
 		
@@ -20,7 +26,9 @@ public class SparqlSuggestion {
 		}
 		
 		String newSparqlQuery = sparqlQuery.substring(0, startOfTriple) + " " + newTriple + " " + sparqlQuery.substring(endOfTriple);
-		return newSparqlQuery;
+		newSparql.add(newSparqlQuery);
+		newSparql.add(newTriple);
+		return newSparql;
 	}
 
 }

@@ -3,6 +3,7 @@
  */
 package app.util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -29,52 +30,66 @@ import org.json.simple.parser.ParseException;
  */
 public class DegradationTable {
 	
-	static String endpoint = "http://131.234.28.180:3030/ds/sparql";
+	static String endpoint = "http://dbpedia.org/sparql";
 	
-	public int runQALD(String endpoint) throws FileNotFoundException, IOException, ParseException, HttpException {
-		int countUnanswered =0; 
-		int totalQuestions = 0;
-		int correctAnswers = 0;
+	public void runQALD(String endpoint) throws FileNotFoundException, IOException, ParseException, HttpException {
+		
 		JSONParser parser = new JSONParser();
+		File myDir = new File("src/resources/QALD-Datasets/");
 		PrintWriter out = new PrintWriter(new FileWriter("src/resources/output.txt", true), true);
-		JSONArray a = (JSONArray) parser.parse(new FileReader("src/resources/QALD-Datasets/JSON_QALD6_Train_dbpedia.json"));
-		for(Object o : a) {
-			JSONObject jsonObject = (JSONObject) o;
-			String sparql = (String) jsonObject.get("sparqlQuery"); 
-			String question = (String) jsonObject.get("languageToQuestion");
-			
-			System.out.println(question + "\n" + sparql);
-			totalQuestions++;
-			if (sparql != null) {
-				QueryEngineHTTP qe = new QueryEngineHTTP(endpoint, sparql);
-				
-				if (sparql.contains("ASK")) {
-					boolean rs = qe.execAsk();
-					if (String.valueOf(rs).isEmpty()) {
-						countUnanswered++;
-						out.write(sparql);
-					}
-					else {
-						System.out.println("ASK: " + String.valueOf(rs));
-					}
-				}
-				else {
-					ResultSet rs = qe.execSelect();
-					if (!rs.hasNext()) { //no result returned
-						countUnanswered++;
-						out.write(sparql);
+		File[] dirContent = myDir .listFiles();
+		for (File f : dirContent)
+		{	
+		    if (!f.isDirectory() && f.getName().contains("Train"))
+		    {
+		        // process file.
+		    	int countUnanswered =0; 
+				int totalQuestions = 0;
+				int correctAnswers = 0;
+		    	System.out.println(f.getName());
+		    	JSONArray a = (JSONArray) parser.parse(new FileReader("src/resources/QALD-Datasets/" + f.getName()));
+				for(Object o : a) {
+					JSONObject jsonObject = (JSONObject) o;
+					String sparql = (String) jsonObject.get("sparqlQuery"); 
+					String question = (String) jsonObject.get("languageToQuestion");
+					
+					System.out.println(f.getName()+ " " + question + "\n" + sparql);
+					totalQuestions++;
+					if (sparql != null) {
+						QueryEngineHTTP qe = new QueryEngineHTTP(endpoint, sparql);
+						
+						if (sparql.contains("ASK")) {
+							boolean rs = qe.execAsk();
+							if (String.valueOf(rs).isEmpty()) {
+								countUnanswered++;
+								//out.write(sparql);
+							}
+							else {
+								System.out.println("ASK: " + String.valueOf(rs));
+							}
 						}
-					}qe.close();
-				}
-			}
+						else {
+							ResultSet rs = qe.execSelect();
+							if (!rs.hasNext()) { //no result returned
+								countUnanswered++;
+								//out.write(sparql);
+								}
+							}qe.close();
+						}
+					}
+				//out.close();
+				out.append("File: "+ f.getName()+ " Total Ques: " + totalQuestions + " Unanswered Questions: " + countUnanswered + "\n");
+				//System.out.println("File: "+ f.getName()+ " Total Ques: " + totalQuestions + "Unanswered Questions: " + countUnanswered);
+		    }
+		    
+		}
 		out.close();
-		System.out.println("Total Ques: " + totalQuestions);
-		return countUnanswered;
+		
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException, HttpException {
 		DegradationTable obj = new DegradationTable();
-		System.out.println(obj.runQALD(endpoint)); 
+		obj.runQALD(endpoint); 
 	}
 
 }

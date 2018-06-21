@@ -1223,18 +1223,7 @@
             "outOfScope": false,
             "languageToQuestion": "{en=In which UK city are the headquarters of the MI6?, de=In welcher Stadt im Vereinigten Königreich ist das Hauptquartier des MI6?, es=¿En qué ciudad del reino unido se encuentra el cuartel genetal del MI6?, it=In quale città del Regno Unito si trova il quartier generale del MI6?, fr=Dans quelle ville anglaise se trouvent les quartiers genéraux du MI6?, nl=In welke Britse stad is het hoofdkwartier van MI6 gevestigd?, ro=În care oraș din Regatul Unit se află cartierul general al MI6?}"
         },
-        {
-            "languageToKeyword": "{en=[river, longest], de=[Fluss, längster], es=[río, más largo], it=[fiume, più lungo], fr=[cours d'eau, plus long], nl=[rivier, langste], ro=[fluviu, cel mai lung]}",
-            "hybrid": false,
-            "onlydbo": false,
-            "sparqlQuery": "PREFIX dbo: <http://dbpedia.org/ontology/> \nPREFIX dbp: <http://dbpedia.org/property/> \nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \nSELECT DISTINCT ?uri \nWHERE { \n        ?uri rdf:type dbo:River . \n      { ?uri dbo:length ?l . } \n      UNION \n      { ?uri dbp:length ?l . } \n} ORDER BY DESC(?l) \nOFFSET 0 LIMIT 1",
-            "answerType": "resource",
-            "aggregation": false,
-            "goldenAnswer": "[http://dbpedia.org/resource/Lochbach_(Itter)]",
-            "id": "115",
-            "outOfScope": false,
-            "languageToQuestion": "{en=What is the longest river?, de=Was ist der längste Fluss?, es=¿Cuál es el río más largo?, it=Qual è il fiume più lungo?, fr=Quel est le cours d'eau le plus long?, nl=Wat is de langste rivier?, ro=Care este cel mai lung fluviu?}"
-        },
+        
         {
             "languageToKeyword": "{en=[Socrates, influence, Aristotle], de=[Sokrates, beeinflussen, Aristoteles], es=[Sócrates, influencia, Aristóteles], it=[Socrate, influenzare, Aristotele], fr=[Socrate, influencer, Aristote], nl=[beïnvloeden, Socrates, Aristoteles], ro=[Socrate, influență, Aristotel]}",
             "hybrid": false,

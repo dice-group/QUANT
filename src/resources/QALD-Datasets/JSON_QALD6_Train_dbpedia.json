@@ -2336,7 +2336,7 @@
             "languageToKeyword": "{en=[films, producer, Steven Spielberg, production budget, $80 million], fa=[فیلم های، تولید، استیون اسپیلبرگ، بودجه، 80 میلیون دلار], de=[Film, Produzent, Steven Spielberg, Budget, $80 Millionen], es=[películas, productor, Steven Spielberg, presupuesto de al menos 80 milliones de dólares], it=[film, produttore, Steven Spielberg, butget di produzione, 80 milioni di dollari], fr=[films, Steven Spielberg, budget, au moins $80 millions], nl=[films, geproduceert door, Steven Spielberg, budget, minstens 80 miljoen dollar], ro=[filme, producător, Steven Spielberg, buget, 80 milioane de dolari]}",
             "hybrid": false,
             "onlydbo": true,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Film> .  ?uri <http://dbpedia.org/ontology/director> <http://dbpedia.org/resource/Steven_Spielberg> .  ?uri <http://dbpedia.org/ontology/budget> ?b .  FILTER( xsd:double(?b) >= 8.0E7 ) } ",
+            "sparqlQuery": "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Film> .  ?uri <http://dbpedia.org/ontology/director> <http://dbpedia.org/resource/Steven_Spielberg> .  ?uri <http://dbpedia.org/ontology/budget> ?b .  FILTER( xsd:double(?b) >= 8.0E7 ) } ",
             "answerType": "resource",
             "aggregation": true,
             "goldenAnswer": "[http://dbpedia.org/resource/Jurassic_Park, http://dbpedia.org/resource/The_Adventures_of_Tintin_(film), http://dbpedia.org/resource/A.I._Artificial_Intelligence, http://dbpedia.org/resource/Minority_Report_(film), http://dbpedia.org/resource/War_of_the_Worlds_(2005_film), http://dbpedia.org/resource/Indiana_Jones_and_the_Kingdom_of_the_Crystal_Skull]",
@@ -2391,7 +2391,7 @@
             "languageToKeyword": "{en=[actors, called, Baldwin], fa=[بازیگران، نام، بالدوین], de=[Schauspieler, heißen, Baldwin], es=[actores, llamados Baldwin], it=[attori, chiamarsi, Baldwin], fr=[Acteury, appelés, Baldwin], nl=[acteurs, heten, Baldwin], ro=[actori, numit, Baldwin]}",
             "hybrid": false,
             "onlydbo": false,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri foaf:surname 'Baldwin'@en . { ?uri <http://dbpedia.org/ontology/occupation> <http://dbpedia.org/resource/Actor> . } UNION { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> . } } ",
+            "sparqlQuery": "PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?uri WHERE {  ?uri foaf:surname 'Baldwin'@en . { ?uri <http://dbpedia.org/ontology/occupation> <http://dbpedia.org/resource/Actor> . } UNION { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> . } } ",
             "answerType": "resource",
             "aggregation": false,
             "goldenAnswer": "[http://dbpedia.org/resource/A._Michael_Baldwin, http://dbpedia.org/resource/Lise_Baldwin, http://dbpedia.org/resource/Judith_Baldwin, http://dbpedia.org/resource/Peter_Baldwin_(actor), http://dbpedia.org/resource/Greg_Baldwin, http://dbpedia.org/resource/Robert_Baldwin_(actor)]",
@@ -2508,17 +2508,7 @@
             "id": "237",
             "languageToQuestion": "{en=What was the last movie with Alec Guinness?, fa=آخرین فیلم الک گینس چه بود؟, de=Was war der letzte Film mit Alec Guinness?, es=¿Cuál fue la última película con Alec Guinness?, it=Qual è l'ultimo film con Alec Guinness?, fr=Quel est le dernier film d'Alec Guinness?, nl=Wat was de laatste film met Alec Guinness?, ro=Care a fost ultimul film cu Alec Guinness?}"
         },
-        {
-            "languageToKeyword": "{en=[poet, most, books], fa=[شاعر، بیشترین، کتاب], de=[Dichter, Bücher, die meisten], es=[poeta, mayor número, libros], it=[poeta, maggior numero, libri], fr=[poète, maximum, livres], nl=[dichter, meeste boeken], ro=[poet, cel mai mare număr, cărți]}",
-            "hybrid": false,
-            "onlydbo": true,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri <http://dbpedia.org/ontology/occupation> <http://dbpedia.org/resource/Poet> .  ?x <http://dbpedia.org/ontology/author> ?uri .  ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Book> . } ORDER BY DESC(COUNT(?x)) OFFSET 0 LIMIT 1 ",
-            "answerType": "resource",
-            "aggregation": true,
-            "goldenAnswer": "[http://dbpedia.org/resource/Jules_Verne]",
-            "id": "203",
-            "languageToQuestion": "{en=Which poet wrote the most books?, fa=کدام شاعر بیشترین کتاب را نوشته است؟, de=Welcher Dichter hat die meisten Bücher geschrieben?, es=¿Que poeta ha escrito el mayor número de libros?, it=Quale poeta ha scritto il maggior numero di libri?, fr=Quel poète a écrit le plus de livres?, nl=Welke dichter heeft de meeste boeken geschreven?, ro=Ce poet a scris cel mai mare număr de cărți?}"
-        },
+        
         {
             "languageToKeyword": "{en=[languages, Colombia], fa=[زبان، کلمبیا], de=[Sprachen, Kolumbien], es=[idiomas, Colombia], it=[lingue, Colombia], fr=[langues, Colombie], nl=[talen, Columbia], ro=[limbi, Columbia]}",
             "hybrid": false,
@@ -2629,17 +2619,7 @@
             "id": "209",
             "languageToQuestion": "{en=How heavy is Jupiter's lightest moon?, fa=سبک ترین قمر مشتری چقدر سنگین است؟, de=Wie schwer ist Jupiters leichtester Mond?, es=¿Cuánto pesa el satélite más ligero de Júpiter?, it=¿Cuánto pesa il satellite più leggero di Giove?, fr=Combien pèse le satellite le plus léger de Jupiter?, nl=Hoe zwaar is de lichtste maan van Jupiter?, ro=Cât de greu este cel mai ușor satelit al lui Jupiter?}"
         },
-        {
-            "languageToKeyword": "{en=[actor, casted, most movies], fa=[بازیگر، بیشترین تعداد فیلم، بازی], de=[Schauspieler, meiste Filme], es=[actor, mayor número de películas], it=[attore, scritturato, maggior numero di film], fr=[acteur, maximum de films], nl=[acteur, spelen, meeste films], ro=[actor, distribuit, cele mai multe filme]}",
-            "hybrid": false,
-            "onlydbo": true,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> .  ?f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Film> .  ?f <http://dbpedia.org/ontology/starring> ?uri . } ORDER BY DESC(COUNT(DISTINCT(?f))) OFFSET 0 LIMIT 1 ",
-            "answerType": "resource",
-            "aggregation": true,
-            "goldenAnswer": "[http://dbpedia.org/resource/Andy_Lau]",
-            "id": "220",
-            "languageToQuestion": "{en=Which actor was casted in the most movies?, fa=کدام بازیگر در بیشترین تعداد فیلم بازی کرده است؟, de=Welcher Schauspieler spielte in den meisten Filmen mit?, es=¿Qué actor ha actuado en el mayor número de películas?, it=Quale attore è stato scritturato in piùfilm?, fr=Quel acteur a joué dans le plus de films?, nl=Welke acteur speelde in de meeste films?, ro=Ce actor a fost distribuit în cele mai multe filme?}"
-        },
+        
         {
             "languageToKeyword": "{en=[James Bond, married], fa=[جیمز باند، ازدواج], de=[James Bond, verheiratet], es=[James Bond, casado], it=[James Bond, sposato], fr=[James Bond, marié], nl=[James Bond, getrouwd], ro=[James Bond, căsătorit]}",
             "hybrid": false,
@@ -2666,7 +2646,7 @@
             "languageToKeyword": "{en=[actors, born, Paris, after 1950], fa=[بازیگرانی، پس از 1950، پاریس، متولد], de=[Schauspieler, geboren, nach 1950, in Paris], es=[actores, nacidos en Paris, después de 1950], it=[attori, nati, dopo il 1950, a Parigi], fr=[acteurs, lieu de naissance, Berlin, date de naissance, après 1950], nl=[actuers, geboren, na 1950, in Parijs], ro=[actori, născut, Paris, după 1950]}",
             "hybrid": false,
             "onlydbo": true,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> .  ?uri <http://dbpedia.org/ontology/birthPlace> <http://dbpedia.org/resource/Paris> .  ?uri <http://dbpedia.org/ontology/birthDate> ?date .  FILTER ( ?date >= xsd:dateTime('1950-12-31T00:00:00Z')) } ",
+            "sparqlQuery": "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> .  ?uri <http://dbpedia.org/ontology/birthPlace> <http://dbpedia.org/resource/Paris> .  ?uri <http://dbpedia.org/ontology/birthDate> ?date .  FILTER ( ?date >= xsd:dateTime('1950-12-31T00:00:00Z')) } ",
             "answerType": "resource",
             "aggregation": true,
             "goldenAnswer": "[http://dbpedia.org/resource/Muriel_Mayette, http://dbpedia.org/resource/Nikolai_Kinski, http://dbpedia.org/resource/%C3%89douard_Baer, http://dbpedia.org/resource/Gr%C3%A9gory_Fitoussi, http://dbpedia.org/resource/Noom_Diawara, http://dbpedia.org/resource/Mathilde_Seigner, http://dbpedia.org/resource/Chems_Dahmani, http://dbpedia.org/resource/Alysson_Paradis, http://dbpedia.org/resource/Ary_Abittan, http://dbpedia.org/resource/Melvil_Poupaud, http://dbpedia.org/resource/Mehdi_Belhaj_Kacem, http://dbpedia.org/resource/Medi_Sadoun, http://dbpedia.org/resource/C%C3%A9cile_Cassel, http://dbpedia.org/resource/Christa_Theret, http://dbpedia.org/resource/Pierre_Boulanger, http://dbpedia.org/resource/St%C3%A9phane_Freiss, http://dbpedia.org/resource/Samir_Guesmi, http://dbpedia.org/resource/Roxane_Duran, http://dbpedia.org/resource/No%C3%A9mie_Lvovsky, http://dbpedia.org/resource/Awa_Ly, http://dbpedia.org/resource/Caroline_Tillette, http://dbpedia.org/resource/Coralie_Trinh_Thi, http://dbpedia.org/resource/Rebecca_Lord, http://dbpedia.org/resource/Nora_Arnezeder, http://dbpedia.org/resource/Judy_Minx, http://dbpedia.org/resource/Estelle_Skornik, http://dbpedia.org/resource/Lucie_Jeanne, http://dbpedia.org/resource/Marianne_Denicourt, http://dbpedia.org/resource/Chiara_Mastroianni, http://dbpedia.org/resource/Angelique_Morgan, http://dbpedia.org/resource/Zabou_Breitman]",
@@ -3366,17 +3346,7 @@
             "id": "311",
             "languageToQuestion": "{en=Who killed John Lennon?, fa=چه کسی جان لنون را کشت؟, de=Wer hat John Lennon getötet?, es=¿Quién asesino a John Lennon?, it=Chi ha ucciso John Lennon?, fr=Qui assissina John Lennon?, nl=Wie heeft John Lennon vermoord?, ro=Cine l-a ucis pe John Lennon?}"
         },
-        {
-            "languageToKeyword": "{en=[frequent flyer program, most airlines], fa=[برنامه مسافر هوایی مکرر، بیشترین خطوط هوایی], de=[Vielfliegerprogramm, meisten Fluggesellschaften], es=[programa de viajero frecuente, mayor numero aerolineas], it=[programma frequent flyer, maggior parte delle compagnie aeree], fr=[programme de fidélisation, plus de companies], nl=[frequent flyer-programma, meeste luchtvaartmaatschappijen], ro=[program de fidelizare pentru zboruri frecvente, cele mai multe companii aeriene]}",
-            "hybrid": false,
-            "onlydbo": false,
-            "sparqlQuery": "SELECT ?uri WHERE {  ?airline <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Airline> .  ?airline <http://dbpedia.org/property/frequentFlyer> ?uri.  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/FrequentFlyerPrograms> . } ORDER BY DESC(COUNT(DISTINCT ?airline)) OFFSET 0 LIMIT 1 ",
-            "answerType": "resource",
-            "aggregation": true,
-            "goldenAnswer": "[http://dbpedia.org/resource/Miles_&_More]",
-            "id": "313",
-            "languageToQuestion": "{en=Which frequent flyer program has the most airlines?, fa=کدام برنامه مسافر هوایی مکرر بیشترین خطوط هوایی را دارد؟, de=Welches Vielfliegerprogramm hat die meisten Fluggesellschaften?, es=¿Qué programa de viajero frecuente tienen la mayoría de las aerolineas? , it=Quale programma frequent flyer ha la maggior parte delle compagnie aeree?, fr=Quel programme de fidélisation aérien a le plus de companies?, nl=Wat is het frequent flyer-programma met de meeste luchtvaartmaatschappijen?, ro=Ce program de fidelizare pentru zboruri frecvente are cele mai multe companii aeriene?}"
-        },
+        
         {
             "languageToKeyword": "{en=[city, headquarter, Air China], fa=[دفتر مرکزی، ایر چاینا، شهر], de=[Stadt, Hauptquartier, Air China], es=[ciudad, sede Air China], it=[città, Air China, quartier generale], fr=[location, quartier général, Air China], nl=[stad, hoofdkantoor, Air China], ro=[oraș, sediu, Air China]}",
             "hybrid": false,
@@ -3531,17 +3501,7 @@
             "id": "326",
             "languageToQuestion": "{en=Give me all spacecrafts that flew to Mars., fa=تمام فضاپیماهایی که به مریخ پرواز کردند را لیست کن., de=Zeig mir alle Raumschiffe, die zum Mars geflogen sind., es=Dame todas las naves espaciales que han volado a Marte, it=Dammi tutte le astronavi che hanno volato su Marte., fr=Donne-moi tous les vaisseaux spatiaux qui ont volé pour Mars., nl=Geef alle ruimtetuigen die naar Mars werden gestuurd., ro=Dă-mi toate navele spațiale care au zburat spre Marte.}"
         },
-        {
-            "languageToKeyword": "{en=[musician, wrote, the most books], fa=[موسیقیدان، بیشترین کتاب، نوشت], de=[Musiker, geschrieben, die meisten Bücher], es=[músico, escrito, mayor numero de libros], it=[musicista, scrivere, maggior numero di libri], fr=[musicien, écrit, plus de livres], nl=[musicus, schreef, de meeste boeken], ro=[muzician, scris, cele mai multe cărți]}",
-            "hybrid": false,
-            "onlydbo": true,
-            "sparqlQuery": "SELECT DISTINCT ?uri WHERE {  ?uri <http://dbpedia.org/ontology/occupation> <http://dbpedia.org/resource/Musician> .  ?x <http://dbpedia.org/ontology/author> ?uri .  ?x <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Book> . } ORDER BY DESC(COUNT(?x)) OFFSET 0 LIMIT 1 ",
-            "answerType": "resource",
-            "aggregation": true,
-            "goldenAnswer": "[http://dbpedia.org/resource/Chris_Bradford]",
-            "id": "327",
-            "languageToQuestion": "{en=Which musician wrote the most books?, fa=کدام موسیقیدان بیشترین کتاب را نوشت؟, de=Welcher Musiker hat die meisten Bücher geschrieben?, es=¿Qué músico ha escrito el mayor numero de libros?, it=Quale musicista ha scritto il maggior numero di libri?, fr=Quel musicien a écrit le plus de livres?, nl=Welke musicus schreef de meeste boeken?, ro=Care muzician a scris cele mai multe cărți?}"
-        },
+        
         {
             "languageToKeyword": "{en=[person, born on, Halloween], fa=[افرادی، هالووین، متولد], de=[Personen, geboren, Halloween], es=[personas nacidas Halloween], it=[nati, Halloween], fr=[personnes, nées, Haloween], nl=[persoon, geboren, Halloween], ro=[persoanele, născut de, Halloween]}",
             "hybrid": false,
