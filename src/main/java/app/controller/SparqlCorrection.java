@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import org.apache.jena.query.QueryExecution;
@@ -91,6 +92,9 @@ public class SparqlCorrection {
 		List<String> primaryTriples = new ArrayList<>();
 		String prefixString = queryString.substring(0, queryString.indexOf("{")+1);
 		Map<String, List<String>> result = new HashMap<>();
+		Map<String, List<String>> tempResult = new HashMap<>();
+		List<String> correctionCase = new ArrayList<>();
+		
 		for (int i =0; i < allTriples.length ; i++) {
 			if(!allTriples[i].startsWith("{")) {
 				primaryTriples.add(allTriples[i]);
@@ -107,12 +111,18 @@ public class SparqlCorrection {
 				}
 				newSparqlQuery += "} ";
 				
-				result = findNewProperty(newSparqlQuery);
-				if (!result.isEmpty())
+				tempResult = findNewProperty(newSparqlQuery);
+				if (!tempResult.isEmpty()) {
+					for (String key : tempResult.keySet()) {
+						correctionCase = tempResult.get(key);
+						correctionCase.add("query permutation");
+						result.put(key, correctionCase);
+					}
 					return result;
+				}
 			}
 		}
-		List<String> correctionCase = new ArrayList<>();
+		
 		if(queryString.contains("yago")) {
 			correctionCase.add("Unhandled Yago Class");
 		}
@@ -481,7 +491,7 @@ public class SparqlCorrection {
 	
 	public static void main(String[] args) throws ParseException {
 		SparqlCorrection sc = new SparqlCorrection();
-		String queryString = "SELECT DISTINCT ?n WHERE { <http://dbpedia.org/resource/FC_Porto> <http://dbpedia.org/ontology/ground> ?x . ?x <http://dbpedia.org/ontology/seatingCapacity> ?n .}";
+		//String queryString = "SELECT DISTINCT ?n WHERE { <http://dbpedia.org/resource/FC_Porto> <http://dbpedia.org/ontology/ground> ?x . ?x <http://dbpedia.org/ontology/seatingCapacity> ?n .}";
 		//String queryString = "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbp: <http://dbpedia.org/property/> select distinct ?s ?x where {  res:New_Delhi dbp:country ?s ; dbo:areaCode ?x .}";
 		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
@@ -490,7 +500,7 @@ public class SparqlCorrection {
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
 		//triple-order example 
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?date WHERE { ?website rdf:type onto:Software ; onto:releaseDate ?date; rdfs:label \"DBpedia\"@en . }";
-		//String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
+		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?uri ?string WHERE { ?uri rdf:type yago:CapitalsInEurope OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" ) }  }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri rdf:type yago:FemaleHeadsOfGovernment ; prop:office ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" )}}";
