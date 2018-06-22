@@ -179,6 +179,7 @@ public class DocumentDAO {
 		 } catch (Exception e) {}
 		 return item;
 	 }
+	 
 	 public List<DocumentList> getAllDatasets(int userId) {
 		 List<DocumentList> tasks = new ArrayList<DocumentList>();
 		 	Dataset dataset = new Dataset();
@@ -278,13 +279,11 @@ public class DocumentDAO {
 						}						
 					}else {
 						Set<String> answers = ss.getResultsFromCurrentEndpoint(query);
-						answerStatus = true;
-						System.out.println("The answers is "+answers);
+						answerStatus = true;						
 						if (answers.isEmpty() || answers.equals(null)) {
 							answerStatus = false;
 						}else {
-							for (String element:answers) {
-								System.out.println("The answer is "+element);
+							for (String element:answers) {								
 								if (element == null) {
 									answerStatus = false;
 									break;
@@ -300,25 +299,28 @@ public class DocumentDAO {
 							}
 						}					
 					}
+					
 					System.out.println("Answer Status: "+answerStatus);
 					//System.out.println("Answer Type: "+ answerType);					
 					
 					//check whether it needs to provide SPARQL suggestion
 					if (!answerStatus) {	
 						try {
-							List<String> sparqlSuggestion = sparqlCorrection(query) ;
+							List<String> sparqlSuggestion = sparqlCorrection(query);
+							System.out.println("Sparql Query "+query);
+							System.out.println("Sparql Suggestion "+sparqlSuggestion);
 							ArrayList<String> listOfSuggestion = new ArrayList<>(sparqlSuggestion.size());
 							listOfSuggestion.addAll(sparqlSuggestion);							
 							Map<String,List<String>> sparqlAndAnswerList = new HashMap<String,List<String>>();							
 							for (String element: listOfSuggestion) {
 								if (element.contains("is missing")) {
+									System.out.println("The element is "+ element);
 									String newElement = element + ". This question should be removed from the dataset.";
 									Collections.replaceAll(listOfSuggestion, element, newElement);	
 									List<String> noAFCE = new ArrayList<String>();
 									noAFCE.add("-");									
 									sparqlAndAnswerList.put(newElement,noAFCE);
-								}else {
-									
+								}else {									
 									/** Retrieve answer from Virtuoso current endpoint **/
 									Set<String> results = new HashSet();	
 									List<String> resultList = new ArrayList<String>();
@@ -376,8 +378,7 @@ public class DocumentDAO {
 					}				
 					item.setOutOfScopeSugg(oos);
 					//System.out.println("OOS value is "+oos);
-				}
-				
+				}				
 		 } catch (Exception e) { e.printStackTrace(); }
 		 return item;
 	 }
@@ -385,8 +386,7 @@ public class DocumentDAO {
 	//Apply SPARQL correction
 	public List<String> sparqlCorrection (String sparqlQuery) throws ParseException {
 		SparqlCorrection sparqlC = new SparqlCorrection();
-		return sparqlC.findNewProperty(sparqlQuery);
-		
+		return sparqlC.findNewProperty(sparqlQuery);	
 	}
 	
 	//Check whether the answer contains Umlaut character
@@ -738,7 +738,7 @@ public class DocumentDAO {
 	//generate keywords from question that already has keywords 
 	public List<String> generateKeywords(String question) throws FileNotFoundException, IOException{	
 		//read a file that contains English stopwords		
-		FileReader fileReader = new FileReader("src/resources/englishStopwords.txt");
+		FileReader fileReader = new FileReader("C:/Users/riagu/Documents/englishStopwords.txt");
         
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         List<String> englishStopwords = new ArrayList<String>();

@@ -241,7 +241,7 @@ public class DashboardController {
 	        //write the curated dataset into a file in json format
 	        ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-			writer.writeValue(new File("C:\\exportCuratedDataset\\"+qaldName[0]+".json"), objFinal);		        
+			writer.writeValue(new File("C:\\exportCuratedDatasetPerVersion\\"+qaldName[0]+".json"), objFinal);		        
         
 		ModelAndView mav = new ModelAndView("redirect:/dashboard");
 		return mav;	

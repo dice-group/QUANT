@@ -142,6 +142,7 @@ public class UserController {
 		mav.addObject("datasets", udcDao.getAllDatasets(user.getId()));
 	    return mav;  
 	}
+	
 	@RequestMapping(value = "/download-dataset-correction", method = RequestMethod.GET)
 	public ModelAndView showDownloadDatasetCorrection(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws JsonGenerationException, JsonMappingException, IOException {
 		Cookie[] cks = request.getCookies();

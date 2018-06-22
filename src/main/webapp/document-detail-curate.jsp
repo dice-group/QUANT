@@ -100,13 +100,11 @@
         <div id="page-wrapper">
         	
             <div class="row">
-                <div class="col-lg-12">
-                	
+                <div class="col-lg-12">                	
                     <h3 class="page-header">Question Detail</h3>
                     <label>ID </label> &nbsp;${id } &nbsp;<label>Dataset Version</label>&nbsp;${datasetVersion }
-                </div>
-                
-                <!-- /.col-lg-12 -->
+                </div> 
+     
             </div>
             <!-- /.row -->
             <div class="row">
@@ -156,9 +154,9 @@
                                             <%-- size list ${sparqlSugg.size() }
                                             Sparql: ${sparqlQuery }
                                             Status result : ${resultStatus }  --%>                           
-                                            <c:if test="${resultStatus eq 'false'}">
+                                            <c:if test="${not resultStatus}">
                                             	<c:if test="${sparqlAndAnswerSugg.size()>0}">
-                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion">View Suggestion</button></p>
+                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion">View SPARQL Suggestion</button></p>
                                             	</c:if>
                                         	</c:if>
                                         </div>                       
@@ -193,16 +191,21 @@
                             	</div>
                         		<div class="col-lg-4">
                         			<div class="form-group">
-                        				<c:if test="${isAnswerTypeCurated == true}">
+                        				<c:if test="${isAnswerTypeCurated}">
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
                                             <label>Answer Type</label>
-                                            <input class="form-control" value="${fn:toUpperCase(fn:substring(answerType, 0, 1))}${fn:toLowerCase(fn:substring(answerType, 1,fn:length(answerType)))}" id="answerType" name="answerType" 
-                                            <c:if test="${not empty answerTypeSugg}">
+                                            <select class="form-control" id="answerType" name="answerType" <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>
-											${disabledForm }
- 											>
+											</c:if>${disabledForm }>
+											
+												<option value="" <c:if test="${empty answerType}"> selected = "selected"</c:if>></option>
+												<option value="boolean" ${answerType == "boolean" ? 'selected="selected"' : ''} >Boolean</option>
+												<option value="date" ${answerType == "date" ? 'selected="selected"' : ''} >Date</option>
+												<option value="number" ${answerType == "number" ? 'selected="selected"' : ''} >Number</option>
+												<option value="resource" ${answerType == "resource" ? 'selected="selected"' : ''} >Resource</option>
+												<option value="string" ${answerType == "string" ? 'selected="selected"' : ''} >String</option>
+											</select>
                                             <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not empty answerTypeSugg}">
     										Suggestion :	
 											${fn:toUpperCase(fn:substring(answerTypeSugg, 0, 1))}${fn:toLowerCase(fn:substring(answerTypeSugg, 1,fn:length(answerTypeSugg)))}
@@ -366,7 +369,7 @@
 			                                </tbody>
                         				</table>
                         				<c:if test="${addQuestionTranslationsStatus}">
-                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations">Add Question Translations</button></p>
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations">View Question Translations Suggestion</button></p>
                         				</c:if>
                         			</div>
                         		</div>
@@ -460,7 +463,7 @@
                                 </tbody>
                             </table>
                       	<div class="modal-footer">
-			        		<input type="submit" class="btn btn-primary" value="Accept" onclick="return confirm('Are you sure you want to accept the suggestion? ')" />
+			        		<input type="submit" class="btn btn-primary" value="Accept" onclick="return confirm('Are you sure you want to take the suggestion? ')" />
  			        		<button type="button" class="btn btn-default" data-dismiss="modal">Reject</button>
 			        	</div>
 			       </form> 
@@ -564,22 +567,21 @@
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-question-suggestion/${id }/${datasetVersion}">
 			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
-                                    <tr>
-                                    	<th><input type="checkbox" id="checkBoxAll" /></th>
+                                    <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>
                                         <th class="text-center">Language Code</th>
-                                        <th class="text-center">Question Translation</th>                                        
+                                        <th class="text-center">Question Translation</th>
+                                        <th><input type="checkbox" id="checkBoxAll" /></th>                                        
                                     </tr>
                                 </thead>
                                 <tbody> 
 <!--                                 	<form action=""                               		 -->
                                      <c:forEach  items="${questionTranslation}" var="map" varStatus="loop">
-                                    	<tr id="${map.getKey()}">
-                                    		<td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>
+                                    	<tr id="${map.getKey()}">                                    		
                                     		<td>${loop.index+1}</td>
 				                            <td>${map.getKey()}</td>
-				                            <td>${map.getValue()}</td>              				         
-                                    		                                  		
+				                            <td>${map.getValue()}</td>
+				                            <td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>                              		                                  		
                                     	</tr>
                                     </c:forEach>
                                 </tbody>

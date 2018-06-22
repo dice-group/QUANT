@@ -166,9 +166,11 @@
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>  
 <%--                                             sparql suggestion: ${sparqlSugg}                                                                                        --%>
 <%--                                             SPARQL: ${sparqlQuery } --%>
-                                            <c:if test="${resultStatus eq 'false'}">
-                                            	<c:if test="${sparqlSugg.size()>0}">
-                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View Suggestion</button></p>
+											Result Status is: ${resultStatus}
+											Sparl Suggestion size is: ${sparqlAndAnswerSugg.size()}
+                                            <c:if test="${not resultStatus}">
+                                            	<c:if test="${sparqlAndAnswerSugg.size()>0}">
+                                            		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View SPARQL Suggestion</button></p>
                                         		</c:if>
                                         	</c:if>
                                         </div>
@@ -209,12 +211,16 @@
                                        		</c:if>
                                        		<%-- Answer Type Suggestion is : ${answerTypeSugg } --%>
                                             <label>Answer Type</label>
-                                            <input class="form-control" value="${fn:toUpperCase(fn:substring(answerType, 0, 1))}${fn:toLowerCase(fn:substring(answerType, 1,fn:length(answerType)))}" id="answerType" name="answerType" 
-                                            <c:if test="${not (empty answerTypeSugg)}">
+                                            <select class="form-control" id="answerType" name="answerType" <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>
-											disabled="disabled"
- 											>
+											</c:if> disabled="disabled">											
+												<option value="" <c:if test="${empty answerType}"> selected = "selected"</c:if>></option>
+												<option value="boolean" ${answerType == "boolean" ? 'selected="selected"' : ''} >Boolean</option>
+												<option value="date" ${answerType == "date" ? 'selected="selected"' : ''} >Date</option>
+												<option value="number" ${answerType == "number" ? 'selected="selected"' : ''} >Number</option>
+												<option value="resource" ${answerType == "resource" ? 'selected="selected"' : ''} >Resource</option>
+												<option value="string" ${answerType == "string" ? 'selected="selected"' : ''} >String</option>
+											</select>
                                             <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not (empty answerTypeSugg)}">
     										Suggestion :	
 											${fn:toUpperCase(fn:substring(answerTypeSugg, 0, 1))}${fn:toLowerCase(fn:substring(answerTypeSugg, 1,fn:length(answerTypeSugg)))}
@@ -301,6 +307,7 @@
                                     </div>	
                         		</div>
                         	</div>
+                        	
                         	<input type=hidden id="id" name="id" value="${id }">
                         	<input type=hidden id="datasetVersion" name="datasetVersion" value="${datasetVersion }">
                         	<input type=hidden id="pseudoSparqlQuery" name="pseudoSparqlQuery" value="${pseudoSparqlQuery }">
