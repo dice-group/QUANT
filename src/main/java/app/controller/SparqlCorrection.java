@@ -1,16 +1,20 @@
 package app.controller;
 
 import org.apache.commons.collections4.iterators.PermutationIterator;
+import org.apache.jena.atlas.logging.Log;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +24,7 @@ import java.util.Vector;
 
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryParseException;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 
@@ -39,6 +44,7 @@ import app.controller.SparqlSuggestion;
  */
 
 public class SparqlCorrection {
+	private static final Logger logger = LoggerFactory.getLogger(SparqlCorrection.class);
 	
 	String endpoint="http://dbpedia.org/sparql"; // sparql endpoint URL
 	static boolean insidePermutation = false;
@@ -49,21 +55,73 @@ public class SparqlCorrection {
 	}
 	
 	private static final String[] BLACKLIST = { "UNION", "}"};
+	private static final Map<String, String> standardPrefixes;
+	static {
+		Map<String, String> aMap = new HashMap<>();
+        aMap.put("rdfs", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
+        aMap.put("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
+        aMap.put("dbo", "<http://dbpedia.org/ontology/>");
+        aMap.put("dbp", "<http://dbpedia.org/property/>");
+        aMap.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
+        aMap.put("foaf", "<http://xmlns.com/foaf/0.1/>");
+        aMap.put("yago", "<http://dbpedia.org/class/yago/>");
+        aMap.put("res", "<http://dbpedia.org/resource/>");
+        standardPrefixes = Collections.unmodifiableMap(aMap);
+	}
+	
+	public String checkMissingPrefix(String queryString) {
+		String missingPrefix = null; 
+		boolean exceptionCaught = false; 
+		do {
+			try {
+				QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, queryString);
+				if(queryString.contains("ASK") || queryString.contains("ask")) {
+					Boolean rs = qe.execAsk();
+					exceptionCaught = false;
+				}
+				else {
+					ResultSet rs = qe.execSelect();
+					exceptionCaught = false;
+				}
+			}
+			catch(QueryParseException e) {
+				exceptionCaught = true;
+				logger.info(e.getMessage());
+				if (e.getMessage().contains("Unresolved prefixed name:")) {
+					int startIndex = e.getMessage().indexOf("Unresolved prefixed name:") + "Unresolved prefixed name:".length();
+					missingPrefix = e.getMessage().substring(startIndex, e.getMessage().lastIndexOf(":")).trim();
+					System.out.println(missingPrefix);
+					if(standardPrefixes.containsKey(missingPrefix)) {
+						String prefixString = "PREFIX " + missingPrefix + ": " + standardPrefixes.get(missingPrefix) + " ";
+						queryString = prefixString + queryString;
+					}
+				}
+			}
+		}while(exceptionCaught == true);
+		System.out.println(queryString);
+		return queryString;
+	}
 	
 	public Boolean doesQueryWork(String query) {
-		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
-		if(query.contains("ASK") || query.contains("ask")) {
-			Boolean rs = qe.execAsk();
-			if (rs != null) {
-				return true;
+		try {
+			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
+			if(query.contains("ASK") || query.contains("ask")) {
+				Boolean rs = qe.execAsk();
+				if (rs != null) {
+					return true;
+				}
+			}
+			else {
+				ResultSet rs = qe.execSelect();
+				if(rs.hasNext())
+					return true;
 			}
 		}
-		else {
-			ResultSet rs = qe.execSelect();
-			if(rs.hasNext())
-				return true;
+		catch(QueryParseException e) {
+			logger.info(e.getMessage());;
 		}
 		return false;
+		
 	}
 	
 	public Boolean doesQueryWorkWithNewTriple(String oldTriple, String newTriple, String sparqlQuery, int numOfEntitiesInOldTriple) {
@@ -100,8 +158,10 @@ public class SparqlCorrection {
 				primaryTriples.add(allTriples[i]);
 			}
 		}
+		
 		PermutationIterator<String> perm = new PermutationIterator<>(primaryTriples);
 		Collection<String> permutedQuery = new ArrayList<String>();
+		
 		while (perm.hasNext()) {
 			String newSparqlQuery = prefixString;
 			permutedQuery= perm.next();
@@ -153,14 +213,17 @@ public class SparqlCorrection {
 		}
 		else 
 			return null;
-		
-		QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query); //put query to jena sparql library
-		boolean rs = qe.execAsk(); //execute query
-		
-		if (rs == true) {
-			return null;
+		try {
+			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query); //put query to jena sparql library
+			boolean rs = qe.execAsk(); //execute query
+			
+			if (rs == true) {
+				return null;
+			}
 		}
-		
+		catch(QueryParseException e) {
+			logger.info(e.getMessage());;
+		}
 		return entityToBeChecked;
 	}
 	
@@ -231,14 +294,22 @@ public class SparqlCorrection {
 	 * @throws ParseException
 	 */
 	public Map<String, List<String>> findNewProperty(String queryString) throws ParseException{
-		
-		String newTriple = new String();
-		int prefixEnd = 0;
-		String queryStringLowercased = queryString.toLowerCase();
-		String suggestionQuery = queryString;
-		List<String> suggestionList = new ArrayList<>();
 		Map<String, List<String>> result = new HashMap<>();
 		List<String> correctionCase = new ArrayList<>();
+		
+		//checks for missing prefix
+		queryString = checkMissingPrefix(queryString);
+		if (doesQueryWork(queryString)==true) {
+			correctionCase.add("Prefix missing");
+			result.put(queryString, correctionCase);
+			return result;
+		}
+		
+		String suggestionQuery = queryString;
+		List<String> suggestionList = new ArrayList<>();
+		int prefixEnd = 0;
+		
+		String queryStringLowercased = queryString.toLowerCase();
 		
 		if (queryStringLowercased.contains("select"))
 			prefixEnd = queryStringLowercased.indexOf("select");
@@ -316,17 +387,20 @@ public class SparqlCorrection {
 			
 			//extract that string from the predicate which has to be matched against the results from sparql endpoint
 			int propertyBeginsAt = 0;
-			String predMatch = new String();
+			String predicateTobeMatched = new String();
+			String origPrefixOfPredicate = new String();
+			
 			// for preds like <http://dbpedia.org/ontology/ground>
 			if (predicate.startsWith("<")) {
 				propertyBeginsAt = predicate.lastIndexOf("/");
-				predMatch = predicate.substring(propertyBeginsAt+1, predicate.length()-1);
+				predicateTobeMatched = predicate.substring(propertyBeginsAt+1, predicate.length()-1);
 				alternatePrefixString = predicate.substring(1, propertyBeginsAt+1);
 			}
 			//for preds with abbrev. (rdf:type)
 			else {
 				propertyBeginsAt = predicate.indexOf(":");
-				predMatch = predicate.substring(propertyBeginsAt+1);
+				predicateTobeMatched = predicate.substring(propertyBeginsAt+1);
+				origPrefixOfPredicate = predicate.substring(0, propertyBeginsAt);
 			}
 			
 			QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, modifiedQuery); 
@@ -340,11 +414,11 @@ public class SparqlCorrection {
                  for (Iterator<String> it = varNames; it.hasNext(); ) {
                      String varName = it.next();
                      //adds to result only if the value contains predMatch string
-                     if (s.get(varName).toString().contains(predMatch)) {
+                     if (s.get(varName).toString().contains(predicateTobeMatched)) {
                     	 predicatesMatched.add(s.get(varName).toString());
                      }
                      //if there is a change in the predicate itself!
-                     if (s.get(varName).toString().toLowerCase().contains(predMatch.toLowerCase())){
+                     if (s.get(varName).toString().toLowerCase().contains(predicateTobeMatched.toLowerCase())){
                     	 possiblePredicates.add(s.get(varName).toString());
                      }
                  }
@@ -359,45 +433,50 @@ public class SparqlCorrection {
         		
 	            	//check if entity is missing
 	            	String entityMissing = isEntityPresent(prefixString, subject, predicate, object); 
+	            	
 	            	if(entityMissing != null) {
 	            		//If entity is suspected to be missing, check if it is present with another name; check if entity's name has changed using 'redirect'
+	            		
 	            		String returnedTriple = checkEntityName(prefixString, subject, predicate, object);
+	            		
 	            		if (returnedTriple != null) {
 	            			previousTriple = returnedTriple;
-	            			if (!suggestionQuery.contains(currentTriple)) {
+	            			if (!suggestionQuery.contains(currentTriple)) 
 	            				currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1);
-	            				suggestionList = suggest.reframeSparql(predicate + " " + object, returnedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-	            			}
-	            			else 
-	            				suggestionList= suggest.reframeSparql(splitTriples[i], returnedTriple, suggestionQuery, numOfEntitiesInOldTriple);
+	            				
+	            			suggestionList= suggest.reframeSparql(currentTriple, returnedTriple, suggestionQuery, numOfEntitiesInOldTriple);
+	            			
 	            			suggestionQuery = suggestionList.get(0);
             				currentTriple = suggestionList.get(1);
             				correctionCase.add("Entity change");
+            				
             				if(doesQueryWork(suggestionQuery) == true) {
             					result.put(suggestionQuery, correctionCase);
             					return result;
             				}
-	            		}
+	            		}	
+	            	
 	            		else {
 	            			correctionCase.add("Entity Missing");
 	            			result.put("The entity " + entityMissing + " is missing in " + splitTriples[i], correctionCase);
 	            			return result;
 	            		}
 	            	}
-            	
             		else { 
-            			//property missing; return the possible predicates
+            			//check for the possible predicates
             			for (String pred : possiblePredicates) {
             				String changedTriple = subject + " <" + pred + "> " + object;
             				previousTriple = changedTriple;
-            				if (!queryString.contains(splitTriples[i])) {
-                				suggestionList= suggest.reframeSparql(predicate + " " + object, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-                			}
-                			else 
-                				suggestionList= suggest.reframeSparql(splitTriples[i], changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-            				suggestionQuery = suggestionList.get(0);
+            				if (!suggestionQuery.contains(currentTriple)) {
+            					currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1);
+            				}
+                			 
+                			suggestionList= suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
+            				
+                			suggestionQuery = suggestionList.get(0);
             				currentTriple = suggestionList.get(1);
             				correctionCase.add("Property change");
+            				
             				if(doesQueryWork(suggestionQuery) == true) {
             					result.put(suggestionQuery, correctionCase);
             					return result;
@@ -409,58 +488,69 @@ public class SparqlCorrection {
             				return result;
             			}
             		}
-            	
+	            	
             }
-            else {
+            else { //if  !predicatesMatched.isEmpty
             	Boolean queryWorks = false;
+            	
             	for (String str : predicatesMatched) {
-            		int predAt = str.indexOf(predMatch);
-            		String prefix = str.substring(0, predAt);
+            		int predAt = str.indexOf(predicateTobeMatched);
+            		String newPrefixForPredicate = str.substring(0, predAt);
             		
-            		if (!prefixString.isEmpty() && prefixString.contains(prefix) || !alternatePrefixString.isEmpty() && alternatePrefixString.equals(prefix)) {
-            			//prefix found!!
+            		if (!prefixString.isEmpty() && prefixString.contains(newPrefixForPredicate)) {
+            			
+            			//check if this prefix in prefixString is associated with the predicate phrase 
+            			if(prefixString.contains(newPrefixForPredicate)) {
+            				int expandedPrefixAt = prefixString.indexOf("PREFIX " + origPrefixOfPredicate);
+            				String tempString = prefixString.substring(expandedPrefixAt); //contains string from the desired point to the end of prefixString
+            				String expandedPrefix = tempString.substring(tempString.indexOf("<")+1, tempString.indexOf(">"));
+            				
+            				if (!expandedPrefix.equals(newPrefixForPredicate)) {
+            					if (!suggestionQuery.contains(currentTriple)) 
+            						currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1);
+                    				
+            					suggestionList = suggest.reframeSparql(currentTriple, subject + " <" + str + "> " + object , suggestionQuery, numOfEntitiesInOldTriple);
+            					suggestionQuery = suggestionList.get(0);
+            					currentTriple = suggestionList.get(1);
+                				correctionCase.add("Property change");
+                				
+                				if(doesQueryWork(suggestionQuery)==true) {
+                    				result.put(suggestionQuery, correctionCase);
+                    				return result;
+                    			}
+            				}
+            				prefixFound = false;
+            				
+            			}
+            		}
+            		else if (!alternatePrefixString.isEmpty() && alternatePrefixString.equals(newPrefixForPredicate)){
             			prefixFound = true;
             			//check if placing it in the query makes the query work because it might not work with the latter part of the query
-            			if (!suggestionQuery.contains(splitTriples[i])) {
-            				queryWorks = doesQueryWorkWithNewTriple(predicate + " " + object, subject + " <" + str + "> " + object , suggestionQuery, numOfEntitiesInOldTriple);
-            			}
-            			else 
-            				queryWorks = doesQueryWorkWithNewTriple(splitTriples[i], subject + " <" + str + "> " + object , suggestionQuery, numOfEntitiesInOldTriple);
+            			if (!suggestionQuery.contains(currentTriple)) 
+            				currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1);
+        
+            			queryWorks = doesQueryWorkWithNewTriple(currentTriple, subject + " <" + str + "> " + object , suggestionQuery, numOfEntitiesInOldTriple);
             			
             			if (queryWorks==false)
-            				prefixFound= false; //consider the prefix to be missing
+            				prefixFound = false; //consider the prefix to be missing
             		}
+            	
             	}
             	if (prefixFound == false) {
             		
             		for (String str: predicatesMatched) {
-            			int predAt = str.indexOf(predMatch);
+            			int predAt = str.indexOf(predicateTobeMatched);
                 		String prefix = str.substring(0, predAt);
                 		
-            			if  (!prefixString.isEmpty() && !prefixString.contains(prefix)) {
+            			if  (!prefixString.isEmpty() && !prefixString.contains(prefix) || !alternatePrefixString.isEmpty() && !alternatePrefixString.equals(prefix)) {
             				String changedTriple = subject + " <" + str + "> " + object;
             				previousTriple = changedTriple;
-            				if (!suggestionQuery.contains(currentTriple)) {
+            				if (!suggestionQuery.contains(currentTriple)) 
             					currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1); //entire string except the first word  
-                				suggestionList= suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-                			}
-                			else { 
-                				suggestionList= suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-                			}
+                				
+                			suggestionList= suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
+                			
             				suggestionQuery = suggestionList.get(0);
-            				currentTriple = suggestionList.get(1);
-            				correctionCase.add("Property change");
-                		}
-                		else if (!alternatePrefixString.isEmpty() && !alternatePrefixString.equals(prefix)) {
-                			String changedTriple = subject + " <" + str + "> " + object;
-                			previousTriple = changedTriple;
-                			if (!suggestionQuery.contains(currentTriple)) {
-                				currentTriple = currentTriple.substring(currentTriple.indexOf(" ")+1);
-                				suggestionList = suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-                			}
-                			else 
-                				suggestionList = suggest.reframeSparql(currentTriple, changedTriple, suggestionQuery, numOfEntitiesInOldTriple);
-                			suggestionQuery = suggestionList.get(0);
             				currentTriple = suggestionList.get(1);
             				correctionCase.add("Property change");
                 		}
@@ -473,7 +563,7 @@ public class SparqlCorrection {
             	}
                 	
             }
-            
+             
 		}
 		//if there's a suggestion to make
 //		if (!suggestionQuery.equals(queryString))
@@ -492,18 +582,22 @@ public class SparqlCorrection {
 	public static void main(String[] args) throws ParseException {
 		SparqlCorrection sc = new SparqlCorrection();
 		//String queryString = "SELECT DISTINCT ?n WHERE { <http://dbpedia.org/resource/FC_Porto> <http://dbpedia.org/ontology/ground> ?x . ?x <http://dbpedia.org/ontology/seatingCapacity> ?n .}";
-		//String queryString = "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbp: <http://dbpedia.org/property/> select distinct ?s ?x where {  res:New_Delhi dbp:country ?s ; dbo:areaCode ?x .}";
-		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
+		//String queryString = "SELECT DISTINCT ?uri WHERE {  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Film> .  ?uri <http://dbpedia.org/ontology/director> <http://dbpedia.org/resource/Steven_Spielberg> .  ?uri <http://dbpedia.org/ontology/budget> ?b .  FILTER( xsd:double(?b) >= 8.0E7 ) } ";
+		//String queryString = "SELECT DISTINCT ?uri WHERE {  ?uri foaf:surname 'Baldwin'@en . { ?uri dbo:occupation <http://dbpedia.org/resource/Actor> . } UNION { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> . } }";
+		//result to be checked/discussed!
+		//String queryString ="SELECT DISTINCT ?uri WHERE {  <http://dbpedia.org/resource/Ganges> <http://dbpedia.org/property/sourceCountry> ?l . ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?l . ?uri rdf:type <http://dbpedia.org/ontology/Country> . }";
+		String queryString= "select distinct ?s ?x where {  res:New_Delhi dbp:country ?s ; dbo:areaCode ?x .}";
+		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/> PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
-		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  res:  <http://dbpedia.org/resource/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT ?uri ?string WHERE { ?uri rdf:type yago:EuropeanCountries ; onto:governmentType res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = 'en' ) } }";
+		//String queryString = "PREFIX yago: <http://dbpedia.org/class/yago/> PREFIX res: <http://dbpedia.org/resource/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT DISTINCT ?uri ?string WHERE { ?uri rdf:type yago:EuropeanCountries ; onto:governmentType res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = 'en' ) } }";
 		//property change example 
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX prop: <http://dbpedia.org/property/> SELECT DISTINCT ?uri ?string WHERE { ?person rdfs:label \"Tom Hanks\"@en ; prop:spouse ?string OPTIONAL { ?uri rdfs:label ?string }}";  
 		//triple-order example 
 		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?date WHERE { ?website rdf:type onto:Software ; onto:releaseDate ?date; rdfs:label \"DBpedia\"@en . }";
-		String queryString = "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
+		//String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT  ?uri WHERE  { ?subject  rdfs:label     \"Tom Hanks\"@en ;          foaf:homepage  ?uri }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?uri ?string WHERE { ?uri rdf:type yago:CapitalsInEurope OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" ) }  }";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT  ?uri ?string WHERE { ?uri  rdf:type  yago:BirdsOfTheUnitedStates  OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) } }";
-		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri rdf:type yago:FemaleHeadsOfGovernment ; prop:office ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" )}}";
+		//String queryString = "PREFIX yago: <http://dbpedia.org/class/yago/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX prop: <http://dbpedia.org/property/>  SELECT  ?uri ?string WHERE { ?uri rdf:type yago:FemaleHeadsOfGovernment ; prop:office ?office FILTER regex(?office, \"Chancellor of Germany\")OPTIONAL{ ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" )}}";
 		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT  ?uri ?string WHERE { ?uri  rdf:type  yago:StatesOfTheUnitedStates ; dbpedia2:densityrank ?density OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = \"en\" )}} ORDER BY ASC(?density) LIMIT 1";
 		System.out.println(sc.findNewProperty(queryString));
 	}
