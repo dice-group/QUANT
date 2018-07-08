@@ -115,7 +115,7 @@
                         <div class="panel-body">
                         <div class="panel-heading">
                         <div id = "alert_placeholder"></div>
-                        <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/done-correction/${id }/${datasetVersion}">
+                        <form role="form" method="post" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/curate/done/${id }/${datasetVersion}">
                         <div class="row">
                         	
                         	 	<div class="col-md-6" style="text-align: left">
@@ -125,11 +125,11 @@
                         	 	<label class="checkbox-inline" id="chkLabel" ${displayStatus} ${statusNoChangeChk }>
 		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
 		                        </label>
-		                        <a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
-                                <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
+		                        <a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
+<%--                                 <a href="${pageContext.request.contextPath}/document-list/curate/done/${id}/${datasetVersion}" class="btn btn-primary">Done</a> --%>
+	                            <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
 		                        <a href="${pageContext.request.contextPath}/document-list/detail/${id}/${datasetVersion}" class="btn btn-warning">Cancel</a>
-		                        </div>
-                        	
+		                        </div>                        	
                         </div>
                         </form>
                         </div>
@@ -155,7 +155,7 @@
                                             Sparql: ${sparqlQuery }
                                             Status result : ${resultStatus }  --%>                           
                                             <c:if test="${not resultStatus}">
-                                            	<c:if test="${sparqlAndAnswerSugg.size()>0}">
+                                            	<c:if test="${sparqlAndCaseSugg.size()>0}">
                                             		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion">View SPARQL Suggestion</button></p>
                                             	</c:if>
                                         	</c:if>
@@ -450,15 +450,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                	<c:forEach var="sparqlAndAnswer" items="${sparqlAndAnswerSugg}" varStatus="loop">
-<%--                                      	<c:forEach var="answerFromCurrentEndpoint" items="${aFCE}" varStatus="loop"> --%>
-                                    	<tr id="${sparqlAndAnswer.getKey()}">                                    		
+                                	<c:forEach var="sparqlSugg" items="${sparqlAndCaseSugg}" varStatus="loop">
+                                 		<c:forEach var="answerFromCurrentEndpoint" items="${answerFromVirtuosoList}" varStatus="loop">
+                                    	<tr id="${sparqlSugg.getKey()}">                                    		
                                     		<td>${loop.index+1}</td>
-				                            <td>${sparqlAndAnswer.getKey()}</td>
-				                            <td>${sparqlAndAnswer.getValue()}</td>
-				                            <td><input type="checkbox" class="chkCheckBoxId" value="${sparqlAndAnswer.getKey()}" name="sparqlValue" /></td>                                   		                                  		
+				                            <td>${sparqlSugg.getKey()}</td>
+				                            <td><c:out value="${answerFromCurrentEndpoint}"/></td>
+				                            <td><input type="checkbox" class="chkCheckBoxId" value="${sparqlSugg.getKey()}" name="sparqlValue" /></td>                                   		                                  		
                                     	</tr>
-<%--                                     	</c:forEach> --%>
+                                    	</c:forEach>
                                     </c:forEach>                                    
                                 </tbody>
                             </table>
@@ -614,7 +614,7 @@
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
 	
 	 <!-- DataTables JavaScript -->
-	 <script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>
+	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables-editor/jquery.jeditable.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables/js/jquery.dataTables.min.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables-plugins/dataTables.bootstrap.min.js" />"></script>
@@ -625,12 +625,11 @@
 	  $(document).ready($('.form-control').change(function() {
 	   $.ajax({
 	    type : "post",
-	    url : "${pageContext.request.contextPath}/document-list/document/save",
+	    url : "${pageContext.request.contextPath}/document-list/curate/save",
 	    cache : false,
 	    data : $('#documentForm').serialize(),
-	    success : function(response) {
-	    	
-	    	window.location.reload(true);
+	    success : function(response) {	    	
+	    	window.location = "${pageContext.request.contextPath}/document-list/curate/curation-process/${id }/${datasetVersion}";
 	    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data is saved</div>')
 	    },
 	    error : function() {

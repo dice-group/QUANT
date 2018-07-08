@@ -19,7 +19,7 @@ public class UserLogDAO {
 		try {		
 			BasicDBObject newDbObj = toBasicDBObject(userLog);
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-			DBCollection coll = db.getCollection("UserLog");
+			DBCollection coll = db.getCollection("UserLogTemp");
 			coll.save(newDbObj);
 		 } catch (Exception e) {}
 	}

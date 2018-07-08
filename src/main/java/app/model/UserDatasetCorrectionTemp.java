@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class UserDatasetCorrection {
+public class UserDatasetCorrectionTemp {
 	String transId;
-	int userId;
-	int revision;
-	String startingTimeCuration;	
-	String finishingTimeCuration;
+	int userId;	
 	String id;
 	String datasetVersion;	
 	String answerType;
@@ -23,32 +20,7 @@ public class UserDatasetCorrection {
 	Map<String, String> languageToQuestion;
 	Map<String, List<String>> languageToKeyword;
 	Set<String> goldenAnswer;
-	String removingTime;
-	public String getRemovingTime() {
-		return removingTime;
-	}
-
-	public void setRemovingTime(String removingTime) {
-		this.removingTime = removingTime;
-	}
-	String status;
-	public UserDatasetCorrection() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public String getStartingTimeCuration() {
-		return startingTimeCuration;
-	}
-	public void setStartingTimeCuration(String startingTimeCuration) {
-		this.startingTimeCuration = startingTimeCuration;
-	}
-	public String getFinishingTimeCuration() {
-		return finishingTimeCuration;
-	}
-	public void setFinishingTimeCuration(String finishingTimeCuration) {
-		this.finishingTimeCuration = finishingTimeCuration;
-	}
+	String lastRevision;
 	
 	public String getTransId() {
 		return transId;
@@ -62,12 +34,6 @@ public class UserDatasetCorrection {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public int getRevision() {
-		return revision;
-	}
-	public void setRevision(int revision) {
-		this.revision = revision;
-	}	
 	public String getId() {
 		return id;
 	}
@@ -140,11 +106,11 @@ public class UserDatasetCorrection {
 	public void setGoldenAnswer(Set<String> goldenAnswer) {
 		this.goldenAnswer = goldenAnswer;
 	}
-	public String getStatus() {
-		return status;
+	public String getLastRevision() {
+		return lastRevision;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setLastRevision(String lastRevision) {
+		this.lastRevision = lastRevision;
 	}
-		
+	
 }

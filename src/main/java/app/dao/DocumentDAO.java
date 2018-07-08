@@ -41,6 +41,7 @@ import app.model.DatasetSuggestionModel;
 import app.model.DocumentList;
 import app.model.Question;
 import app.model.UserDatasetCorrection;
+import app.model.UserDatasetCorrectionTemp;
 import app.sparql.SparqlService;
 import app.util.TranslatorService;
 import rationals.properties.isEmpty;
@@ -144,8 +145,7 @@ public class DocumentDAO {
 						tasks.add(item);
 		 			}
 		         } catch (Exception e) {}
-		         id_new++;
-		         
+		         id_new++;		         
 		      }
 		    return tasks;
 		 	
@@ -242,31 +242,79 @@ public class DocumentDAO {
 		newdbobj.put("goldenAnswer", document.getGoldenAnswer());
 		newdbobj.put("languageToQuestion", document.getLanguageToQuestion());
 		newdbobj.put("languageToKeyword", document.getLanguageToKeyword());
-		newdbobj.put("outOfScope", document.getOutOfScope());
-		
-		
+		newdbobj.put("outOfScope", document.getOutOfScope());	
 		return newdbobj;
 	}
 	
 	//Correction Parts
-	public DatasetSuggestionModel implementCorrection(String id, String datasetVersion) {		
-		 BasicDBObject searchObj = new BasicDBObject();
+	public DatasetSuggestionModel implementCorrection(String id, String datasetVersion, String curatedStatus, int userId) {		
+		BasicDBObject searchObj = new BasicDBObject();
 		 DatasetSuggestionModel item = new DatasetSuggestionModel();
-		 searchObj.put("id", id);
-		 try {
+		 BasicDBObject sortObj = new BasicDBObject();
+		 searchObj.put("id", id); 
+		 String dbName = "";
+		 if (curatedStatus.equals("curated")) {
+				searchObj.put("datasetVersion", datasetVersion);
+				searchObj.put("userId", userId);
+				searchObj.put("status", "curated");					
+				sortObj.put("revision", -1);
+				dbName = "UserDatasetCorrection";
+		}else if (curatedStatus.equals("in curation")){ 
+				searchObj.put("datasetVersion", datasetVersion);
+				searchObj.put("userId", userId);	
+				sortObj.put("id", -1);
+				dbName = "UserDatasetCorrectionTemp";
+		}else if (curatedStatus.equals("not curated")){ 
+				dbName = datasetVersion;
+				sortObj.put("id", -1);
+		}
+		try {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-				DBCollection coll = db.getCollection(datasetVersion);
-				DBCursor cursor = coll.find(searchObj);
+				DBCollection coll = db.getCollection(dbName);
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
 				SparqlService ss = new SparqlService();	
+				String query = "";
+				String languageToQuestionEn = "";
+				String answerType = "";
+				String outOfScope = "";
+				String aggregation = "";
+				String hybridValue = "";
+				String onlyDboValue = "";
+								
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
-					Gson gson = new GsonBuilder().create();
-					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);					 
-					String answerType = q.getAnswerType();					
+					Gson gson = new GsonBuilder().create();					
+					if (curatedStatus.equals("curated")) {
+						UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
+						query = q.getSparqlQuery();
+						languageToQuestionEn = q.getLanguageToQuestion().get("en");
+						answerType = q.getAnswerType();
+						outOfScope = q.getOutOfScope();
+						aggregation = q.getAggregation();
+						hybridValue = q.getHybrid();
+						onlyDboValue = q.getOnlydbo();
+					}else if (curatedStatus.equals("in curation")){
+						UserDatasetCorrectionTemp q = gson.fromJson(dbobj.toString(), UserDatasetCorrectionTemp.class);
+						query = q.getSparqlQuery();
+						languageToQuestionEn = q.getLanguageToQuestion().get("en");
+						answerType = q.getAnswerType();
+						outOfScope = q.getOutOfScope();
+						aggregation = q.getAggregation();
+						hybridValue = q.getHybrid();
+						onlyDboValue = q.getOnlydbo();
+					}else if (curatedStatus.equals("not curated")){
+						DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+						query = q.getSparqlQuery();
+						languageToQuestionEn = q.getLanguageToQuestion().get("en");
+						answerType = q.getAnswerType();
+						outOfScope = String.valueOf(q.getOutOfScope());
+						aggregation = String.valueOf(q.getAggregation());
+						hybridValue = String.valueOf(q.getHybrid());
+						onlyDboValue = String.valueOf(q.getOnlydbo());
+					}				 
+											
 					
-					boolean answerStatus=false;					
-					String query = q.getSparqlQuery();					
-					String languageToQuestionEn = q.getLanguageToQuestion().get("en").toString();
+					boolean answerStatus=false;				
 					if (ss.isASKQuery(languageToQuestionEn)) {
 						String answer = ss.getResultAskQuery(query);
 						if (answer.equals(null)) {
@@ -300,41 +348,39 @@ public class DocumentDAO {
 						}					
 					}
 					
-					System.out.println("Answer Status: "+answerStatus);
-					//System.out.println("Answer Type: "+ answerType);					
+					System.out.println("Answer Status: "+answerStatus);									
 					
 					//check whether it needs to provide SPARQL suggestion
 					if (!answerStatus) {	
 						try {
-							List<String> sparqlSuggestion = sparqlCorrection(query);
+							Map<String, List<String>> sparqlSuggestion = sparqlCorrection(query);
 							System.out.println("Sparql Query "+query);
 							System.out.println("Sparql Suggestion "+sparqlSuggestion);
-							ArrayList<String> listOfSuggestion = new ArrayList<>(sparqlSuggestion.size());
-							listOfSuggestion.addAll(sparqlSuggestion);							
-							Map<String,List<String>> sparqlAndAnswerList = new HashMap<String,List<String>>();							
-							for (String element: listOfSuggestion) {
-								if (element.contains("is missing")) {
-									System.out.println("The element is "+ element);
-									String newElement = element + ". This question should be removed from the dataset.";
-									Collections.replaceAll(listOfSuggestion, element, newElement);	
-									List<String> noAFCE = new ArrayList<String>();
-									noAFCE.add("-");									
-									sparqlAndAnswerList.put(newElement,noAFCE);
+							ArrayList<String> listOfSuggestion = new ArrayList<String>();
+							Map<String,List<String>> sparqlAndCaseList = new HashMap<String,List<String>>();
+							List<String> answerList = new ArrayList<String>();
+							for (Map.Entry<String, List<String>> mapEntry : sparqlSuggestion.entrySet()) {								
+								if (mapEntry.getKey().contains("is missing")) {									
+									String newSuggestion = mapEntry.getKey() + ". This question should be removed from the dataset.";
+									sparqlAndCaseList.put(newSuggestion, mapEntry.getValue());									
+									answerList.add("-");
+									item.setAnswerFromVirtuosoList(answerList);
 								}else {									
 									/** Retrieve answer from Virtuoso current endpoint **/
-									Set<String> results = new HashSet();	
-									List<String> resultList = new ArrayList<String>();
+									Set<String> results = new HashSet();									
 									if (ss.isASKQuery(languageToQuestionEn)) {
-										String result = ss.getResultAskQuery(element);										
-										resultList.add(result);														
+										String result = ss.getResultAskQuery(mapEntry.getKey());										
+										answerList.add(result);														
 									}else {				
-										results = ss.getQuery(element);
-										resultList.addAll(results);										
-									}									
-									sparqlAndAnswerList.put(element,resultList);
-								}								
+										results = ss.getQuery(mapEntry.getKey());
+										answerList.addAll(results);										
+									}	
+									sparqlAndCaseList.put(mapEntry.getKey(), mapEntry.getValue());									
+								}
+								
+								item.setSparqlAndCaseList(sparqlAndCaseList);
+								item.setAnswerFromVirtuosoList(answerList);
 							}							
-							item.setSparqlAndAnswerList(sparqlAndAnswerList);
 						} catch (Exception e) {
 							// TODO: handle exception
 						}												
@@ -350,22 +396,19 @@ public class DocumentDAO {
 					}
 					//item.setResultStatus("what's happening");
 					
-					if (!AggregationChecking(query).equals(q.getAggregation().toString())) {
+					if (!AggregationChecking(query).equals(aggregation)) {
 						item.setAggregationSugg(AggregationChecking(query));
-					}
+					}				
 					
-					String onlyDboValue = q.getOnlydbo().toString();
 					if (!onlyDboChecking(query).equals(onlyDboValue)) {
 						item.setOnlyDboSugg(onlyDboChecking(query));
 					}
-					
-					String hybridValue = q.getHybrid().toString();
+										
 					if (!HybridChecking(query).equals(hybridValue)) {
 						item.setHybridSugg(HybridChecking(query));
 					}					
-							
-					String outOfScope = String.valueOf(q.getOutOfScope());					
-					String oos = "12";					
+										
+					String oos = "";					
 					
 					if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("false")) {
 						oos ="true";
@@ -375,6 +418,10 @@ public class DocumentDAO {
 						oos="false";
 					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("false") && outOfScope.equals("null")) {
 						oos="true";
+					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("true") && outOfScope.equals("true")) {
+						oos="false";
+					}else if (outOfScopeChecking(query, languageToQuestionEn).equals("true") && outOfScope.equals("false")) {
+						oos=null;
 					}				
 					item.setOutOfScopeSugg(oos);
 					//System.out.println("OOS value is "+oos);
@@ -384,7 +431,7 @@ public class DocumentDAO {
 	 }
 	
 	//Apply SPARQL correction
-	public List<String> sparqlCorrection (String sparqlQuery) throws ParseException {
+	public Map<String, List<String>> sparqlCorrection (String sparqlQuery) throws ParseException {
 		SparqlCorrection sparqlC = new SparqlCorrection();
 		return sparqlC.findNewProperty(sparqlQuery);	
 	}

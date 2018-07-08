@@ -10,28 +10,20 @@ public class DatasetSuggestionModel {
 	String hybridSugg;
 	String outOfScopeSugg;
 	String resultStatus;	
-	Map<String, List<String>> sparqlAndAnswerList;
-	
-	
-	
-	
-	/*public DatasetSuggestionModel(String answerTypeSugg, String aggregationSugg, String onlyDboSugg, String hybridSugg,
-			String outOfScopeSugg, List<String> sparqlSuggestion) {		
-		this.answerTypeSugg = answerTypeSugg;
-		this.aggregationSugg = aggregationSugg;
-		this.onlyDboSugg = onlyDboSugg;
-		this.hybridSugg = hybridSugg;
-		this.outOfScopeSugg = outOfScopeSugg;
-		this.sparqlSuggestion = sparqlSuggestion;
-	}*/
-	
-	
-	public Map<String, List<String>> getSparqlAndAnswerList() {
-		return sparqlAndAnswerList;
+	Map<String, List<String>> sparqlAndCaseList;
+	List<String> answerFromVirtuosoList;	
+	public List<String> getAnswerFromVirtuosoList() {
+		return answerFromVirtuosoList;
 	}
-	public void setSparqlAndAnswerList(Map<String, List<String>> sparqlAndAnswerList) {
-		this.sparqlAndAnswerList = sparqlAndAnswerList;
-	}	
+	public void setAnswerFromVirtuosoList(List<String> answerFromVirtuosoList) {
+		this.answerFromVirtuosoList = answerFromVirtuosoList;
+	}
+	public Map<String, List<String>> getSparqlAndCaseList() {
+		return sparqlAndCaseList;
+	}
+	public void setSparqlAndCaseList(Map<String, List<String>> sparqlAndCaseList) {
+		this.sparqlAndCaseList = sparqlAndCaseList;
+	}		
 	
 	public String getResultStatus() {
 		return resultStatus;
