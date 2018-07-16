@@ -37,7 +37,7 @@ public class TranslatorService {
 			lang = "hi"; 
 		}
 		
-		String finalCommand = command + lang + " '" + text + "'";
+		String finalCommand = command + lang + " " + text ;
 		//System.out.println(finalCommand);
 		
 		StringBuffer output = new StringBuffer();
@@ -113,7 +113,52 @@ public class TranslatorService {
 		return translatedKeywordList;
 	}
 	
-	private void translateQuestions() throws FileNotFoundException, IOException, ParseException {
+	private void translateOnlyKeywords() throws FileNotFoundException, IOException, ParseException {
+		JSONParser parser = new JSONParser();
+		JSONArray a = (JSONArray) parser.parse(new FileReader("src/resources/List_question_with_generated_keywords.json"));
+		//JSONObject resultForKeyword = new JSONObject();
+		String command = "trans -b :";
+		Vector<String> targetLanguages = getTargetLanguages();
+		JSONArray writeKeywords = new JSONArray();
+		
+		for(Object o : a) {
+			JSONObject resultForKeyword = new JSONObject();
+			JSONObject finalResult = new JSONObject();
+			JSONObject jsonObject = (JSONObject) o;
+			JSONObject ltk = (JSONObject) jsonObject.get("languageToKeyword");
+			finalResult.put("id", jsonObject.get("id"));
+			finalResult.put("datasetVersion", jsonObject.get("datasetVersion"));
+			finalResult.put("answerType", jsonObject.get("answerType"));
+			finalResult.put("aggregation", jsonObject.get("aggregation"));
+			finalResult.put("hybrid", jsonObject.get("hybrid"));
+			finalResult.put("onlydbo", jsonObject.get("onlydbo"));
+			finalResult.put("sparqlQuery", jsonObject.get("sparqlQuery"));
+			finalResult.put("pseudoSparqlQuery", jsonObject.get("pseudoSparqlQuery"));
+			finalResult.put("outOfScope", jsonObject.get("outOfScope"));
+			finalResult.put("languageToQuestion", jsonObject.get("languageToQuestion"));
+			finalResult.put("goldenAnswer", jsonObject.get("goldenAnswer"));
+			
+			JSONArray keywordList = new JSONArray();
+			
+			if (ltk.containsKey("en")) {
+				keywordList = (JSONArray) ltk.get("en");
+				resultForKeyword.put("en", keywordList);
+				
+				for (String lang : targetLanguages) {
+					resultForKeyword.put(lang, translateKeywords(keywordList, lang, command));
+				}
+			}
+			finalResult.put("languageToKeyword", resultForKeyword);
+			//System.out.println(finalResult);
+			writeKeywords.add(finalResult);
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+		writer.writeValue(new File("src/resources/newKeywords.json"), writeKeywords);
+	}
+	
+	private void translateQuestionsAndKeywords() throws FileNotFoundException, IOException, ParseException {
 		JSONParser parser = new JSONParser();
 		JSONArray a = (JSONArray) parser.parse(new FileReader("src/resources/List_question_with_attributes.json"));
 		Vector<String> targetLanguages = getTargetLanguages();
@@ -123,15 +168,16 @@ public class TranslatorService {
         
         JSONArray writeAll = new JSONArray();
         JSONArray writeAdditional = new JSONArray();
-        JSONObject resultForQuestion = new JSONObject();
-        JSONObject resultForKeyword = new JSONObject();
-        int all_id = 0, add_id = 0;
         
+        int all_id = 0, add_id = 0;
+        Map<String, String> ques2list = new HashMap<>();
         // loop over all JSONObjects to get translation for questions and keywords
 		for(Object o : a) {
 			JSONObject jsonObject = (JSONObject) o;
 			JSONObject ltq = (JSONObject) jsonObject.get("languageToQuestion");
 			JSONObject ltk = (JSONObject) jsonObject.get("languageToKeyword");
+			JSONObject resultForQuestion = new JSONObject();
+	        JSONObject resultForKeyword = new JSONObject();
 			String question = (String) ltq.get("en");
 			System.out.println(question);
 			resultForQuestion.put("en", question);
@@ -170,23 +216,28 @@ public class TranslatorService {
 			if (addedLangs == targetLanguages.size()-1) {
 				finalResult.put("id", ++all_id);
 				writeAll.add(finalResult);
-				//System.out.println(finalResult);
+				ques2list.put(question, "writeAll");
+				//System.out.println("writeAll: " + writeAll);
 			}
 			
 			// translation for only remaining langs added; finalResult contains only missing translations
 			else {
 				finalResult.put("id", ++add_id);
 				writeAdditional.add(finalResult);
-				//System.out.println(finalResult);
+				ques2list.put(question, "writeAdditional");
+				//System.out.println("writeAdditional" + writeAdditional);
 			}
-			
+			if (!ques2list.containsKey(question)) {
+				ques2list.put(question, "not in any list!!!!!!");
+			}
+			//System.out.println(ques2list);
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 		writer.writeValue(new File("src/resources/allTranslations.json"), writeAll);
 		writer.writeValue(new File("src/resources/addedTranslations.json"), writeAdditional);
-		
+		writer.writeValue(new File("src/resources/ques2list.txt"), ques2list);
 	}
 
 	/**
@@ -212,12 +263,14 @@ public class TranslatorService {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		TranslatorService obj = new TranslatorService();
-		//obj.translateQuestions();
-		//System.out.println("Files written.");
-		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
-		List<String> list = new ArrayList<String>();
-		list.add("sky");
-		list.add("blue");
-		System.out.println(obj.translateNewKeywords(list));
+		obj.translateQuestionsAndKeywords();
+		System.out.println("Files written.");
+		//obj.translateOnlyKeywords();
+		
+		//System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
+		//List<String> list = new ArrayList<String>();
+		//list.add("sky");
+		//list.add("blue");
+		//System.out.println(obj.translateNewKeywords(list));
 	}
 }
