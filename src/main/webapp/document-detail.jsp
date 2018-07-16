@@ -85,8 +85,7 @@
                                 <li>
                                     <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
                                 </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                            </ul>                            
                         </li>
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
@@ -96,8 +95,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-            <!-- /.navbar sidebar -->
+            </div>            
         </nav>
         <div id="page-wrapper">
         	<div class="row">
@@ -105,22 +103,16 @@
                     <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idPrevious}/${datasetVersionPrevious}${addUrlParameter}/prev" class="btn btn-default" ${previousStatus }><< PREVIOUS</a>
                     <a href="${pageContext.request.contextPath}/document-list/${pageName }/${idNext}/${datasetVersionNext}${addUrlParameter}/next" class="btn btn-default" ${nextStatus }>NEXT >></a>
                     ${previousCollection }
-                </div>
-                <!-- /.col-lg-12 -->
+                </div>                
             </div>
             <div class="row">
                 <div class="col-lg-12">
                 	<div id = "alert_placeholder"></div>
                     <h3 class="page-header">Question Detail</h3>
                     <label>ID </label> &nbsp;${id } &nbsp;<label>Dataset Version</label>&nbsp;${datasetVersion }
-                </div>
-                
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-           <%-- answer Type = ${answerType }                
-           answerTypeSugg = ${answerTypeSugg }  --%>       	
+                </div>               
+            </div>           
+            <div class="row">                  	
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                     	<c:if test="${isExist=='yes'}">
@@ -128,14 +120,14 @@
                         <div class="panel-heading">
                         <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/start-correction/${id }/${datasetVersion}">
                         <div class="row">                        	
-                        	 	<div class="col-md-6" style="text-align: left">
-                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>                        	 	
-                        	 	<c:if test="${questionRemoveStatus }">
-                        	 	<a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
-                        	 	</c:if>
-                        	 	<c:if test="${removedStatus}">
-                        	 	<a href="#" class="btn btn-danger">Question is removed</a>
-                        	 	</c:if>
+                        	 	<div class="col-md-6" style="text-align: left">                        	 	
+                        	 	<c:if test="${questionRemoveStatus == true}">
+                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>                       	 	
+                        	 	<a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>                        	 	
+                         	 	</c:if>
+                         	 	<c:if test="${questionRemoveStatus == false}">                        	 	
+                        	 	<h1 class="btn btn-danger">Question is removed</h1>
+                        	 	</c:if>                        	 	
                         	 	</div>                        	 	
                         	 	<div class="col-md-6" style="text-align: right">
                         	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
@@ -162,14 +154,17 @@
                                 <div class="col-lg-6">
                                     
                                         <div class="form-group">
+                                        	<c:if test="${isSparqlQueryCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>SPARQL</label>                                            
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>  
 <%--                                             sparql suggestion: ${sparqlSugg}                                                                                        --%>
 <%--                                             SPARQL: ${sparqlQuery } --%>
-											Result Status is: ${resultStatus}
-											Sparl Suggestion size is: ${sparqlAndAnswerSugg.size()}
+											<%-- Result Status is: ${resultStatus}
+											Sparl Suggestion size is: ${sparqlAndCaseSugg.size()} --%>
                                             <c:if test="${not resultStatus}">
-                                            	<c:if test="${sparqlAndAnswerSugg.size()>0}">
+                                            	<c:if test="${sparqlAndCaseSugg.size()>0}">
                                             		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View SPARQL Suggestion</button></p>
                                         		</c:if>
                                         	</c:if>
@@ -180,12 +175,15 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
                                 	
-                                        <div class="form-group">
+                                        <div class="form-group">                                        	
                                             <label>Answer from File</label>
                                             <textarea class="form-control" rows="4" id="goldenAnswer" name="goldenAnswer" readonly="readonly">${goldenAnswer}</textarea>
                                             <p class="help-block"></p>
                                         </div>
                                     	<div class="form-group">
+                                    		<c:if test="${isSparqlQueryCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       		</c:if>
                                             <label>Answer from Current Endpoint</label>                                            
                                             <textarea class="form-control" rows="4" id="goldenAnswer" name="onlineAnswer" readonly="readonly">${onlineAnswer}</textarea>
                                             <p class="help-block"></p>
@@ -209,7 +207,7 @@
                         					<c:if test="${isAnswerTypeCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        		</c:if>
-                                       		<%-- Answer Type Suggestion is : ${answerTypeSugg } --%>
+                                       		
                                             <label>Answer Type</label>
                                             <select class="form-control" id="answerType" name="answerType" <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
@@ -232,6 +230,7 @@
                         					<c:if test="${isOutOfScopeCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        		</c:if>
+                                       		
                                             <label>Out of Scope</label>
                                            	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not (empty outOfScopeSugg)}" >
     										style="background-color:#E6E6FA"    											
@@ -314,6 +313,9 @@
                         	<div class="row">
                         		<div class="col-lg-12">
                         			<div class="form-group">
+                        				<c:if test="${isKeywordCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       	</c:if>                        				
                         				<label>Multilingual Keyword List</label>
                         				<table id="keywordTable" width="100%" class="table table-striped table-bordered table-hover">
                         					<thead>
@@ -345,11 +347,10 @@
                         	<div class="row">
                         		<div class="col-lg-12">
                         			<div class="form-group">
-                        				<label>Multilingual Question List</label> &nbsp;&nbsp;
-                        				<!--  
-                        				<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Question Correction</button>
-                        				<br />
-                        				-->
+                        				<c:if test="${isQuestionTranslationCurated}">
+                                           		<span class="glyphicon glyphicon-check  "></span>
+                                       	</c:if>
+                        				<label>Multilingual Question List</label> &nbsp;&nbsp;                        				
                         				<table id="example"  width="100%" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>

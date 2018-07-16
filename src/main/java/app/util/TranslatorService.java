@@ -267,10 +267,12 @@ public class TranslatorService {
 		System.out.println("Files written.");
 		//obj.translateOnlyKeywords();
 		
+
 		//System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
 		//List<String> list = new ArrayList<String>();
 		//list.add("sky");
 		//list.add("blue");
 		//System.out.println(obj.translateNewKeywords(list));
+
 	}
 }

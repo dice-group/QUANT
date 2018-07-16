@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openrdf.sail.rdbms.algebra.StringValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ import app.model.DatasetSuggestionModel;
 import app.model.Question;
 import app.model.User;
 import app.model.UserDatasetCorrection;
+import app.model.UserDatasetCorrectionTemp;
 import app.model.UserLog;
 import app.response.QuestionResponse;
 import app.sparql.SparqlService;
@@ -163,7 +165,7 @@ public class DocumentController {
 		UserDatasetCorrection documentItemCorrection = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion); //get documents correctio
 		/* end */
 		
-		/* Start intial document master */
+		/* Start initial document master */
 		DocumentDAO documentDao = new DocumentDAO();
 		ModelAndView mav = new ModelAndView("document-detail");
 		DatasetModel documentItem = documentDao.getDocument(id, datasetVersion);//get documents
@@ -228,16 +230,20 @@ public class DocumentController {
 		/** end setting previous and next record **/
 		
 		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
 		Boolean isAnswerTypeCurated = false;
 		Boolean isOutOfScopeCurated = false;
 		Boolean isAggregationCurated = false;
 		Boolean isOnlydboCurated = false;
 		Boolean isHybridCurated = false;				
-		boolean questionRemoveStatus;
+		Boolean questionRemoveStatus;		
+		
 		if ((documentItemCorrection.getId()==null)) {
-			questionRemoveStatus = true;
+			questionRemoveStatus = true;			
 		}else {
-			if (documentItemCorrection.getStatus().equals("false")) {
+			if (documentItemCorrection.getStatus().equals("removed")) {
 				questionRemoveStatus = false;
 			}else {
 				questionRemoveStatus = true;
@@ -256,16 +262,14 @@ public class DocumentController {
 			Boolean outOfScope = documentItem.getOutOfScope();
 			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
 			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
-			//System.out.println("Sparql is :"+ sprqlQuery);
-			
+						
 			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
 			
 			/** Retrieve answer from Virtuoso current endpoint **/
 			Set<String> results = new HashSet();
-			/*results.add(null);
-			String result = null;*/
+			
 			if (ss.isASKQuery(languageToQuestionEn)) {
 				String result = ss.getResultAskQuery(sprqlQuery);
 				mav.addObject("onlineAnswer", result);				
@@ -291,16 +295,19 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			String curatedStatus = "not curated";
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, curatedStatus, user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String,List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 			String resultStatus = documentItemSugg.getResultStatus();	
 						
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -335,13 +342,7 @@ public class DocumentController {
 				mav.addObject("questionTranslation", translations.getLanguageToQuestion());
 			}
 			
-		}else { 
-			//check whether current question has been removed or not
-			//if (!documentItemCorrection.getStatus().equals(null)) {
-			if (documentItemCorrection.getStatus().equals("false")) {			 
-				mav = new ModelAndView("redirect:/document-list/detail/"+idNext+"/"+nextDataset);				
-				return mav;
-			}
+		}else {			
 			//}
 			// document has been curated
 			String languageToQuestionEn = documentItemCorrection.getLanguageToQuestion().get("en").toString();
@@ -389,11 +390,22 @@ public class DocumentController {
 			//mav.addObject("resultStatus", resultStatus);
 			
 			/** Provide notification for curated fields **/
+			isSparqlQueryCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "sprqlQuery");
+			isKeywordCurated = documentCorrectionDao.isKeywordCurated(documentItemCorrection.getUserId(), id, datasetVersion, languageToKeyword);
+			isQuestionTranslationCurated = documentCorrectionDao.isQuestionCurated(documentItemCorrection.getUserId(), id, datasetVersion, languageToQuestion); 
 			isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "answerType");
 			isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "outOfScope");
 			isAggregationCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "aggregation");
 			isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "onlydbo");
 			isHybridCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "hybrid");
+			mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+			mav.addObject("isKeywordCurated", isKeywordCurated);
+			mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
+			mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
+			mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
+			mav.addObject("isAggregationCurated", isAggregationCurated);
+			mav.addObject("isOnlydboCurated", isOnlydboCurated);
+			mav.addObject("isHybridCurated", isHybridCurated);
 			
 			Question questionTranslation= documentDao.getQuestionTranslations(languageToQuestionEn);
 			
@@ -419,12 +431,189 @@ public class DocumentController {
 				mav.addObject("addQuestionTranslationsStatus", true);
 				mav.addObject("questionTranslation", questionTranslation.getLanguageToQuestion());
 			}	
+		}		
+		return mav;  
+	}
+	//ini fungsi buat nampilin removed question
+	@RequestMapping(value = "/document-list/detail/removed/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView showRemovedDocument(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
 		}
+		
+		/* start check data correction first */
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
+		UserDatasetCorrection documentItemCorrection = documentCorrectionDao.getRemovedDocument(user.getId(), id, datasetVersion); //get documents correctio
+		/* end */
+		
+		/* Start initial document master */
+		DocumentDAO documentDao = new DocumentDAO();
+		ModelAndView mav = new ModelAndView("document-detail");
+		DatasetModel documentItem = documentDao.getDocument(id, datasetVersion);//get documents
+		mav.addObject("classDisplay", "btn btn-default");//Show start button
+		/* end */	
+		
+		/** Setting previous and next record **/
+		String previousStatus = "";
+		String nextStatus="";	
+		String idNext = documentDao.getNextDocument(id, datasetVersion);
+		String idPrevious = documentDao.getPreviousDocument(id, datasetVersion);
+		String previousDataset = datasetVersion;
+		String nextDataset = datasetVersion;
+		
+		//	Previous Part	
+		if (idPrevious==null) {
+			previousStatus = "disabled=\"disabled\"";
+			idPrevious = id;
+			
+			//Get previous collection
+			String previousCollection = documentDao.getPreviousCollection(datasetVersion);
+			
+			if (previousCollection != null) {
+				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
+				if (lastRecord != null) {
+					idPrevious = lastRecord;
+					previousDataset = previousCollection;
+					previousStatus="";
+				}				
+			}
+			
+		}
+		
+		// Next part
+		if (idNext==null) {
+			nextStatus = "disabled=\"disabled\"";
+			idNext = id;
+			
+			//Get Next collection
+			String nextCollection = documentDao.getNextCollection(datasetVersion);
+			if (nextCollection != null) {
+				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
+				if (nextRecord != null) {
+					idNext = nextRecord;
+					nextDataset = nextCollection;
+					nextStatus = "";
+				}					
+			}
+		}
+		
+		
+		
+		mav.addObject("previousStatus", previousStatus);
+		mav.addObject("nextStatus", nextStatus);
+		mav.addObject("pageName", "detail");
+		mav.addObject("addUrlParameter", "");
+		mav.addObject("datasetVersionPrevious", previousDataset);
+		mav.addObject("datasetVersionNext", nextDataset);
+		mav.addObject("idPrevious", idPrevious);
+		mav.addObject("idNext", idNext);
+		mav.addObject("isCurated", documentItemCorrection.getId());
+		/** end setting previous and next record **/
+		
+		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
+		Boolean isAnswerTypeCurated = false;
+		Boolean isOutOfScopeCurated = false;
+		Boolean isAggregationCurated = false;
+		Boolean isOnlydboCurated = false;
+		Boolean isHybridCurated = false;				
+		Boolean questionRemoveStatus = false;		
+		mav.addObject("questionRemoveStatus", questionRemoveStatus);
+		
+		String languageToQuestionEn = documentItemCorrection.getLanguageToQuestion().get("en").toString();
+		String sprqlQuery = documentItemCorrection.getSparqlQuery();
+		String goldenAnswer = documentItemCorrection.getGoldenAnswer().toString();
+		String aggregation = documentItemCorrection.getAggregation();
+		String answerType = documentItemCorrection.getAnswerType();
+		String onlydbo = documentItemCorrection.getOnlydbo();
+		String hybrid = documentItemCorrection.getHybrid();
+		String outOfScope = documentItemCorrection.getOutOfScope();
+		Map<String, List<String>> languageToKeyword = documentItemCorrection.getLanguageToKeyword();
+		Map<String, String> languageToQuestion = documentItemCorrection.getLanguageToQuestion();
+		
+		/** Pretty display of Sparql Query**/
+		SparqlService ss = new SparqlService();
+		String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+		Set<String> results = new HashSet();
+		/** Retrieve answer from Virtuoso current endpoint **/
+		if (ss.isASKQuery(languageToQuestionEn)) {
+			String result = ss.getResultAskQuery(sprqlQuery);
+			mav.addObject("onlineAnswer", result);
+		}else {				
+			results = ss.getQuery(sprqlQuery);
+			mav.addObject("onlineAnswer", results);
+		}				
+		
+		
+		mav.addObject("languageToQuestionEn", languageToQuestionEn);
+		mav.addObject("sparqlQuery", formatedSparqlQuery);
+		mav.addObject("goldenAnswer", goldenAnswer);
+		mav.addObject("aggregation", aggregation);
+		mav.addObject("answerType", answerType);
+		mav.addObject("onlydbo", onlydbo);
+		mav.addObject("hybrid", hybrid);
+		mav.addObject("languageToKeyword", languageToKeyword);
+		mav.addObject("languageToQuestion", languageToQuestion);
+		mav.addObject("outOfScope", outOfScope);
+		mav.addObject("id", id);
+		mav.addObject("datasetVersion", datasetVersion);	
+		mav.addObject("SPARQL", sprqlQuery);
+		
+		/** Provide suggestion **/
+		
+		mav.addObject("isExist", "yes");			
+		//mav.addObject("resultStatus", resultStatus);
+		
+		/** Provide notification for curated fields **/
+		isSparqlQueryCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "sprqlQuery");
+		isKeywordCurated = documentCorrectionDao.isKeywordCurated(documentItemCorrection.getUserId(), id, datasetVersion, languageToKeyword);
+		isQuestionTranslationCurated = documentCorrectionDao.isQuestionCurated(documentItemCorrection.getUserId(), id, datasetVersion, languageToQuestion); 
+		isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "answerType");
+		isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "outOfScope");
+		isAggregationCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "aggregation");
+		isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "onlydbo");
+		isHybridCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "hybrid");
+		mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+		mav.addObject("isKeywordCurated", isKeywordCurated);
+		mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
 		mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
 		mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
 		mav.addObject("isAggregationCurated", isAggregationCurated);
 		mav.addObject("isOnlydboCurated", isOnlydboCurated);
 		mav.addObject("isHybridCurated", isHybridCurated);
+		
+		Question questionTranslation= documentDao.getQuestionTranslations(languageToQuestionEn);
+		
+		//Check whether keywords suggestion has been accepted
+		if (documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(documentItemCorrection.getUserId(), id, datasetVersion)) {
+			mav.addObject("addKeywordsSuggestionStatus", false);
+			//provide menu to do keywords translations
+			if (documentDao.doesNeedKeywordsTranslations(languageToQuestionEn)) {
+				mav.addObject("addKeywordsTranslationsStatus", true);
+			}else {
+				mav.addObject("addKeywordsTranslationsStatus", true);
+			}
+				
+		}
+		//Check whether the question needs keywords suggestion
+		if ((documentDao.doesNeedKeywordSuggestions(languageToQuestionEn, datasetVersion)) && (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(documentItemCorrection.getUserId(), id, datasetVersion)))) {
+			mav.addObject("addKeywordsSuggestionStatus", true);
+			mav.addObject("keywordsTranslation", questionTranslation.getLanguageToKeyword());
+		}	
+		
+		//check whether the question needs new translations
+		if (documentDao.doesNeedQuestionTranslations(languageToQuestionEn)) {
+			mav.addObject("addQuestionTranslationsStatus", true);
+			mav.addObject("questionTranslation", questionTranslation.getLanguageToQuestion());
+		}	
 		return mav;  
 	}
 	/**
@@ -530,7 +719,7 @@ public class DocumentController {
 		if ((documentItemCorrection.getId()==null)) {
 			questionRemoveStatus = true;
 		}else {
-			if (documentItemCorrection.getStatus().equals("false")) {
+			if (documentItemCorrection.getStatus().equals("removed")) {
 				questionRemoveStatus = false;
 			}else {
 				questionRemoveStatus = true;
@@ -584,16 +773,18 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
-			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String,List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 			String resultStatus = documentItemSugg.getResultStatus();	
 						
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -606,15 +797,16 @@ public class DocumentController {
 			mav.addObject("addKeywordsSuggestionStatus", documentDao.doesNeedKeywordSuggestions(languageToQuestionEn, datasetVersion));
 		//	mav.addObject("addKeywordsAndQuestionTranslationsStatus", documentDao.doesNeedTranslations(languageToQuestionEn));
 			
-		}else { 
+		}else {		
 			//check whether current question has been removed or not
 			//if (!documentItemCorrection.getStatus().equals(null)) {
-			if (documentItemCorrection.getStatus().equals("false")) {			 
-				mav = new ModelAndView("redirect:/document-list/detail/"+idPrevious+"/"+previousDataset);				
+			//modifikasi disini aja kodenya, gimana?
+			if (documentItemCorrection.getStatus().equals("removed")) {			 
+				mav = new ModelAndView("redirect:/document-list/detail/"+idPrevious+"/"+nextDataset);				
+				//ModelAndView mav = new ModelAndView("redirect:/document-list/detail/removed/"+idPrevious+"/"+datasetVersion);
 				return mav;
 			}
-			//}
-			// document has been curated
+			// document has been curated			
 			String languageToQuestionEn = documentItemCorrection.getLanguageToQuestion().get("en").toString();
 			String sprqlQuery = documentItemCorrection.getSparqlQuery();
 			String goldenAnswer = documentItemCorrection.getGoldenAnswer().toString();
@@ -772,7 +964,7 @@ public class DocumentController {
 		if ((documentItemCorrection.getId()==null)) {
 			questionRemoveStatus = true;
 		}else {
-			if (documentItemCorrection.getStatus().equals("false")) {
+			if (documentItemCorrection.getStatus().equals("removed")) {
 				questionRemoveStatus = false;
 			}else {
 				questionRemoveStatus = true;
@@ -824,16 +1016,18 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 			String resultStatus = documentItemSugg.getResultStatus();	
 						
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);			
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -864,7 +1058,7 @@ public class DocumentController {
 		}else { 
 			//check whether current question has been removed or not
 			//if (!documentItemCorrection.getStatus().equals(null)) {
-			if (documentItemCorrection.getStatus().equals("false")) {			 
+			if (documentItemCorrection.getStatus().equals("removed")) {			 
 				mav = new ModelAndView("redirect:/document-list/detail/"+idNext+"/"+nextDataset);				
 				return mav;
 			}
@@ -1047,17 +1241,18 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 			String resultStatus = documentItemSugg.getResultStatus();	
-			//System.out.println("Result Status is "+resultStatus);// 
-			
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+						
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -1193,17 +1388,18 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 			String resultStatus = documentItemSugg.getResultStatus();	
-			//System.out.println("Result Status is "+resultStatus);// 
-			
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+						
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -1340,17 +1536,18 @@ public class DocumentController {
 				
 				
 				/** Provide suggestion **/
-				DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+				DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 				String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 				String aggregationSugg = documentItemSugg.getAggregationSugg();		
 				String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 				String hybridSugg = documentItemSugg.getHybridSugg();
 				String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-				Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
+				Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+				List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
 				String resultStatus = documentItemSugg.getResultStatus();	
-				//System.out.println("Result Status is "+resultStatus);// 
-				
-				mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+							
+				mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+				mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 				mav.addObject("answerTypeSugg", answerTypeSugg);
 				mav.addObject("aggregationSugg", aggregationSugg);
 				mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -1491,7 +1688,7 @@ public class DocumentController {
 			mav.addObject("datasetVersion", datasetVersion);			
 			
 			/** Provide suggestion **/			
-			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(id, datasetVersion, "curated", user.getId());
 			String resultStatus = documentItemSugg.getResultStatus();			
 			mav.addObject("isExist", "yes");
 			mav.addObject("resultStatus", resultStatus);
@@ -1648,7 +1845,7 @@ public class DocumentController {
 			mav.addObject("datasetVersion", datasetVersion);			
 			
 			/** Provide suggestion **/			
-			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);			
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(id, datasetVersion, "curated", user.getId());			
 			String resultStatus = documentItemSugg.getResultStatus();			
 			mav.addObject("isExist", "yes");
 			mav.addObject("resultStatus", resultStatus);
@@ -1805,7 +2002,7 @@ public class DocumentController {
 			mav.addObject("datasetVersion", datasetVersion);			
 			
 			/** Provide suggestion **/			
-			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);			
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(id, datasetVersion, "curated", user.getId());			
 			String resultStatus = documentItemSugg.getResultStatus();			
 			mav.addObject("isExist", "yes");
 			mav.addObject("resultStatus", resultStatus);
@@ -1834,11 +2031,11 @@ public class DocumentController {
 		}else {
 			mav.addObject("isExist", "no");
 			mav.addObject("id", id);
-			mav.addObject("datasetVersion", datasetVersion);
-			
+			mav.addObject("datasetVersion", datasetVersion);			
 		}
 		return mav;  
 	}
+	
 	@RequestMapping(value = "/document-list/start-correction/{id}/{datasetVersion}", method = RequestMethod.GET)
 	public ModelAndView showDocumentListStartCorrection(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
@@ -1849,6 +2046,7 @@ public class DocumentController {
 			ModelAndView mav = new ModelAndView("redirect:/login");
 			return mav;
 		}
+		
 		//retrieve User
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
@@ -1874,13 +2072,29 @@ public class DocumentController {
 		String statusNoChangeChk="";
 		
 		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
 		Boolean isAnswerTypeCurated = false;
 		Boolean isOutOfScopeCurated = false;
 		Boolean isAggregationCurated = false;
 		Boolean isOnlydboCurated = false;
 		Boolean isHybridCurated = false;
 		
+		int nextRevision = 0;
+		int currentRevision = 0;
+		String curatedStatus;
 		if (documentItem.getId()!=null) {
+			//record starting time of curation
+			//check in what revision the current curated one is. Make sure it is not the cancel curated one
+			currentRevision = documentItem.getRevision();			
+			if ((documentItem.getStatus().equals("curated")) || (documentItem.getStatus().equals("noNeedChanges"))) 
+			{				
+				nextRevision = currentRevision+1;
+			}else if (documentItem.getStatus() == "cancelled") {
+				nextRevision = currentRevision;
+			}	
+			
 			statusNoChangeChk = "style='display:none'";
 			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
 			String sprqlQuery = documentItem.getSparqlQuery();
@@ -1923,16 +2137,19 @@ public class DocumentController {
 			
 			
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(user.getId(), id, datasetVersion);
+			curatedStatus = "curated";
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(id, datasetVersion, curatedStatus, user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
-			Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();
-			String resultStatus = documentItemSugg.getResultStatus();
-			
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
+			String resultStatus = documentItemSugg.getResultStatus();	
+						
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -1942,11 +2159,17 @@ public class DocumentController {
 			mav.addObject("resultStatus", resultStatus);
 			
 			/** is Curated ? **/
+			isSparqlQueryCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "sprqlQuery");
+			isKeywordCurated = documentCorrectionDao.isKeywordCurated(documentItem.getUserId(), id, datasetVersion, languageToKeyword);
+			isQuestionTranslationCurated = documentCorrectionDao.isQuestionCurated(documentItem.getUserId(), id, datasetVersion, languageToQuestion); 
 			isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "answerType");
 			isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "outOfScope");
 			isAggregationCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "aggregation");
 			isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "onlydbo");
-			isHybridCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "hybrid");	
+			isHybridCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "hybrid");
+			mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+			mav.addObject("isKeywordCurated", isKeywordCurated);
+			mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
 			mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
 			mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
 			mav.addObject("isAggregationCurated", isAggregationCurated);
@@ -1981,6 +2204,8 @@ public class DocumentController {
 			}	
 			
 		}else { //document has not been curated 
+			//set number of revision as 1
+			nextRevision = 1;
 			DocumentDAO documentDao = new DocumentDAO();
 			DatasetModel documentMaster = documentDao.getDocument(id, datasetVersion);
 			String languageToQuestionEn = documentMaster.getLanguageToQuestion().get("en").toString();
@@ -2023,17 +2248,18 @@ public class DocumentController {
 			mav.addObject("idNext", idNext);
 					
 			/** Provide suggestion **/
-			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion);
+			DatasetSuggestionModel documentItemSugg = documentDao.implementCorrection(id, datasetVersion, "not curated", user.getId());
 			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
 			String aggregationSugg = documentItemSugg.getAggregationSugg();		
 			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
 			String hybridSugg = documentItemSugg.getHybridSugg();
 			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();			
-			Map<String, List<String>> sparqlAndAnswerSugg = documentItemSugg.getSparqlAndAnswerList();				
-			String resultStatus = documentItemSugg.getResultStatus();
-			//System.out.println("The SPARQL Suggestion is "+sparqlSugg);				
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
+			String resultStatus = documentItemSugg.getResultStatus();	
 						
-			mav.addObject("sparqlAndAnswerSugg", sparqlAndAnswerSugg);			
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);			
 			mav.addObject("answerTypeSugg", answerTypeSugg);
 			mav.addObject("aggregationSugg", aggregationSugg);
 			mav.addObject("onlyDboSugg", onlyDboSugg);
@@ -2067,12 +2293,159 @@ public class DocumentController {
 				mav.addObject("questionTranslation", questionTranslation.getLanguageToQuestion());
 			}
 		}
+		//record starting time of curation of current dataset
+		documentItem.setId(id);
+		documentItem.setDatasetVersion(datasetVersion);
+		documentItem.setUserId(user.getId());	
+		
+		documentItem.setRevision(nextRevision);
+		documentItem.setStartingTimeCuration(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		documentCorrectionDao.addDocument(documentItem);
+		
 		mav.addObject("statusNoChangeChk", statusNoChangeChk);
 		mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
 		mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
 		mav.addObject("isAggregationCurated", isAggregationCurated);
 		mav.addObject("isOnlydboCurated", isOnlydboCurated);
 		mav.addObject("isHybridCurated", isHybridCurated);		
+		return mav;
+	}
+	
+	@RequestMapping (value = "/document-list/curate/curation-process/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView showCurationProcess (@PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		UserDatasetCorrectionDAO documentCorrectionTempDao = new UserDatasetCorrectionDAO();
+		ModelAndView mav = new ModelAndView("document-detail-curate");
+		mav.addObject("disabledForm", "");
+		mav.addObject("startButton", "On Process");
+		mav.addObject("startButtonDisabled", "disabled");
+		mav.addObject("displayStatus", "");
+		UserDatasetCorrectionTemp documentTemp = documentCorrectionTempDao.getTempDocument(user.getId(), id, datasetVersion);
+		String statusNoChangeChk="";
+		
+		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
+		Boolean isAnswerTypeCurated = false;
+		Boolean isOutOfScopeCurated = false;
+		Boolean isAggregationCurated = false;
+		Boolean isOnlydboCurated = false;
+		Boolean isHybridCurated = false;
+		if (documentTemp.getId() != null) {
+			statusNoChangeChk = "style='display:none'";
+			String languageToQuestionEn = documentTemp.getLanguageToQuestion().get("en").toString();
+			String sprqlQuery = documentTemp.getSparqlQuery();
+			String goldenAnswer = documentTemp.getGoldenAnswer().toString();
+			String aggregation = documentTemp.getAggregation();
+			String answerType = documentTemp.getAnswerType();
+			String onlydbo = documentTemp.getOnlydbo();
+			String hybrid = documentTemp.getHybrid();
+			String outOfScope = documentTemp.getOutOfScope();
+			Map<String, List<String>> languageToKeyword = documentTemp.getLanguageToKeyword();
+			Map<String, String> languageToQuestion = documentTemp.getLanguageToQuestion();
+			
+			/** Pretty display of Sparql Query**/
+			SparqlService ss = new SparqlService();
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
+			/** Retrieve answer from Virtuoso current endpoint **/
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}			
+			mav.addObject("sparqlQuery", sprqlQuery);		
+			mav.addObject("languageToQuestionEn", languageToQuestionEn);
+			mav.addObject("sparqlQuery", formatedSparqlQuery);
+			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("aggregation", aggregation);
+			mav.addObject("answerType", answerType);
+			mav.addObject("onlydbo", onlydbo);
+			mav.addObject("hybrid", hybrid);
+			mav.addObject("languageToKeyword", languageToKeyword);
+			mav.addObject("languageToQuestion", languageToQuestion);
+			mav.addObject("outOfScope", outOfScope);
+			mav.addObject("id", id);
+			mav.addObject("datasetVersion", datasetVersion);
+			
+			DatasetSuggestionModel documentItemSugg = documentCorrectionTempDao.implementCorrection(id, datasetVersion, "in curation", user.getId());
+			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
+			String aggregationSugg = documentItemSugg.getAggregationSugg();		
+			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
+			String hybridSugg = documentItemSugg.getHybridSugg();
+			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			List<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
+			String resultStatus = documentItemSugg.getResultStatus();	
+						
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
+			mav.addObject("answerTypeSugg", answerTypeSugg);
+			mav.addObject("aggregationSugg", aggregationSugg);
+			mav.addObject("onlyDboSugg", onlyDboSugg);
+			mav.addObject("hybridSugg", hybridSugg);
+			mav.addObject("outOfScopeSugg", outOfScopeSugg);
+			mav.addObject("isExist", "yes");
+			mav.addObject("resultStatus", resultStatus);
+			
+			/** is Curated ? **/
+			isSparqlQueryCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "sprqlQuery");
+			isKeywordCurated = documentCorrectionTempDao.isKeywordCurated(user.getId(), id, datasetVersion, languageToKeyword);
+			isQuestionTranslationCurated = documentCorrectionTempDao.isQuestionCurated(user.getId(), id, datasetVersion, languageToQuestion); 
+			isAnswerTypeCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "answerType");
+			isOutOfScopeCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "outOfScope");
+			isAggregationCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "aggregation");
+			isOnlydboCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "onlydbo");
+			isHybridCurated = documentCorrectionTempDao.isItemCurated(user.getId(), id, datasetVersion, "hybrid");
+			mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+			mav.addObject("isKeywordCurated", isKeywordCurated);
+			mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
+			mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
+			mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
+			mav.addObject("isAggregationCurated", isAggregationCurated);
+			mav.addObject("isOnlydboCurated", isOnlydboCurated);
+			mav.addObject("isHybridCurated", isHybridCurated);
+			
+			DocumentDAO documentDao = new DocumentDAO();
+			Question translations= documentDao.getQuestionTranslations(languageToQuestionEn);
+			
+			//Check whether keywords suggestion has been accepted
+			if (documentCorrectionTempDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion)) {
+				mav.addObject("addKeywordsSuggestionStatus", false);
+				//provide menu to do keywords translations
+				mav.addObject("addKeywordsTranslationsStatus", true);
+				if (documentDao.doesNeedKeywordsTranslations(languageToQuestionEn)) {					
+					mav.addObject("keywordsTranslations",translations.getLanguageToKeyword());
+				}else {					
+					mav.addObject("keywordsTranslations",documentCorrectionTempDao.generateKeywordsTranslations(user.getId(), id, datasetVersion));
+				}
+					
+			}
+			//Check whether the question needs keywords suggestion
+			if ((documentDao.doesNeedKeywordSuggestions(languageToQuestionEn, datasetVersion)) && (!(documentCorrectionTempDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion)))) {
+				mav.addObject("addKeywordsSuggestionStatus", true);
+				mav.addObject("keywordsTranslation", translations.getLanguageToKeyword());
+			}	
+			
+			//check whether the question needs new translations
+			if (documentDao.doesNeedQuestionTranslations(languageToQuestionEn)) {
+				mav.addObject("addQuestionTranslationsStatus", true);
+				mav.addObject("questionTranslation", translations.getLanguageToQuestion());
+			}			
+		}
 		return mav;
 	}
 	
@@ -2119,8 +2492,7 @@ public class DocumentController {
 		documentCorrection.setHybrid(String.valueOf(document.getHybrid()));
 		documentCorrection.setId(id);
 		documentCorrection.setLanguageToKeyword(document.getLanguageToKeyword());
-		documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
-		documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());		
 		documentCorrection.setOnlydbo(String.valueOf(document.getOnlydbo()));
 		documentCorrection.setOutOfScope(String.valueOf(document.getOutOfScope()));
 		documentCorrection.setPseudoSparqlQuery(document.getPseudoSparqlQuery());
@@ -2164,7 +2536,7 @@ public class DocumentController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/document-list/detail/remove-question/{id}/{datasetVersion}", method = RequestMethod.GET)
+	@RequestMapping(value = "/document-list/curate/remove-question/{id}/{datasetVersion}", method = RequestMethod.GET)
 	public ModelAndView removeQuestion(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
@@ -2176,6 +2548,7 @@ public class DocumentController {
 		//find document
 		DocumentDAO documentDao = new DocumentDAO();
 		DatasetModel document = documentDao.getDocument(id, datasetVersion);
+		UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
 		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
 		
 		//build logInfo
@@ -2186,13 +2559,39 @@ public class DocumentController {
 		logInfo.put("datasetVersion", datasetVersion);
 			
 		if (udcDao.isDocumentExist(userId, id, datasetVersion)) {
-			UserDatasetCorrection documentCorrection = udcDao.getDocument(userId, id, datasetVersion);			
-			
-			documentCorrection.setStatus("false");
-			udcDao.updateDocument(documentCorrection); //update UserDatasetCorrection			
+			documentCorrection = udcDao.getDocument(userId, id, datasetVersion);			
+			if (documentCorrection.getFinishingTimeCuration()!= null) { // the document is finished in curation
+				documentCorrection.setStatus("removed");
+				documentCorrection.setRemovingTime(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+				udcDao.updateDocument(documentCorrection);				
+			}else {
+				//User has started doing curation. but before finish it (button done is not selected), user decide to remove the question
+				//new record that has been created in UserDatasetCorrection will be updated where all question's field values are set using value from master data.
+				//But status and removingTime will be updated  
+				//the only one record in UserDatasetCorrectionTemp will be deleted
+				//all log info in UserLogTemp will be deleted				
+				documentCorrection.setAggregation(String.valueOf(document.getAggregation()));
+				documentCorrection.setAnswerType(document.getAnswerType());
+				documentCorrection.setDatasetVersion(datasetVersion);
+				documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
+				documentCorrection.setHybrid(String.valueOf(document.getHybrid()));
+				documentCorrection.setId(id);
+				documentCorrection.setLanguageToKeyword(document.getLanguageToKeyword());
+				documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());			
+				documentCorrection.setOnlydbo(String.valueOf(document.getOnlydbo()));
+				documentCorrection.setOutOfScope(String.valueOf(document.getOutOfScope()));
+				documentCorrection.setPseudoSparqlQuery(document.getPseudoSparqlQuery());				
+				documentCorrection.setSparqlQuery(document.getSparqlQuery());
+				documentCorrection.setStatus("removed");
+				documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+				documentCorrection.setUserId(userId);
+				documentCorrection.setRemovingTime(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));				
+				udcDao.removeDocumentBeforeCurationDone(documentCorrection);
+				udcDao.deleteTempDocument(userId, id, datasetVersion); 
+				udcDao.removeAllCurationLogForRemoveFunction(userId, id, datasetVersion);
+			}					
 		}else {
-			//put all data from master dataset to documentCorrection					
-			UserDatasetCorrection documentCorrection = new UserDatasetCorrection();
+			//put all data from master dataset to documentCorrection		
 			documentCorrection.setAggregation(String.valueOf(document.getAggregation()));
 			documentCorrection.setAnswerType(document.getAnswerType());
 			documentCorrection.setDatasetVersion(datasetVersion);
@@ -2200,25 +2599,18 @@ public class DocumentController {
 			documentCorrection.setHybrid(String.valueOf(document.getHybrid()));
 			documentCorrection.setId(id);
 			documentCorrection.setLanguageToKeyword(document.getLanguageToKeyword());
-			documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
-			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());			
 			documentCorrection.setOnlydbo(String.valueOf(document.getOnlydbo()));
 			documentCorrection.setOutOfScope(String.valueOf(document.getOutOfScope()));
 			documentCorrection.setPseudoSparqlQuery(document.getPseudoSparqlQuery());
-			documentCorrection.setRevision(1);
+			documentCorrection.setRevision(0);
 			documentCorrection.setSparqlQuery(document.getSparqlQuery());
-			documentCorrection.setStatus("false");
+			documentCorrection.setStatus("removed");
 			documentCorrection.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 			documentCorrection.setUserId(userId);
+			documentCorrection.setRemovingTime(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 			udcDao.addDocument(documentCorrection);			
 		}		
-		userLog.setUserId(userId);
-		userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		userLog.setLogType("remove");
-		userLog.setIpAddress("");
-		userLog.setLogInfo(logInfo);
-		userLogDao.addLogCurate(userLog);//add UserLogcdcd		
-		
 		/** Setting previous and next record **/
 		String nextStatus="";	
 		String idNext = documentDao.getNextDocument(id, datasetVersion);
@@ -2240,31 +2632,72 @@ public class DocumentController {
 				}					
 			}
 		}
-		ModelAndView mav = new ModelAndView("redirect:/document-list/detail/"+idNext+"/"+nextDataset);
-		
+		ModelAndView mav = new ModelAndView("redirect:/document-list/detail/"+idNext+"/"+nextDataset);		
 		return mav;
 	}
 	
-	/*//Curation process is done
-	@RequestMapping (value = "document-list/document/curate-done", method = RequestMethod.POST)
-	public @ResponseBody DatasetModel curate-done (HttpServletRequest request, HttpServletResponse response){
+	//Curation process is done
+	@RequestMapping (value = "document-list/curate/done/{id}/{datasetVersion}", method = RequestMethod.POST)
+	public @ResponseBody ModelAndView curateIsDone (@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes){		
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();		
 		
 		//retrieve User
 		UserDAO userDao = new UserDAO();
-		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));		
-		DocumentDAO documentDao = new DocumentDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));	
 		
-		int userId=user.getId();
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}	
 		
-	}*/
+		//get curated data from temporary table
+		UserDatasetCorrectionDAO document = new UserDatasetCorrectionDAO();
+		UserDatasetCorrectionTemp tempCuratedDocument = document.getTempDocument(user.getId(), id, datasetVersion);
+		String startingTime =  document.getStartingTimeCuration(user.getId(), id, datasetVersion);
+		int revision = document.getRevisionOfCuration(user.getId(), id, datasetVersion);
+		
+		//provide document to be stored in UserDatasetCorrection table
+		UserDatasetCorrection finalDocument = new UserDatasetCorrection();
+		finalDocument.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		finalDocument.setId(id);
+		finalDocument.setUserId(user.getId());
+		finalDocument.setDatasetVersion(datasetVersion);
+		finalDocument.setAnswerType(tempCuratedDocument.getAnswerType());
+		finalDocument.setAggregation(tempCuratedDocument.getAggregation());
+		finalDocument.setHybrid(tempCuratedDocument.getHybrid());
+		finalDocument.setOnlydbo(tempCuratedDocument.getOnlydbo());
+		finalDocument.setSparqlQuery(tempCuratedDocument.getSparqlQuery());
+		finalDocument.setPseudoSparqlQuery(tempCuratedDocument.getPseudoSparqlQuery());
+		finalDocument.setOutOfScope(tempCuratedDocument.getOutOfScope());
+		finalDocument.setLanguageToQuestion(tempCuratedDocument.getLanguageToQuestion());
+		finalDocument.setLanguageToKeyword(tempCuratedDocument.getLanguageToKeyword());
+		finalDocument.setGoldenAnswer(tempCuratedDocument.getGoldenAnswer());
+		finalDocument.setRevision(revision);
+		finalDocument.setStartingTimeCuration(startingTime);
+		String finishingTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		finalDocument.setFinishingTimeCuration(finishingTime);
+		finalDocument.setStatus("curated");
+		
+		//store the final details in UserDatasetCorrection table through update process. This is due to the record has been existed with starting time and number of revision value. 
+		//These two values must be set in the beginning of curation process
+		document.updateDocument(finalDocument);	
+		document.deleteTempDocument(user.getId(), id, datasetVersion);
+		
+		//get all curation log info from UserLogTemp and store them in UserLog. After that, all curation log in UserLogTemp are removed
+		document.getAllCurationLogAndStoreAndDelete(user.getId(), id, datasetVersion, startingTime, finishingTime);	
+		
+		ModelAndView mav = new ModelAndView("redirect:/document-list/detail/"+id+"/"+datasetVersion);
+		return mav;
+	}
 	
 	/*
 	 * Autosave Document
 	 */
-	@RequestMapping(value = "/document-list/document/save", method = RequestMethod.POST)
-	public @ResponseBody DatasetModel save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "/document-list/curate/save", method = RequestMethod.POST)
+	public @ResponseBody UserDatasetCorrectionTemp save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();		
 		
@@ -2273,27 +2706,98 @@ public class DocumentController {
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));		
 		
 		int userId=user.getId();
+		
 		//get all data from the view part
 		String datasetVersion = request.getParameter("datasetVersion");
 		String id = request.getParameter("id");
 		String answerType = request.getParameter("answerType");
 		String aggregation = request.getParameter("aggregation");
+		if (aggregation == "")
+			aggregation="null";
 		String onlydbo = request.getParameter("onlydbo");
+		if (onlydbo == "")
+			onlydbo="null";
 		String hybrid = request.getParameter("hybrid");
+		if (hybrid == "")
+			hybrid="null";
 		String sparqlQuery = request.getParameter("sparqlQuery");
 		String pseudoSparqlQuery = request.getParameter("pseudoSparqlQuery");
 		String outOfScope = request.getParameter("outOfScope");
+		if (outOfScope == "")
+			outOfScope="null";
 		String answerTypeSugg = request.getParameter("answerTypeSugg");
 		String aggregationSugg = request.getParameter("aggregationSugg");
 		String outOfScopeSugg = request.getParameter("outOfScopeSugg");
+		
 		String onlyDboSugg=request.getParameter("onlyDboSugg");
 		String hybridSugg=request.getParameter("hybridSugg");
 		
-		//find document from master dataset (original data)
-		DocumentDAO documentDao = new DocumentDAO();
-		DatasetModel document = documentDao.getDocument(id, datasetVersion);
+		//check whether it is the first curation on the question or the revised ones. For the first time curation case, old value are from master dataset. 
+		//for the revised one, old values are from the previous revision. 
+		UserDatasetCorrectionDAO udcDaoObj = new UserDatasetCorrectionDAO();
+		UserDatasetCorrectionTemp tempObj = udcDaoObj.getTempDocument(userId, id, datasetVersion);
+		UserDatasetCorrectionTemp documentUdc = new UserDatasetCorrectionTemp();
 		
-		UserDatasetCorrection documentUdc = new UserDatasetCorrection();
+		String oldSparql;	
+		Set<String> oldGoldenAnswer; 
+		String oldAnswerType;
+		String oldAggregation;
+		String oldHybrid;
+		String oldOnlyDbo;
+		String oldOutOfScope;
+		if (tempObj.getId()!= null) { // any changing of question's field has been done. old values are from temp table			
+			oldSparql = tempObj.getSparqlQuery();
+			oldAnswerType = tempObj.getAnswerType();
+			oldAggregation = tempObj.getAggregation();
+			oldHybrid = tempObj.getHybrid();
+			oldOnlyDbo = tempObj.getOnlydbo();
+			oldOutOfScope = tempObj.getOutOfScope();
+			documentUdc.setLanguageToKeyword(tempObj.getLanguageToKeyword());
+			documentUdc.setLanguageToQuestion(tempObj.getLanguageToQuestion());
+			documentUdc.setGoldenAnswer(tempObj.getGoldenAnswer());				
+		}else { //there is no changing of question's field at all. The curation of the question is just started
+			//check whether it is the first time of the curation or the revised one
+			UserDatasetCorrection docObj = udcDaoObj.getDocumentCurationProcess(userId, id, datasetVersion);
+			if (docObj.getId() != null) {
+				oldSparql = docObj.getSparqlQuery();
+				oldAnswerType = docObj.getAnswerType();
+				oldAggregation = docObj.getAggregation();
+				oldHybrid = docObj.getHybrid();
+				oldOnlyDbo = docObj.getOnlydbo();
+				oldOutOfScope = docObj.getOutOfScope();
+				documentUdc.setLanguageToKeyword(docObj.getLanguageToKeyword());
+				documentUdc.setLanguageToQuestion(docObj.getLanguageToQuestion());
+				documentUdc.setGoldenAnswer(docObj.getGoldenAnswer());
+			}else {
+				//find document from master dataset (original data)	
+				DocumentDAO documentDao = new DocumentDAO();
+				DatasetModel document = documentDao.getDocument(id, datasetVersion);
+				oldAnswerType = document.getAnswerType();
+				oldAggregation = String.valueOf(document.getAggregation());			
+				oldHybrid = String.valueOf(document.getHybrid());			
+				oldOnlyDbo = String.valueOf(document.getOnlydbo());			
+				oldOutOfScope = String.valueOf(document.getOutOfScope());			
+				documentUdc.setLanguageToKeyword(document.getLanguageToKeyword());
+				documentUdc.setLanguageToQuestion(document.getLanguageToQuestion());
+				documentUdc.setGoldenAnswer(document.getGoldenAnswer());
+			}		
+		}		
+		//if an old variable is empty, it will be assigned string null. This is to make sure CRUD operation can be done 
+		if (oldAnswerType == "") {
+			oldAnswerType = "null";
+		}
+		if (oldAggregation == "")
+			oldAggregation="null";
+		
+		if (oldHybrid == "")
+			oldHybrid="null";
+		
+		if (oldOnlyDbo == "")
+			oldOnlyDbo="null";
+		
+		if (oldOutOfScope == "")
+			oldOutOfScope="null";
+		
 		documentUdc.setAggregation(aggregation);
 		documentUdc.setAnswerType(answerType);
 		documentUdc.setDatasetVersion(datasetVersion);
@@ -2303,15 +2807,17 @@ public class DocumentController {
 		documentUdc.setOutOfScope(outOfScope);
 		documentUdc.setPseudoSparqlQuery(pseudoSparqlQuery);
 		documentUdc.setSparqlQuery(sparqlQuery);
-		documentUdc.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
-		documentUdc.setLanguageToKeyword(document.getLanguageToKeyword());
-		documentUdc.setLanguageToQuestion(document.getLanguageToQuestion());
-		documentUdc.setGoldenAnswer(document.getGoldenAnswer());
-		documentUdc.setUserId(userId);		
+		documentUdc.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));	
 		
-		//store the document in temporary table
-		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
-		udcDao.addDocumentInTempTable(documentUdc);
+		documentUdc.setUserId(userId);	
+		documentUdc.setLastRevision(time);
+						
+		//store the document in temporary table. At first, check whether curation process has been started.		
+		if (tempObj.getId()!= null) {
+			udcDaoObj.updateTempDocument(documentUdc);
+		}else {
+			udcDaoObj.addDocumentInTempTable(documentUdc);
+		}
 		
 		//record log of activity	
 		UserLogDAO userLogDao = new UserLogDAO();
@@ -2321,45 +2827,46 @@ public class DocumentController {
 		logInfo.put("datasetVersion", datasetVersion);
 		//checking changes
 		//check answer type changes
-		if (!answerType.equals(document.getAnswerType())) {
+		if (!answerType.equals(oldAnswerType)) {
 			logInfo.put("field", "answerType");
-			logInfo.put("originValue", document.getAnswerType());
+			logInfo.put("originValue", oldAnswerType);
 			logInfo.put("fieldValue", answerType);
 			logInfo.put("suggestionValue", answerTypeSugg);
 		}
 		//check outOfScope changes
-		if (!outOfScope.equals(document.getOutOfScope())) {
+		if (!outOfScope.equals(oldOutOfScope)) {
 			logInfo.put("field", "outOfScope");
-			logInfo.put("originValue", document.getOutOfScope());
+			logInfo.put("originValue", oldOutOfScope);
 			logInfo.put("fieldValue", outOfScope);
 			logInfo.put("suggestionValue", outOfScopeSugg);
 		}
 		//check aggregation changes
-		if (!aggregation.equals(document.getAggregation())) {
+		if (!aggregation.equals(oldAggregation)) {
 			logInfo.put("field", "aggregation");
-			logInfo.put("originValue", document.getAggregation());
+			logInfo.put("originValue", oldAggregation);
 			logInfo.put("fieldValue", aggregation);
 			logInfo.put("suggestionValue", aggregationSugg);
 		}
 		//check onlydbo changes
-		if (!onlydbo.equals(document.getOnlydbo())) {
+		if (!onlydbo.equals(oldOnlyDbo)) {
 			logInfo.put("field", "onlydbo");
-			logInfo.put("originValue", document.getOnlydbo());
+			logInfo.put("originValue", oldOnlyDbo);
 			logInfo.put("fieldValue", onlydbo);
 			logInfo.put("suggestionValue", onlyDboSugg);
 		}
 		//check hybrid changes
-		if (!hybrid.equals(document.getHybrid())) {
+		if (!hybrid.equals(oldHybrid)) {
 			logInfo.put("field", "hybrid");
-			logInfo.put("originValue", document.getHybrid());
+			logInfo.put("originValue", oldHybrid);
 			logInfo.put("fieldValue", hybrid);
 			logInfo.put("suggestionValue", hybridSugg);
 		}		
 		userLog.setUserId(userId);		
 		userLog.setIpAddress("");
 		userLog.setLogInfo(logInfo);
+		userLog.setLogDate(time);
 		userLogDao.addLogCurate(userLog);		
-		return document;	
+		return documentUdc;	
 	}
 	
 		
@@ -2402,7 +2909,7 @@ public class DocumentController {
 			logInfo.put("suggestionValue", "");
 			userLog.setUserId(userId);
 			userLog.setLogDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-			userLog.setLogType("curate");
+			userLog.setLogType("curated");
 			userLog.setIpAddress("");
 			userLog.setLogInfo(logInfo);
 			
@@ -2440,8 +2947,7 @@ public class DocumentController {
 			documentCorrection.setLanguageToQuestion(mapLanguageToQuestion);
 			documentCorrection.setGoldenAnswer(documentItem.getGoldenAnswer());
 			documentCorrection.setUserId(userId);
-			documentCorrection.setRevision(1);
-			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			documentCorrection.setRevision(1);			
 			udcDao.addDocument(documentCorrection); 
 			
 			//build logInfo
@@ -2552,8 +3058,7 @@ public class DocumentController {
 			documentCorrection.setLanguageToQuestion(documentItem.getLanguageToQuestion());
 			documentCorrection.setGoldenAnswer(documentItem.getGoldenAnswer());
 			documentCorrection.setUserId(userId);
-			documentCorrection.setRevision(1);
-			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			documentCorrection.setRevision(1);			
 			udcDao.addDocument(documentCorrection); 
 						
 			//build logInfo
@@ -2624,8 +3129,7 @@ public class DocumentController {
 			documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 			documentCorrection.setUserId(userId);
 			documentCorrection.setRevision(1);
-			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-			
+						
 			udcDao.addDocument(documentCorrection);
 			
 			//build logInfo
@@ -2728,8 +3232,7 @@ public class DocumentController {
 					documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
 					documentCorrection.setGoldenAnswer(results);
 					documentCorrection.setUserId(userId);
-					documentCorrection.setRevision(1);
-					documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+					documentCorrection.setRevision(1);					
 					documentCorrection.setStatus("true");
 					udcDao.addDocument(documentCorrection);				
 				}
@@ -2763,8 +3266,7 @@ public class DocumentController {
 				documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
 				documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 				documentCorrection.setUserId(userId);
-				documentCorrection.setRevision(1);
-				documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				documentCorrection.setRevision(1);				
 				documentCorrection.setStatus("false");
 				udcDao.addDocument(documentCorrection);
 				
@@ -2869,8 +3371,7 @@ public class DocumentController {
 				documentCorrection.setLanguageToQuestion(hmQuestion);
 				documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 				documentCorrection.setUserId(userId);
-				documentCorrection.setRevision(1);
-				documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				documentCorrection.setRevision(1);				
 				documentCorrection.setStatus("true");
 				udcDao.addDocument(documentCorrection);
 				//build logInfo
@@ -2962,8 +3463,7 @@ public class DocumentController {
 				documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
 				documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 				documentCorrection.setUserId(userId);
-				documentCorrection.setRevision(1);
-				documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				documentCorrection.setRevision(1);				
 				documentCorrection.setStatus("true");
 				udcDao.addDocument(documentCorrection);
 				//build logInfo
@@ -3046,8 +3546,7 @@ public class DocumentController {
 			documentCorrection.setLanguageToQuestion(document.getLanguageToQuestion());
 			documentCorrection.setGoldenAnswer(document.getGoldenAnswer());
 			documentCorrection.setUserId(userId);
-			documentCorrection.setRevision(1);
-			documentCorrection.setLastRevision(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			documentCorrection.setRevision(1);			
 			documentCorrection.setStatus("true");
 			udcDao.addDocument(documentCorrection);	
 			

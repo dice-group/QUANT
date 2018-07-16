@@ -140,7 +140,7 @@
                                     			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Correction Result"></span></a>                                    			
                                     			</c:if>
                                     			<c:if test="${datasets.getIsCurate() == true && datasets.getIsRemoved() == true}">
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-remove" title="Question is removed"></span></a>                                    			
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/removed/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-remove" title="Question is removed"></span></a>                                    			
                                     			</c:if>
                                     		</td>                                    		                                    		
                                     	</tr>
