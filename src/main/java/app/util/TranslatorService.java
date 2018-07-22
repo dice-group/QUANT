@@ -168,15 +168,16 @@ public class TranslatorService {
         
         JSONArray writeAll = new JSONArray();
         JSONArray writeAdditional = new JSONArray();
-        JSONObject resultForQuestion = new JSONObject();
-        JSONObject resultForKeyword = new JSONObject();
-        int all_id = 0, add_id = 0;
         
+        int all_id = 0, add_id = 0;
+        Map<String, String> ques2list = new HashMap<>();
         // loop over all JSONObjects to get translation for questions and keywords
 		for(Object o : a) {
 			JSONObject jsonObject = (JSONObject) o;
 			JSONObject ltq = (JSONObject) jsonObject.get("languageToQuestion");
 			JSONObject ltk = (JSONObject) jsonObject.get("languageToKeyword");
+			JSONObject resultForQuestion = new JSONObject();
+	        JSONObject resultForKeyword = new JSONObject();
 			String question = (String) ltq.get("en");
 			System.out.println(question);
 			resultForQuestion.put("en", question);
@@ -215,23 +216,28 @@ public class TranslatorService {
 			if (addedLangs == targetLanguages.size()-1) {
 				finalResult.put("id", ++all_id);
 				writeAll.add(finalResult);
-				//System.out.println(finalResult);
+				ques2list.put(question, "writeAll");
+				//System.out.println("writeAll: " + writeAll);
 			}
 			
 			// translation for only remaining langs added; finalResult contains only missing translations
 			else {
 				finalResult.put("id", ++add_id);
 				writeAdditional.add(finalResult);
-				//System.out.println(finalResult);
+				ques2list.put(question, "writeAdditional");
+				//System.out.println("writeAdditional" + writeAdditional);
 			}
-			
+			if (!ques2list.containsKey(question)) {
+				ques2list.put(question, "not in any list!!!!!!");
+			}
+			//System.out.println(ques2list);
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 		writer.writeValue(new File("src/resources/allTranslations.json"), writeAll);
 		writer.writeValue(new File("src/resources/addedTranslations.json"), writeAdditional);
-		
+		writer.writeValue(new File("src/resources/ques2list.txt"), ques2list);
 	}
 
 	/**
@@ -261,10 +267,12 @@ public class TranslatorService {
 		System.out.println("Files written.");
 		//obj.translateOnlyKeywords();
 		
-		System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
-		List<String> list = new ArrayList<String>();
-		list.add("sky");
-		list.add("blue");
-		System.out.println(obj.translateNewKeywords(list));
+
+		//System.out.println(obj.translateNewQuestion("Why is the sky blue?"));
+		//List<String> list = new ArrayList<String>();
+		//list.add("sky");
+		//list.add("blue");
+		//System.out.println(obj.translateNewKeywords(list));
+
 	}
 }
