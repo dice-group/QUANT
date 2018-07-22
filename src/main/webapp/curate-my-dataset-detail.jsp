@@ -41,7 +41,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script type="text/javascript" language="javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+	<script type="text/javascript"  src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
 	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script>
 		
 </head>
@@ -308,7 +308,7 @@
                         		<div class="col-lg-12">
                         			<div class="form-group">
                         				<label>Multilingual Keyword List</label>
-                        				<table id="keywordTable" width="100%" class="table table-striped table-bordered table-hover">
+                        				<table id="keywordTable" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
 			                                        <th class="text-center">Language</th>
@@ -465,33 +465,33 @@
             		<input id="id-input" name="id-input" type="text" class="hidden" >
 			        <div class="modal-body">
 			        	<div class="form-group">
-			                <label for="name-input" class="col-sm-2 control-label"><h5>Name</h5> </label>
+			                <label for="name-input" class="col-sm-2 control-label">Name </label>
 			                <div class="col-sm-10">
 			                  <input id="name-input" name="name-input" type="text" class="form-control" placeholder="Name">
 			                </div>
 			            </div>
 			            
 			            <div class="form-group">
-			                <label for="email-input" class="col-sm-2 control-label"><h5>e-Mail</h5> </label>
+			                <label for="email-input" class="col-sm-2 control-label">e-Mail</label>
 			                <div class="col-sm-10">
 			                  <input id="email-input" name="email-input" type="text" class="form-control" placeholder="e-Mail address">
 			                </div>
 			            </div>
 			            <div class="form-group">
-			                <label for="role-input" class="col-sm-2 control-label"><h5>Role</h5> </label>
+			                <label for="role-input" class="col-sm-2 control-label">Role</label>
 			                <div class="col-sm-10">
 			                  <input id="role-user-input" name="role-user-input" type="text" class="form-control" placeholder="Type in administrator or evaluator">
 			                </div>
 			            </div>
 			            <div class="form-group">
-			                <label for="username-input" class="col-sm-2 control-label"><h5>User Name</h5> </label>
+			                <label for="username-input" class="col-sm-2 control-label">User Name</label>
 			                <div class="col-sm-10">
 			                  <input id="username-input" name="username-input" type="text" class="form-control" placeholder="User name">
 			                </div>
 			            </div>
 			            
 			            <div class="form-group">
-			                <label for="password-input" class="col-sm-2 control-label"><h5>Password</h5> </label>
+			                <label for="password-input" class="col-sm-2 control-label">Password</label>
 			                <div class="col-sm-10">
 			                  <input id="password-user-input" name="password-user-input" type="text" class="form-control" placeholder="Password">
 			                </div>

@@ -42,7 +42,7 @@
                                 </div>
                                 
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" id="login" name="login" class="btn btn-lg btn-success btn-block">Log in</button>
+                                <button type="submit" id="login" name="login" class="btn btn-lg btn-success btn-block">Sign in</button>
                                 
                             </fieldset>
                         </form>

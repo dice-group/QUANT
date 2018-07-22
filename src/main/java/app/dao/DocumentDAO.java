@@ -313,7 +313,7 @@ public class DocumentDAO {
 						onlyDboValue = String.valueOf(q.getOnlydbo());
 					}				 
 											
-					
+					System.out.println("This is the SPARQL: "+ query);
 					boolean answerStatus=false;				
 					if (ss.isASKQuery(languageToQuestionEn)) {
 						String answer = ss.getResultAskQuery(query);
@@ -349,42 +349,52 @@ public class DocumentDAO {
 					}
 					
 					System.out.println("Answer Status: "+answerStatus);									
-					
+					//item.setResultStatus(query);
 					//check whether it needs to provide SPARQL suggestion
+					
 					if (!answerStatus) {	
 						try {
 							Map<String, List<String>> sparqlSuggestion = sparqlCorrection(query);
-							System.out.println("Sparql Query "+query);
-							System.out.println("Sparql Suggestion "+sparqlSuggestion);
+							/*System.out.println("Sparql Query "+query);
+							System.out.println("Sparql Suggestion "+sparqlSuggestion);*/
 							ArrayList<String> listOfSuggestion = new ArrayList<String>();
 							Map<String,List<String>> sparqlAndCaseList = new HashMap<String,List<String>>();
 							List<String> answerList = new ArrayList<String>();
-							for (Map.Entry<String, List<String>> mapEntry : sparqlSuggestion.entrySet()) {								
-								if (mapEntry.getKey().contains("is missing")) {									
-									String newSuggestion = mapEntry.getKey() + ". This question should be removed from the dataset.";
-									sparqlAndCaseList.put(newSuggestion, mapEntry.getValue());									
-									answerList.add("-");
+							
+							if (sparqlSuggestion.size() == 0) {
+								item.setSparqlCorrectionStatus(false);
+							}else {								
+								item.setSparqlCorrectionStatus(true);
+								for (Map.Entry<String, List<String>> mapEntry : sparqlSuggestion.entrySet()) {								
+									if (mapEntry.getKey().contains("is missing")) {									
+										String newSuggestion = mapEntry.getKey() + ". This question should be removed from the dataset.";
+										sparqlAndCaseList.put(newSuggestion, mapEntry.getValue());									
+										answerList.add("-");
+										item.setAnswerFromVirtuosoList(answerList);
+										
+									}else {									
+										/** Retrieve answer from Virtuoso current endpoint **/										
+										Set<String> results = new HashSet();									
+										if (ss.isASKQuery(languageToQuestionEn)) {
+											String result = ss.getResultAskQuery(mapEntry.getKey());										
+											answerList.add(result);														
+										}else {				
+											results = ss.getQuery(mapEntry.getKey());
+											answerList.addAll(results);										
+										}	
+										sparqlAndCaseList.put(mapEntry.getKey(), mapEntry.getValue());
+										
+									}
+									
+									item.setSparqlAndCaseList(sparqlAndCaseList);
 									item.setAnswerFromVirtuosoList(answerList);
-								}else {									
-									/** Retrieve answer from Virtuoso current endpoint **/
-									Set<String> results = new HashSet();									
-									if (ss.isASKQuery(languageToQuestionEn)) {
-										String result = ss.getResultAskQuery(mapEntry.getKey());										
-										answerList.add(result);														
-									}else {				
-										results = ss.getQuery(mapEntry.getKey());
-										answerList.addAll(results);										
-									}	
-									sparqlAndCaseList.put(mapEntry.getKey(), mapEntry.getValue());									
-								}
-								
-								item.setSparqlAndCaseList(sparqlAndCaseList);
-								item.setAnswerFromVirtuosoList(answerList);
-							}							
+								}	
+							}						
 						} catch (Exception e) {
+							//item.setResultStatus(String.valueOf(answerStatus));
 							// TODO: handle exception
 						}												
-					}		
+					}
 					
 					//Check whether it needs to display button View Suggestion
 					if (outOfScopeChecking(query, languageToQuestionEn).equals("false")) {
@@ -394,7 +404,7 @@ public class DocumentDAO {
 						//System.out.println("Result status is this: true");
 						item.setResultStatus("true");
 					}
-					//item.setResultStatus("what's happening");
+					
 					
 					if (!AggregationChecking(query).equals(aggregation)) {
 						item.setAggregationSugg(AggregationChecking(query));
@@ -720,7 +730,7 @@ public class DocumentDAO {
 	 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
 	 	for (int x=0; x<listDataset.size(); x++) {
 	 		if (listDataset.get(x).getName().equals(currentCollection)) {
-	 			if (x==15) {
+	 			if (x==(listDataset.size()-1)) {
 	 				return null;
 	 			}else {
 	 				return listDataset.get(x+1).getName();
@@ -782,11 +792,30 @@ public class DocumentDAO {
 		return null;
 	}
 	
-	//generate keywords from question that already has keywords 
+	//get generated keywords suggestion for question that does not have keywords
+	public Map<String, List<String>> getGeneratedKeywords (String id, String datasetVersion, String question){
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("QuestionWithGeneratedKeywords"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			while (cursor.hasNext()) {
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				return q.getLanguageToKeyword();
+			}
+		}catch (Exception e) {}
+		return null;
+	}
+	//generate keywords from question that does not have keywords 
 	public List<String> generateKeywords(String question) throws FileNotFoundException, IOException{	
 		//read a file that contains English stopwords		
 		FileReader fileReader = new FileReader("C:/Users/riagu/Documents/englishStopwords.txt");
-        
+		//FileReader fileReader = new FileReader(filename);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         List<String> englishStopwords = new ArrayList<String>();
         String element = null;         
@@ -810,14 +839,6 @@ public class DocumentDAO {
 		return keywordsSuggestion;		
 	}
 	
-	//generate keywords translations from question that has no keywords before 
-	/*public Map<String, List<String>> generateKeywordsTranslations(List<String> keywords) throws FileNotFoundException, IOException{	
-		TranslatorService ts = new TranslatorService();
-		JSONObject keywordsTranslations = ts.translateNewKeywords(keywords);
-		Map<String, List<String>> retMap = new Gson().fromJson(
-			    jsonString, new TypeToken<HashMap<String, Object>>() {}.getType());
-		return keywordsTranslations;		
-	}*/
 	
 	public void updateDocument(DatasetModel document) {
 		 BasicDBObject searchObj = new BasicDBObject();
@@ -832,13 +853,61 @@ public class DocumentDAO {
 		 } catch (Exception e) {}
 	 }
 	
-	//check whether a question needs keywords translations
-	public boolean doesNeedKeywordsTranslations (String question) {
+	//check whether a question needs keywords translations. This process will check whether the keywords are already completed with their translations (11 languages)
+	public boolean doesNeedKeywordsTranslations (String id, String datasetVersion, String question) {
 	BasicDBObject searchObj = new BasicDBObject();
+	searchObj.put("languageToQuestion.en", question);
+	searchObj.put("id", id);		
+	try {
+		DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+		DBCollection coll = db.getCollection(datasetVersion); //Collection
+		DBCursor cursor = coll.find(searchObj); 
+		while (cursor.hasNext()) {				
+			DBObject dbobj = cursor.next();
+			Gson gson = new GsonBuilder().create();
+			DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+			if ((q.getLanguageToKeyword().size() == 11)) {
+				return false;
+			}			
+		}
+	}catch (Exception e) {
+			// TODO: handle exception
+	}
+	return true;
+	}
+	
+	//check whether a question needs translations. This process will check whether the question is already completed with their translations in 11 languages
+		public boolean doesNeedQuestionTranslations (String id, String datasetVersion, String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("languageToQuestion.en", question);
+		searchObj.put("id", id);		
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection(datasetVersion); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			while (cursor.hasNext()) {				
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				if ((q.getLanguageToQuestion().size() == 11)) {
+					return false;
+				}			
+			}
+		}catch (Exception e) {
+				// TODO: handle exception
+		}
+		return true;
+		}
+		
+	//check whether a question needs added keywords translations. This process will check whether the keywords are already provided in AddedTranslations table
+	public boolean doesNeedAddedKeywordsTranslations (String id, String datasetVersion, String question) {
+	BasicDBObject searchObj = new BasicDBObject();
+	searchObj.put("id", id);
+	searchObj.put("datasetVersion", datasetVersion);
 	searchObj.put("languageToQuestion.en", question);
 	try {
 		DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-		DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
+		DBCollection coll = db.getCollection("AddedTranslations"); //Collection
 		DBCursor cursor = coll.find(searchObj).limit(1); 
 		while (cursor.hasNext()) {				
 			DBObject dbobj = cursor.next();
@@ -854,13 +923,15 @@ public class DocumentDAO {
 		return false;
 	}
 	
-	//check whether a question needs question translations
-	public boolean doesNeedQuestionTranslations (String question) {
+	/*//check whether a question needs question translations
+	public boolean doesNeedQuestionTranslations (String id, String datasetVersion, String question) {
 		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);
 		searchObj.put("languageToQuestion.en", question);
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-			DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
+			DBCollection coll = db.getCollection("AllTranslations"); //Collection
 			DBCursor cursor = coll.find(searchObj); 
 			while (cursor.hasNext()) {				
 				DBObject dbobj = cursor.next();
@@ -874,12 +945,13 @@ public class DocumentDAO {
 				// TODO: handle exception
 		}
 		return false;
-	}
+	}*/
 	
 	//check whether a question needs keyword suggestion	
-	public boolean doesNeedKeywordSuggestions (String question, String datasetVersion) {
+	public boolean doesNeedKeywordSuggestions (String id, String question, String datasetVersion) {
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("languageToQuestion.en", question);
+		searchObj.put("id", id);
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 			DBCollection coll = db.getCollection(datasetVersion); //Collection
@@ -898,21 +970,101 @@ public class DocumentDAO {
 		return false;
 	}
 	
-	//provide question translations for the one that needs translations
-	public Question getQuestionTranslations (String question) {
+	//check whether a question needs suggested keywords translations	
+		public boolean doesNeedTranslationsOfSuggestedKeywords (String id, String datasetVersion, String question) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("languageToQuestion.en", question);
+			searchObj.put("id", id);
+			searchObj.put("datasetVersion", datasetVersion);
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("keywordsSuggestionsTranslations"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				while (cursor.hasNext()) {				
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+					if (q.getLanguageToKeyword().isEmpty()) {
+						return true;
+					}
+				}
+			}catch (Exception e) {
+					// TODO: handle exception
+			}
+			return false;
+		}
+		
+	//provide question translations for the one that needs all translations
+	public DatasetModel getQuestionTranslations (String id, String datasetVersion, String question) {
 		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);
 		searchObj.put("languageToQuestion.en", question);
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-			DBCollection coll = db.getCollection("allTranslationsNew"); //Collection
-			DBCursor cursor = coll.find(searchObj).limit(1); 
-			Question q = new Question();
+			DBCollection coll = db.getCollection("AllTranslations"); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1);
+			if (cursor.hasNext()) {
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				return q;
+			}else {
+				DBCollection coll1 = db.getCollection("AddedTranslations"); 
+				DBCursor cursor1 = coll1.find(searchObj).limit(1);
+				if (cursor1.hasNext()) {
+					DBObject dbobj1 = cursor1.next();
+					Gson gson1 = new GsonBuilder().create();
+					DatasetModel q1 = gson1.fromJson(dbobj1.toString(), DatasetModel.class);
+					return q1;
+				}
+			}		
+		}catch (Exception e) {
+				// TODO: handle exception
+			}
+		return null;		
+	}
+	
+	//provide question translations for the one that already has some translations but needs the rest of targetted languages translations
+	public DatasetModel getQuestionAddedTranslations (String id, String datasetVersion, String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("AddedTranslations"); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1);			
 			while (cursor.hasNext()) {				
 				DBObject dbobj = cursor.next();
 				Gson gson = new GsonBuilder().create();
-				q = gson.fromJson(dbobj.toString(), Question.class);		
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				return q;
 			}
-			return q;
+			
+		}catch (Exception e) {
+				// TODO: handle exception
+			}
+		return null;		
+	}
+	
+	//provide keywords translations for question that has keywords suggestion. This process will get data from keywordsSuggestionsTranslations collection
+	public Map<String, List<String>> getTranslationsOfSuggestedKeywords (String id, String datasetVersion, String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("keywordsSuggestionsTranslations"); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1);			
+			while (cursor.hasNext()) {				
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				return q.getLanguageToKeyword();
+			}
+			
 		}catch (Exception e) {
 				// TODO: handle exception
 			}

@@ -1,7 +1,9 @@
 package app.dao;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,7 +29,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mongodb.AggregationOptions;
 import com.mongodb.BasicDBObject;
+import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -50,6 +54,47 @@ import app.dao.DocumentDAO;
 import app.controller.SparqlCorrection;
 
 public class UserDatasetCorrectionDAO {
+	//This function is used to get documents from UserDatasetCorrection with all status: curated, removed, no changes needed
+	public UserDatasetCorrection getDocumentFromAnyStatus(int userId, String id, String datasetVersion) {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 UserDatasetCorrection item = new UserDatasetCorrection();
+		 searchObj.put("id", id);
+		 searchObj.put("datasetVersion", datasetVersion);
+		 searchObj.put("userId", userId);	 
+		 
+		 BasicDBObject sortObj = new BasicDBObject();		 
+		 sortObj.put("revision", -1);
+		 try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserDatasetCorrection");
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+					item.setId(q.getId());
+					item.setDatasetVersion(q.getDatasetVersion());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+					item.setUserId(q.getUserId());
+					item.setRevision(q.getRevision());
+					item.setStartingTimeCuration(q.getStartingTimeCuration());
+					item.setFinishingTimeCuration(q.getFinishingTimeCuration());
+					item.setTransId(q.getTransId());
+					item.setStatus(q.getStatus());
+				}
+				return item;
+		 } catch (Exception e) {}
+		 return item;
+	 }
 	public UserDatasetCorrection getDocument(int userId, String id, String datasetVersion) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 UserDatasetCorrection item = new UserDatasetCorrection();
@@ -57,15 +102,15 @@ public class UserDatasetCorrectionDAO {
 		 searchObj.put("datasetVersion", datasetVersion);
 		 searchObj.put("userId", userId);
 		 
-		 String[] arrayString = new String[2];
+		 /*String[] arrayString = new String[2];
 		 arrayString[0]="curated";
 		 arrayString[1]="noNeedChanges";
 
 		 BasicDBObject searchWithOR= new BasicDBObject();
 		 searchWithOR.put("$in", arrayString);
-		 searchObj.put("status", searchWithOR);
+		 searchObj.put("status", searchWithOR);*/
 		 
-		 //searchObj.put("status", "curated");
+		 searchObj.put("status", "curated");
 		 BasicDBObject sortObj = new BasicDBObject();
 		 sortObj.put("revision", -1);
 		 try {
@@ -99,7 +144,56 @@ public class UserDatasetCorrectionDAO {
 		 } catch (Exception e) {}
 		 return item;
 	 }	
-	
+	public UserDatasetCorrection getDocumentByRevision(int userId, String id, String datasetVersion, int revision) {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 UserDatasetCorrection item = new UserDatasetCorrection();
+		 searchObj.put("id", id);
+		 searchObj.put("datasetVersion", datasetVersion);
+		 searchObj.put("userId", userId);
+		 searchObj.put("revision", revision);
+		 /*String[] arrayString = new String[2];
+		 arrayString[0]="curated";
+		 arrayString[1]="noNeedChanges";
+
+		 BasicDBObject searchWithOR= new BasicDBObject();
+		 searchWithOR.put("$in", arrayString);
+		 searchObj.put("status", searchWithOR);*/
+		 
+		 searchObj.put("status", "curated");
+		 BasicDBObject sortObj = new BasicDBObject();
+		 //sortObj.put("revision", -1);
+		 try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserDatasetCorrection");
+				DBCursor cursor = coll.find(searchObj);
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+					item.setId(q.getId());
+					item.setDatasetVersion(q.getDatasetVersion());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+					item.setUserId(q.getUserId());
+					item.setRevision(q.getRevision());
+					item.setStartingTimeCuration(q.getStartingTimeCuration());
+					item.setFinishingTimeCuration(q.getFinishingTimeCuration());
+					item.setTransId(q.getTransId());
+					item.setStatus(q.getStatus());
+				}
+				return item;
+		 } catch (Exception e) {}
+		 return item;
+	 }	
+
 	//get detail of removed document
 	public UserDatasetCorrection getRemovedDocument(int userId, String id, String datasetVersion) {
 		 BasicDBObject searchObj = new BasicDBObject();
@@ -248,6 +342,28 @@ public class UserDatasetCorrectionDAO {
 		 return item;
 	 }
 	
+	//remove a document for cancel function. This happens when user decides to cancel doing the curation during the time of curation
+	public void cancelCuration(int userId, String id, String datasetVersion) {
+		 BasicDBObject searchObj = new BasicDBObject();		 
+		 searchObj.put("id", id);
+		 searchObj.put("datasetVersion", datasetVersion);
+		 searchObj.put("userId", userId);		 
+		 BasicDBObject sortObj = new BasicDBObject();
+		 sortObj.put("startingTimeCuration", -1);
+		 try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserDatasetCorrection");
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+					deleteDocumentForCancelCuration(q);
+				}				
+		 } catch (Exception e) {}
+		 
+	 }
+	
 	//remove a document for remove function
 	public void removeDocumentBeforeCurationDone(UserDatasetCorrection document) {
 		 BasicDBObject searchObj = new BasicDBObject();		 
@@ -277,6 +393,7 @@ public class UserDatasetCorrectionDAO {
 					q.setPseudoSparqlQuery(document.getPseudoSparqlQuery());
 					q.setRevision(document.getRevision());
 					q.setSparqlQuery(document.getSparqlQuery());
+					q.setSparqlSuggestion(document.getSparqlSuggestion());
 					q.setStatus(document.getStatus());
 					q.setTransId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 					q.setUserId(document.getUserId());										
@@ -308,6 +425,16 @@ public class UserDatasetCorrectionDAO {
 		 
 	 }
 	
+	//delete process applied in UserDatasetCorrection collection for cancel curation process	
+	 public void deleteDocumentForCancelCuration(UserDatasetCorrection document) {
+		 try {		
+			BasicDBObject newDbObj = toBasicDBObject(document);		
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("UserDatasetCorrection");			
+			coll.remove(newDbObj);
+		 } catch (Exception e) {}
+	 }
+	
 	//delete process applied in UserDatasetCorrectionTemp collection	
 	 public void deleteDocument(UserDatasetCorrectionTemp document) {
 		 try {		
@@ -329,7 +456,7 @@ public class UserDatasetCorrectionDAO {
 		 }
 	 
 	 //get all curation log from TempUserLog and store them in UserLog. After that, the log info is removed from UserLogTemp
-	 public void getAllCurationLogAndStoreAndDelete (int userId, String id, String datasetVersion, String startingTime, String finishingTime) {
+	 public void getAllCurationLogAndStoreAndDelete (int userId, String id, String datasetVersion, String startingTime, String finishingTime, int revision) {
 		 BasicDBObject searchObj = new BasicDBObject();		 
 		 searchObj.put("logInfo.id", id);
 		 searchObj.put("logInfo.datasetVersion", datasetVersion);
@@ -341,15 +468,18 @@ public class UserDatasetCorrectionDAO {
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
-					UserLog q = gson.fromJson(dbobj.toString(), UserLog.class);										
-					storeCurationLog(q, startingTime, finishingTime);
+					UserLog q = gson.fromJson(dbobj.toString(), UserLog.class);	
+					q.setStartingTimeCuration(startingTime);
+					q.setFinishingTimeCuration(finishingTime);
+					q.setRevision(revision);
+					storeCurationLog(q);
 					deleteTempCurationLog(q);
 				}				
 		 } catch (Exception e) {}
 	 }
 	 
-	//get all curation log from TempUserLog and remove them for Remove Function
-	 public void removeAllCurationLogForRemoveFunction (int userId, String id, String datasetVersion) {
+	//get all curation log from TempUserLog and remove them for Remove and Cancel function
+	 public void removeAllCurationLogFromUserLogTemp (int userId, String id, String datasetVersion) {
 		 BasicDBObject searchObj = new BasicDBObject();		 
 		 searchObj.put("logInfo.id", id);
 		 searchObj.put("logInfo.datasetVersion", datasetVersion);
@@ -368,9 +498,9 @@ public class UserDatasetCorrectionDAO {
 	 }
 	 
 	 //Store curation log from temporary user log in UserLog collection	
-	 public void storeCurationLog(UserLog document, String startingTime, String finishingTime) {
+	 public void storeCurationLog(UserLog document) {
 		 try {		
-			BasicDBObject newDbObj = toBasicDBObjectStoreCurationLog(document, startingTime, finishingTime);		
+			BasicDBObject newDbObj = toBasicDBObjectStoreCurationLog(document);		
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 			DBCollection coll = db.getCollection("UserLog");			
 			coll.save(newDbObj);
@@ -379,36 +509,56 @@ public class UserDatasetCorrectionDAO {
 	 
 	
 	public List<UserDatasetCorrection> getAllDatasets(int userId) {
-		List<UserDatasetCorrection> tasks = new ArrayList<UserDatasetCorrection>();
-		BasicDBObject searchObj = new BasicDBObject();
-		searchObj.put("userId", userId);
-		BasicDBObject sortObj = new BasicDBObject();
-		sortObj.put("id",1);
-			try {
-				//call mongoDb
+		List<UserDatasetCorrection> tasks = new ArrayList<UserDatasetCorrection>();		
+		BasicDBObject searchObj1 = new BasicDBObject();
+		//BasicDBObject matchObj = new BasicDBObject();	
+		BasicDBObject searchObj2 = new BasicDBObject();
+		BasicDBObject searchObj3 = new BasicDBObject();
+		BasicDBObject dataObj = new BasicDBObject();
+		dataObj.put("id", "$id");
+		dataObj.put("datasetVersion", "$datasetVersion");
+		//dataObj.put("languageToQuestion", "$languageToQuestion");
+		dataObj.put("userId", "$userId");		
+		searchObj2.put("_id", dataObj);
+		searchObj3.put("$max", "$revision");
+		searchObj2.put("latestData", searchObj3);	
+		searchObj1.put("$group", searchObj2);
+		
+	
+			try {				
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
-				DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
+				List<DBObject> flatPipeline = Arrays.asList(searchObj1);
+				AggregationOptions aggregationOptions = AggregationOptions.builder()
+						                                    .batchSize(100)
+						                                    .allowDiskUse(true)
+						                                    .build();
+				Cursor cursor = coll.aggregate(flatPipeline,aggregationOptions);
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
+					
 					Gson gson = new GsonBuilder().create();
-					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
+					
+					UserDatasetCorrection q = gson.fromJson(dbobj.get("_id").toString(), UserDatasetCorrection.class);				
+					UserDatasetCorrection data = this.getDocumentFromAnyStatus(userId, q.getId(), q.getDatasetVersion());
 					UserDatasetCorrection item = new UserDatasetCorrection();
-					item.setDatasetVersion(q.getDatasetVersion());;
-					item.setId(q.getId());
-					item.setAnswerType(q.getAnswerType());
-					item.setAggregation(q.getAggregation());
-					item.setOnlydbo(q.getOnlydbo());
-					item.setHybrid(q.getHybrid());
-					item.setLanguageToQuestion(q.getLanguageToQuestion());
-					item.setLanguageToKeyword(q.getLanguageToKeyword());
-					item.setSparqlQuery(q.getSparqlQuery());
-					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
-					item.setGoldenAnswer(q.getGoldenAnswer());
-					item.setStartingTimeCuration(q.getStartingTimeCuration());
-					item.setFinishingTimeCuration(q.getFinishingTimeCuration());
-					item.setRevision(q.getRevision());
-					item.setStatus(q.getStatus());
+					item.setUserId(data.getUserId());
+					item.setTransId(data.getTransId());
+					item.setDatasetVersion(data.getDatasetVersion());
+					item.setId(data.getId());
+					item.setAnswerType(data.getAnswerType());
+					item.setAggregation(data.getAggregation());
+					item.setOnlydbo(data.getOnlydbo());
+					item.setHybrid(data.getHybrid());
+					item.setLanguageToQuestion(data.getLanguageToQuestion());
+					item.setLanguageToKeyword(data.getLanguageToKeyword());
+					item.setSparqlQuery(data.getSparqlQuery());
+					item.setPseudoSparqlQuery(data.getPseudoSparqlQuery());
+					item.setGoldenAnswer(data.getGoldenAnswer());
+					item.setStartingTimeCuration(data.getStartingTimeCuration());
+					item.setFinishingTimeCuration(data.getFinishingTimeCuration());
+					item.setRevision(data.getRevision());
+					item.setStatus(data.getStatus());
 					tasks.add(item);
 				}							
 			} catch (Exception e) {}
@@ -417,58 +567,50 @@ public class UserDatasetCorrectionDAO {
 	
 	//Get curated questions in particular qald version
 	public List<UserDatasetCorrection> getAllDatasetsInParticularVersion(int userId, String qaldTrain, String qaldTest) {
-		List<UserDatasetCorrection> tasks = new ArrayList<UserDatasetCorrection>();
-		BasicDBObject searchObj = new BasicDBObject();
-		searchObj.put("userId", userId);
-		searchObj.put("datasetVersion", qaldTrain);
-		BasicDBObject sortObj = new BasicDBObject();
-		sortObj.put("transId",-1);
+		List<UserDatasetCorrection> tasks = new ArrayList<UserDatasetCorrection>();		
+		BasicDBObject searchObj1 = new BasicDBObject();
+		BasicDBObject matchObj = new BasicDBObject();	
+		BasicDBObject searchObj2 = new BasicDBObject();
+		BasicDBObject searchObj3 = new BasicDBObject();
+		BasicDBObject dataObj = new BasicDBObject();
+		dataObj.put("id", "$id");
+		dataObj.put("datasetVersion", "$datasetVersion");		
+		dataObj.put("userId", "$userId");		
+		searchObj2.put("_id", dataObj);
+		searchObj3.put("$max", "$revision");
+		searchObj2.put("latestData", searchObj3);		
+		searchObj1.put("$group", searchObj2);
 			try {
-				//call mongoDb
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
-				DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
-				UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+				List<DBObject> flatPipeline = Arrays.asList(searchObj1);
+				AggregationOptions aggregationOptions = AggregationOptions.builder()
+						                                    .batchSize(100)
+						                                    .allowDiskUse(true)
+						                                    .build();
+				Cursor cursor = coll.aggregate(flatPipeline,aggregationOptions);
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
-					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
-					UserDatasetCorrection item = new UserDatasetCorrection();
-					item.setDatasetVersion(q.getDatasetVersion());;
-					item.setId(q.getId());
-					item.setAnswerType(q.getAnswerType());
-					item.setAggregation(q.getAggregation());
-					item.setOnlydbo(q.getOnlydbo());
-					item.setHybrid(q.getHybrid());
-					item.setLanguageToQuestion(q.getLanguageToQuestion());
-					item.setLanguageToKeyword(q.getLanguageToKeyword());
-					item.setSparqlQuery(q.getSparqlQuery());
-					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
-					item.setGoldenAnswer(q.getGoldenAnswer());
-					tasks.add(item);
-				}
-				searchObj.put("userId", userId);
-				searchObj.put("datasetVersion", qaldTest);
-				DBCursor cursor1 = coll.find(searchObj).sort(sortObj); //Find All
-				while (cursor1.hasNext()) {
-					DBObject dbobj1 = cursor1.next();
-					Gson gson = new GsonBuilder().create();
-					UserDatasetCorrection q = gson.fromJson(dbobj1.toString(), UserDatasetCorrection.class);
-					UserDatasetCorrection item = new UserDatasetCorrection();
-					item.setDatasetVersion(q.getDatasetVersion());;
-					item.setId(q.getId());
-					item.setAnswerType(q.getAnswerType());
-					item.setAggregation(q.getAggregation());
-					item.setOnlydbo(q.getOnlydbo());
-					item.setHybrid(q.getHybrid());
-					item.setLanguageToQuestion(q.getLanguageToQuestion());
-					item.setLanguageToKeyword(q.getLanguageToKeyword());
-					item.setSparqlQuery(q.getSparqlQuery());
-					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
-					item.setGoldenAnswer(q.getGoldenAnswer());
-					tasks.add(item);
-				}
-							
+					UserDatasetCorrection q = gson.fromJson(dbobj.get("_id").toString(), UserDatasetCorrection.class);
+					if ((q.getDatasetVersion().equals(qaldTrain) || q.getDatasetVersion().equals(qaldTest)) && q.getUserId() == userId) {
+						UserDatasetCorrection data = this.getDocumentFromAnyStatus(userId, q.getId(), q.getDatasetVersion());		
+						UserDatasetCorrection item = new UserDatasetCorrection();						
+						item.setDatasetVersion(data.getDatasetVersion());
+						item.setId(data.getId());
+						item.setAnswerType(data.getAnswerType());
+						item.setAggregation(data.getAggregation());
+						item.setOnlydbo(data.getOnlydbo());
+						item.setHybrid(data.getHybrid());
+						item.setLanguageToQuestion(data.getLanguageToQuestion());
+						item.setLanguageToKeyword(data.getLanguageToKeyword());
+						item.setSparqlQuery(data.getSparqlQuery());
+						item.setPseudoSparqlQuery(data.getPseudoSparqlQuery());
+						item.setGoldenAnswer(data.getGoldenAnswer());
+						item.setRevision(data.getRevision());
+						tasks.add(item);
+					}			
+				}						
 			} catch (Exception e) {}
 			return tasks;
 	}
@@ -548,8 +690,7 @@ public class UserDatasetCorrectionDAO {
 			 DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 			 DBCollection coll = db.getCollection("UserDatasetCorrection");			
 			 coll.update(searchObj, newDbObj);
-		 } catch (Exception e) {
-			 
+		 } catch (Exception e) {			 
 		 }
 	 }
 	 
@@ -577,6 +718,7 @@ public class UserDatasetCorrectionDAO {
 			newdbobj.put("hybrid", document.getHybrid());
 			newdbobj.put("onlydbo", document.getOnlydbo());		
 			newdbobj.put("sparqlQuery", document.getSparqlQuery());
+			newdbobj.put("sparqlSuggestion", document.getSparqlSuggestion());
 			newdbobj.put("pseudoSparqlQuery", document.getPseudoSparqlQuery());
 			newdbobj.put("outOfScope", document.getOutOfScope());		
 			newdbobj.put("languageToQuestion", document.getLanguageToQuestion());
@@ -587,6 +729,7 @@ public class UserDatasetCorrectionDAO {
 			newdbobj.put("finishingTimeCuration", document.getFinishingTimeCuration());		
 			newdbobj.put("status", document.getStatus());
 			newdbobj.put("removingTime", document.getRemovingTime());
+			newdbobj.put("noNeedChangesTime", document.getNoNeedChangesTime());
 			return newdbobj;
 		}
 	
@@ -633,15 +776,18 @@ public class UserDatasetCorrectionDAO {
 	}
 	
 	// This method is used to create an object for storing curation log in UserLog collection	
-	private BasicDBObject toBasicDBObjectStoreCurationLog(UserLog document, String startingTime, String finishingTime) {
+	private BasicDBObject toBasicDBObjectStoreCurationLog(UserLog document) {
 		BasicDBObject newdbobj = new BasicDBObject();
 		newdbobj.put("userId", document.getUserId());
 		newdbobj.put("logInfo", document.getLogInfo());		
 		newdbobj.put("logDate", document.getLogDate());
 		newdbobj.put("logType", "curated");
+		newdbobj.put("logTypeKeyword", document.getLogTypeKeyword());
+		newdbobj.put("logTypeQuestion", document.getLogTypeQuestion());
 		newdbobj.put("ipAddress", document.getIpAddress());
-		newdbobj.put("startingTimeCuration", startingTime);
-		newdbobj.put("finishingTimeCuration", finishingTime);				
+		newdbobj.put("startingTimeCuration", document.getStartingTimeCuration());
+		newdbobj.put("finishingTimeCuration", document.getFinishingTimeCuration());				
+		newdbobj.put("revision", document.getRevision());
 		return newdbobj;
 	}
 	
@@ -716,27 +862,560 @@ public class UserDatasetCorrectionDAO {
 		 return false;
 		
 	}
-	
-	//check whether keywords suggestion have been accepted	
-	public boolean haveKeywordsSuggestionBeenAccepted (int userId, String id, String datasetVersion) {
+		
+	//get rest of keywords translations. dbName1 is database name where the chosen translated keywords are stored in. dbName2 is database name where the complete translated keywords are stored in.  
+	public Map<String, List<String>> getRestOfKeywordsTranslation (int userId, String id, String datasetVersion, String dbName1, String dbName2, String startingTime, String finishingTime) {
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("id", id);
-		 searchObj.put("datasetVersion", datasetVersion);
-		 searchObj.put("userId", userId);
+		searchObj.put("datasetVersion", datasetVersion);		
+		searchObj.put("userId", userId);
+		List<String> chosenKeywordsTranslationKeyList = new ArrayList<String>();		
+		List<String> allKeywordsTranslationKeyList = new ArrayList<String>();
+		List<String> KeywordsTranslationListKeyLeft = new ArrayList<String>();		
+		
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			//get chosen keywords translations
+			DBCollection coll1 = db.getCollection(dbName1);			
+			DBCursor cursor1 = coll1.find(searchObj); 
+			while (cursor1.hasNext()) {				
+				DBObject dbobj1 = cursor1.next();
+				Gson gson1 = new GsonBuilder().create();
+				if (dbName1.equals("UserDatasetCorrectionTemp")){
+					UserDatasetCorrectionTemp q1 = gson1.fromJson(dbobj1.toString(), UserDatasetCorrectionTemp.class);
+					for (Map.Entry<String, List<String>> element: q1.getLanguageToKeyword().entrySet()) {
+						chosenKeywordsTranslationKeyList.add(element.getKey());
+					}					
+				}else if (dbName1.equals("UserDatasetCorrection")){
+					if (!(startingTime.equals(""))) {
+						searchObj.put("startingTimeCuration", startingTime);
+						searchObj.put("finishingTimeCuration", finishingTime);
+					}					
+					UserDatasetCorrection q1 = gson1.fromJson(dbobj1.toString(), UserDatasetCorrection.class);
+					for (Map.Entry<String, List<String>> element: q1.getLanguageToKeyword().entrySet()) {
+						chosenKeywordsTranslationKeyList.add(element.getKey());
+					}								
+				}
+			}
+			
+			//get all keywords translations in 11 languages
+			DBCollection coll2 = db.getCollection(dbName2); 
+			BasicDBObject searchObj2 = new BasicDBObject();
+			searchObj2.put("id", id);
+			searchObj2.put("datasetVersion", datasetVersion);
+			DBCursor cursor2 = coll2.find(searchObj2);
+			
+			List<Map<String, List<String>>> allKeywordsTranslations = new ArrayList<>();
+			while (cursor2.hasNext()) {				
+				DBObject dbobj2 = cursor2.next();
+				Gson gson2 = new GsonBuilder().create();
+				DatasetModel q2 = gson2.fromJson(dbobj2.toString(), DatasetModel.class);
+				for (Map.Entry<String, List<String>> element2: q2.getLanguageToKeyword().entrySet()) {
+					allKeywordsTranslationKeyList.add(element2.getKey());
+				}
+				allKeywordsTranslations.add(q2.getLanguageToKeyword());
+			}
+			
+			//get list of keywords translations that not be taken yet
+			Map<String, List<String>> result = new HashMap<String, List<String>>();
+			for (String element: allKeywordsTranslationKeyList) {
+				if (!(chosenKeywordsTranslationKeyList.contains(element))) {
+					//get complete keywords translations (with list of keywords)
+					for (int i = 0; i < allKeywordsTranslations.size(); i++) {						
+						for (Map.Entry<String, List<String>> entry: allKeywordsTranslations.get(i).entrySet()) {
+					        if (element == (entry.getKey())) {					        						        	
+					        	result.put(element, entry.getValue());
+					        	break;
+					        }				           
+					    }
+					}
+				}
+			}
+			return result;
+		}catch (Exception e) {
+				//TODO: handle exception
+		}
+		return null;
+	}
+	
+	//get rest of question translations. dbName1 is database name where the chosen translated keywords are stored in.  
+		public Map<String, String> getRestOfQuestionTranslation (int userId, String id, String datasetVersion, String dbName, String question, String startingTime, String finishingTime) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("id", id);
+			searchObj.put("datasetVersion", datasetVersion);		
+			searchObj.put("userId", userId);
+			List<String> chosenQuestionTranslationKeyList = new ArrayList<String>();		
+			List<String> allQuestionTranslationKeyList = new ArrayList<String>();					
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				//get chosen keywords translations
+				DBCollection coll1 = db.getCollection(dbName);			
+				DBCursor cursor1 = coll1.find(searchObj); 
+				while (cursor1.hasNext()) {				
+					DBObject dbobj1 = cursor1.next();
+					Gson gson1 = new GsonBuilder().create();
+					if (dbName.equals("UserDatasetCorrectionTemp")){
+						UserDatasetCorrectionTemp q1 = gson1.fromJson(dbobj1.toString(), UserDatasetCorrectionTemp.class);
+						for (Map.Entry<String, String> element: q1.getLanguageToQuestion().entrySet()) {
+							chosenQuestionTranslationKeyList.add(element.getKey());
+						}					
+					}else if (dbName.equals("UserDatasetCorrection")){
+						searchObj.put("startingTimeCuration", startingTime);
+						searchObj.put("finishingTimeCuration", finishingTime);
+						UserDatasetCorrection q1 = gson1.fromJson(dbobj1.toString(), UserDatasetCorrection.class);
+						for (Map.Entry<String, String> element: q1.getLanguageToQuestion().entrySet()) {
+							chosenQuestionTranslationKeyList.add(element.getKey());
+						}								
+					}
+				}
+				
+				//get all question translations in 11 languages either from AllTranslations or AddedTranslations
+				DocumentDAO docDaoObj = new DocumentDAO();	
+				DatasetModel dmObj = docDaoObj.getQuestionTranslations(id, datasetVersion, question);
+				Map<String, String> allQuestionTranslations = dmObj.getLanguageToQuestion();
+				//get the key of all question translations Map
+				for (Map.Entry<String, String> element2: allQuestionTranslations.entrySet()) {
+					allQuestionTranslationKeyList.add(element2.getKey());
+				}
+				
+				//get list of question translations that not be taken yet
+				Map<String, String> result = new HashMap<String, String>();
+				for (String element: allQuestionTranslationKeyList) {
+					if (!(chosenQuestionTranslationKeyList.contains(element))) {
+						//get complete keywords translations (with list of keywords)
+						for (Map.Entry<String, String> entry: allQuestionTranslations.entrySet()) {
+					        if (element == (entry.getKey())) {					        						        	
+					        	result.put(element, entry.getValue());
+					        	break;
+					        }				           
+						}
+					}
+				}			
+				return result;
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return null;
+		}
+	
+	//check whether keywords or question translations have been accepted completely for 11 language during curation process
+	public boolean areTranslationsCompleteDuringCurationProcess (int userId, String id, String datasetVersion, String item) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);		
+		searchObj.put("userId", userId);		
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-			DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+			DBCollection coll = db.getCollection("UserDatasetCorrectionTemp"); //Collection
 			DBCursor cursor = coll.find(searchObj); 
 			while (cursor.hasNext()) {				
 				DBObject dbobj = cursor.next();
 				Gson gson = new GsonBuilder().create();
-				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
-				if (!(q.getLanguageToKeyword().isEmpty())) {
+				UserDatasetCorrectionTemp q = gson.fromJson(dbobj.toString(), UserDatasetCorrectionTemp.class);
+				if (item.equals("keywords")) {
+					if (q.getLanguageToKeyword().size() == 11) {
+						return true;
+					}
+				}else if (item.equals("question")) {
+					if (q.getLanguageToQuestion().size() == 11) {
+						return true;
+					}
+				}	
+			}
+		}catch (Exception e) {
+				//TODO: handle exception
+		}
+		return false;
+	}
+	
+	//check whether keywords or question translations has been accepted completely for 11 languages	
+		public boolean areTranslationsComplete (int userId, String id, String datasetVersion, String startingTimeCuration, String finishingTimeCuration, String item) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("id", id);
+			searchObj.put("datasetVersion", datasetVersion);		
+			searchObj.put("userId", userId);
+			searchObj.put("startingTimeCuration", startingTimeCuration);
+			searchObj.put("finishingTimeCuration", finishingTimeCuration);
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				while (cursor.hasNext()) {				
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);	
+					if (item.equals("keywords")) {
+						if (q.getLanguageToKeyword().size() == 11) {
+							return true;
+						}
+					}else if (item.equals("question")) {
+						if (q.getLanguageToQuestion().size() == 11) {
+							return true;
+						}
+					}
+					
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+		
+		//check whether question translations has been accepted completely for 11 languages	during curation process
+		public boolean areQuestionTranslationsCompleteDuringCurationProcess (int userId, String id, String datasetVersion) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("id", id);
+			searchObj.put("datasetVersion", datasetVersion);		
+			searchObj.put("userId", userId);			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserDatasetCorrectionTemp"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				while (cursor.hasNext()) {				
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrectionTemp q = gson.fromJson(dbobj.toString(), UserDatasetCorrectionTemp.class);	
+					if (q.getLanguageToQuestion().size() == 11) {
+						return true;
+					}
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+		
+		//check whether question translations has been accepted completely for 11 languages	
+				public boolean areQuestionTranslationsComplete (int userId, String id, String datasetVersion, String startingTimeCuration, String finishingTimeCuration) {
+					BasicDBObject searchObj = new BasicDBObject();
+					searchObj.put("id", id);
+					searchObj.put("datasetVersion", datasetVersion);		
+					searchObj.put("userId", userId);
+					searchObj.put("startingTimeCuration", startingTimeCuration);
+					searchObj.put("finishingTimeCuration", finishingTimeCuration);
+					try {
+						DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+						DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+						DBCursor cursor = coll.find(searchObj); 
+						while (cursor.hasNext()) {				
+							DBObject dbobj = cursor.next();
+							Gson gson = new GsonBuilder().create();
+							UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);	
+							if (q.getLanguageToQuestion().size() == 11) {
+								return true;
+							}
+						}
+					}catch (Exception e) {
+							//TODO: handle exception
+					}
+					return false;
+				}
+	
+	//check whether keywords translations has been accepted completely for 11 languages	during curation process
+	public boolean isKeywordsTranslationsCompleteDuringCuration (int userId, String id, String datasetVersion) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);		
+		searchObj.put("userId", userId);		
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("UserDatasetCorrectionTemp"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			while (cursor.hasNext()) {				
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				UserDatasetCorrectionTemp q = gson.fromJson(dbobj.toString(), UserDatasetCorrectionTemp.class);	
+				if (q.getLanguageToKeyword().size() == 11) {
 					return true;
 				}
 			}
 		}catch (Exception e) {
-				// TODO: handle exception
+				//TODO: handle exception
+		}
+		return false;
+	}
+	
+	//check whether keywords suggestion have been accepted. 	
+	public boolean haveKeywordsSuggestionBeenAccepted (int userId, String id, String datasetVersion, String startingTime, String finishingTime, int revision) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("logInfo.id", id);
+		searchObj.put("logInfo.datasetVersion", datasetVersion);
+		searchObj.put("logInfo.field", "languageToKeyword");
+		searchObj.put("userId", userId);
+		searchObj.put("logTypeKeyword", "suggestion");
+		searchObj.put("startingTimeCuration", startingTime);
+		searchObj.put("finishingTimeCuration", finishingTime);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("UserLog"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			if (cursor.hasNext()) {				
+				return true;				
+			}else {
+				BasicDBObject searchObj1 = new BasicDBObject();
+				while (revision != 0) {
+					revision = revision - 1;
+					searchObj1.put("logInfo.id", id);
+					searchObj1.put("logInfo.datasetVersion", datasetVersion);
+					searchObj1.put("logInfo.field", "languageToKeyword");
+					searchObj1.put("userId", userId);
+					searchObj1.put("logTypeKeyword", "suggestion");
+					searchObj1.put("revision", revision);
+					DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+					DBCollection coll1 = db1.getCollection("UserLog"); 
+					DBCursor cursor1 = coll1.find(searchObj1);
+					if (cursor1.hasNext()) {
+						return true;						
+					}
+				}
+				
+			}
+		}catch (Exception e) {
+				//TODO: handle exception
+		}
+		return false;
+	}
+	
+	//check whether keywords suggestion have been accepted during curation process. 	
+	public boolean haveKeywordsSuggestionBeenAcceptedDuringCurationProcess (int userId, String id, String datasetVersion, int revision) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("logInfo.id", id);
+		searchObj.put("logInfo.datasetVersion", datasetVersion);
+		searchObj.put("logInfo.field", "languageToKeyword");
+		searchObj.put("userId", userId);
+		searchObj.put("logTypeKeyword", "suggestion");
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("UserLogTemp"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			if (cursor.hasNext()) {				
+				return true;				
+			}else {
+				BasicDBObject searchObj1 = new BasicDBObject();
+				while (revision != 0) {
+					revision = revision - 1;
+					searchObj1.put("logInfo.id", id);
+					searchObj1.put("logInfo.datasetVersion", datasetVersion);
+					searchObj1.put("logInfo.field", "languageToKeyword");
+					searchObj1.put("userId", userId);
+					searchObj1.put("logTypeKeyword", "suggestion");
+					searchObj1.put("revision", revision);
+					DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+					DBCollection coll1 = db1.getCollection("UserLog"); 
+					DBCursor cursor1 = coll1.find(searchObj1);
+					if (cursor1.hasNext()) {
+						return true;						
+					}
+				}
+			}
+		}catch (Exception e) {
+				//TODO: handle exception
+		}
+		return false;
+	}
+	
+	//check whether suggested keywords have been translated 	
+		public boolean haveKeywordsSuggestionBeenTranslated (int userId, String id, String datasetVersion, String startingTime, String finishingTime, int revision) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "languageToKeyword");
+			searchObj.put("userId", userId);	
+			searchObj.put("logTypeKeyword", "translation");
+			searchObj.put("startingTimeCuration", startingTime);
+			searchObj.put("finishingTimeCuration", finishingTime);
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserLog"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				if (cursor.hasNext()) {				
+					return true;				
+				}else {
+					BasicDBObject searchObj1 = new BasicDBObject();
+					while (revision != 0) {
+						revision = revision - 1;
+						searchObj1.put("logInfo.id", id);
+						searchObj1.put("logInfo.datasetVersion", datasetVersion);
+						searchObj1.put("logInfo.field", "languageToKeyword");
+						searchObj1.put("userId", userId);
+						searchObj1.put("logTypeKeyword", "translation");
+						searchObj1.put("revision", revision);
+						DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+						DBCollection coll1 = db1.getCollection("UserLog"); 
+						DBCursor cursor1 = coll1.find(searchObj1);
+						if (cursor1.hasNext()) {
+							return true;						
+						}
+					}
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+	
+		//check whether question have been translated either for all or added translations 	
+		public boolean hasQuestionBeenTranslated (int userId, String id, String datasetVersion, String startingTime, String finishingTime) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "languageToQuestion");
+			searchObj.put("userId", userId);	
+			searchObj.put("logTypeQuestion", "translation");
+			searchObj.put("startingTimeCuration", startingTime);
+			searchObj.put("finishingTimeCuration", finishingTime);
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserLog"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				while (cursor.hasNext()) {				
+					return true;				
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+		
+		//check whether question have been translated either for all or added translations during curation process	
+		public boolean hasQuestionBeenTranslatedDuringCurationProcess (int userId, String id, String datasetVersion, int revision) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "languageToQuestion");
+			searchObj.put("userId", userId);	
+			searchObj.put("logTypeQuestion", "translation");
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserLogTemp"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				if (cursor.hasNext()) {				
+					return true;				
+				}else {
+					BasicDBObject searchObj1 = new BasicDBObject();
+					while (revision != 0) {
+						revision = revision - 1;
+						searchObj1.put("logInfo.id", id);
+						searchObj1.put("logInfo.datasetVersion", datasetVersion);
+						searchObj1.put("logInfo.field", "languageToKeyword");
+						searchObj1.put("userId", userId);
+						searchObj1.put("logTypeKeyword", "suggestion");
+						searchObj1.put("revision", revision);
+						DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+						DBCollection coll1 = db1.getCollection("UserLog"); 
+						DBCursor cursor1 = coll1.find(searchObj1);
+						if (cursor1.hasNext()) {
+							return true;						
+						}
+					}
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+				
+		//check whether keywords have been translated either for all or added translations 	
+		public boolean haveKeywordsBeenTranslated (int userId, String id, String datasetVersion, String startingTime, String finishingTime) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "languageToKeyword");
+			searchObj.put("userId", userId);	
+			searchObj.put("logTypeKeyword", "translation");
+			searchObj.put("startingTimeCuration", startingTime);
+			searchObj.put("finishingTimeCuration", finishingTime);
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserLog"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				while (cursor.hasNext()) {				
+					return true;				
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+		
+		//check whether keywords have been translated either for all or added translations during curation process	
+		public boolean haveKeywordsBeenTranslatedDuringCurationProcess (int userId, String id, String datasetVersion, int revision) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", "languageToKeyword");
+			searchObj.put("userId", userId);	
+			searchObj.put("logTypeKeyword", "translation");
+			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+				DBCollection coll = db.getCollection("UserLogTemp"); //Collection
+				DBCursor cursor = coll.find(searchObj); 
+				if (cursor.hasNext()) {				
+					return true;				
+				}else {
+					BasicDBObject searchObj1 = new BasicDBObject();
+					while (revision != 0) {
+						revision = revision - 1;
+						searchObj1.put("logInfo.id", id);
+						searchObj1.put("logInfo.datasetVersion", datasetVersion);
+						searchObj1.put("logInfo.field", "languageToKeyword");
+						searchObj1.put("userId", userId);
+						searchObj1.put("logTypeKeyword", "translation");
+						searchObj1.put("revision", revision);
+						DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+						DBCollection coll1 = db1.getCollection("UserLog"); 
+						DBCursor cursor1 = coll1.find(searchObj1);
+						if (cursor1.hasNext()) {
+							return true;						
+						}
+					}
+				}
+			}catch (Exception e) {
+					//TODO: handle exception
+			}
+			return false;
+		}
+				
+	//check whether suggested keywords have been translated during curation process. 	
+	public boolean haveKeywordsSuggestionBeenTranslatedDuringCurationProcess (int userId, String id, String datasetVersion, int revision) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("logInfo.id", id);
+		searchObj.put("logInfo.datasetVersion", datasetVersion);
+		searchObj.put("logInfo.field", "languageToKeyword");
+		searchObj.put("userId", userId);	
+		searchObj.put("logTypeKeyword", "translation");
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("UserLogTemp"); //Collection
+			DBCursor cursor = coll.find(searchObj); 
+			if (cursor.hasNext()) {				
+				return true;				
+			}else {
+				BasicDBObject searchObj1 = new BasicDBObject();
+				while (revision != 0) {
+					revision = revision - 1;
+					searchObj1.put("logInfo.id", id);
+					searchObj1.put("logInfo.datasetVersion", datasetVersion);
+					searchObj1.put("logInfo.field", "languageToKeyword");
+					searchObj1.put("userId", userId);
+					searchObj1.put("logTypeKeyword", "suggestion");
+					searchObj1.put("revision", revision);
+					DB db1 = MongoDBManager.getDB("QaldCuratorFiltered"); 
+					DBCollection coll1 = db1.getCollection("UserLog"); 
+					DBCursor cursor1 = coll1.find(searchObj1);
+					if (cursor1.hasNext()) {
+						return true;						
+					}
+				}
+			}
+		}catch (Exception e) {
+				//TODO: handle exception
 		}
 		return false;
 	}
@@ -1123,8 +1802,57 @@ public class UserDatasetCorrectionDAO {
 			return false;			
 		}
 		
-		//is keyword curated
-		public Boolean isKeywordCurated (int userId, String id, String datasetVersion, Map<String, List<String>> item) {
+		// is a field curated during curation process?
+		public Boolean isItemCuratedDuringCurationProcess (int userId, String id, String datasetVersion, String item) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("userId", userId);
+			//searchObj.put("logType", "curated");
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", item);			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserLogTemp");
+				DBCursor cursor = coll.find(searchObj);
+				while (cursor.hasNext()) {
+					return true;
+				}
+			}catch (Exception e) {}
+			return false;			
+		}
+		
+		//is keyword curated 
+		public Boolean isKeywordCurated (int userId, String id, String datasetVersion, String item) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("userId", userId);
+			searchObj.put("logType", "curated");
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", item);
+			
+			String[] arrayString = new String[2];
+			arrayString[0]="suggestion";
+			arrayString[1]="translation";
+
+			BasicDBObject searchWithOR= new BasicDBObject();
+			searchWithOR.put("$in", arrayString);
+			searchObj.put("logTypeKeyword", searchWithOR);
+			
+			BasicDBObject sortObj = new BasicDBObject();
+			sortObj.put("finishingTimeCuration", -1);
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserLog");
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+				while (cursor.hasNext()) {
+					return true;
+				}
+			}catch (Exception e) {}
+			return false;
+		}
+		
+		//is keyword curated during curation process
+		public Boolean isKeywordCuratedDuringCurationProcess (int userId, String id, String datasetVersion, String item) {
 			BasicDBObject searchObj = new BasicDBObject();
 			searchObj.put("userId", userId);
 			searchObj.put("logType", "curated");
@@ -1133,7 +1861,7 @@ public class UserDatasetCorrectionDAO {
 			searchObj.put("logInfo.field", item);
 			try {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
-				DBCollection coll = db.getCollection("UserLog");
+				DBCollection coll = db.getCollection("UserLogTemp");
 				DBCursor cursor = coll.find(searchObj);
 				while (cursor.hasNext()) {
 					return true;
@@ -1142,17 +1870,38 @@ public class UserDatasetCorrectionDAO {
 			return false;
 		}
 		
-		//is question curated
-		public Boolean isQuestionCurated (int userId, String id, String datasetVersion, Map<String, String> item) {
+		//is question curated 
+		public Boolean isQuestionCurated (int userId, String id, String datasetVersion, String item) {
 			BasicDBObject searchObj = new BasicDBObject();
 			searchObj.put("userId", userId);
 			searchObj.put("logType", "curated");
 			searchObj.put("logInfo.id", id);
 			searchObj.put("logInfo.datasetVersion", datasetVersion);
 			searchObj.put("logInfo.field", item);
+			BasicDBObject sortObj = new BasicDBObject();
+			sortObj.put("finishingTimeCuration", -1);
 			try {
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
 				DBCollection coll = db.getCollection("UserLog");
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+				while (cursor.hasNext()) {
+					return true;
+				}
+			}catch (Exception e) {}
+			return false;
+		}
+		
+		//is question curated during curation process
+		public Boolean isQuestionCuratedDuringCurationProcess (int userId, String id, String datasetVersion, String item) {
+			BasicDBObject searchObj = new BasicDBObject();
+			searchObj.put("userId", userId);
+			searchObj.put("logType", "curated");
+			searchObj.put("logInfo.id", id);
+			searchObj.put("logInfo.datasetVersion", datasetVersion);
+			searchObj.put("logInfo.field", item);			
+			try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserLogTemp");
 				DBCursor cursor = coll.find(searchObj);
 				while (cursor.hasNext()) {
 					return true;

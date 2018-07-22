@@ -29,6 +29,7 @@
     <mvc:resources mapping="/resources/**" location="/resources/bootstrap/" cache-period="31556926"/>
     <mvc:resources mapping="/json/**" location="/resources/json/" />
     <mvc:resources mapping="/file-upload/**" location="/resources/file-upload/" />
+    <mvc:resources mapping="/reports/**" location="/resources/reports/" />
     <mvc:annotation-driven />
   	<!-- apply encoding multilingual -->
   	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource"

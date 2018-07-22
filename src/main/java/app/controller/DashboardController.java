@@ -91,14 +91,14 @@ public class DashboardController {
 			mav.addObject("qald8", qald8);
 			
 			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
-			int qald1Correction = udcDao.countQaldDataset(user.getId(), "QALD1_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD1_Train_dbpedia");
-			int qald2Correction = udcDao.countQaldDataset(user.getId(), "QALD2_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD2_Train_dbpedia");
-			int qald3Correction = udcDao.countQaldDataset(user.getId(), "QALD3_Test_dbpedia") +  udcDao.countQaldDataset(user.getId(), "QALD3_Train_dbpedia");
-			int qald4Correction = udcDao.countQaldDataset(user.getId(), "QALD4_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD4_Train_Multilingual");
-			int qald5Correction = udcDao.countQaldDataset(user.getId(), "QALD5_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD5_Train_Multilingual");
-			int qald6Correction = udcDao.countQaldDataset(user.getId(), "QALD6_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD6_Train_Multilingual");
-			int qald7Correction = udcDao.countQaldDataset(user.getId(), "QALD7_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD7_Train_Multilingual");
-			int qald8Correction = udcDao.countQaldDataset(user.getId(), "QALD8_Test_Multilingual") +  udcDao.countQaldDataset(user.getId(), "QALD8_Train_Multilingual");
+			int qald1Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD1_Train_dbpedia", "QALD1_Test_dbpedia")).size();
+			int qald2Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD2_Train_dbpedia", "QALD2_Test_dbpedia")).size();
+			int qald3Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD3_Train_dbpedia", "QALD3_Test_dbpedia")).size();
+			int qald4Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD4_Train_dbpedia", "QALD4_Test_dbpedia")).size();
+			int qald5Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD5_Train_dbpedia", "QALD5_Test_dbpedia")).size();
+			int qald6Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD6_Train_dbpedia", "QALD6_Test_dbpedia")).size();
+			int qald7Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD7_Train_dbpedia", "QALD7_Test_dbpedia")).size();
+			int qald8Correction = (udcDao.getAllDatasetsInParticularVersion(user.getId(), "QALD8_Train_dbpedia", "QALD8_Test_dbpedia")).size();
 			
 			mav.addObject("qald1Correction", qald1Correction);
 			mav.addObject("qald2Correction", qald2Correction);
@@ -131,9 +131,7 @@ public class DashboardController {
 			JSONArray list = new JSONArray();			
 	        BasicDBObject searchObj = new BasicDBObject();
 			searchObj.put("id",1);	
-			String[] qaldName = qaldTrain.split("_");
-			SparqlService ss = new SparqlService();
-			
+			String[] qaldName = qaldTrain.split("_");		
 				try {
 					//call mongoDb
 					DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
@@ -173,12 +171,18 @@ public class DashboardController {
 		        JSONArray objFinal = new JSONArray();
 		        objFinal.add(obj);
 		    
+		        /*//write dataset into a file in json format
+		        ObjectMapper mapper = new ObjectMapper();
+				ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+				writer.writeValue(new File("C:\\exportMasterDataset\\"+qaldName[0]+".json"), objFinal);*/		
+		        
 		        //write dataset into a file in json format
 		        ObjectMapper mapper = new ObjectMapper();
 				ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-				writer.writeValue(new File("C:\\exportMasterDataset\\"+qaldName[0]+".json"), objFinal);		        
+				// if this project will move to the production server, the path should change to src/main/webapp/resources/reports/
+				writer.writeValue(new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+qaldName[0]+".json"), objFinal);
 	        
-			ModelAndView mav = new ModelAndView("redirect:/dashboard");
+			ModelAndView mav = new ModelAndView("redirect:/document-list/collections/{qald-test}/{qald-train}");
 			return mav;
 		}
 	  //function to export curated dataset
@@ -197,38 +201,13 @@ public class DashboardController {
 			int userId = user.getId();
 			
 			//get curated questions
-			List<DatasetModel> listCuratedQuestions = new ArrayList<DatasetModel>();
-			BasicDBObject searchObj = new BasicDBObject();
-			searchObj.put("userId", userId);
-			searchObj.put("datasetVersion", qaldTrain);
-			BasicDBObject sortObj = new BasicDBObject();
-			sortObj.put("id",1);
-				try {
-					//call mongoDb
-					DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
-					DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
-					DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
-					UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
-					while (cursor.hasNext()) {
-						DBObject dbobj = cursor.next();
-						Gson gson = new GsonBuilder().create();				
-						DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);						
-						listCuratedQuestions.add(q);
-					}
-					searchObj.put("userId", userId);
-					searchObj.put("datasetVersion", qaldTest);
-					DBCursor cursor1 = coll.find(searchObj).sort(sortObj); //Find All
-					while (cursor1.hasNext()) {
-						DBObject dbobj = cursor1.next();
-						Gson gson = new GsonBuilder().create();
-						DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);						
-						listCuratedQuestions.add(q);
-					}								
-				} catch (Exception e) {}
+			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+			List<UserDatasetCorrection> listCuratedQuestions = udcDao.getAllDatasetsInParticularVersion(userId, qaldTrain, qaldTest);
 			
 			//write the curated questions into a json format file
 			//contruct dataset information
 			String[] qaldName = qaldTrain.split("_");
+			String qaldNameNew = "curated_"+qaldName[0];
 			JSONObject newdbobj = new JSONObject();
 			newdbobj.put("id", qaldName[0]+" dataset");
 			
@@ -238,12 +217,13 @@ public class DashboardController {
 	        JSONArray objFinal = new JSONArray();
 	        objFinal.add(obj);
 	    
-	        //write the curated dataset into a file in json format
+	      //write dataset into a file in json format
 	        ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-			writer.writeValue(new File("C:\\exportCuratedDatasetPerVersion\\"+qaldName[0]+".json"), objFinal);		        
+			// if this project will move to the production server, the path should change to src/main/webapp/resources/reports/
+			writer.writeValue(new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+qaldNameNew+".json"), objFinal);		        
         
-		ModelAndView mav = new ModelAndView("redirect:/dashboard");
+		ModelAndView mav = new ModelAndView("redirect:/document-list/curated-question/{qald-test}/{qald-train}");
 		return mav;	
 	  }			
 }

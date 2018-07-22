@@ -69,6 +69,7 @@ public class SparqlCorrection {
         standardPrefixes = Collections.unmodifiableMap(aMap);
 	}
 	
+	
 	public String checkMissingPrefix(String queryString) {
 		String missingPrefix = null; 
 		boolean exceptionCaught = false; 
@@ -586,7 +587,10 @@ public class SparqlCorrection {
 		//String queryString = "SELECT DISTINCT ?uri WHERE {  ?uri foaf:surname 'Baldwin'@en . { ?uri dbo:occupation <http://dbpedia.org/resource/Actor> . } UNION { ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Actor> . } }";
 		//result to be checked/discussed!
 		//String queryString ="SELECT DISTINCT ?uri WHERE {  <http://dbpedia.org/resource/Ganges> <http://dbpedia.org/property/sourceCountry> ?l . ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?l . ?uri rdf:type <http://dbpedia.org/ontology/Country> . }";
-		String queryString= "select distinct ?s ?x where {  res:New_Delhi dbp:country ?s ; dbo:areaCode ?x .}";
+		//String queryString= "select distinct ?s ?x where {  res:New_Delhi dbp:country ?s ; dbo:areaCode ?x .}";
+		//String queryString = "PREFIX  yago: <http://dbpedia.org/class/yago/> PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  onto: <http://dbpedia.org/ontology/> SELECT DISTINCT  ?uri ?string WHERE { ?states  rdf:type      yago:StatesOfTheUnitedStates ; onto:capital  ?uri OPTIONAL { ?uri  rdfs:label  ?string FILTER ( lang(?string) = \"en\" ) }}";
+		String queryString = "PREFIX yago: <http://dbpedia.org/class/yago/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX dbpedia2: <http://dbpedia.org/property/> SELECT ?uri ?string WHERE {?uri rdf:type yago:StatesOfTheUnitedStates . ?uri dbpedia2:densityrank ?density OPTIONAL {?uri rdfs:label ?string. FILTER (lang(?string) = 'en') }} ORDER BY ASC(?density) LIMIT 1";
+		
 		//String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/> PREFIX dbp: <http://dbpedia.org/property/>PREFIX res: <http://dbpedia.org/resource/>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>SELECT DISTINCT ?uriWHERE {        ?uri rdf:type dbo:Film .        ?uri dbo:director res:Akira_Kurosawa .      { ?uri dbo:releaseDate ?x . }       UNION       { ?uri dbp:released ?x . }        res:Rashomon dbo:releaseDate ?y .        FILTER (?y > ?x)}";
 		//String queryString = "PREFIX  dbpedia2: <http://dbpedia.org/property/> PREFIX  res:  <http://dbpedia.org/resource/> SELECT  ?date WHERE { res:Germany  dbpedia2:accessioneudate  ?date }";
 		//String queryString = "PREFIX yago: <http://dbpedia.org/class/yago/> PREFIX res: <http://dbpedia.org/resource/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT DISTINCT ?uri ?string WHERE { ?uri rdf:type yago:EuropeanCountries ; onto:governmentType res:Constitutional_monarchy OPTIONAL { ?uri rdfs:label ?string FILTER ( lang(?string) = 'en' ) } }";

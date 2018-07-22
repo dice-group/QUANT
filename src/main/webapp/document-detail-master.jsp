@@ -73,9 +73,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
+                         <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
-                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -88,9 +90,11 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>

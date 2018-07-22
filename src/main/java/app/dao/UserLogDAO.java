@@ -30,8 +30,30 @@ public class UserLogDAO {
 		newdbobj.put("logInfo", document.getLogInfo());
 		newdbobj.put("logDate", document.getLogDate());
 		newdbobj.put("ipAddress", document.getIpAddress());
+		newdbobj.put("logTypeKeyword", document.getLogTypeKeyword());	
+		newdbobj.put("logTypeQuestion", document.getLogTypeQuestion());
+		newdbobj.put("revision", document.getRevision());
 		return newdbobj;
 	}
+	
+	public void addLogRemove(UserLog userLog) {		
+		try {		
+			BasicDBObject newDbObj = toBasicDBObjectRemove(userLog);
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("UserLog");
+			coll.save(newDbObj);
+		 } catch (Exception e) {}
+	}
+	private BasicDBObject toBasicDBObjectRemove(UserLog document) {
+		BasicDBObject newdbobj = new BasicDBObject();
+		newdbobj.put("userId", document.getUserId());
+		newdbobj.put("logType", document.getLogType());
+		newdbobj.put("logInfo", document.getLogInfo());
+		newdbobj.put("logDate", document.getLogDate());
+		newdbobj.put("ipAddress", document.getIpAddress());	
+		return newdbobj;
+	}
+	
 	public List<UserLog> getUserLogs(int userId){
 		List<UserLog> userLogs = new ArrayList<UserLog>();
 		BasicDBObject searchObj = new BasicDBObject();

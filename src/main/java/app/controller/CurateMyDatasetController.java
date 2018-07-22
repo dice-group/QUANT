@@ -6,18 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,26 +35,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mongodb.BasicDBObject;
 
 import app.dao.CookieDAO;
-import app.dao.DocumentDAO;
 import app.dao.UserDAO;
 import app.dao.UserDatasetCollectionDAO;
-import app.dao.UserDatasetCorrectionDAO;
-import app.dao.UserLogDAO;
 import app.model.AnswersList;
-import app.model.DatasetModel;
-import app.model.DatasetSuggestionModel;
 import app.model.QueryList;
-import app.model.Question;
 import app.model.User;
 import app.model.UserDatasetCollection;
-import app.model.UserDatasetCorrection;
-import app.model.UserLog;
 import app.model.UserQuestionDataset;
 import app.model.UserQuestionsDataset;
 import app.sparql.SparqlService;
@@ -314,7 +301,7 @@ public class CurateMyDatasetController {
 			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
-			Set<String> results = new HashSet();
+			Set<String> results = new HashSet<String>();
 			/** Retrieve answer from Virtuoso current endpoint **/
 			if (ss.isASKQuery(languageToQuestionEn)) {
 				String result = ss.getResultAskQuery(sprqlQuery);
@@ -377,6 +364,7 @@ public class CurateMyDatasetController {
 		UserDatasetCollection documentItem = userDatasetCollectionDao.getDocument(user.getId(), id, datasetVersion);
 		/** Setting previous and next record **/
 		int idCurrent = Integer.parseInt(id);
+		@SuppressWarnings("unused")
 		String previousStatus = "";
 		int idNext = idCurrent+1;
 		int idPrevious;
@@ -411,7 +399,7 @@ public class CurateMyDatasetController {
 			/** Pretty display of Sparql Query**/
 			SparqlService ss = new SparqlService();
 			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
-			Set<String> results = new HashSet();
+			Set<String> results = new HashSet<String>();
 			/** Retrieve answer from Virtuoso current endpoint **/
 			if (ss.isASKQuery(languageToQuestionEn)) {
 				String result = ss.getResultAskQuery(sprqlQuery);
@@ -538,7 +526,7 @@ public class CurateMyDatasetController {
 		//retrieve User
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
-		int userId=user.getId();//assign userId
+		//int userId=user.getId();//assign userId
 		
 		String id =request.getParameter("id");
 		String value =request.getParameter("value");

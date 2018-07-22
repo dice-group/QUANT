@@ -41,8 +41,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script type="text/javascript" language="javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
-	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script>
+	<!-- <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script> -->
 		
 </head>
 
@@ -73,9 +73,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
+                         <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
-                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -85,11 +87,14 @@
                                 <li>
                                     <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
                                 </li>
-                            </ul>                            
+                            </ul>
+                            <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
@@ -120,21 +125,42 @@
                         <div class="panel-heading">
                         <form role="form" method="get" name="headingForm" id="headingForm" action="${pageContext.request.contextPath}/document-list/start-correction/${id }/${datasetVersion}">
                         <div class="row">                        	
-                        	 	<div class="col-md-6" style="text-align: left">                        	 	
-                        	 	<c:if test="${questionRemoveStatus == true}">
-                        	 	<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>                       	 	
-                        	 	<a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>                        	 	
-                         	 	</c:if>
-                         	 	<c:if test="${questionRemoveStatus == false}">                        	 	
-                        	 	<h1 class="btn btn-danger">Question is removed</h1>
-                        	 	</c:if>                        	 	
-                        	 	</div>                        	 	
-                        	 	<div class="col-md-6" style="text-align: right">
-                        	 	<label class="checkbox-inline" id="chkLabel" style="display:none">
-		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk"> No changes needed
-		                        </label>
-                                <button type="submit" name=doneButton' id='doneButton' style="display:none" class="btn btn-primary">Done</button>
-		                        </div>                        	
+                        	 	<div class="col-md-12" style="text-align: left">
+                        	 	<h4>Question Status: 
+                        	 	<c:choose>                        	 		
+                        	 		<c:when test="${status.equals('curated') }">                        	 			
+                        	 			<c:choose>
+                        	 				<c:when test="${revision == 1 }">curated ${revision} time</c:when>
+                        	 				<c:when test="${revision > 1 }">curated ${revision} times</c:when>
+                        	 			</c:choose> 		
+                        	 		</c:when>
+                        	 		<c:when test="${status.equals('removed') }">removed</c:when>
+                        	 		<c:when test="${status.equals('noNeedChanges') }">No Changes Needed</c:when>
+                        	 		<c:otherwise>not curated</c:otherwise>                        	 		
+                        	 	</c:choose>                        	 	       	 	
+                        	 	</h4>
+                        	 	</div>
+                       </div>
+                       
+                       <div class="row">
+                       		<div class="col-md-6" style="text-align: left"></div>
+                       </div>
+                       <div class="row">
+                        	 	<div class="col-md-6" style="text-align: left"> 
+                        	 	<c:if test="${stageStatus != 'onlyDisplay' }">
+                        	 		<c:if test="${status eq 'notCurated' }">
+	                        	 		<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>
+	                        	 		<a href="${pageContext.request.contextPath}/document-list/curate/noNeedChanges/${id}/${datasetVersion}" class="btn btn-success">No Changes Needed</a>                       	 			
+	                        	 		<a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
+                        	 		</c:if>  
+                        	 		<c:if test="${(status eq 'curated') or (status eq 'noNeedChanges')}">
+	                        	 		<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>                        	 		                       	 			
+	                        	 		<a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
+                        	 		</c:if>
+                        	 	</c:if>
+                        	 	                     	 	
+                        	 	                         	 	                      	 	
+                        	 	</div>                       	 	                      	
                         </div>
                         </form>
                         </div>
@@ -158,12 +184,12 @@
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        		</c:if>
                                             <label>SPARQL</label>                                            
-                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>  
-<%--                                             sparql suggestion: ${sparqlSugg}                                                                                        --%>
-<%--                                             SPARQL: ${sparqlQuery } --%>
-											<%-- Result Status is: ${resultStatus}
-											Sparl Suggestion size is: ${sparqlAndCaseSugg.size()} --%>
+                                            <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
+<%--                                             resultStatus : ${resultStatus } --%>
+                                            <%-- sparqlCorrectionStatus = ${sparqlCorrectionStatus }
+                                            ResultStatus = ${resultStatus } --%>
                                             <c:if test="${not resultStatus}">
+                                            <%-- sparql and case sugg : ${sparqlAndCaseSugg.size()} --%>
                                             	<c:if test="${sparqlAndCaseSugg.size()>0}">
                                             		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion" disabled="disabled">View SPARQL Suggestion</button></p>
                                         		</c:if>
@@ -310,9 +336,10 @@
                         	<input type=hidden id="id" name="id" value="${id }">
                         	<input type=hidden id="datasetVersion" name="datasetVersion" value="${datasetVersion }">
                         	<input type=hidden id="pseudoSparqlQuery" name="pseudoSparqlQuery" value="${pseudoSparqlQuery }">
+                        	<input type=hidden id="question" name="question" value="${languageToQuestionEn }">
                         	<div class="row">
                         		<div class="col-lg-12">
-                        			<div class="form-group">
+                        			<div class="form-group">                        			
                         				<c:if test="${isKeywordCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        	</c:if>                        				
@@ -339,7 +366,7 @@
                         				</c:if>
                         				
                         				<c:if test="${(not addKeywordsSuggestionStatus) and (addKeywordsTranslationsStatus)}">
-                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations" disabled="disabled">View Keywords Translations</button></p>
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations" disabled="disabled">View Keywords Translations Suggestion</button></p>
                         				</c:if>
                         			</div>
                         		</div>
@@ -369,6 +396,7 @@
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				
                         				<c:if test="${addQuestionTranslationsStatus}">
                         				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations" disabled="disabled">View Question Translations Suggestion</button></p>
                         				</c:if>
@@ -531,13 +559,14 @@
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
 	
 	 <!-- DataTables JavaScript -->
-	 <script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>
+	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables-editor/jquery.jeditable.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables/js/jquery.dataTables.min.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables-plugins/dataTables.bootstrap.min.js" />"></script>
     <script src="<c:url value="/resources/vendor/datatables-responsive/dataTables.responsive.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.validate.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables/js/dataTables.jqueryui.js" />"></script>
+	
 </body>
 
 </html>

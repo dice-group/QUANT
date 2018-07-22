@@ -18,12 +18,38 @@ public class UserDatasetCorrection {
 	String hybrid;
 	String onlydbo;
 	String sparqlQuery;
+	String sparqlSuggestion;	
 	String pseudoSparqlQuery;
 	String outOfScope;
 	Map<String, String> languageToQuestion;
 	Map<String, List<String>> languageToKeyword;
 	Set<String> goldenAnswer;
 	String removingTime;
+	String noNeedChangesTime;
+	String status;
+	
+	/*public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public Integer getUserId() {
+		return userId;
+	}*/
+	public String getSparqlSuggestion() {
+		return sparqlSuggestion;
+	}
+
+	public void setSparqlSuggestion(String sparqlSuggestion) {
+		this.sparqlSuggestion = sparqlSuggestion;
+	}
+	
+	public String getNoNeedChangesTime() {
+		return noNeedChangesTime;
+	}
+
+	public void setNoNeedChangesTime(String noNeedChangesTime) {
+		this.noNeedChangesTime = noNeedChangesTime;
+	}
+
 	public String getRemovingTime() {
 		return removingTime;
 	}
@@ -31,7 +57,7 @@ public class UserDatasetCorrection {
 	public void setRemovingTime(String removingTime) {
 		this.removingTime = removingTime;
 	}
-	String status;
+	
 	public UserDatasetCorrection() {
 		super();
 		// TODO Auto-generated constructor stub

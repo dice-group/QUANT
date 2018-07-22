@@ -1,6 +1,7 @@
 package app.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class UserLog {
@@ -10,6 +11,55 @@ public class UserLog {
 	String logDate;
 	String ipAddress;
 	Map<String,String> LogInfoEach;
+	String logTypeKeyword;
+	String startingTimeCuration;
+	String finishingTimeCuration;
+	String logTypeQuestion;
+	String sparqlCases;
+	int revision;
+	
+	
+	
+	public int getRevision() {
+		return revision;
+	}
+
+	public void setRevision(int revision) {
+		this.revision = revision;
+	}
+
+	public String getStartingTimeCuration() {
+		return startingTimeCuration;
+	}
+
+	public void setStartingTimeCuration(String startingTimeCuration) {
+		this.startingTimeCuration = startingTimeCuration;
+	}
+
+	public String getFinishingTimeCuration() {
+		return finishingTimeCuration;
+	}
+
+	public void setFinishingTimeCuration(String finishingTimeCuration) {
+		this.finishingTimeCuration = finishingTimeCuration;
+	}
+	
+	public String getLogTypeKeyword() {
+		return logTypeKeyword;
+	}
+
+	public void setLogTypeKeyword(String logTypeKeyword) {
+		this.logTypeKeyword = logTypeKeyword;
+	}
+
+	public String getLogTypeQuestion() {
+		return logTypeQuestion;
+	}
+
+	public void setLogTypeQuestion(String logTypeQuestion) {
+		this.logTypeQuestion = logTypeQuestion;
+	}
+	
 	public Map<String, String> getLogInfoEach() {
 		return LogInfoEach;
 	}
@@ -38,6 +88,7 @@ public class UserLog {
 	public Object getLogInfo() {
 		return logInfo;
 	}
+
 	public void setLogInfo(Object logInfo) {
 		this.logInfo = logInfo;
 	}

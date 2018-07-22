@@ -39,13 +39,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script type="text/javascript" language="javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
-	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script>
+	<!-- <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script> -->
+	<!-- <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script> -->
 		
 </head>
 
-<body>
-
+<body >
+	
     <div id="wrapper">
     <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -66,31 +66,35 @@
                     <ul class="nav" id="side-menu">
                     	
                     	<li>
-                            <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="${pageContext.request.contextPath}/dashboard" style=" pointer-events: none;  cursor: default;"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
+                            <a href="${pageContext.request.contextPath}/document-list" style=" pointer-events: none;  cursor: default;"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
+                         <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
-                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-list fa-fw"></i> User List</a>
+                            <a href="${pageContext.request.contextPath}/user-list" style=" pointer-events: none;  cursor: default;"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction" style=" pointer-events: none;  cursor: default;">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list" style=" pointer-events: none;  cursor: default;">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
-                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
+                            <a href="${pageContext.request.contextPath}/logout" style=" pointer-events: none;  cursor: default;"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -121,14 +125,11 @@
                         	 	<div class="col-md-6" style="text-align: left">
                         	 	<button type="submit" name="startButton" id="startButton" class="btn btn-default" ${startButtonDisabled }>${startButton }</button>
                         	 	</div>
-                        	 	<div class="col-md-6" style="text-align: right">
-                        	 	<label class="checkbox-inline" id="chkLabel" ${displayStatus} ${statusNoChangeChk }>
-		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
-		                        </label>
-		                        <a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
+                        	 	<div class="col-md-6" style="text-align: right">                        	 	
+		                        <a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger" >Remove Question</a>
 <%--                                 <a href="${pageContext.request.contextPath}/document-list/curate/done/${id}/${datasetVersion}" class="btn btn-primary">Done</a> --%>
-	                            <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="btn btn-primary">Done</button>
-		                        <a href="${pageContext.request.contextPath}/document-list/detail/${id}/${datasetVersion}" class="btn btn-warning">Cancel</a>
+	                            <input type="submit" name="doneButton" id="doneButton" ${displayStatus} class="btn btn-primary" value="Done" />
+		                        <a href="${pageContext.request.contextPath}/document-list/curate/cancel/${id}/${datasetVersion}" class="btn btn-warning" >Cancel</a>
 		                        </div>                        	
                         </div>
                         </form>
@@ -142,7 +143,7 @@
 	                                    </div>
 	                                    <div class="col-lg-11" style="text-align:left">
 		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" disabled="disabled">
-		                                    <!--  <p class="font-italic">Question is displayed in English (as default)</p> -->
+		                                    <input type="hidden" id="question" name="question" value="${languageToQuestionEn }">
 	                                    </div>
                                     </div>
                         		</div>
@@ -195,9 +196,11 @@
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
                                             <label>Answer Type</label>
-                                            <select class="form-control" id="answerType" name="answerType" <c:if test="${not empty answerTypeSugg}">
+                                            <select class="form-control" id="answerType" name="answerType" ${disabledForm } 
+                                            <c:if test="${not empty answerTypeSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if>${disabledForm }>
+											</c:if>
+											>
 											
 												<option value="" <c:if test="${empty answerType}"> selected = "selected"</c:if>></option>
 												<option value="boolean" ${answerType == "boolean" ? 'selected="selected"' : ''} >Boolean</option>
@@ -206,7 +209,7 @@
 												<option value="resource" ${answerType == "resource" ? 'selected="selected"' : ''} >Resource</option>
 												<option value="string" ${answerType == "string" ? 'selected="selected"' : ''} >String</option>
 											</select>
-                                            <p class="text-danger" id="answerTypeSugg"><i></i><c:if test="${not empty answerTypeSugg}">
+                                            <p class="text-danger" id="answerTypeSugg"><i><c:if test="${not empty answerTypeSugg}">
     										Suggestion :	
 											${fn:toUpperCase(fn:substring(answerTypeSugg, 0, 1))}${fn:toLowerCase(fn:substring(answerTypeSugg, 1,fn:length(answerTypeSugg)))}
 											</c:if></i>
@@ -220,9 +223,10 @@
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
                                             <label>Out of Scope</label>
-                                           	<select class="form-control" id="outOfScope" name="outOfScope" <c:if test="${not empty outOfScopeSugg}" >
+                                           	<select class="form-control" id="outOfScope" name="outOfScope" ${disabledForm }
+                                           	 <c:if test="${not empty outOfScopeSugg}" >
     										style="background-color:#E6E6FA"    											
-											</c:if> ${disabledForm }>
+											</c:if> >
                                                 <option value=""  <c:if test="${empty outOfScope}">selected="selected"</c:if>></option> 
                                                 <option value="true" ${outOfScope == "true" ? 'selected="selected"' : ''} >True</option>
                                                 <option value="false" ${outOfScope == "false" ? 'selected="selected"' : ''}>False</option>                                                
@@ -246,15 +250,15 @@
                                         </c:if>
                                            <label>Aggregation</label>
                                            
-                                           <select class="form-control" id="aggregation" name="aggregation" <c:if test="${not empty aggregationSugg}">
+                                           <select class="form-control" id="aggregation" name="aggregation" ${disabledForm } <c:if test="${not empty aggregationSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> ${disabledForm }>
+											</c:if> >
                                                 <option></option>
                                                 <option value="true" ${aggregation == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${aggregation == false ? 'selected="selected"' : ''}>False</option>                                                
                                             </select>
-                                            <p class="text-danger" id="aggregationSugg"><c:if test="${not empty aggregationSugg}">
-    												<em>Suggestion : </c:if>
+                                            <p class="text-danger" id="aggregationSugg"><em><c:if test="${not empty aggregationSugg}">
+    												Suggestion : </c:if>
     												${fn:toUpperCase(fn:substring(aggregationSugg, 0, 1))}${fn:toLowerCase(fn:substring(aggregationSugg, 1,fn:length(aggregationSugg)))}</em>
     											<input type="hidden" value="${aggregationSugg }" name="aggregationSugg" id="aggregationSugg" class="form-control" />
     										</p>
@@ -268,9 +272,9 @@
                                         </c:if>
                                            <label>Onlydbo</label>
                                            
-                                           <select class="form-control" id="onlydbo" name="onlydbo" <c:if test="${not empty onlyDboSugg}">
+                                           <select class="form-control" id="onlydbo" name="onlydbo"  ${disabledForm } <c:if test="${not empty onlyDboSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> ${disabledForm }>
+											</c:if>>
                                                 <option></option>
                                                 <option value="true" ${onlydbo == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${onlydbo == false ? 'selected="selected"' : ''}>False</option>
@@ -290,9 +294,9 @@
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
                                             <label>Hybrid</label>
-                                           <select class="form-control" id="hybrid" name="hybrid" <c:if test="${not empty hybridSugg}">
+                                           <select class="form-control" id="hybrid" name="hybrid" ${disabledForm } <c:if test="${not empty hybridSugg}">
     										style="background-color:#E6E6FA"	
-											</c:if> ${disabledForm }>
+											</c:if> >
                                                 <option></option>
                                                 <option value="true" ${hybrid == true ? 'selected="selected"' : ''}>True</option>
                                                 <option value="false" ${hybrid == false ? 'selected="selected"' : ''}>False</option>                                                
@@ -313,30 +317,34 @@
                         	<div class="row">
                         		<div class="col-lg-12">
                         			<div class="form-group">
+                        				<c:if test="${isKeywordCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
                         				<label>Multilingual Keyword List</label>
-                        				<table id="keywordTable" width="100%" class="table table-striped table-bordered table-hover">
+                        				<table id="keywordTable" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
 			                                        <th class="text-center">Language</th>
-			                                        <th class="text-center">Keywords</th>
-<!-- 			                                    <th></th> -->
+			                                        <th class="text-center">Keywords</th>			                                    
 			                                    </tr>
 			                                </thead>
 			                                <tbody>			                                
 			                                     <c:forEach items="${languageToKeyword}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>				                                    		
+				                                    		<td>${map.getValue()}</td>
+				                                    						                                    		
 				                                    	</tr>		                                    	
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				
                         				<c:if test="${addKeywordsSuggestionStatus}">
                         				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsSuggestions" data-toggle="modal" data-target="#provideKeywordsSuggestions">View Keywords Suggestion</button></p>
                         				</c:if>
                         				
                         				<c:if test="${(not addKeywordsSuggestionStatus) and (addKeywordsTranslationsStatus)}">
-                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations">View Keywords Translations</button></p>
+                        				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addKeywordsTranslations" data-toggle="modal" data-target="#provideKeywordsTranslations">View Keywords Translations Suggestion</button></p>
                         				</c:if>
                         			</div>
                         		</div>
@@ -345,16 +353,20 @@
                         	<div class="row">
                         		<div class="col-lg-12">
                         			<div class="form-group">
+                        				<c:if test="${isQuestionTranslationCurated == true}">
+                                           <span class="glyphicon glyphicon-check  "></span>
+                                        </c:if>
                         				<label>Multilingual Question List</label> &nbsp;&nbsp;
                         				<!--  
                         				<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Question Correction</button>
                         				<br />
                         				-->
-                        				<table id="example"  width="100%" class="table table-striped table-bordered table-hover">
+                        				<table id="example"  class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
 			                                        <th class="text-center">Language</th>
 			                                        <th class="text-center">Question</th>
+			                                        
 			                                        
 			                                    </tr>
 			                                </thead>
@@ -363,21 +375,21 @@
 			                                     <c:forEach items="${languageToQuestion}" var="map">			                                     	
 				                                    	<tr id="${map.getKey() }">
 				                                    		<td>${map.getKey()}</td>
-				                                    		<td>${map.getValue()}</td>			                                    		
+				                                    		<td>${map.getValue()}</td>	
+				                                    				                                    		
 				                                    	</tr>			                                    	
 			                                    </c:forEach>
 			                                </tbody>
                         				</table>
+                        				
                         				<c:if test="${addQuestionTranslationsStatus}">
                         				<p class="help-block"><button type="button" class="btn btn-outline-primary" id="addQuestionsTranslations" data-toggle="modal" data-target="#provideQuestionTranslations">View Question Translations Suggestion</button></p>
                         				</c:if>
                         			</div>
                         		</div>
-                        	</div>
-                            <!-- /.row (nested) -->
+                        	</div>                        
                             </form>
-                        </div>
-                        <!-- /.panel-body -->
+                        </div>                        
                         </c:if>
                         <c:if test="${isExist=='no'}">
                         	<div class="panel-body">
@@ -386,12 +398,9 @@
                         		</div>
                         	</div>
                         </c:if>
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
+                    </div>                   
+                </div>                
+            </div>            
         </div>
         
         <!-- /#page-wrapper -->
@@ -440,13 +449,13 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-sparql-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>
                                         <th class="text-center">Suggestion</th>
                                         <th class="text-center">Answers from Current Endpoint</th>
-                                        <th><input type="checkbox" id="checkBoxAll" /></th>                                      
+                                        <th><input type="checkbox" id="checkBoxAllAnswer" /></th>                                      
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -456,7 +465,11 @@
                                     		<td>${loop.index+1}</td>
 				                            <td>${sparqlSugg.getKey()}</td>
 				                            <td><c:out value="${answerFromCurrentEndpoint}"/></td>
-				                            <td><input type="checkbox" class="chkCheckBoxId" value="${sparqlSugg.getKey()}" name="sparqlValue" /></td>                                   		                                  		
+				                            <td>
+				                            <input type="checkbox" class="chkCheckBoxId" value="${sparqlSugg.getKey()};${sparqlSugg.getValue()};${answerFromCurrentEndpoint}" name="sparqlAnswerValue" />
+				                            </td> 
+				                            <input type="hidden" id="sparqlAndCaseSuggestion" name="sparqlAndCaseSuggestion" value="${sparqlAndCaseSugg }" /> 
+											<input type="hidden" id="suggestedAnswer" name="suggestedAnswer" value="${answerFromVirtuosoList }" />				                                                             		                                  		
                                     	</tr>
                                     	</c:forEach>
                                     </c:forEach>                                    
@@ -472,23 +485,23 @@
 	    </div>
     	<!-- end block editKeywordModal -->
     </div>    
-    
+    isKeywordCurated = ${isKeywordCurated }
     <!-- start block keywords suggestions -->
     	<div class="modal fade" id="provideKeywordsSuggestions" role="dialog">
 	    	<div class="modal-dialog" style="width:80%">
 	    		<div class="modal-content">
 	    			<div class="modal-header">
 			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-			          	<h4 class="modal-title">Keywords Suggestions</h4>
+			          	<h4 class="modal-title">Keywords Suggestion</h4>
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-keywords-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>                                        
                                         <th class="text-center">Keyword</th>
-                                        <th><input type="checkbox" id="checkBoxAll" /></th>                                         
+                                        <th><input type="checkbox" id="checkBoxAllKeyword" /></th>                                         
                                     </tr>
                                 </thead>
                                 <tbody>                               		 
@@ -523,33 +536,34 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-keywords-translations/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
-                                    <tr>
-                                    	<th><input type="checkbox" id="checkBoxAll" /></th>
+                                	
+                                    <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>
                                         <th class="text-center">Language Code</th>
-                                        <th class="text-center">Keywords Translation</th>                                         
+                                        <th class="text-center">Keywords Translation</th>
+                                        <th><input type="checkbox" id="checkBoxAllKeywordTranslation" /></th>                                         
                                     </tr>
-                                </thead>
-                                <tbody> 
-<!--                                 	<form action=""                               		 -->
+                                </thead>                                
+                                <tbody>                                 	
                                      <c:forEach  items="${keywordsTranslations}" var="map" varStatus="loop">
-                                    	<tr id="${map.getKey()}">
-                                    		<td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>
+                                    	<tr id="${map.getKey()}">                                    		                                    		
                                     		<td>${loop.index+1}</td>
 				                            <td>${map.getKey()}</td>
-				                            <td>${map.getValue()}</td>              				         
-                                    		                                  		
+				                            <td>${map.getValue()}</td>
+				                            <td><input type="checkbox" class="chkCheckBoxId" value="${map.getKey()};${map.getValue()}" name="langId" /></td>                                      		                                  		
                                     	</tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
 			        <div class="modal-footer">
-			        	<input type="submit" class="btn btn-primary" value="Add" onclick="return confirm('Are you sure you want to add keywords translation/s? ')" />
- 			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        	<input type="hidden" id="englishKeywordTranslation" name="englishKeywordTranslation" value="${englishKeywordTranslation }">
+			        	<input type="submit" class="btn btn-primary" value="Add" onclick="return confirm('Are you sure you want to add keywords translation/s? ')" />			        	
+ 			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 			        	
 			        </div>
 			        </form>
+			        
 	    		</div>
 	    	</div>
 	    </div>
@@ -564,18 +578,17 @@
 			          	<h4 class="modal-title">Question Translations Suggestion</h4>
 			        </div>
 			        <div class="modal-body">
-			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-question-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-questionTranslations-suggestion/${id }/${datasetVersion}">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>
                                         <th class="text-center">Language Code</th>
                                         <th class="text-center">Question Translation</th>
-                                        <th><input type="checkbox" id="checkBoxAll" /></th>                                        
+                                        <th><input type="checkbox" id="checkBoxAllQuestion" /></th>                                        
                                     </tr>
                                 </thead>
-                                <tbody> 
-<!--                                 	<form action=""                               		 -->
+                                <tbody>                                 	
                                      <c:forEach  items="${questionTranslation}" var="map" varStatus="loop">
                                     	<tr id="${map.getKey()}">                                    		
                                     		<td>${loop.index+1}</td>
@@ -621,6 +634,46 @@
     <script src="<c:url value="/resources/vendor/datatables-responsive/dataTables.responsive.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.validate.js" />"></script>
 	<script src="<c:url value="/resources/vendor/datatables/js/dataTables.jqueryui.js" />"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#checkBoxAllAnswer').click(function(){
+				if ($(this).is(':checked'))	
+					$('.chkCheckBoxId').prop('checked', true);
+				else
+					$('.chkCheckBoxId').prop('checked', false);
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#checkBoxAllKeyword').click(function(){
+				if ($(this).is(':checked'))	
+					$('.chkCheckBoxId').prop('checked', true);
+				else
+					$('.chkCheckBoxId').prop('checked', false);
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#checkBoxAllKeywordTranslation').click(function(){
+				if ($(this).is(':checked'))	
+					$('.chkCheckBoxId').prop('checked', true);
+				else
+					$('.chkCheckBoxId').prop('checked', false);
+			});
+		});
+	</script>	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#checkBoxAllQuestion').click(function(){
+				if ($(this).is(':checked'))	
+					$('.chkCheckBoxId').prop('checked', true);
+				else
+					$('.chkCheckBoxId').prop('checked', false);
+			});
+		});
+	</script>
 	<script>
 	  $(document).ready($('.form-control').change(function() {
 	   $.ajax({
@@ -688,16 +741,12 @@ $(function(){
       });     
 });
 </script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$('#checkBoxAll').click(function(){
-			if ($(this).is(':checked'))	
-				$('.chkCheckBoxId').prop('checked', true);
-			else
-				$('.chkCheckBoxId').prop('checked', false);
-		});
-	});
-</script>
+<!-- <script>
+function myFunction() {
+    return "Write something clever here...";
+}
+</script> -->
+
 </body>
 
 </html>

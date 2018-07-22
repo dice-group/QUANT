@@ -9,7 +9,22 @@ public class DatasetSuggestionModel {
 	String onlyDboSugg;
 	String hybridSugg;
 	String outOfScopeSugg;
-	String resultStatus;	
+	String resultStatus;
+	boolean sparqlCorrectionStatus;
+	String query;
+	
+	public String getQuery() {
+		return query;
+	}
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	public Boolean getSparqlCorrectionStatus() {
+		return sparqlCorrectionStatus;
+	}
+	public void setSparqlCorrectionStatus(Boolean sparqlCorrectionStatus) {
+		this.sparqlCorrectionStatus = sparqlCorrectionStatus;
+	}
 	Map<String, List<String>> sparqlAndCaseList;
 	List<String> answerFromVirtuosoList;	
 	public List<String> getAnswerFromVirtuosoList() {

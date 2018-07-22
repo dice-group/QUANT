@@ -39,7 +39,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script type="text/javascript" language="javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
 	<script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/json2.js"></script>
 		
 </head>
@@ -128,7 +128,7 @@
 		                        	<input type="checkbox" name="noChangeChk" id="noChangeChk" > No changes needed
 		                        </label>
 		                        <a href="${pageContext.request.contextPath}/document-list/detail/remove-question/${id}/${datasetVersion}" class="hidden">Remove Question</a>
-                                <button type="submit" name=doneButton' id='doneButton' ${displayStatus} class="hidden">Done</button>
+                                <button type="submit" name="doneButton" id="doneButton" ${displayStatus} class="hidden">Done</button>
 		                        <a href="${pageContext.request.contextPath}/curate-my-dataset/detail-collection/${id}/${datasetVersion}" class="btn btn-warning">Back</a>
 		                        </div>
                         	
@@ -311,7 +311,7 @@
                         		<div class="col-lg-12">
                         			<div class="form-group">
                         				<label>Multilingual Keyword List</label>
-                        				<table id="keywordTable" width="100%" class="table table-striped table-bordered table-hover">
+                        				<table id="keywordTable" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
 			                                        <th class="text-center">Language</th>
@@ -347,7 +347,7 @@
                         				<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Question Correction</button>
                         				<br />
                         				-->
-                        				<table id="example"  width="100%" class="table table-striped table-bordered table-hover">
+                        				<table id="example"  class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
 			                                        <th class="text-center">Language</th>
@@ -437,7 +437,7 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-sparql-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>
@@ -480,7 +480,7 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-keywords-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>                                    	
                                         <th width="10%" class="text-center">No.</th>                                        
@@ -520,7 +520,7 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-keywords-translations/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
                                     	<th><input type="checkbox" id="checkBoxAll" /></th>
@@ -562,7 +562,7 @@
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-question-suggestion/${id }/${datasetVersion}">
-			        	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+			        	<table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
                                     	<th><input type="checkbox" id="checkBoxAll" /></th>

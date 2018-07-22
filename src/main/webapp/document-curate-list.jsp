@@ -64,9 +64,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
+                         <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -79,9 +81,11 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
@@ -94,7 +98,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"> List of Curated Questions</h1>
+                    <h1 class="page-header"> List of Curated Questions<c:if test="${status == 'versionBasedCurated' }"> on ${datasetName } Dataset</h1></c:if>  
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -113,6 +117,7 @@
                                         <th class="text-center">Question</th>
                                         <th class="text-center">Keywords</th>
                                         <th class="text-center">Database Origin Version</th>
+                                        <th class="text-center">Revision</th>
                                         <th width="5%" ></th>
                                     </tr>
                                 </thead>
@@ -132,8 +137,15 @@
 			                                    </c:forEach>
                                     		</td>
                                     		<td>${datasets.getDatasetVersion()}</td>
-                                    		<td>
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-edit" title="View Correction Result"></span></a>
+                                    		<td>${datasets.getRevision()}</td>
+                                    		<td>                             			
+                                    			
+                                    			<c:if test="${datasets.getStatus()=='curated' || datasets.getStatus() == 'noNeedChanges'}">
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-edit" title="View Correction Result"></span></a>                                    			
+                                    			</c:if>
+                                    			<c:if test="${datasets.getStatus() == 'removed'}">
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail-correction/${datasets.getId()}/${datasets.getDatasetVersion()}/no"><span class="fa fa-remove" title="Question is removed"></span></a>                                   			                                    			
+                                    			</c:if>
                                     			
                                     		</td>
                                     	</tr>
@@ -148,8 +160,21 @@
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-12 -->
+                
                 <div class="col-lg-12">
-          			<a href="${pageContext.request.contextPath}/download-dataset-correction"/><i class="fa fa-download"> Download Curated Dataset</i>
+                	<c:if test="${status == 'allCurated' }">
+          			<a href="${pageContext.request.contextPath}/download-dataset-correction"/><button type="button" class="btn btn-primary">Generate Report</button>
+	          			<c:if test="${fExists==true}">
+	          				<a href="${pageContext.request.contextPath}/reports/${userName }.json"/><i class="fa fa-download"> Download Report</i>
+	          			</c:if>
+          			</c:if>
+          			<c:if test="${status == 'versionBasedCurated' }">
+          			<a href="${pageContext.request.contextPath}/download-curated-dataset/${qaldTest }/${qaldTrain }"/><button type="button" class="btn btn-primary">Generate Report</button>
+          				<c:if test="${fExists==true}">
+          					<a href="${pageContext.request.contextPath}/reports/${qaldNameNew }.json"/><i class="fa fa-download"> Download Report</i>
+          				</c:if>
+          			</c:if>
+          			
         		</div>
             </div>
             <!-- /.row --> 

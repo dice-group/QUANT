@@ -77,14 +77,16 @@
                                     <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="#">Activity Log</a>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
@@ -129,7 +131,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD1_Test_dbpedia/QALD1_Train_dbpedia">                                               
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"> <i class="fa fa-download"></i></span>
+                                <%-- <a href="${pageContext.request.contextPath}/download-master-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"> <i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -151,7 +153,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD2_Test_dbpedia/QALD2_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
+                                <%-- <a href="${pageContext.request.contextPath}/download-master-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -173,12 +175,14 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD3_Test_dbpedia/QALD3_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
                     </div>
                 </div>
+                
+                <c:if test="${role =='administrator'}">
                 <div class="col-lg-3 col-md-6">
                     <div class="panel panel-red">
                         <div class="panel-heading">
@@ -195,7 +199,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD4_Test_Multilingual/QALD4_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD4_Test_Multilingual/QALD4_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD4_Test_Multilingual/QALD4_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -217,7 +221,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD5_Test_Multilingual/QALD5_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD5_Test_Multilingual/QALD5_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD5_Test_Multilingual/QALD5_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -239,7 +243,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD6_Test_Multilingual/QALD6_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD6_Test_Multilingual/QALD6_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD6_Test_Multilingual/QALD6_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -261,7 +265,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD7_Test_Multilingual/QALD7_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD7_Test_Multilingual/QALD7_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD7_Test_Multilingual/QALD7_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -283,14 +287,14 @@
                         <a href="${pageContext.request.contextPath}/document-list/collections/QALD8_Test_Multilingual/QALD8_Train_Multilingual">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-master-dataset/QALD8_Test_Multilingual/QALD8_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-master-dataset/QALD8_Test_Multilingual/QALD8_Train_Multilingual"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
                     </div>
-                </div>
-                
+                </div>                
             </div>
+            </c:if>
             <c:if test="${role!='administrator'}"> <!-- filter menu based on role -->
             <!-- /.row -->
              <div class="row">
@@ -317,7 +321,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD1_Test_dbpedia/QALD1_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD1_Test_dbpedia/QALD1_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -339,7 +343,7 @@
                         <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD2_Test_dbpedia/QALD2_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD2_Test_dbpedia/QALD2_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -361,13 +365,13 @@
                         <a href="${pageContext.request.contextPath}/document-list/curated-question/QALD3_Test_dbpedia/QALD3_Train_dbpedia">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span>
+<%--                                 <a href="${pageContext.request.contextPath}/download-curated-dataset/QALD3_Test_dbpedia/QALD3_Train_dbpedia"/><span class="pull-right"><i class="fa fa-download"></i></span> --%>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <%-- <div class="col-lg-3 col-md-6">
                     <div class="panel panel-red">
                         <div class="panel-heading">
                             <div class="row">
@@ -477,7 +481,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --%>
             </c:if>
             <!-- /.row -->
             <!-- /.row -->

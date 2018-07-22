@@ -66,9 +66,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
+                         <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
                          <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -76,14 +78,16 @@
                                     <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
                                 </li>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
+                                   <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
@@ -140,7 +144,7 @@
                                     			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-edit" title="View Correction Result"></span></a>                                    			
                                     			</c:if>
                                     			<c:if test="${datasets.getIsCurate() == true && datasets.getIsRemoved() == true}">
-                                    			<a href="${pageContext.request.contextPath}/document-list/detail/removed/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-remove" title="Question is removed"></span></a>                                    			
+                                    			<a href="${pageContext.request.contextPath}/document-list/detail/${datasets.getId()}/${datasets.getDatasetVersion()}"><span class="fa fa-remove" title="Question is removed"></span></a>                                    			
                                     			</c:if>
                                     		</td>                                    		                                    		
                                     	</tr>
@@ -185,7 +189,9 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
-            responsive: true
+        	responsive: true,
+            deferRender: true,
+            stateSave: true
         });
     });
     </script>

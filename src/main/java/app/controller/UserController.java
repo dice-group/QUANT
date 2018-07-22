@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -28,7 +32,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mongodb.AggregationOptions;
 import com.mongodb.BasicDBObject;
+import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -45,14 +51,7 @@ import app.model.UserDatasetCorrection;
 
 @Controller
 public class UserController {
-	//@Autowired
-	/**
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	
+	//@Autowired	
 	
 	@RequestMapping (value = "/user-list", method = RequestMethod.GET)
 	public ModelAndView showUserList(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -69,13 +68,7 @@ public class UserController {
 		mav.addObject("users", userDao.getAll());
 	    return mav;  
 	}
-	/**
-	 * Method used  to add User
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
+	
 	@RequestMapping(value = "/user-list/user/insert-user", method = RequestMethod.POST)
 	public String add(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttrs) throws Exception {
 		UserDAO userDao = new UserDAO();
@@ -104,13 +97,7 @@ public class UserController {
 		return "redirect:/user-list";
 		
 	}
-	/**
-	 * Method used  to delete User
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
+	
 	@RequestMapping(value = "/user-list/user/delete-user", method = RequestMethod.POST)
 	public String remove(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttrs) throws Exception {
 		UserDAO userDao = new UserDAO();
@@ -140,6 +127,16 @@ public class UserController {
 		
 		ModelAndView mav = new ModelAndView("document-curate-list");
 		mav.addObject("datasets", udcDao.getAllDatasets(user.getId()));
+		// if this project will move to the production server, the path should be changed to src/main/webapp/resources/reports/
+		File f = new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+user.getName()+".json");
+		//File f = new File("src/main/webapp/resources/reports/"+user.getName()+".json");
+		Boolean fExist = false;
+		if(f.exists() && !f.isDirectory()) { 
+		    fExist = true;
+		}
+		mav.addObject("fExists", fExist);
+		mav.addObject("userName", user.getName());
+		mav.addObject("status", "allCurated");
 	    return mav;  
 	}
 	
@@ -156,33 +153,55 @@ public class UserController {
 		//check data correction first
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
-        BasicDBObject searchObj = new BasicDBObject();
-		searchObj.put("userId", user.getId());
-		BasicDBObject sortObj = new BasicDBObject();
-		sortObj.put("id",1);
+		BasicDBObject searchObj1 = new BasicDBObject();
+		BasicDBObject matchObj = new BasicDBObject();
+		//matchObj.put("userId", 2);
+		
+		BasicDBObject searchObj2 = new BasicDBObject();
+		BasicDBObject searchObj3 = new BasicDBObject();
+		BasicDBObject dataObj = new BasicDBObject();
+		dataObj.put("id", "$id");
+		dataObj.put("datasetVersion", "$datasetVersion");
+		//dataObj.put("languageToQuestion", "$languageToQuestion");
+		dataObj.put("userId", "$userId");
+		//dataObj.put("revision", "$revision");
+		searchObj2.put("_id", dataObj);
+		searchObj3.put("$max", "$revision");
+		searchObj2.put("latestData", searchObj3);
+		//searchObj1.put("$match", matchObj);
+		searchObj1.put("$group", searchObj2);
 			try {
-				//call mongoDb
 				DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 				DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
-				DBCursor cursor = coll.find(searchObj).sort(sortObj); //Find All
+				List<DBObject> flatPipeline = Arrays.asList(searchObj1);
+				AggregationOptions aggregationOptions = AggregationOptions.builder()
+						                                    .batchSize(100)
+						                                    .allowDiskUse(true)
+						                                    .build();
+				Cursor cursor = coll.aggregate(flatPipeline,aggregationOptions);
+				UserDatasetCorrectionDAO userDatasetCorrectionDao = new UserDatasetCorrectionDAO();
 				while (cursor.hasNext()) {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
-					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
-					UserDatasetCorrection item = new UserDatasetCorrection();
-					item.setDatasetVersion(q.getDatasetVersion());;
-					item.setId(q.getId());
-					item.setAnswerType(q.getAnswerType());
-					item.setAggregation(q.getAggregation());
-					item.setOnlydbo(q.getOnlydbo());
-					item.setHybrid(q.getHybrid());
-					item.setLanguageToQuestion(q.getLanguageToQuestion());
-					item.setLanguageToKeyword(q.getLanguageToKeyword());
-					item.setSparqlQuery(q.getSparqlQuery());
-					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
-					item.setGoldenAnswer(q.getGoldenAnswer());
-					BasicDBObject newDbObj = toBasicDBObject(item);
-					list.add(newDbObj);
+					UserDatasetCorrection q = gson.fromJson(dbobj.get("_id").toString(), UserDatasetCorrection.class);
+					UserDatasetCorrection data = userDatasetCorrectionDao.getDocumentFromAnyStatus(user.getId(), q.getId(), q.getDatasetVersion());
+					if (data.getId()!= null) {				
+						UserDatasetCorrection item = new UserDatasetCorrection();
+						
+						item.setDatasetVersion(data.getDatasetVersion());;
+						item.setId(data.getId());
+						item.setAnswerType(data.getAnswerType());
+						item.setAggregation(data.getAggregation());
+						item.setOnlydbo(data.getOnlydbo());
+						item.setHybrid(data.getHybrid());
+						item.setLanguageToQuestion(data.getLanguageToQuestion());
+						item.setLanguageToKeyword(data.getLanguageToKeyword());
+						item.setSparqlQuery(data.getSparqlQuery());
+						item.setPseudoSparqlQuery(data.getPseudoSparqlQuery());
+						item.setGoldenAnswer(data.getGoldenAnswer());
+						BasicDBObject newDbObj = toBasicDBObject(item);
+						list.add(newDbObj);
+					}
 				}							
 			} catch (Exception e) {}
 			
@@ -199,35 +218,9 @@ public class UserController {
 	        //write dataset into a file in json format
 	        ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-			writer.writeValue(new File("C:\\exportCuratedDataset\\"+user.getName()+".json"), objFinal);
-			
-			/*//contruct dataset information
-			JSONObject newdbobj = new JSONObject();
-			newdbobj.put("id", user.getId()+"dataset");
-			
-			JSONObject obj = new JSONObject();
-			obj.put("dataset", newdbobj);
-	        obj.put("questions", list);
-	        
-        try (FileWriter file = new FileWriter("c:\\test.json")) {
-        	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        	String jsonOutput = gson.toJson(obj);
-            file.write(jsonOutput);
-            file.flush();
-            response.setContentType("text/json");
-           
-            response.setHeader("Content-Disposition", "attachment; filename=\""+user.getId()+"-"+"dataset.json\"");
-           
-                OutputStream outputStream = response.getOutputStream();
-                outputStream.write(jsonOutput.getBytes());
-                outputStream.flush();
-                outputStream.close();
-           
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+			// if this project will move to the production server, the path should change to src/main/webapp/resources/reports/
+			writer.writeValue(new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+user.getName()+".json"), objFinal);
+			//writer.writeValue(new File("src/main/webapp/resources/reports/"+user.getName()+".json"), objFinal);	
         
 		ModelAndView mav = new ModelAndView("redirect:/user-dataset-correction");
 		return mav;

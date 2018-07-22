@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Built-By: riagu
-Build-Jdk: 9.0.4
+Build-Jdk: 1.8.0_181
 Created-By: Maven Integration for Eclipse
 
