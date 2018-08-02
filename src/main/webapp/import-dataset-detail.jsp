@@ -133,6 +133,17 @@
         });
     });
     </script>
+    
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+        	responsive: true,
+            deferRender: true,
+            stateSave: true
+        });
+    });
+    </script>
 
 </body>
 

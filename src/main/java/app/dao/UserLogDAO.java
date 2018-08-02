@@ -76,6 +76,7 @@ public class UserLogDAO {
 				userLog.setIpAddress(q.getIpAddress());
 				userLogs.add(userLog);
 			}
+			cursor.close();
 		} catch (Exception e) {}
 		return userLogs;
 		

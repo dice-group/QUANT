@@ -52,7 +52,7 @@ public class UserDAO  {
 				while (cursor.hasNext()) {					
 					return true;
 				}
-				
+				cursor.close();
 			}catch (Exception e) {}
 			return false;
 	}
@@ -82,9 +82,9 @@ public class UserDAO  {
 				itemUser.setRole(q.getRole());
 				itemUser.setUsername(q.getUsername());
 				itemUser.setPassword(q.getPassword());
-				users.add(itemUser);
-				
+				users.add(itemUser);				
 			}
+			cursor.close();
 			return users;
 		 }catch (Exception e) {
 			 
@@ -151,10 +151,9 @@ public class UserDAO  {
 					User q = gson.fromJson(dbobj.toString(), User.class);
 					int id = q.getId();
 					id++;
-					return id;
-					
+					return id;					
 				}
-				
+				cursor.close();
 			}catch (Exception e) {}
 		 return 0;
 	 }
@@ -201,7 +200,7 @@ public class UserDAO  {
 					itemUser.setUsername(q.getUsername());
 					itemUser.setPassword(q.getPassword());
 				}
-				
+				cursor.close();
 			}catch (Exception e) {}
 			return itemUser;
 	 }

@@ -584,6 +584,16 @@
  $("#example").dataTable().makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/update-question/${id}/${datasetVersion}"}); 
 
  </script>
+ <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+        	responsive: true,
+            deferRender: true,
+            stateSave: true
+        });
+    });
+    </script>
 </body>
 
 </html>

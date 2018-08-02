@@ -1,13 +1,10 @@
 package app.controller;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,21 +33,20 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import app.config.MongoDBManager;
 import app.dao.CookieDAO;
-import app.dao.DocumentDAO;
 import app.dao.UserDAO;
 import app.dao.UserDatasetCorrectionDAO;
-import app.model.DatasetModel;
 import app.model.User;
 import app.model.UserDatasetCorrection;
 
 @Controller
 public class UserController {
 	//@Autowired	
+	
+	private static final String APPLICATION_JSON = "application/json";
 	
 	@RequestMapping (value = "/user-list", method = RequestMethod.GET)
 	public ModelAndView showUserList(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -124,24 +119,25 @@ public class UserController {
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
 		UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+		//Check whether there is an unfinishfed curation process				
+		udcDao.checkUnfinishedCuration(user.getId());
 		
 		ModelAndView mav = new ModelAndView("document-curate-list");
 		mav.addObject("datasets", udcDao.getAllDatasets(user.getId()));
-		// if this project will move to the production server, the path should be changed to src/main/webapp/resources/reports/
-		File f = new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+user.getName()+".json");
-		//File f = new File("src/main/webapp/resources/reports/"+user.getName()+".json");
-		Boolean fExist = false;
-		if(f.exists() && !f.isDirectory()) { 
-		    fExist = true;
-		}
-		mav.addObject("fExists", fExist);
+		
 		mav.addObject("userName", user.getName());
 		mav.addObject("status", "allCurated");
 	    return mav;  
 	}
 	
+	@SuppressWarnings({ "unused", "unchecked" })
 	@RequestMapping(value = "/download-dataset-correction", method = RequestMethod.GET)
 	public ModelAndView showDownloadDatasetCorrection(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws JsonGenerationException, JsonMappingException, IOException {
+		 /**
+	     * Size of a byte buffer to read/write file
+	     */
+	    final int BUFFER_SIZE = 5242880;
+	    
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -184,25 +180,28 @@ public class UserController {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
 					UserDatasetCorrection q = gson.fromJson(dbobj.get("_id").toString(), UserDatasetCorrection.class);
-					UserDatasetCorrection data = userDatasetCorrectionDao.getDocumentFromAnyStatus(user.getId(), q.getId(), q.getDatasetVersion());
-					if (data.getId()!= null) {				
-						UserDatasetCorrection item = new UserDatasetCorrection();
-						
-						item.setDatasetVersion(data.getDatasetVersion());;
-						item.setId(data.getId());
-						item.setAnswerType(data.getAnswerType());
-						item.setAggregation(data.getAggregation());
-						item.setOnlydbo(data.getOnlydbo());
-						item.setHybrid(data.getHybrid());
-						item.setLanguageToQuestion(data.getLanguageToQuestion());
-						item.setLanguageToKeyword(data.getLanguageToKeyword());
-						item.setSparqlQuery(data.getSparqlQuery());
-						item.setPseudoSparqlQuery(data.getPseudoSparqlQuery());
-						item.setGoldenAnswer(data.getGoldenAnswer());
-						BasicDBObject newDbObj = toBasicDBObject(item);
-						list.add(newDbObj);
+					if (q.getUserId()==user.getId()) {
+						UserDatasetCorrection data = userDatasetCorrectionDao.getDocumentFromAnyStatus(user.getId(), q.getId(), q.getDatasetVersion());
+						if (data.getId()!= null) {				
+							UserDatasetCorrection item = new UserDatasetCorrection();
+							
+							item.setDatasetVersion(data.getDatasetVersion());;
+							item.setId(data.getId());
+							item.setAnswerType(data.getAnswerType());
+							item.setAggregation(data.getAggregation());
+							item.setOnlydbo(data.getOnlydbo());
+							item.setHybrid(data.getHybrid());
+							item.setLanguageToQuestion(data.getLanguageToQuestion());
+							item.setLanguageToKeyword(data.getLanguageToKeyword());
+							item.setSparqlQuery(data.getSparqlQuery());
+							item.setPseudoSparqlQuery(data.getPseudoSparqlQuery());
+							item.setGoldenAnswer(data.getGoldenAnswer());
+							BasicDBObject newDbObj = toBasicDBObject(item);
+							list.add(newDbObj);
+						}
 					}
-				}							
+				}
+				cursor.close();
 			} catch (Exception e) {}
 			
 			//contruct dataset information
@@ -214,13 +213,24 @@ public class UserController {
 	        obj.put("questions", list);
 	        JSONArray objFinal = new JSONArray();
 	        objFinal.add(obj);
-	    
+	        
+	        String path = request.getSession().getServletContext().getRealPath("/resources/reports/")+user.getName()+".json";
 	        //write dataset into a file in json format
 	        ObjectMapper mapper = new ObjectMapper();
 			ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 			// if this project will move to the production server, the path should change to src/main/webapp/resources/reports/
-			writer.writeValue(new File("C:\\Users\\riagu\\Documents\\new-repo\\QALDCurator\\src\\main\\webapp\\resources\\reports\\"+user.getName()+".json"), objFinal);
+			writer.writeValue(new File(path), objFinal);
 			//writer.writeValue(new File("src/main/webapp/resources/reports/"+user.getName()+".json"), objFinal);	
+			
+			//String filePath = "/reports/"+user.getName()+".json";
+			//String appPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+			//String path = request.getSession().getServletContext().getRealPath("/resources/reports/")+user.getName()+".json";
+			File file = getFile(path);
+		    InputStream in = new FileInputStream(file);
+		    response.setContentType(APPLICATION_JSON);
+		    response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+		    response.setHeader("Content-Length", String.valueOf(file.length()));
+		    FileCopyUtils.copy(in, response.getOutputStream());
         
 		ModelAndView mav = new ModelAndView("redirect:/user-dataset-correction");
 		return mav;
@@ -242,4 +252,11 @@ public class UserController {
 		
 		return newdbobj;
 	}
+	private File getFile(String filePath) throws FileNotFoundException {
+        File file = new File(filePath);
+        if (!file.exists()){
+            throw new FileNotFoundException("file with path: " +filePath + " was not found.");
+        }
+        return file;
+    }
 }

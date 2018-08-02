@@ -67,9 +67,11 @@
             	<div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                     	
+                    	<c:if test="${role == 'administrator' }">
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
@@ -525,6 +527,8 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
+    
+    
 	
 	 <!-- DataTables JavaScript -->
 	 <script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>

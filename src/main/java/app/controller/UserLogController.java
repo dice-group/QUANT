@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.dao.CookieDAO;
 import app.dao.UserDAO;
+import app.dao.UserDatasetCorrectionDAO;
 import app.dao.UserLogDAO;
 import app.model.User;
 
@@ -37,7 +38,12 @@ public class UserLogController {
 		
 		UserLogDAO userLogDao = new UserLogDAO();
 		ModelAndView mav = new ModelAndView("user-log-list");
+		
+		//Check whether there is an unfinishfed curation process
+		UserDatasetCorrectionDAO udcDao =  new UserDatasetCorrectionDAO();
+		udcDao.checkUnfinishedCuration(userId);
+		
 		mav.addObject("userLogs",  userLogDao.getUserLogs(userId));
-		return mav; 
-	}
+		return mav; 	
+		}
 }

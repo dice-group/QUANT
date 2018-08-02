@@ -67,9 +67,11 @@
             	<div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                     	
+                    	<c:if test="${role == 'administrator' }">
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-list fa-fw"></i> Dataset</a>
                         </li>
@@ -113,7 +115,7 @@
             <div class="row">
                 <div class="col-lg-12">
                 	<div id = "alert_placeholder"></div>
-                    <h3 class="page-header">Question Detail</h3>
+                    <h3 class="page-header"><c:if test="${curationStatus }">Curated </c:if>Question Detail</h3>
                     <label>ID </label> &nbsp;${id } &nbsp;<label>Dataset Version</label>&nbsp;${datasetVersion }
                 </div>               
             </div>           
@@ -149,7 +151,7 @@
                         	 	<div class="col-md-6" style="text-align: left"> 
                         	 	<c:if test="${stageStatus != 'onlyDisplay' }">
                         	 		<c:if test="${status eq 'notCurated' }">
-	                        	 		<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start to Curate</button>
+	                        	 		<button type="submit" name="startButton" id="startButton" class="${classDisplay }" }>Start Correction</button>
 	                        	 		<a href="${pageContext.request.contextPath}/document-list/curate/noNeedChanges/${id}/${datasetVersion}" class="btn btn-success">No Changes Needed</a>                       	 			
 	                        	 		<a href="${pageContext.request.contextPath}/document-list/curate/remove-question/${id}/${datasetVersion}" class="btn btn-danger">Remove Question</a>
                         	 		</c:if>  
@@ -185,7 +187,7 @@
                                        		</c:if>
                                             <label>SPARQL</label>                                            
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" disabled="disabled">${sparqlQuery}</textarea>
-<%--                                             resultStatus : ${resultStatus } --%>
+                                            
                                             <%-- sparqlCorrectionStatus = ${sparqlCorrectionStatus }
                                             ResultStatus = ${resultStatus } --%>
                                             <c:if test="${not resultStatus}">
@@ -343,7 +345,7 @@
                         				<c:if test="${isKeywordCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        	</c:if>                        				
-                        				<label>Multilingual Keyword List</label>
+                        				<label>Multilingual Keyword</label>
                         				<table id="keywordTable" width="100%" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
@@ -377,7 +379,7 @@
                         				<c:if test="${isQuestionTranslationCurated}">
                                            		<span class="glyphicon glyphicon-check  "></span>
                                        	</c:if>
-                        				<label>Multilingual Question List</label> &nbsp;&nbsp;                        				
+                        				<label>Multilingual Question</label> &nbsp;&nbsp;                        				
                         				<table id="example"  width="100%" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
@@ -557,6 +559,8 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
+    
+    
 	
 	 <!-- DataTables JavaScript -->
 	<script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>

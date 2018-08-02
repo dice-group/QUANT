@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- charset utf-8 for apply encoding multilingual -->
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -316,6 +318,7 @@
  	    $("#delete-user-modal input[name=id-input-delete]").val(id);
  	  });
  	</script>
+
 </body>
 
 </html>

@@ -65,9 +65,11 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
-                         <li>
+                        <c:if test="${role == 'administrator' }">
+                        <li>
                             <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -77,12 +79,13 @@
                                 <li>
                                     <a href="#">Activity Log</a>
                                 </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                            </ul>                            
                         </li>
+                        <c:if test="${role == 'administrator' }">
                         <li>
                             <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
                         </li>
+                        </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
                         </li>
@@ -294,6 +297,8 @@
  	    $("#delete-user-modal input[name=id-input-delete]").val(id);
  	  });
  	</script>
+ 	
+ 	
 </body>
 
 </html>

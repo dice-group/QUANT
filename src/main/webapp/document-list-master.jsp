@@ -60,9 +60,11 @@
             	<div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                     	
+                    	<c:if test="${role == 'administrator' }">
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
@@ -156,9 +158,7 @@
                 
                 <div class="col-lg-12">
           			<a href="${pageContext.request.contextPath}/download-master-dataset/${qaldTest }/${qaldTrain }"/><button type="button" class="btn btn-primary">Generate Report</button>
-          			<c:if test="${fExists==true}">
-          			<a href="${pageContext.request.contextPath}/reports/${datasetName }.json"/><i class="fa fa-download"> Download Report</i>
-          			</c:if>
+          			
         		</div>
             </div>
             <!-- /.row -->
@@ -190,7 +190,9 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
-            responsive: true
+            responsive: true,
+            deferRender: true,
+            stateSave: true
         });
     });
     </script>

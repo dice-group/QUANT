@@ -520,7 +520,8 @@
     <script src="<c:url value="/resources/vendor/metisMenu/metisMenu.min.js" />"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>
+    <script src="<c:url value="/resources/dist/js/sb-admin-2.js" />"></script>    
+    
 	
 	 <!-- DataTables JavaScript -->
 	 <script src="<c:url value="/resources/vendor/datatables-editor/jquery.dataTables.editable.js" />"></script>

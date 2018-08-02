@@ -2,6 +2,7 @@ package app.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DatasetSuggestionModel {
 	String answerTypeSugg;
@@ -26,11 +27,12 @@ public class DatasetSuggestionModel {
 		this.sparqlCorrectionStatus = sparqlCorrectionStatus;
 	}
 	Map<String, List<String>> sparqlAndCaseList;
-	List<String> answerFromVirtuosoList;	
-	public List<String> getAnswerFromVirtuosoList() {
+	Set<String> answerFromVirtuosoList;	
+	
+	public Set<String> getAnswerFromVirtuosoList() {
 		return answerFromVirtuosoList;
 	}
-	public void setAnswerFromVirtuosoList(List<String> answerFromVirtuosoList) {
+	public void setAnswerFromVirtuosoList(Set<String> answerFromVirtuosoList) {
 		this.answerFromVirtuosoList = answerFromVirtuosoList;
 	}
 	public Map<String, List<String>> getSparqlAndCaseList() {

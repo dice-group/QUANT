@@ -59,10 +59,11 @@
             <div class="navbar-default sidebar" role="navigation">
             	<div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                    	
+                    	<c:if test="${role == 'administrator' }">
                     	<li>
                             <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        </c:if>
                         <li>
                             <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
                         </li>
@@ -100,6 +101,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                	<h4>Welcome ${name}. You are an ${role}</h4>
                     <h1 class="page-header">Question List</h1>
                 </div>
                 <!-- /.col-lg-12 -->

@@ -196,6 +196,7 @@ public class CurateMyDatasetController {
 					 }
 					 redirectAttributes.addFlashAttribute("message","You successfully uploaded file");
 						ModelAndView mav = new ModelAndView("redirect:/curate-my-dataset");
+						System.gc();
 						return mav;
 					
 				} catch (Exception e) {

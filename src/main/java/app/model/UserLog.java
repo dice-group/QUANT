@@ -16,6 +16,13 @@ public class UserLog {
 	String finishingTimeCuration;
 	String logTypeQuestion;
 	String sparqlCases;
+	public String getSparqlCases() {
+		return sparqlCases;
+	}
+
+	public void setSparqlCases(String sparqlCases) {
+		this.sparqlCases = sparqlCases;
+	}
 	int revision;
 	
 	

@@ -69,7 +69,7 @@ public class EvaluateLCQuAD {
 //					}
 				}qe.close();
 			}
-		System.out.println("Total Ques: " + totalQuestions);
+		System.out.println("Total Ques: " + totalQuestions);System.gc();
 		return countUnanswered;
 	}
 	

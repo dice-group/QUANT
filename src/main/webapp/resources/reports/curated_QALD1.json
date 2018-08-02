@@ -1,76 +1,93 @@
 [ {
   "questions" : [ {
-    "transId" : null,
-    "userId" : 0,
-    "revision" : 1,
-    "startingTimeCuration" : null,
-    "finishingTimeCuration" : null,
-    "id" : "1",
-    "datasetVersion" : "QALD1_Train_dbpedia",
-    "answerType" : "resource",
+    "id" : "3",
+    "datasetVersion" : "QALD1_Test_dbpedia",
+    "answerType" : "",
     "aggregation" : "false",
-    "hybrid" : "false",
     "onlydbo" : "false",
-    "sparqlQuery" : "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX  prop: <http://dbpedia.org/property/>\r\n\r\nSELECT  ?string\r\nWHERE\r\n  { ?dog  rdfs:label    \"Airedale Terrier\"@en ;\r\n          prop:country  ?string\r\n  }\r\n",
-    "sparqlSuggestion" : null,
-    "pseudoSparqlQuery" : "",
-    "outOfScope" : null,
+    "hybrid" : "false",
+    "sparqlQuery" : "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX onto: <http://dbpedia.org/ontology/>\nPREFIX res: <http://dbpedia.org/resource/>\nASK\nWHERE \n{\n        res:Barack_Obama onto:spouse ?spouse .\n        ?spouse rdfs:label ?name .\n        FILTER(regex(?name,'Michelle')) \n}",
+    "pseudoSparqlQuery" : null,
+    "goldenAnswer" : [ ],
     "languageToQuestion" : {
-      "en" : "Which country does the Airedale Terrier come from?"
+      "en" : "Is the wife of President Obama called Michelle?"
     },
     "languageToKeyword" : {
-      "en" : [ "country", "airedale", "terrier" ]
+      "en" : [ "wife", "president", "obama", "called", "michelle" ]
     },
-    "goldenAnswer" : [ "http://dbpedia.org/resource/United_Kingdom" ],
-    "removingTime" : null,
-    "noNeedChangesTime" : null,
-    "status" : null
+    "outOfScope" : null
   }, {
-    "transId" : null,
-    "userId" : 0,
-    "revision" : 2,
-    "startingTimeCuration" : null,
-    "finishingTimeCuration" : null,
+    "id" : "2",
+    "datasetVersion" : "QALD1_Test_dbpedia",
+    "answerType" : "",
+    "aggregation" : "false",
+    "onlydbo" : "false",
+    "hybrid" : "false",
+    "sparqlQuery" : "PREFIX yago: <http://dbpedia.org/class/yago/>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dbpedia2: <http://dbpedia.org/property/>\r\nSELECT ?uri ?string\r\nWHERE \r\n{\r\n\t ?uri rdf:type yago:WikicatStatesOfTheUnitedStates  .\r\n        ?uri dbpedia2:densityrank ?density\r\n        OPTIONAL {?uri rdfs:label ?string. FILTER (lang(?string) = 'en') }\r\n} ORDER BY ASC(?density) LIMIT 1",
+    "pseudoSparqlQuery" : null,
+    "goldenAnswer" : [ "New Jersey", "http://dbpedia.org/resource/New_Jersey" ],
+    "languageToQuestion" : {
+      "en" : "Which state of the United States of America has the highest density?"
+    },
+    "languageToKeyword" : {
+      "de" : [ "Zustand ", " vereinigt ", " Zustände ", " Amerika ", " höchste ", " Dichte " ],
+      "ru" : [ "государство ", " единый ", " состояния ", " Америка ", " наибольший ", " плотность " ],
+      "pt" : [ "Estado ", " Unidos ", " estados ", " América ", " maior ", " densidade " ],
+      "hi_IN" : [ "राज्य ", " संयुक्त ", " राज्यों ", " अमेरिका ", " उच्चतम ", " घनत्व " ],
+      "en" : [ "state", "united", "states", "america", "highest", "density" ],
+      "it" : [ "stato ", " unito ", " stati ", " America ", " massimo ", " densità " ],
+      "fa" : [ "تلاح  ", " دحتم  ", " اه تلایا  ", " اكیرمآ  ", " نیرتالاب  ", " یلاگچ  " ],
+      "fr" : [ "Etat ", " uni ", " États ", " Amérique ", " le plus élevé ", " densité " ],
+      "ro" : [ "stat ", " Unit ", " statele ", " America ", " cel mai inalt ", " densitate " ],
+      "es" : [ "estado ", " unido ", " estados ", " America ", " más alto ", " densidad " ],
+      "nl" : [ "staat ", " verenigd ", " staten ", " Amerika ", " hoogst ", " dichtheid " ]
+    },
+    "outOfScope" : null
+  }, {
+    "id" : "10",
+    "datasetVersion" : "QALD1_Test_dbpedia",
+    "answerType" : "resource",
+    "aggregation" : "true",
+    "onlydbo" : "true",
+    "hybrid" : "true",
+    "sparqlQuery" : "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX  foaf: <http://xmlns.com/foaf/0.1/>\r\nPREFIX  onto: <http://dbpedia.org/ontology/>\r\n\r\nSELECT DISTINCT  ?uri\r\nWHERE\r\n  { ?film    rdf:type       onto:TelevisionShow ;\r\n             rdfs:label     \"Charmed\"@en ;\r\n             onto:starring  ?actors .\r\n    ?actors  foaf:homepage  ?uri\r\n  }\r\n",
+    "pseudoSparqlQuery" : null,
+    "goldenAnswer" : [ "test" ],
+    "languageToQuestion" : {
+      "en" : "Give me the official websites of actors of the television show Charmed."
+    },
+    "languageToKeyword" : { },
+    "outOfScope" : null
+  }, {
     "id" : "1",
     "datasetVersion" : "QALD1_Test_dbpedia",
-    "answerType" : "boolean",
+    "answerType" : "",
     "aggregation" : "false",
-    "hybrid" : "false",
     "onlydbo" : "false",
-    "sparqlQuery" : "PREFIX  res:  <http://dbpedia.org/resource/>\r\nPREFIX  onto: <http://dbpedia.org/ontology/>\r\n\r\nSELECT  ?number\r\nWHERE\r\n  { res:IBM  onto:revenue  ?number }\r\n",
-    "sparqlSuggestion" : null,
-    "pseudoSparqlQuery" : "",
-    "outOfScope" : null,
+    "hybrid" : "false",
+    "sparqlQuery" : "PREFIX onto: <http://dbpedia.org/ontology/>\nPREFIX res: <http://dbpedia.org/resource/>\nSELECT ?number\nWHERE \n{\n\tres:IBM onto:revenue ?number .\n}",
+    "pseudoSparqlQuery" : null,
+    "goldenAnswer" : [ "1.0363E11" ],
     "languageToQuestion" : {
-      "de" : "Was ist das Einnahmen von IBM? ",
-      "ru" : "Какие является  доход из IBM? ",
-      "pt" : "o que é a receita do IBM? ",
-      "hi_IN" : "क्या है  राजस्व का आईबीएम? ",
-      "en" : "What is the revenue of IBM?",
-      "it" : "Che cosa è il reddito di IBM? ",
-      "fa" : "یچ  تسا  نیا  دمآرد  زا  ؟ما یب یآ  ",
-      "fr" : "Quelle est la revenu de IBM? ",
-      "ro" : "Ce este  venituri de IBM? ",
-      "es" : "Qué es el ingresos de IBM? ",
-      "nl" : "Wat is de omzet van IBM? "
+      "en" : "What is the revenue of IBM?"
     },
-    "languageToKeyword" : {
-      "de" : [ "Einnahmen ", " ibm " ],
-      "ru" : [ "доход ", " IBM " ],
-      "pt" : [ "receita ", " ibm " ],
-      "hi_IN" : [ "राजस्व ", " आईबीएम " ],
-      "en" : [ "revenue", "ibm" ],
-      "it" : [ "reddito ", " ibm " ],
-      "fa" : [ "دمآرد  ", " ما یب یآ  " ],
-      "fr" : [ "revenu ", " ibm " ],
-      "ro" : [ "venituri ", " ibm " ],
-      "es" : [ "ingresos ", " ibm " ],
-      "nl" : [ "omzet ", " ibm " ]
+    "languageToKeyword" : { },
+    "outOfScope" : null
+  }, {
+    "id" : "11",
+    "datasetVersion" : "QALD1_Test_dbpedia",
+    "answerType" : "",
+    "aggregation" : "false",
+    "onlydbo" : "false",
+    "hybrid" : "false",
+    "sparqlQuery" : "PREFIX dbpedia2: <http://dbpedia.org/property/>\nPREFIX res: <http://dbpedia.org/resource/>\nSELECT DISTINCT ?string\nWHERE \n{\n\tres:Frank_Herbert dbpedia2:occupation ?string .\n}",
+    "pseudoSparqlQuery" : null,
+    "goldenAnswer" : [ "Novelist" ],
+    "languageToQuestion" : {
+      "en" : "What is the profession of Frank Herbert?"
     },
-    "goldenAnswer" : [ "8.1741E10" ],
-    "removingTime" : null,
-    "noNeedChangesTime" : null,
-    "status" : null
+    "languageToKeyword" : { },
+    "outOfScope" : null
   } ],
   "dataset" : {
     "id" : "QALD1 dataset"

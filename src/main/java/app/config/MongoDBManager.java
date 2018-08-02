@@ -12,7 +12,7 @@ public class MongoDBManager {
 	
 	public static synchronized DB getDB(String dbName) throws Exception {
 		if(mongo == null) {
-			MongoClient mongo = new MongoClient("localhost",27017);
+			mongo = new MongoClient("localhost",27017);
 			db = new DB(mongo, "QaldCuratorFiltered");
 		} 
 		return db;

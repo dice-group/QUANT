@@ -84,6 +84,7 @@ public class DegradationTable {
 		    
 		}
 		out.close();
+		System.gc();
 		
 	}
 	

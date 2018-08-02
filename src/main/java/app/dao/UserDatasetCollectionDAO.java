@@ -113,7 +113,7 @@ public class UserDatasetCollectionDAO {
 					item.setGoldenAnswer(q.getGoldenAnswer());
 					tasks.add(item);
 				}
-							
+				cursor.close();			
 			} catch (Exception e) {}
 			return tasks;
 	}
@@ -150,6 +150,7 @@ public class UserDatasetCollectionDAO {
 					item.setTransId(q.getTransId());
 					item.setSparqlEndpoint(q.getSparqlEndpoint());
 				}
+				cursor.close();
 				return item;
 		 } catch (Exception e) {}
 		 return item;
@@ -189,7 +190,7 @@ public class UserDatasetCollectionDAO {
 						item.setSparqlEndpoint(q.getSparqlEndpoint());
 						item.setTransId(q.getTransId());
 					}
-									
+					cursor.close();				
 				} catch (Exception e) {}
 				return item;
 			}
@@ -229,7 +230,7 @@ public class UserDatasetCollectionDAO {
 						item.setSparqlEndpoint(q.getSparqlEndpoint());
 						item.setTransId(q.getTransId());
 					}
-									
+					cursor.close();				
 				} catch (Exception e) {}
 				return item;
 			}

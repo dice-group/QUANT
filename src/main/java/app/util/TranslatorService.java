@@ -155,7 +155,7 @@ public class TranslatorService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-		writer.writeValue(new File("src/resources/newKeywords.json"), writeKeywords);
+		writer.writeValue(new File("src/resources/newKeywords.json"), writeKeywords);System.gc();
 	}
 	
 	private void translateQuestionsAndKeywords() throws FileNotFoundException, IOException, ParseException {
@@ -238,6 +238,7 @@ public class TranslatorService {
 		writer.writeValue(new File("src/resources/allTranslations.json"), writeAll);
 		writer.writeValue(new File("src/resources/addedTranslations.json"), writeAdditional);
 		writer.writeValue(new File("src/resources/ques2list.txt"), ques2list);
+		System.gc();
 	}
 
 	/**

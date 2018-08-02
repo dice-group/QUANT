@@ -27,7 +27,7 @@ public class LoginController {
 		CookieDAO cookieDao = new CookieDAO();
 		if (cookieDao.isValidate(cks)) {
 			redirectAttributes.addFlashAttribute("message","Session Expired.");
-			ModelAndView mav = new ModelAndView("redirect:/dashboard");
+			ModelAndView mav = new ModelAndView("redirect:/document-list");
 			return mav;
 		}
     ModelAndView mav = new ModelAndView("login");
@@ -45,7 +45,7 @@ public class LoginController {
 	    	Cookie ck = new Cookie("auth", login.getUsername());
 			ck.setMaxAge(36000);
 			response.addCookie(ck);
-			return "redirect:/dashboard";
+			return "redirect:/document-list";
 	    } else {
 	    	redirectAttributes.addFlashAttribute("message","Incorrect username or password.");
 	    	return "redirect:/login";

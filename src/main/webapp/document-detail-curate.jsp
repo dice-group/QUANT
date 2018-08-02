@@ -64,8 +64,41 @@
             <div class="navbar-default sidebar" role="navigation">
             	<div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                    	
+                    	<c:if test="${role == 'administrator' }">
                     	<li>
+                            <a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        </c:if>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/document-list"><i class="fa fa-database"></i> Dataset</a>
+                        </li>
+                        <c:if test="${role=='administrator'}"> <!-- filter menu based on role -->
+                         <li>
+                            <a href="${pageContext.request.contextPath}/user-list"><i class="fa fa-users"></i> Users</a>
+                        </li>
+                        </c:if>
+                        <li>
+                            <a href="#"><i class="fa fa-tasks"></i> User Activities<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user-dataset-correction">Curated Questions</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/user/user-log-list">Activity Log</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <c:if test="${role == 'administrator' }">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/curate-my-dataset"><i class="fa fa-edit"></i> Curate my Dataset</a>
+                        </li>
+                        </c:if>
+                         <li>
+                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-power-off fa-fw"></i> Log out</a>
+                        </li>
+                    	
+                    	<%-- <li>
                             <a href="${pageContext.request.contextPath}/dashboard" style=" pointer-events: none;  cursor: default;"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
@@ -95,7 +128,7 @@
                         </c:if>
                          <li>
                             <a href="${pageContext.request.contextPath}/logout" style=" pointer-events: none;  cursor: default;"><i class="fa fa-power-off fa-fw"></i> Log out</a>
-                        </li>
+                        </li> --%>
                     </ul>
                 </div>
             </div>
@@ -108,7 +141,10 @@
                     <h3 class="page-header">Question Detail</h3>
                     <label>ID </label> &nbsp;${id } &nbsp;<label>Dataset Version</label>&nbsp;${datasetVersion }
                 </div> 
-     
+     			<%-- revision = ${revision }
+     			sparqlOnly = ${sparqlOnly }
+     			sparqlCase = ${sparqlCaseOnly }
+     			Answer status = ${answerStatus } --%>
             </div>
             <!-- /.row -->
             <div class="row">
@@ -144,6 +180,7 @@
 	                                    <div class="col-lg-11" style="text-align:left">
 		                                    <input class="form-control" value="${languageToQuestionEn}" id="languageToQuestion" disabled="disabled">
 		                                    <input type="hidden" id="question" name="question" value="${languageToQuestionEn }">
+		                                    <input type="hidden" id="revision" name="revision" value="${revision }">
 	                                    </div>
                                     </div>
                         		</div>
@@ -154,7 +191,7 @@
                                             <textarea class="form-control" rows="11" id="sparqlQuery" name="sparqlQuery" ${disabledForm }>${sparqlQuery}</textarea>     
                                             <%-- size list ${sparqlSugg.size() }
                                             Sparql: ${sparqlQuery }
-                                            Status result : ${resultStatus }  --%>                           
+                                            Status result : ${resultStatus }  --%>                          
                                             <c:if test="${not resultStatus}">
                                             	<c:if test="${sparqlAndCaseSugg.size()>0}">
                                             		<p class="help-block"><button type="button" class="btn btn-outline-primary" id="sparqlSugg" data-toggle="modal" data-target="#provideSparqlSuggestion">View SPARQL Suggestion</button></p>
@@ -320,7 +357,7 @@
                         				<c:if test="${isKeywordCurated == true}">
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
-                        				<label>Multilingual Keyword List</label>
+                        				<label>Multilingual Keyword</label>
                         				<table id="keywordTable" class="table table-striped table-bordered table-hover">
                         					<thead>
 			                                    <tr>
@@ -356,7 +393,7 @@
                         				<c:if test="${isQuestionTranslationCurated == true}">
                                            <span class="glyphicon glyphicon-check  "></span>
                                         </c:if>
-                        				<label>Multilingual Question List</label> &nbsp;&nbsp;
+                        				<label>Multilingual Question</label> &nbsp;&nbsp;
                         				<!--  
                         				<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Question Correction</button>
                         				<br />
@@ -446,6 +483,7 @@
 	    			<div class="modal-header">
 			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
 			          	<h4 class="modal-title">SPARQL Suggestion</h4>
+			          	
 			        </div>
 			        <div class="modal-body">
 			        <form method="get" action="${pageContext.request.contextPath}/document-detail-curate/save-sparql-suggestion/${id }/${datasetVersion}">
@@ -460,24 +498,30 @@
                                 </thead>
                                 <tbody>
                                 	<c:forEach var="sparqlSugg" items="${sparqlAndCaseSugg}" varStatus="loop">
-                                 		<c:forEach var="answerFromCurrentEndpoint" items="${answerFromVirtuosoList}" varStatus="loop">
+<%--                                  		<c:forEach var="answerFromCurrentEndpoint" items="${answerFromVirtuosoList}" varStatus="loop"> --%>
                                     	<tr id="${sparqlSugg.getKey()}">                                    		
-                                    		<td>${loop.index+1}</td>
-				                            <td>${sparqlSugg.getKey()}</td>
-				                            <td><c:out value="${answerFromCurrentEndpoint}"/></td>
+                                    		<td style="width:5%">${loop.index+1}</td>
+				                            <td style="width:45%">
+				                            <textarea class="form-control" rows="11" disabled="disabled">${sparqlSugg.getKey()}</textarea>
+				                            </td>
+				                            <td style="width:50%"><c:out value="${answerFromVirtuosoList}"/></td>
 				                            <td>
 				                            <input type="checkbox" class="chkCheckBoxId" value="${sparqlSugg.getKey()};${sparqlSugg.getValue()};${answerFromCurrentEndpoint}" name="sparqlAnswerValue" />
 				                            </td> 
-				                            <input type="hidden" id="sparqlAndCaseSuggestion" name="sparqlAndCaseSuggestion" value="${sparqlAndCaseSugg }" /> 
-											<input type="hidden" id="suggestedAnswer" name="suggestedAnswer" value="${answerFromVirtuosoList }" />				                                                             		                                  		
+				                            <%-- <input type="hidden" id="sparqlAndCaseSuggestion" name="sparqlAndCaseSuggestion" value="${sparqlAndCaseSugg }" /> 
+											<input type="hidden" id="suggestedAnswer" name="suggestedAnswer" value="${answerFromVirtuosoList }" /> --%>	
+																									                                                             		                                  		
                                     	</tr>
-                                    	</c:forEach>
+<%--                                     	</c:forEach> --%>
                                     </c:forEach>                                    
                                 </tbody>
                             </table>
                       	<div class="modal-footer">
+                      	
 			        		<input type="submit" class="btn btn-primary" value="Accept" onclick="return confirm('Are you sure you want to take the suggestion? ')" />
  			        		<button type="button" class="btn btn-default" data-dismiss="modal">Reject</button>
+ 			        		<input type="hidden" id="sparqlOnly" name="sparqlOnly" value="${sparqlOnly }" /> 
+							<input type="hidden" id="sparqlCaseOnly" name="sparqlCaseOnly" value="${sparqlCaseOnly }" />
 			        	</div>
 			       </form> 
 	    		</div>
@@ -485,7 +529,7 @@
 	    </div>
     	<!-- end block editKeywordModal -->
     </div>    
-    isKeywordCurated = ${isKeywordCurated }
+<%--     isKeywordCurated = ${isKeywordCurated } --%>
     <!-- start block keywords suggestions -->
     	<div class="modal fade" id="provideKeywordsSuggestions" role="dialog">
 	    	<div class="modal-dialog" style="width:80%">
@@ -704,7 +748,13 @@
 	     "ordering": false,
 	     "info":     false,
 	     "filter" : false
-	 }).makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-question/${id}/${datasetVersion}"}); 
+	 }).makeEditable({
+		 "sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-question/${id}/${datasetVersion}",
+		 "fnOnEdited" :function(response) {	    	
+		    	window.location = "${pageContext.request.contextPath}/document-list/curate/curation-process/${id }/${datasetVersion}";
+		    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data is saved</div>')
+		    }
+	}); 
 
  </script>
  <!-- Keyword Editing -->
@@ -720,7 +770,13 @@
 	     "ordering": false,
 	     "info":     false,
 	     "filter" : false
-	 }).makeEditable({"sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-keyword/${id}/${datasetVersion}"}); 
+	 }).makeEditable({
+		 "sUpdateURL": "${pageContext.request.contextPath}/document-list/document/edit-keyword/${id}/${datasetVersion}",
+		 "fnOnEdited" :function(response) {	    	
+		    	window.location = "${pageContext.request.contextPath}/document-list/curate/curation-process/${id }/${datasetVersion}";
+		    	$('#alert_placeholder').html('<div class="alert alert-success" role="alert">Data is saved</div>')
+		    }
+	}); 
 
  </script> 
  
@@ -741,11 +797,7 @@ $(function(){
       });     
 });
 </script>
-<!-- <script>
-function myFunction() {
-    return "Write something clever here...";
-}
-</script> -->
+
 
 </body>
 
