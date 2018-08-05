@@ -7,7 +7,16 @@ public class User {
 	private String username;
 	private String password;
 	private String role;
+	private String dataset;
 	
+	public String getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
+
 	public User() {
 		
 		// TODO Auto-generated constructor stub

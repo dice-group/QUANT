@@ -998,7 +998,24 @@ public class UserDatasetCorrectionDAO {
 					}
 				}
 			}
-			return result;
+			
+			//reverse characters order in Persian Translations
+			DocumentDAO dDao = new DocumentDAO();
+			Map<String, List<String>> newTranslations = new HashMap<String, List<String>>();
+			for (Map.Entry<String, List<String>> mapEntry : result.entrySet()) {
+				if (mapEntry.getKey().equals("fa")) {
+					String reversedForParsi;
+					List<String> newParsiTranslations = new ArrayList<String>();
+					for (String element: mapEntry.getValue()) {
+						reversedForParsi = dDao.reverseString(element);
+						newParsiTranslations.add(reversedForParsi);
+					}
+					newTranslations.put("fa", newParsiTranslations);
+				}else {
+					newTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+				}
+			}
+			return newTranslations;
 		}catch (Exception e) {
 				//TODO: handle exception
 		}
@@ -1831,8 +1848,10 @@ public class UserDatasetCorrectionDAO {
 	 }
 		
 	public String answerTypeChecking (Set<String> answers) {
-		final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
-		DocumentDAO dDAO = new DocumentDAO(); 
+		//final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
+		final Set<String> VALID_SCHEMES = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+			      "http://", "https://", "ftp://", "ftps://", "http%3a//", "https%3a//", "ftp%3a//", "ftps%3a//")));
+		DocumentDAO dDao = new DocumentDAO();
 		try {
 			if(answers.size()>=1) {
 				
@@ -1841,26 +1860,36 @@ public class UserDatasetCorrectionDAO {
 				//the first element
 				String answer = answerIt.next();
 				//System.out.println("answer is "+answer);			
-				if (dDAO.isUmlaut(answer)) {				
-					answer = dDAO.replaceUmlaut(answer);
+				if (dDao.isUmlaut(answer)) {				
+					answer = dDao.replaceUmlaut(answer);
 				}	
 				
 				//check whether the first element or the only one element is a URI
 				int URIExist = 0;
-				boolean isUri=answer.matches(REGEX_URI);
+				boolean isUri = false;
+				for (String scheme: VALID_SCHEMES) {
+					if (answer.contains(scheme)) {
+						isUri= true;
+						break;
+					}
+				}				
 				if (isUri) {
 					URIExist = 1;
-				}
+				}		
 				
-				//System.out.println("isURI is "+isUri);
 				//check whether the second or next element (if there are some answers) is a URI
 				while((answerIt.hasNext()) && (URIExist == 0)) {
 					//get the next element
 					answer = answerIt.next().toLowerCase();
-					if (dDAO.isUmlaut(answer)) {
-						answer = dDAO.replaceUmlaut(answer);
+					if (dDao.isUmlaut(answer)) {
+						answer = dDao.replaceUmlaut(answer);
 					}
-					isUri=answer.matches(REGEX_URI);
+					for (String scheme: VALID_SCHEMES) {
+						if (answer.contains(scheme)) {
+							isUri= true;
+							break;
+						}
+					}	
 					if (isUri) {
 						URIExist = 1;
 						break;
@@ -1936,12 +1965,13 @@ public class UserDatasetCorrectionDAO {
 		
 		//Check onlyDbo Value
 		public String onlyDboChecking (String sparqlQuery) {
-			if (sparqlQuery.toString().toLowerCase().contains("dbo:"))
-			{
-				return ("true");
-			}else
+			//if ((sparqlQuery.toString().toLowerCase().contains("dbo:")) || (sparqlQuery.toString().toLowerCase().contains("http://dbpedia.org/ontology"))) && (!sparqlQuery.toString().toLowerCase().contains("http://dbpedia.org/ontology"))
+			if (sparqlQuery.toString().toLowerCase().contains("yago"))
 			{
 				return ("false");
+			}else
+			{
+				return ("true");
 			}
 		}
 		

@@ -189,12 +189,14 @@ public class DocumentController {
 		/* end */	
 		
 		/** Setting previous and next record **/
+		//get dataset for particular user
+		String dataset = documentDao.getDatasetName(user.getId());
 		String previousStatus = "";
 		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, datasetVersion);
-		String idPrevious = documentDao.getPreviousDocument(id, datasetVersion);
-		String previousDataset = datasetVersion;
-		String nextDataset = datasetVersion;
+		String idNext = documentDao.getNextDocument(id, dataset);
+		String idPrevious = documentDao.getPreviousDocument(id, dataset);
+		String previousDataset = dataset;
+		String nextDataset = dataset;
 		
 		//	Previous Part	
 		if (idPrevious==null) {
@@ -202,7 +204,7 @@ public class DocumentController {
 			idPrevious = id;
 			
 			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(datasetVersion);
+			String previousCollection = documentDao.getPreviousCollection(dataset);
 			
 			if (previousCollection != null) {
 				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
@@ -221,7 +223,7 @@ public class DocumentController {
 			idNext = id;
 			
 			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(datasetVersion);
+			String nextCollection = documentDao.getNextCollection(dataset);
 			if (nextCollection != null) {
 				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
 				if (nextRecord != null) {
@@ -490,7 +492,16 @@ public class DocumentController {
 					mav.addObject("questionTranslation", documentCorrectionDao.getRestOfQuestionTranslation(user.getId(), id, datasetVersion, "UserDatasetCorrection", languageToQuestionEn, startingTimeCuration, finishingTimeCuration));
 				}
 			}			
-		}	
+		}
+		
+		//provide real time suggestion (either a field has been curated or not)		
+		DocumentDAO dDao = new DocumentDAO();
+		DatasetSuggestionModel suggObj = dDao.getSuggestion(user.getId(), id, datasetVersion);		
+		mav.addObject("answerTypeSugg", suggObj.getAnswerTypeSugg());
+		mav.addObject("aggregationSugg", suggObj.getAggregationSugg());
+		mav.addObject("onlyDboSugg", suggObj.getOnlyDboSugg());
+		mav.addObject("hybridSugg", suggObj.getHybridSugg());
+		mav.addObject("outOfScopeSugg", suggObj.getOutOfScopeSugg());
 		return mav;  
 	}
 	
@@ -520,12 +531,15 @@ public class DocumentController {
 		/* end */	
 		
 		/** Setting previous and next record **/
+		/** Setting previous and next record **/
+		//get dataset for particular user
+		String dataset = documentDao.getDatasetName(user.getId());
 		String previousStatus = "";
 		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, datasetVersion);
-		String idPrevious = documentDao.getPreviousDocument(id, datasetVersion);
-		String previousDataset = datasetVersion;
-		String nextDataset = datasetVersion;
+		String idNext = documentDao.getNextDocument(id, dataset);
+		String idPrevious = documentDao.getPreviousDocument(id, dataset);
+		String previousDataset = dataset;
+		String nextDataset = dataset;
 		
 		//	Previous Part	
 		if (idPrevious==null) {
@@ -533,7 +547,7 @@ public class DocumentController {
 			idPrevious = id;
 			
 			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(datasetVersion);
+			String previousCollection = documentDao.getPreviousCollection(dataset);
 			
 			if (previousCollection != null) {
 				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
@@ -552,7 +566,7 @@ public class DocumentController {
 			idNext = id;
 			
 			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(datasetVersion);
+			String nextCollection = documentDao.getNextCollection(dataset);
 			if (nextCollection != null) {
 				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
 				if (nextRecord != null) {
@@ -821,6 +835,14 @@ public class DocumentController {
 				}
 			}
 		}
+		//provide real time suggestion (either a field has been curated or not)		
+		DocumentDAO dDao = new DocumentDAO();
+		DatasetSuggestionModel suggObj = dDao.getSuggestion(user.getId(), id, datasetVersion);		
+		mav.addObject("answerTypeSugg", suggObj.getAnswerTypeSugg());
+		mav.addObject("aggregationSugg", suggObj.getAggregationSugg());
+		mav.addObject("onlyDboSugg", suggObj.getOnlyDboSugg());
+		mav.addObject("hybridSugg", suggObj.getHybridSugg());
+		mav.addObject("outOfScopeSugg", suggObj.getOutOfScopeSugg());
 		return mav;  
 	}
 	/**
@@ -860,12 +882,15 @@ public class DocumentController {
 		
 		
 		/** Setting previous and next record **/
+		
+		//get dataset for particular user
+		String dataset = documentDao.getDatasetName(user.getId());
 		String previousStatus = "";
 		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, datasetVersion);
-		String idPrevious = documentDao.getPreviousDocument(id, datasetVersion);
-		String previousDataset = datasetVersion;
-		String nextDataset = datasetVersion;
+		String idNext = documentDao.getNextDocument(id, dataset);
+		String idPrevious = documentDao.getPreviousDocument(id, dataset);
+		String previousDataset = dataset;
+		String nextDataset = dataset;
 		
 		//	Previous Part	
 		if (idPrevious==null) {
@@ -873,7 +898,7 @@ public class DocumentController {
 			idPrevious = id;
 			
 			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(datasetVersion);
+			String previousCollection = documentDao.getPreviousCollection(dataset);
 			
 			if (previousCollection != null) {
 				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
@@ -892,7 +917,7 @@ public class DocumentController {
 			idNext = id;
 			
 			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(datasetVersion);
+			String nextCollection = documentDao.getNextCollection(dataset);
 			if (nextCollection != null) {
 				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
 				if (nextRecord != null) {
@@ -1167,6 +1192,14 @@ public class DocumentController {
 						}
 					}
 				}
+		//provide real time suggestion (either a field has been curated or not)		
+		DocumentDAO dDao = new DocumentDAO();
+		DatasetSuggestionModel suggObj = dDao.getSuggestion(user.getId(), id, datasetVersion);		
+		mav.addObject("answerTypeSugg", suggObj.getAnswerTypeSugg());
+		mav.addObject("aggregationSugg", suggObj.getAggregationSugg());
+		mav.addObject("onlyDboSugg", suggObj.getOnlyDboSugg());
+		mav.addObject("hybridSugg", suggObj.getHybridSugg());
+		mav.addObject("outOfScopeSugg", suggObj.getOutOfScopeSugg());
 		return mav;  
 	}
 	

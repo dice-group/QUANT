@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -540,7 +541,9 @@ public class DocumentDAO {
 	}
 	//Check Answer Type of select query
 	public String answerTypeChecking (Set<String> answers) {
-		final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
+		//final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
+		final Set<String> VALID_SCHEMES = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+			      "http://", "https://", "ftp://", "ftps://", "http%3a//", "https%3a//", "ftp%3a//", "ftps%3a//")));
 		try {
 			if(answers.size()>=1) {
 				
@@ -555,12 +558,17 @@ public class DocumentDAO {
 				
 				//check whether the first element or the only one element is a URI
 				int URIExist = 0;
-				boolean isUri=answer.matches(REGEX_URI);
+				boolean isUri = false;
+				for (String scheme: VALID_SCHEMES) {
+					if (answer.contains(scheme)) {
+						isUri= true;
+						break;
+					}
+				}				
 				if (isUri) {
 					URIExist = 1;
-				}
+				}		
 				
-				//System.out.println("isURI is "+isUri);
 				//check whether the second or next element (if there are some answers) is a URI
 				while((answerIt.hasNext()) && (URIExist == 0)) {
 					//get the next element
@@ -568,7 +576,12 @@ public class DocumentDAO {
 					if (isUmlaut(answer)) {
 						answer = replaceUmlaut(answer);
 					}
-					isUri=answer.matches(REGEX_URI);
+					for (String scheme: VALID_SCHEMES) {
+						if (answer.contains(scheme)) {
+							isUri= true;
+							break;
+						}
+					}	
 					if (isUri) {
 						URIExist = 1;
 						break;
@@ -1045,6 +1058,36 @@ public class DocumentDAO {
 				DBObject dbobj = cursor.next();
 				Gson gson = new GsonBuilder().create();
 				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				
+				//reverse characters order in Persian Keywords translations
+				Map<String, List<String>> newTranslations = new HashMap<String, List<String>>();
+				for (Map.Entry<String, List<String>> mapEntry : q.getLanguageToKeyword().entrySet()) {
+					if (mapEntry.getKey().equals("fa")) {
+						String reversedForParsi;
+						List<String> newParsiTranslations = new ArrayList<String>();
+						for (String element: mapEntry.getValue()) {
+							reversedForParsi = this.reverseString(element);
+							newParsiTranslations.add(reversedForParsi);
+						}
+						newTranslations.put("fa", newParsiTranslations);
+					}else {
+						newTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+					}
+				}
+				q.setLanguageToKeyword(newTranslations);
+				
+				//reverse characters order in Persian Question translations
+				Map<String, String> newQTranslations = new HashMap<String, String>();
+				for (Map.Entry<String, String> mapEntryQ : q.getLanguageToQuestion().entrySet()) {
+					if (mapEntryQ.getKey().equals("fa")) {
+						String reversedQForParsi;
+						reversedQForParsi = this.reverseString(mapEntryQ.getValue());							
+						newQTranslations.put("fa", reversedQForParsi);
+					}else {
+						newQTranslations.put(mapEntryQ.getKey(), mapEntryQ.getValue());
+					}
+				}
+				q.setLanguageToQuestion(newQTranslations);
 				return q;
 				//return 1;
 			}else {
@@ -1096,8 +1139,14 @@ public class DocumentDAO {
 							if (!(keyExistingQ.contains(aQ))) {
 								//put into final suggestion
 								for (Map.Entry<String, String> mapEQ: q1.getLanguageToQuestion().entrySet()) {
-									if (mapEQ.getKey().equals(aQ)) {
-										finalSuggQ.put(mapEQ.getKey(), mapEQ.getValue());
+									if (mapEQ.getKey().equals(aQ)) {										
+										if (aQ.equals("fa")) {
+											String reversedQForParsi;
+											reversedQForParsi = this.reverseString(mapEQ.getValue());							
+											finalSuggQ.put("fa", reversedQForParsi);
+										}else {
+											finalSuggQ.put(mapEQ.getKey(), mapEQ.getValue());
+										}
 										break;
 									}
 								}
@@ -1111,7 +1160,17 @@ public class DocumentDAO {
 								//put into final suggestion
 								for (Map.Entry<String, List<String>> mapEK: q1.getLanguageToKeyword().entrySet()) {
 									if (mapEK.getKey().equals(aK)) {
-										finalSuggK.put(mapEK.getKey(), mapEK.getValue());
+										if (aK.equals("fa")) {
+											String reversedForParsi;
+											List<String> newParsiTranslations = new ArrayList<String>();
+											for (String element: mapEK.getValue()) {
+												reversedForParsi = this.reverseString(element);
+												newParsiTranslations.add(reversedForParsi);
+											}
+											finalSuggK.put("fa", newParsiTranslations);
+										}else {
+											finalSuggK.put(mapEK.getKey(), mapEK.getValue());
+										}									
 										break;
 									}
 								}
@@ -1204,10 +1263,82 @@ public class DocumentDAO {
  
         // reverse StringBuilder input1
         reversedString = reversedString.reverse();
-        return reversedString.toString();
- 
-        
+        return reversedString.toString();       
     }
+	
+	//get suggestion to be displayed in view detail page
+	public DatasetSuggestionModel getSuggestion (int userId, String id, String datasetVersion) {
+		DatasetSuggestionModel result = new DatasetSuggestionModel();
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("userId", userId);
+		String[] arrayString = new String[2];
+		arrayString[0]="curated";
+		arrayString[1]="noNeedChanges";
+	
+		BasicDBObject searchWithOR= new BasicDBObject();
+		searchWithOR.put("$in", arrayString);
+		searchObj.put("status", searchWithOR);
+		
+		BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("revision", -1);	
+		
+		try {	
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+			DBCollection coll = db.getCollection("UserDatasetCorrection");
+			DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);			
+			if (!cursor.hasNext()) {
+				result = this.implementCorrection(id, datasetVersion, "not curated", userId);
+			}else {
+				while (cursor.hasNext()) {				
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+					//check whether suggestion has been accepted or not for each field
+					DatasetSuggestionModel theSugg = this.implementCorrection(id, datasetVersion, "curated", userId);
+					if (!(q.getAnswerType().equals(theSugg.getAnswerTypeSugg()))) {
+						result.setAnswerTypeSugg(theSugg.getAnswerTypeSugg());
+					}
+					if (!(q.getOutOfScope().equals(theSugg.getOutOfScopeSugg()))) {
+						result.setOutOfScopeSugg(theSugg.getOutOfScopeSugg());
+					} 
+					if (!(q.getAggregation().equals(theSugg.getAggregationSugg()))) {
+						result.setAggregationSugg(theSugg.getAggregationSugg());
+					}
+					if (!(q.getOnlydbo().equals(theSugg.getOnlyDboSugg()))) {
+						result.setOnlyDboSugg(theSugg.getOnlyDboSugg());
+					}
+					if (!(q.getHybrid().equals(theSugg.getHybridSugg()))) {
+						result.setHybridSugg(theSugg.getHybridSugg());
+					}
+				}
+				cursor.close();
+			}
+			cursor.close();
+			return result;				
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
+	//get dataset for particular user in evaluation process
+	public String getDatasetName(int userId) {
+		String datasetName = null;
+		switch(userId) {
+		case 7	: datasetName = "Dataset9"; break;
+		case 8	: datasetName = "Dataset9"; break;
+		case 9	: datasetName = "Dataset1"; break;
+		case 10	: datasetName = "Dataset1"; break;
+		case 11	: datasetName = "Dataset3"; break;
+		case 12	: datasetName = "Dataset3"; break;
+		case 13	: datasetName = "Dataset5"; break;
+		case 14	: datasetName = "Dataset5"; break;
+		case 15	: datasetName = "Dataset7"; break;
+		case 16	: datasetName = "Dataset7"; break;		
+		}
+		return datasetName;
+	}
 	
 }	
 	

@@ -62,21 +62,26 @@ import com.mongodb.operation.GroupOperation;
 
 import app.config.MongoDBManager;
 import app.dao.DocumentDAO;
+import app.dao.UserDAO;
 import app.dao.UserDatasetCorrectionDAO;
 import app.model.Dataset;
 import app.model.DatasetList;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
+import app.model.DocumentList;
 import app.model.ModifiedSparqlManualEvaluation;
 import app.model.Question;
 import app.model.UserLog;
 import app.model.StatePopulation;
+import app.model.User;
 import app.model.UserDatasetCorrection;
 import app.model.UserDatasetCorrectionTemp;
 import app.response.BaseResponse;
 import app.response.QuestionResponse;
 import app.sparql.SparqlService;
 import app.util.TranslatorService;
+import java.net.URL;
+
 
 @RestController
 @RequestMapping(value= {"/document/datasets"}, produces="application/json; charset=UTF-8")
@@ -87,14 +92,83 @@ public class DocumentRestController {
 	private static final int AUTH_FAILURE = 102;
 	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 	
-	@RequestMapping (value = "getRemovedQuestionInEvaluationPerUser", method = RequestMethod.GET)
-	public List<DatasetModel> getRemovedQuestionInEvaluationPerUser() {
+	@RequestMapping (value = "getAllDatasets/{userName}/{role}", method = RequestMethod.GET)
+	public List<DocumentList> getAllDatasets(@PathVariable("userName") String userName, @PathVariable("role") String role) {		 
+		 List<DocumentList> tasks = new ArrayList<DocumentList>();
+		 	Dataset dataset = new Dataset();
+		 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
+		 	BasicDBObject sortObj = new BasicDBObject();
+			sortObj.put("id",1);
+			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+			UserDAO userDao = new UserDAO();
+			User user = userDao.getUserByUsername(userName);
+			
+			if ((role.equals("administrator")) || (role.equals("evaluator"))){
+				for (int x=0; x<listDataset.size(); x++) {
+					try {
+						//call mongoDb
+						DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+						DBCollection coll = db.getCollection(listDataset.get(x).getName()); //Collection
+						DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
+						while (cursor.hasNext()) {
+							DBObject dbobj = cursor.next();
+							Gson gson = new GsonBuilder().create();
+							DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+							DocumentList item = new DocumentList();
+							item.setDatasetVersion(listDataset.get(x).getName());
+							item.setId(q.getId());
+							item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
+							item.setKeywords(q.getLanguageToKeyword());
+							
+							tasks.add(item);
+						}	
+						cursor.close();
+					} catch (Exception e) {}
+				}
+			}else if (role.equals("annotator")){
+				String collectionName = "";
+				if ((userName.equals("annotator1")) || (userName.equals("annotator2"))) {
+					collectionName = "Dataset9";
+				}else if ((userName.equals("annotator3")) || (userName.equals("annotator4"))) {
+					collectionName = "Dataset1";
+					}else if ((userName.equals("annotator5")) || (userName.equals("annotator6"))) {
+						collectionName = "Dataset3";
+						} else if ((userName.equals("annotator7")) || (userName.equals("annotator8"))) {
+							collectionName = "Dataset5";
+							} else if ((userName.equals("annotator9")) || (userName.equals("annotator10"))) {
+								collectionName = "Dataset7";
+								} 	
+					try {
+						//call mongoDb
+						DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+						DBCollection coll = db.getCollection(collectionName); //Collection
+						DBCursor cursor = coll.find().sort(sortObj); //Find All sort by id ascending
+						while (cursor.hasNext()) {
+							DBObject dbobj = cursor.next();
+							Gson gson = new GsonBuilder().create();
+							DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+							DocumentList item = new DocumentList();
+							item.setDatasetVersion(q.getDatasetVersion());
+							item.setId(q.getId());
+							item.setQuestion(q.getLanguageToQuestion().get("en").toString());	
+							item.setKeywords(q.getLanguageToKeyword());
+							
+							tasks.add(item);
+						}	
+						cursor.close();
+					} catch (Exception e) {}
+			}	 
+			return tasks;
+		}
+	
+	@RequestMapping (value = "getRemovedQuestionInEvaluationPerUser/{userId}/{questionStatus}", method = RequestMethod.GET)
+	public List<DatasetModel> getRemovedQuestionInEvaluationPerUser(@PathVariable("userId") int userId, @PathVariable("questionStatus") String questionStatus) {
 		List<DatasetModel> result = new ArrayList<DatasetModel>();
-		int userId = 7;
-		String status = "removed";
+		//int userId = 9;
+		//String status = "removed";
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("userId", userId);
-		searchObj.put("status", status);	
+		searchObj.put("status", questionStatus);	
 		try {
 			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 			DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
@@ -285,15 +359,16 @@ public class DocumentRestController {
 	}
 	
 	
+	
 	//function to check answer type
 	@RequestMapping (value = "answerTypeChecking1", method = RequestMethod.GET)
 	public String answerTypeChecking1 () {
 		UserDatasetCorrectionDAO udc = new UserDatasetCorrectionDAO();
-		Set<String> answers = new HashSet<>();
-		answers.add("Puning");
-		answers.add("http://dbpedia.org/resource/Puning");
-		final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~_|]";
+		Set<String> answers = new HashSet<>();		
+		answers.add("http://dbpedia.org/resource/École_Spéciale_d'Architecture");
+		final String REGEX_URI = "^(\\w+):(\\/\\/)?[-a-zA-Z0-9+&@#()\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#()\\/%=~'_|]";
 		DocumentDAO dDAO = new DocumentDAO();
+		
 		if(answers.size()>=1) {
 			System.out.println("Answer size is "+answers.size());
 			Iterator<String> answerIt = answers.iterator();
@@ -1418,7 +1493,7 @@ public class DocumentRestController {
 	    HashMap<String, String> xx = new HashMap<String, String>();
 	    int id_new = 1;
 	    while(iterator.hasNext()) {
-	         Map.Entry mEntry = (Map.Entry)iterator.next();		         	
+	         Map.Entry mEntry = (Map.Entry)iterator.next();	         	
 	         
 	         try {
 	        	//build query
