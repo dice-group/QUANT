@@ -96,6 +96,13 @@ public class SparqlCorrection {
 						String prefixString = "PREFIX " + missingPrefix + ": " + standardPrefixes.get(missingPrefix) + " ";
 						queryString = prefixString + queryString;
 					}
+				} else {
+					//TODO there can be a also a @Non-group key variable in SELECT and this case needs to be handled 
+					/*
+					 * SELECT ?uri WHERE {  ?airline <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Airline> .  ?airline <http://dbpedia.org/property/frequentFlyer> ?uri.  ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/FrequentFlyerPrograms> . } ORDER BY DESC(COUNT(DISTINCT ?airline)) OFFSET 0 LIMIT 1  
+					 */
+					
+					exceptionCaught = false;
 				}
 			}
 		}while(exceptionCaught == true);

@@ -12,6 +12,27 @@ public class CorrectionSummary {
 	int qald6;
 	int qald7;
 	int qald8;
+	int noCuratedQuestion;
+	public int getNoCuratedQuestion() {
+		return noCuratedQuestion;
+	}
+	public void setNoCuratedQuestion(int noCuratedQuestion) {
+		this.noCuratedQuestion = noCuratedQuestion;
+	}
+	public int getNoRemovedQuestion() {
+		return noRemovedQuestion;
+	}
+	public void setNoRemovedQuestion(int noRemovedQuestion) {
+		this.noRemovedQuestion = noRemovedQuestion;
+	}
+	public int getNoNoChangesQuestion() {
+		return noNoChangesQuestion;
+	}
+	public void setNoNoChangesQuestion(int noNoChangesQuestion) {
+		this.noNoChangesQuestion = noNoChangesQuestion;
+	}
+	int noRemovedQuestion;
+	int noNoChangesQuestion;
 	public int getUserId() {
 		return userId;
 	}

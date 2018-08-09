@@ -92,12 +92,45 @@ public class DocumentRestController {
 	private static final int AUTH_FAILURE = 102;
 	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 	
+	@RequestMapping (value = "getDocument/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public DatasetModel getDocument(@PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion) {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 DatasetModel item = new DatasetModel();
+		 searchObj.put("id", id);
+		 try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection(datasetVersion);
+				DBCursor cursor = coll.find(searchObj);
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);					
+					item.setId(q.getId());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+				}
+				cursor.close();
+				return item;
+		 } catch (Exception e) {}
+		 return null;
+	 }
+	
 	@RequestMapping (value = "getAllDatasets/{userName}/{role}", method = RequestMethod.GET)
 	public List<DocumentList> getAllDatasets(@PathVariable("userName") String userName, @PathVariable("role") String role) {		 
 		 List<DocumentList> tasks = new ArrayList<DocumentList>();
 		 	Dataset dataset = new Dataset();
 		 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
 		 	BasicDBObject sortObj = new BasicDBObject();
+			
+			sortObj.put("datasetVersion", 1);
 			sortObj.put("id",1);
 			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
 			UserDAO userDao = new UserDAO();

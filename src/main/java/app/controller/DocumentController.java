@@ -188,51 +188,50 @@ public class DocumentController {
 		mav.addObject("classDisplay", "btn btn-default");//Show start button
 		/* end */	
 		
-		/** Setting previous and next record **/
 		//get dataset for particular user
-		String dataset = documentDao.getDatasetName(user.getId());
-		String previousStatus = "";
-		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, dataset);
-		String idPrevious = documentDao.getPreviousDocument(id, dataset);
-		String previousDataset = dataset;
-		String nextDataset = dataset;
-		
-		//	Previous Part	
-		if (idPrevious==null) {
-			previousStatus = "disabled=\"disabled\"";
-			idPrevious = id;
-			
-			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(dataset);
-			
-			if (previousCollection != null) {
-				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
-				if (lastRecord != null) {
-					idPrevious = lastRecord;
-					previousDataset = previousCollection;
-					previousStatus="";
-				}				
-			}
-			
-		}
-		
-		// Next part
-		if (idNext==null) {
-			nextStatus = "disabled=\"disabled\"";
-			idNext = id;
-			
-			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(dataset);
-			if (nextCollection != null) {
-				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
-				if (nextRecord != null) {
-					idNext = nextRecord;
-					nextDataset = nextCollection;
-					nextStatus = "";
-				}					
-			}
-		}	
+				String dataset = documentDao.getDatasetName(user.getId());
+				String previousStatus = "";
+				String nextStatus="";	
+				String idNext = documentDao.getNextDocumentByUserId(id, datasetVersion, dataset);
+				String idPrevious = documentDao.getPreviousDocumentByUserId(id, datasetVersion, dataset);
+				String previousDataset = datasetVersion;
+				String nextDataset = datasetVersion;
+				
+				//	Previous Part	
+				if (idPrevious==null) {
+					previousStatus = "disabled=\"disabled\"";
+					idPrevious = id;
+					
+					//Get previous collection
+					String previousCollection = documentDao.getPreviousCollectionByUserId(datasetVersion, dataset);
+					
+					if (previousCollection != null) {
+						String lastRecord = documentDao.getLastRecordCollectionByUserId(previousCollection, dataset);
+						if (lastRecord != null) {
+							idPrevious = lastRecord;
+							previousDataset = previousCollection;
+							previousStatus="";
+						}				
+					}
+					
+				}
+				
+				// Next part
+				if (idNext==null) {
+					nextStatus = "disabled=\"disabled\"";
+					idNext = id;
+					
+					//Get Next collection
+					String nextCollection = documentDao.getNextCollectionByUserId(datasetVersion, dataset);
+					if (nextCollection != null) {
+						String nextRecord = documentDao.getNextRecordCollectionByUserId(nextCollection, dataset);
+						if (nextRecord != null) {
+							idNext = nextRecord;
+							nextDataset = nextCollection;
+							nextStatus = "";
+						}					
+					}
+				}	
 		
 		mav.addObject("previousStatus", previousStatus);
 		mav.addObject("nextStatus", nextStatus);
@@ -530,52 +529,50 @@ public class DocumentController {
 		mav.addObject("classDisplay", "btn btn-default");//Show start button		
 		/* end */	
 		
-		/** Setting previous and next record **/
-		/** Setting previous and next record **/
 		//get dataset for particular user
-		String dataset = documentDao.getDatasetName(user.getId());
-		String previousStatus = "";
-		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, dataset);
-		String idPrevious = documentDao.getPreviousDocument(id, dataset);
-		String previousDataset = dataset;
-		String nextDataset = dataset;
-		
-		//	Previous Part	
-		if (idPrevious==null) {
-			previousStatus = "disabled=\"disabled\"";
-			idPrevious = id;
-			
-			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(dataset);
-			
-			if (previousCollection != null) {
-				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
-				if (lastRecord != null) {
-					idPrevious = lastRecord;
-					previousDataset = previousCollection;
-					previousStatus="";
-				}				
-			}
-			
-		}
-		
-		// Next part
-		if (idNext==null) {
-			nextStatus = "disabled=\"disabled\"";
-			idNext = id;
-			
-			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(dataset);
-			if (nextCollection != null) {
-				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
-				if (nextRecord != null) {
-					idNext = nextRecord;
-					nextDataset = nextCollection;
-					nextStatus = "";
-				}					
-			}
-		}		
+				String dataset = documentDao.getDatasetName(user.getId());
+				String previousStatus = "";
+				String nextStatus="";	
+				String idNext = documentDao.getNextDocumentByUserId(id, datasetVersion, dataset);
+				String idPrevious = documentDao.getPreviousDocumentByUserId(id, datasetVersion, dataset);
+				String previousDataset = datasetVersion;
+				String nextDataset = datasetVersion;
+				
+				//	Previous Part	
+				if (idPrevious==null) {
+					previousStatus = "disabled=\"disabled\"";
+					idPrevious = id;
+					
+					//Get previous collection
+					String previousCollection = documentDao.getPreviousCollectionByUserId(datasetVersion, dataset);
+					
+					if (previousCollection != null) {
+						String lastRecord = documentDao.getLastRecordCollectionByUserId(previousCollection, dataset);
+						if (lastRecord != null) {
+							idPrevious = lastRecord;
+							previousDataset = previousCollection;
+							previousStatus="";
+						}				
+					}
+					
+				}
+				
+				// Next part
+				if (idNext==null) {
+					nextStatus = "disabled=\"disabled\"";
+					idNext = id;
+					
+					//Get Next collection
+					String nextCollection = documentDao.getNextCollectionByUserId(datasetVersion, dataset);
+					if (nextCollection != null) {
+						String nextRecord = documentDao.getNextRecordCollectionByUserId(nextCollection, dataset);
+						if (nextRecord != null) {
+							idNext = nextRecord;
+							nextDataset = nextCollection;
+							nextStatus = "";
+						}					
+					}
+				}		
 		mav.addObject("previousStatus", previousStatus);
 		mav.addObject("nextStatus", nextStatus);
 		mav.addObject("pageName", "detail");
@@ -887,10 +884,10 @@ public class DocumentController {
 		String dataset = documentDao.getDatasetName(user.getId());
 		String previousStatus = "";
 		String nextStatus="";	
-		String idNext = documentDao.getNextDocument(id, dataset);
-		String idPrevious = documentDao.getPreviousDocument(id, dataset);
-		String previousDataset = dataset;
-		String nextDataset = dataset;
+		String idNext = documentDao.getNextDocumentByUserId(id, datasetVersion, dataset);
+		String idPrevious = documentDao.getPreviousDocumentByUserId(id, datasetVersion, dataset);
+		String previousDataset = datasetVersion;
+		String nextDataset = datasetVersion;
 		
 		//	Previous Part	
 		if (idPrevious==null) {
@@ -898,10 +895,10 @@ public class DocumentController {
 			idPrevious = id;
 			
 			//Get previous collection
-			String previousCollection = documentDao.getPreviousCollection(dataset);
+			String previousCollection = documentDao.getPreviousCollectionByUserId(datasetVersion, dataset);
 			
 			if (previousCollection != null) {
-				String lastRecord = documentDao.getLastRecordCollection(previousCollection);
+				String lastRecord = documentDao.getLastRecordCollectionByUserId(previousCollection, dataset);
 				if (lastRecord != null) {
 					idPrevious = lastRecord;
 					previousDataset = previousCollection;
@@ -917,9 +914,9 @@ public class DocumentController {
 			idNext = id;
 			
 			//Get Next collection
-			String nextCollection = documentDao.getNextCollection(dataset);
+			String nextCollection = documentDao.getNextCollectionByUserId(datasetVersion, dataset);
 			if (nextCollection != null) {
-				String nextRecord = documentDao.getNextRecordCollection(nextCollection);
+				String nextRecord = documentDao.getNextRecordCollectionByUserId(nextCollection, dataset);
 				if (nextRecord != null) {
 					idNext = nextRecord;
 					nextDataset = nextCollection;

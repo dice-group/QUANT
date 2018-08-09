@@ -144,7 +144,7 @@ public class UserDatasetCorrectionDAO {
 				cursor.close();
 				return item;
 		 } catch (Exception e) {}
-		 return item;
+		 return null;
 	 }	
 	public UserDatasetCorrection getDocumentByRevision(int userId, String id, String datasetVersion, int revision) {
 		 BasicDBObject searchObj = new BasicDBObject();
@@ -2284,7 +2284,8 @@ public class UserDatasetCorrectionDAO {
 					itemCS.setQald5(this.getAllDatasetsInParticularVersion(q.getId(), "QALD5_Train_Multilingual", "QALD5_Test_Multilingual").size());
 					itemCS.setQald6(this.getAllDatasetsInParticularVersion(q.getId(), "QALD6_Train_Multilingual", "QALD6_Test_Multilingual").size());
 					itemCS.setQald7(this.getAllDatasetsInParticularVersion(q.getId(), "QALD7_Train_Multilingual", "QALD7_Test_Multilingual").size());
-					itemCS.setQald8(this.getAllDatasetsInParticularVersion(q.getId(), "QALD8_Train_Multilingual", "QALD8_Test_Multilingual").size());					
+					itemCS.setQald8(this.getAllDatasetsInParticularVersion(q.getId(), "QALD8_Train_Multilingual", "QALD8_Test_Multilingual").size());
+					//itemCS.setNoCuratedQuestion(this.getNoCuratedQuestions(q.getId());
 					csList.add(itemCS);					
 				}
 				cursor.close();
@@ -2295,6 +2296,7 @@ public class UserDatasetCorrectionDAO {
 			return null;
 		}
 		
+		//
 		//Check Answer Type of Ask Query
 		public String booleanAnswerTypeChecking(String answer) {
 			//check if it is boolean			

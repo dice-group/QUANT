@@ -507,6 +507,9 @@
                                         <th class="text-center">QALD6</th>
                                         <th class="text-center">QALD7</th>
                                         <th class="text-center">QALD8</th>
+                                        <th class="text-center">Curated</th>
+                                        <th class="text-center">Removed</th>
+                                        <th class="text-center">No Changes</th>
                                         <th></th>
                                     </tr>
                                 </thead>
