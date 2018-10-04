@@ -4,11 +4,14 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +47,7 @@ import app.model.DatasetList;
 import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
 import app.model.DocumentList;
+import app.model.QALD9TrainData;
 import app.model.User;
 import app.model.UserDatasetCorrection;
 import app.model.UserDatasetCorrectionTemp;
@@ -54,6 +58,46 @@ import app.dao.DocumentDAO;
 import app.controller.SparqlCorrection;
 
 public class UserDatasetCorrectionDAO {
+	//This function is used to get documents from UserDatasetCorrection that have same results of curation 
+		public UserDatasetCorrection getDocumentWithSameResults(String id, String datasetVersion) {
+			 BasicDBObject searchObj = new BasicDBObject();
+			 UserDatasetCorrection item = new UserDatasetCorrection();
+			 searchObj.put("id", id);
+			 searchObj.put("datasetVersion", datasetVersion);
+			
+			 try {
+					DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+					DBCollection coll = db.getCollection("Annotator2AllStatus");
+					DBCursor cursor = coll.find(searchObj);
+					while (cursor.hasNext()) {
+						DBObject dbobj = cursor.next();
+						Gson gson = new GsonBuilder().create();
+						UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);						
+						item.setId(q.getId());
+						item.setDatasetVersion(q.getDatasetVersion());
+						item.setAnswerType(q.getAnswerType());
+						item.setAggregation(q.getAggregation());
+						item.setOnlydbo(q.getOnlydbo());
+						item.setHybrid(q.getHybrid());
+						item.setLanguageToQuestion(q.getLanguageToQuestion());
+						item.setLanguageToKeyword(q.getLanguageToKeyword());
+						item.setSparqlQuery(q.getSparqlQuery());
+						item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+						item.setGoldenAnswer(q.getGoldenAnswer());
+						item.setOutOfScope(q.getOutOfScope());
+						item.setUserId(q.getUserId());
+						item.setRevision(q.getRevision());
+						item.setStartingTimeCuration(q.getStartingTimeCuration());
+						item.setFinishingTimeCuration(q.getFinishingTimeCuration());
+						item.setTransId(q.getTransId());
+						item.setStatus(q.getStatus());
+					}
+					cursor.close();
+					return item;
+			 } catch (Exception e) {}
+			 return item;
+		 }
+	
 	//This function is used to get documents from UserDatasetCorrection with all status: curated, removed, no changes needed
 	public UserDatasetCorrection getDocumentFromAnyStatus(int userId, String id, String datasetVersion) {
 		 BasicDBObject searchObj = new BasicDBObject();
@@ -72,6 +116,7 @@ public class UserDatasetCorrectionDAO {
 					DBObject dbobj = cursor.next();
 					Gson gson = new GsonBuilder().create();
 					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+					item.setUserId(q.getUserId());
 					item.setId(q.getId());
 					item.setDatasetVersion(q.getDatasetVersion());
 					item.setAnswerType(q.getAnswerType());
@@ -96,6 +141,51 @@ public class UserDatasetCorrectionDAO {
 		 } catch (Exception e) {}
 		 return item;
 	 }
+	
+	//This function is used to get documents from QuestiosWithDifferentCurationResult 
+		public UserDatasetCorrection getDocumentForManualChecking(int userId, String id, String datasetVersion) {
+			 BasicDBObject searchObj = new BasicDBObject();
+			 UserDatasetCorrection item = new UserDatasetCorrection();
+			 searchObj.put("id", id);
+			 searchObj.put("datasetVersion", datasetVersion);
+			 searchObj.put("userId", userId);	 
+			 
+			 BasicDBObject sortObj = new BasicDBObject();		 
+			 sortObj.put("revision", -1);
+			 try {
+					DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+					DBCollection coll = db.getCollection("QuestiosWithDifferentCurationResult");
+					DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+					while (cursor.hasNext()) {
+						DBObject dbobj = cursor.next();
+						Gson gson = new GsonBuilder().create();
+						UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+						
+						item.setId(q.getId());
+						item.setDatasetVersion(q.getDatasetVersion());
+						item.setAnswerType(q.getAnswerType());
+						item.setAggregation(q.getAggregation());
+						item.setOnlydbo(q.getOnlydbo());
+						item.setHybrid(q.getHybrid());
+						item.setLanguageToQuestion(q.getLanguageToQuestion());
+						item.setLanguageToKeyword(q.getLanguageToKeyword());
+						item.setSparqlQuery(q.getSparqlQuery());
+						item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+						item.setGoldenAnswer(q.getGoldenAnswer());
+						item.setOutOfScope(q.getOutOfScope());
+						item.setUserId(q.getUserId());
+						item.setRevision(q.getRevision());
+						item.setStartingTimeCuration(q.getStartingTimeCuration());
+						item.setFinishingTimeCuration(q.getFinishingTimeCuration());
+						item.setTransId(q.getTransId());
+						item.setStatus(q.getStatus());
+					}
+					cursor.close();
+					return item;
+			 } catch (Exception e) {}
+			 return item;
+		 }
+	
 	public UserDatasetCorrection getDocument(int userId, String id, String datasetVersion) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 UserDatasetCorrection item = new UserDatasetCorrection();
@@ -146,6 +236,50 @@ public class UserDatasetCorrectionDAO {
 		 } catch (Exception e) {}
 		 return null;
 	 }	
+	
+	public UserDatasetCorrection getCuratedDocument(int userId, String id, String datasetVersion) {
+		 BasicDBObject searchObj = new BasicDBObject();
+		 UserDatasetCorrection item = new UserDatasetCorrection();
+		 searchObj.put("id", id);
+		 searchObj.put("datasetVersion", datasetVersion);
+		 searchObj.put("userId", userId);		 
+		 searchObj.put("status", "curated"); 
+		
+		 BasicDBObject sortObj = new BasicDBObject();
+		 sortObj.put("revision", -1);
+		 try {
+				DB db = MongoDBManager.getDB("QaldCuratorFiltered");
+				DBCollection coll = db.getCollection("UserDatasetCorrection");
+				DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);
+				while (cursor.hasNext()) {
+					DBObject dbobj = cursor.next();
+					Gson gson = new GsonBuilder().create();
+					UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);					
+					item.setId(q.getId());
+					item.setDatasetVersion(q.getDatasetVersion());
+					item.setAnswerType(q.getAnswerType());
+					item.setAggregation(q.getAggregation());
+					item.setOnlydbo(q.getOnlydbo());
+					item.setHybrid(q.getHybrid());
+					item.setLanguageToQuestion(q.getLanguageToQuestion());
+					item.setLanguageToKeyword(q.getLanguageToKeyword());
+					item.setSparqlQuery(q.getSparqlQuery());
+					item.setPseudoSparqlQuery(q.getPseudoSparqlQuery());
+					item.setGoldenAnswer(q.getGoldenAnswer());
+					item.setOutOfScope(q.getOutOfScope());
+					item.setUserId(q.getUserId());
+					item.setRevision(q.getRevision());
+					item.setStartingTimeCuration(q.getStartingTimeCuration());
+					item.setFinishingTimeCuration(q.getFinishingTimeCuration());
+					item.setTransId(q.getTransId());
+					item.setStatus(q.getStatus());
+				}
+				cursor.close();
+				return item;
+		 } catch (Exception e) {}
+		 return null;
+	 }
+	
 	public UserDatasetCorrection getDocumentByRevision(int userId, String id, String datasetVersion, int revision) {
 		 BasicDBObject searchObj = new BasicDBObject();
 		 UserDatasetCorrection item = new UserDatasetCorrection();
@@ -2342,4 +2476,329 @@ public class UserDatasetCorrectionDAO {
 		 	}
 		 	return null;
 		}
+		
+	public boolean areTwoCuratedQuestionsSame (DatasetModel fD, DatasetModel sD) {		
+		if (!(fD.getAggregation().equals(sD.getAggregation()))) {
+			return false; 
+		}else if (!(fD.getHybrid().equals(sD.getHybrid()))){
+				return false;
+			}else if (!(fD.getOnlydbo().equals(sD.getOnlydbo()))) {
+					return false;
+				} else if (!(fD.getOutOfScope().equals(sD.getOutOfScope()))) {
+						return false;
+					}else if (!(fD.getAnswerType().equals(sD.getAnswerType()))) {
+						return false;
+						}else if (!(fD.getLanguageToKeyword().equals(sD.getLanguageToKeyword()))) {
+							return false;
+							}else if (!(fD.getLanguageToQuestion().equals(sD.getLanguageToQuestion()))) {
+								return false;
+								}else if (!(fD.getSparqlQuery().equals(sD.getSparqlQuery()))) {
+									return false;
+								}
+		return true;
+	}
+	
+	//check whether two multilingual questions are same
+	public boolean areTwoMultilingualQuestionsSame(Map<String, String> q1, Map<String, String> q2) {
+		for (Map.Entry<String, String> entryQ1: q1.entrySet()) {
+			for (Map.Entry<String, String> entryQ2: q2.entrySet()) {
+				String key1 = entryQ1.getKey();
+				String key2 = entryQ2.getKey();
+				if (key1.equals(key2)) {
+					if(entryQ1.getValue()!=null && entryQ2.getValue()!=null ) {
+						if (!(entryQ1.getValue().equals(entryQ2.getValue()))){
+							return false;
+						}else {
+							break;
+						}						
+					}else if (entryQ1.getValue() == null && entryQ2.getValue() == null ){
+						break;
+					}else {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	//check whether two multilingual keywords are same
+		public boolean areTwoMultilingualKeywordsSame(Map<String, List<String>> q1, Map<String, List<String>> q2) {		
+			for (Map.Entry<String, List<String>> entryQ1: q1.entrySet()) {
+				for (Map.Entry<String, List<String>> entryQ2: q2.entrySet()) {					
+					if (entryQ1.getKey().equals(entryQ2.getKey())) {
+						Collection list1 = new ArrayList(Arrays.asList(entryQ1.getValue()));
+						Collection list2 = new ArrayList(Arrays.asList(entryQ2.getValue()));
+						list1.retainAll(list2);
+						if (list1.isEmpty()) {
+							return false;
+						}else {
+							break;
+						}
+					}
+				}
+			}
+			return true;
+		}
+	
+		//check whether two list of keywords are same
+				public boolean areTwoKeywordsListSame(List<String> q1, List<String> q2) {	
+					List<String> result = new ArrayList<>();				
+					Collection list1 = new ArrayList(Arrays.asList(q1));
+					Collection list2 = new ArrayList(Arrays.asList(q2));
+					list1.retainAll(list2);
+					if (list1.isEmpty()) {
+						return false;
+					}				
+					return true;
+				}
+	//check whether one of the variable is null
+	public boolean isNullExist(String v1, String v2) {
+		if (v1 != null && v2 != null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	//check whether all of variables are null
+		public String whichOneNotNullOrAllNull(String v1, String v2) {
+			String result = "";
+			if (v1 == null && v2 == null) {
+				result = null;
+			}else if (v1 != null) {
+				result = v1;
+			}else if (v2 != null) {
+				result = v2;
+			}
+			return result;
+		}
+	
+		//sort the hashMap base on keys
+		public static <K extends Comparable,V extends Comparable> Map<K,V> sortByKeysQuestionTranslations(Map<K,V> map){
+	        List<K> keys = new LinkedList<K>(map.keySet());
+	        Collections.sort(keys);
+	      
+	        //LinkedHashMap will keep the keys in the order they are inserted
+	        //which is currently sorted on natural ordering
+	        Map<K,V> sortedMap = new LinkedHashMap<K,V>();
+	        for(K key: keys){
+	            sortedMap.put(key, map.get(key));
+	        }      
+	        return sortedMap;
+	    }
+		
+	//sort the hashMap base on keys
+	public static <K extends Comparable,V extends Comparable> Map<K,List<V>> sortByKeysKeywordsTranslations(Map<K,List<V>> map){
+        List<K> keys = new LinkedList<K>(map.keySet());
+        Collections.sort(keys);
+      
+        //LinkedHashMap will keep the keys in the order they are inserted
+        //which is currently sorted on natural ordering
+        Map<K,List<V>> sortedMap = new LinkedHashMap<K,List<V>>();
+        for(K key: keys){
+            sortedMap.put(key, map.get(key));
+        }      
+        return sortedMap;
+    }
+	
+	public Map<String, String> proceedQuestionTranslations (QALD9TrainData el, DatasetModel dm){
+		Map<String, String> newQuestionTranslations = new HashMap<String, String>();
+		if (this.isNullExist(el.getLanguageToQuestion().get("de"), dm.getLanguageToQuestion().get("de")) == false) {
+			if (!(el.getLanguageToQuestion().get("de").equals(dm.getLanguageToQuestion().get("de")))) {
+				newQuestionTranslations.put("de_01", el.getLanguageToQuestion().get("de"));
+				newQuestionTranslations.put("de_02", dm.getLanguageToQuestion().get("de"));
+			}else {
+				newQuestionTranslations.put("de", el.getLanguageToQuestion().get("de"));
+			}
+		}else {							
+			newQuestionTranslations.put("de", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("de"), dm.getLanguageToQuestion().get("de")));
+		}				
+		if (this.isNullExist(el.getLanguageToQuestion().get("ru"), dm.getLanguageToQuestion().get("ru")) == false) {
+			if (!(el.getLanguageToQuestion().get("ru").equals(dm.getLanguageToQuestion().get("ru")))) {
+				newQuestionTranslations.put("ru_01", el.getLanguageToQuestion().get("ru"));
+				newQuestionTranslations.put("ru_02", dm.getLanguageToQuestion().get("ru"));
+			}else {
+				newQuestionTranslations.put("ru", el.getLanguageToQuestion().get("ru"));							
+			}
+		}else {							
+			newQuestionTranslations.put("ru", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("ru"), dm.getLanguageToQuestion().get("ru")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("pt"), dm.getLanguageToQuestion().get("pt")) == false) {
+			if (!(el.getLanguageToQuestion().get("pt").equals(dm.getLanguageToQuestion().get("pt")))) {
+				newQuestionTranslations.put("pt_01", el.getLanguageToQuestion().get("pt"));
+				newQuestionTranslations.put("pt_02", dm.getLanguageToQuestion().get("pt"));
+			}else {
+				newQuestionTranslations.put("pt", el.getLanguageToQuestion().get("pt"));
+			}
+		}else {							
+			newQuestionTranslations.put("pt", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("pt"), dm.getLanguageToQuestion().get("pt")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("hi_IN"), dm.getLanguageToQuestion().get("hi_IN")) == false) {
+			if (!(el.getLanguageToQuestion().get("hi_IN").equals(dm.getLanguageToQuestion().get("hi_IN")))) {
+				newQuestionTranslations.put("hi_IN_01", el.getLanguageToQuestion().get("hi_IN"));
+				newQuestionTranslations.put("hi_IN_02", dm.getLanguageToQuestion().get("hi_IN"));
+			}else {
+				newQuestionTranslations.put("hi_IN", el.getLanguageToQuestion().get("hi_IN"));
+			}
+		}else {							
+			newQuestionTranslations.put("hi_IN", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("hi_IN"), dm.getLanguageToQuestion().get("hi_IN")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("fa"), dm.getLanguageToQuestion().get("fa")) == false) {						
+			if (!(el.getLanguageToQuestion().get("fa").equals(dm.getLanguageToQuestion().get("fa")))) {
+				newQuestionTranslations.put("fa_01", el.getLanguageToQuestion().get("fa"));
+				newQuestionTranslations.put("fa_02", dm.getLanguageToQuestion().get("fa"));
+			}else {
+				newQuestionTranslations.put("fa", el.getLanguageToQuestion().get("fa"));
+			}
+		}else {							
+			newQuestionTranslations.put("fa", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("fa"), dm.getLanguageToQuestion().get("fa")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("it"), dm.getLanguageToQuestion().get("it")) == false) {
+			if (!(el.getLanguageToQuestion().get("it").equals(dm.getLanguageToQuestion().get("it")))) {
+				newQuestionTranslations.put("it_01", el.getLanguageToQuestion().get("it"));
+				newQuestionTranslations.put("it_02", dm.getLanguageToQuestion().get("it"));
+			}else {
+				newQuestionTranslations.put("it", el.getLanguageToQuestion().get("it"));
+			}
+		}else {							
+			newQuestionTranslations.put("it", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("it"), dm.getLanguageToQuestion().get("it")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("fr"), dm.getLanguageToQuestion().get("fr")) == false) {
+			if (!(el.getLanguageToQuestion().get("fr").equals(dm.getLanguageToQuestion().get("fr")))) {
+				newQuestionTranslations.put("fr_01", el.getLanguageToQuestion().get("fr"));
+				newQuestionTranslations.put("fr_02", dm.getLanguageToQuestion().get("fr"));
+			}else {
+				newQuestionTranslations.put("fr", el.getLanguageToQuestion().get("fr"));
+			}
+		}else {							
+			newQuestionTranslations.put("fr", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("fr"), dm.getLanguageToQuestion().get("fr")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("ro"), dm.getLanguageToQuestion().get("ro")) == false) {
+			if (!(el.getLanguageToQuestion().get("ro").equals(dm.getLanguageToQuestion().get("ro")))) {
+				newQuestionTranslations.put("ro_01", el.getLanguageToQuestion().get("ro"));
+				newQuestionTranslations.put("ro_02", dm.getLanguageToQuestion().get("ro"));
+			}else {
+				newQuestionTranslations.put("ro", el.getLanguageToQuestion().get("ro"));
+			}
+		}else {							
+			newQuestionTranslations.put("ro", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("ro"), dm.getLanguageToQuestion().get("ro")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("es"), dm.getLanguageToQuestion().get("es")) == false) {						
+			if (!(el.getLanguageToQuestion().get("es").equals(dm.getLanguageToQuestion().get("es")))) {
+				newQuestionTranslations.put("es_01", el.getLanguageToQuestion().get("es"));
+				newQuestionTranslations.put("es_02", dm.getLanguageToQuestion().get("es"));
+			}else {
+				newQuestionTranslations.put("es", el.getLanguageToQuestion().get("es"));
+			}
+		}else {							
+			newQuestionTranslations.put("es", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("es"), dm.getLanguageToQuestion().get("es")));
+		}
+		
+		if (this.isNullExist(el.getLanguageToQuestion().get("nl"), dm.getLanguageToQuestion().get("nl")) == false) {
+			if (!(el.getLanguageToQuestion().get("nl").equals(dm.getLanguageToQuestion().get("nl")))) {
+				newQuestionTranslations.put("nl_01", el.getLanguageToQuestion().get("nl"));
+				newQuestionTranslations.put("nl_02", dm.getLanguageToQuestion().get("nl"));
+			}else {
+				newQuestionTranslations.put("nl", el.getLanguageToQuestion().get("nl"));
+			}
+		}else {							
+			newQuestionTranslations.put("nl", this.whichOneNotNullOrAllNull(el.getLanguageToQuestion().get("nl"), dm.getLanguageToQuestion().get("nl")));
+		}
+		return newQuestionTranslations;
+	}
+	
+	public Map<String, List<String>> proceedKeywordsTranslations (QALD9TrainData el, DatasetModel dm){
+		Map<String, List<String>> newKeywordsTranslations = new HashMap<String, List<String>>();
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("de"),dm.getLanguageToKeyword().get("de")))==false) {
+			newKeywordsTranslations.put("de_01", el.getLanguageToKeywords().get("de"));
+			newKeywordsTranslations.put("de_02", dm.getLanguageToKeyword().get("de"));
+		}else {
+			newKeywordsTranslations.put("de", el.getLanguageToKeywords().get("de"));
+		}
+		
+	
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("ru"),dm.getLanguageToKeyword().get("ru")))==false) {
+			newKeywordsTranslations.put("ru_01", el.getLanguageToKeywords().get("ru"));
+			newKeywordsTranslations.put("ru_02", dm.getLanguageToKeyword().get("ru"));
+		}else {
+			newKeywordsTranslations.put("ru", el.getLanguageToKeywords().get("ru"));							
+		}
+	
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("pt"),dm.getLanguageToKeyword().get("pt")))==false) {
+			newKeywordsTranslations.put("pt_01", el.getLanguageToKeywords().get("pt"));
+			newKeywordsTranslations.put("pt_02", dm.getLanguageToKeyword().get("pt"));
+		}else {
+			newKeywordsTranslations.put("pt", el.getLanguageToKeywords().get("pt"));
+		}
+		
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("hi_IN"),dm.getLanguageToKeyword().get("hi_IN")))==false) {
+			newKeywordsTranslations.put("hi_IN_01", el.getLanguageToKeywords().get("hi_IN"));
+			newKeywordsTranslations.put("hi_IN_02", dm.getLanguageToKeyword().get("hi_IN"));
+		}else {
+			newKeywordsTranslations.put("hi_IN", el.getLanguageToKeywords().get("hi_IN"));
+		}
+
+							
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("fa"),dm.getLanguageToKeyword().get("fa")))==false) {
+			newKeywordsTranslations.put("fa_01", el.getLanguageToKeywords().get("fa"));
+			newKeywordsTranslations.put("fa_02", dm.getLanguageToKeyword().get("fa"));
+		}else {
+			newKeywordsTranslations.put("fa", el.getLanguageToKeywords().get("fa"));
+		}
+	
+	
+	
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("it"),dm.getLanguageToKeyword().get("it")))==false) {
+			newKeywordsTranslations.put("it_01", el.getLanguageToKeywords().get("it"));
+			newKeywordsTranslations.put("it_02", dm.getLanguageToKeyword().get("it"));
+		}else {
+			newKeywordsTranslations.put("it", el.getLanguageToKeywords().get("it"));
+		}
+	
+	
+	
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("fr"),dm.getLanguageToKeyword().get("fr")))==false) {
+			newKeywordsTranslations.put("fr_01", el.getLanguageToKeywords().get("fr"));
+			newKeywordsTranslations.put("fr_02", dm.getLanguageToKeyword().get("fr"));
+		}else {
+			newKeywordsTranslations.put("fr", el.getLanguageToKeywords().get("fr"));
+		}
+	
+	
+	
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("ro"),dm.getLanguageToKeyword().get("ro")))==false) {
+			newKeywordsTranslations.put("ro_01", el.getLanguageToKeywords().get("ro"));
+			newKeywordsTranslations.put("ro_02", dm.getLanguageToKeyword().get("ro"));
+		}else {
+			newKeywordsTranslations.put("ro", el.getLanguageToKeywords().get("ro"));
+		}
+	
+													
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("es"),dm.getLanguageToKeyword().get("es")))==false) {
+			newKeywordsTranslations.put("es_01", el.getLanguageToKeywords().get("es"));
+			newKeywordsTranslations.put("es_02", dm.getLanguageToKeyword().get("es"));
+		}else {
+			newKeywordsTranslations.put("es", el.getLanguageToKeywords().get("es"));
+		}
+							
+		if ((this.areTwoKeywordsListSame(el.getLanguageToKeywords().get("nl"),dm.getLanguageToKeyword().get("nl")))==false) {
+			newKeywordsTranslations.put("nl_01", el.getLanguageToKeywords().get("nl"));
+			newKeywordsTranslations.put("nl_02", dm.getLanguageToKeyword().get("nl"));
+		}else {
+			newKeywordsTranslations.put("nl", el.getLanguageToKeywords().get("nl"));
+		}
+		newKeywordsTranslations.put("en", el.getLanguageToKeywords().get("en"));
+		return newKeywordsTranslations;
+	}
+	
+
+	
 }

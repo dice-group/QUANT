@@ -39,6 +39,8 @@ import app.config.MongoDBManager;
 import app.dao.CookieDAO;
 import app.dao.UserDAO;
 import app.dao.UserDatasetCorrectionDAO;
+import app.model.DatasetModel;
+import app.model.QALD9TrainData;
 import app.model.User;
 import app.model.UserDatasetCorrection;
 
@@ -235,7 +237,32 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("redirect:/user-dataset-correction");
 		return mav;
 	}
-	private BasicDBObject toBasicDBObject(UserDatasetCorrection document) {
+	
+	public BasicDBObject toBasicDBObjectAllUser(UserDatasetCorrection document) {
+		BasicDBObject newdbobj = new BasicDBObject();
+		newdbobj.put("userId", document.getUserId());
+		newdbobj.put("id", document.getId());
+		newdbobj.put("datasetVersion", document.getDatasetVersion());
+		newdbobj.put("answerType", document.getAnswerType());
+		newdbobj.put("aggregation", document.getAggregation());
+		newdbobj.put("onlydbo", document.getOnlydbo());
+		newdbobj.put("hybrid", document.getHybrid());
+		newdbobj.put("sparqlQuery", document.getSparqlQuery());
+		newdbobj.put("pseudoSparqlQuery", document.getPseudoSparqlQuery());
+		newdbobj.put("goldenAnswer", document.getGoldenAnswer());
+		newdbobj.put("languageToQuestion", document.getLanguageToQuestion());
+		newdbobj.put("languageToKeyword", document.getLanguageToKeyword());
+		newdbobj.put("outOfScope", document.getOutOfScope());
+		newdbobj.put("revision", document.getRevision());
+		newdbobj.put("status", document.getStatus());
+		newdbobj.put("startingTimeCuration", document.getStartingTimeCuration());
+		newdbobj.put("finishingTimeCuration", document.getFinishingTimeCuration());
+		newdbobj.put("removingTime", document.getRemovingTime());
+		newdbobj.put("noNeedChangesTime", document.getNoNeedChangesTime());
+		return newdbobj;
+	}
+	
+	public BasicDBObject toBasicDBObject(UserDatasetCorrection document) {
 		BasicDBObject newdbobj = new BasicDBObject();
 		newdbobj.put("id", document.getId());
 		newdbobj.put("datasetVersion", document.getDatasetVersion());
@@ -249,9 +276,30 @@ public class UserController {
 		newdbobj.put("languageToQuestion", document.getLanguageToQuestion());
 		newdbobj.put("languageToKeyword", document.getLanguageToKeyword());
 		newdbobj.put("outOfScope", document.getOutOfScope());
-		
+		newdbobj.put("revision", document.getRevision());
+		newdbobj.put("status", document.getStatus());
+		newdbobj.put("startingTimeCuration", document.getStartingTimeCuration());
+		newdbobj.put("finishingTimeCuration", document.getFinishingTimeCuration());
+		newdbobj.put("removingTime", document.getRemovingTime());
+		newdbobj.put("noNeedChangesTime", document.getNoNeedChangesTime());
 		return newdbobj;
 	}
+	
+	public BasicDBObject toBasicDBObjectQALD9TrainData(QALD9TrainData document) {
+		BasicDBObject newdbobj = new BasicDBObject();
+		newdbobj.put("id", document.getId());		
+		newdbobj.put("answerType", document.getAnswerType());
+		newdbobj.put("aggregation", document.getAggregation());
+		newdbobj.put("onlydbo", document.getOnlydbo());
+		newdbobj.put("hybrid", document.getHybrid());
+		newdbobj.put("sparqlQuery", document.getSparqlQuery());		
+		newdbobj.put("goldenAnswer", document.getGoldenAnswers());
+		newdbobj.put("languageToQuestion", document.getLanguageToQuestion());
+		newdbobj.put("languageToKeyword", document.getLanguageToKeywords());
+		newdbobj.put("outOfScope", document.getOutOfScope());		
+		return newdbobj;
+	}
+	
 	private File getFile(String filePath) throws FileNotFoundException {
         File file = new File(filePath);
         if (!file.exists()){

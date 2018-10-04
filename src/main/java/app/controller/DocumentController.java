@@ -70,17 +70,25 @@ public class DocumentController {
 		String role = user.getRole();
 		DocumentDAO documentDao = new DocumentDAO();
 		
-		ModelAndView mav = new ModelAndView("document-list");
+		
 		//Check whether there is an unfinishfed curation process
 		UserDatasetCorrectionDAO udcDao =  new UserDatasetCorrectionDAO();
 		udcDao.checkUnfinishedCuration(userId);
-		
-		mav.addObject("datasets", documentDao.getAllDatasets(userId, userName, role));
-		mav.addObject("userId", userId);
-		mav.addObject("name", user.getName());
-		mav.addObject("role", user.getRole());
-		
-	    return mav;  
+		if (userId == 19) {
+			ModelAndView mav = new ModelAndView("ManualCheckingDocument-List");
+			mav.addObject("ManualCheckingDatasets", documentDao.getAllDatasetsManualChecking(userId));
+			mav.addObject("userId", userId);
+			mav.addObject("name", user.getName());
+			mav.addObject("role", user.getRole());
+			return mav;
+		}else {
+			ModelAndView mav = new ModelAndView("document-list");
+			mav.addObject("datasets", documentDao.getAllDatasets(userId, userName, role));
+			mav.addObject("userId", userId);
+			mav.addObject("name", user.getName());
+			mav.addObject("role", user.getRole());
+			return mav;
+		}		      
 	} 
 	
 	@RequestMapping(value = "/document-list/collections/{qald-test}/{qald-train}", method = RequestMethod.GET)
@@ -502,6 +510,246 @@ public class DocumentController {
 		mav.addObject("hybridSugg", suggObj.getHybridSugg());
 		mav.addObject("outOfScopeSugg", suggObj.getOutOfScopeSugg());
 		return mav;  
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/document-list-manual-checking/detail/{userId}/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView showDocumentListDetailManualChecking(@PathVariable("userId") int userId, @PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		
+		/* start check data correction first */
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
+		//Check whether there is an unfinishfed curation process		
+		documentCorrectionDao.checkUnfinishedCuration(user.getId());
+		
+		UserDatasetCorrection documentItemCorrection = documentCorrectionDao.getDocumentForManualChecking(userId, id, datasetVersion); 
+				
+		/* Start initial document master */
+		DocumentDAO documentDao = new DocumentDAO();
+		ModelAndView mav = new ModelAndView("document-detail-manual-checking");		
+		mav.addObject("classDisplay", "btn btn-default");//Show start button
+		/* end */	
+		
+		//get dataset for particular user
+				String dataset = documentDao.getDatasetName(user.getId());
+				String previousStatus = "";
+				String nextStatus="";	
+				String idNext = documentDao.getNextDocumentByUserId(id, datasetVersion, dataset);
+				String idPrevious = documentDao.getPreviousDocumentByUserId(id, datasetVersion, dataset);
+				String previousDataset = datasetVersion;
+				String nextDataset = datasetVersion;
+				
+				//	Previous Part	
+				if (idPrevious==null) {
+					previousStatus = "disabled=\"disabled\"";
+					idPrevious = id;
+					
+					//Get previous collection
+					String previousCollection = documentDao.getPreviousCollectionByUserId(datasetVersion, dataset);
+					
+					if (previousCollection != null) {
+						String lastRecord = documentDao.getLastRecordCollectionByUserId(previousCollection, dataset);
+						if (lastRecord != null) {
+							idPrevious = lastRecord;
+							previousDataset = previousCollection;
+							previousStatus="";
+						}				
+					}
+					
+				}
+				
+				// Next part
+				if (idNext==null) {
+					nextStatus = "disabled=\"disabled\"";
+					idNext = id;
+					
+					//Get Next collection
+					String nextCollection = documentDao.getNextCollectionByUserId(datasetVersion, dataset);
+					if (nextCollection != null) {
+						String nextRecord = documentDao.getNextRecordCollectionByUserId(nextCollection, dataset);
+						if (nextRecord != null) {
+							idNext = nextRecord;
+							nextDataset = nextCollection;
+							nextStatus = "";
+						}					
+					}
+				}	
+		
+		mav.addObject("previousStatus", previousStatus);
+		mav.addObject("nextStatus", nextStatus);
+		mav.addObject("pageName", "detail");
+		mav.addObject("addUrlParameter", "");
+		mav.addObject("datasetVersionPrevious", previousDataset);
+		mav.addObject("datasetVersionNext", nextDataset);
+		mav.addObject("idPrevious", idPrevious);
+		mav.addObject("idNext", idNext);
+		mav.addObject("isCurated", documentItemCorrection.getId());
+		/** end setting previous and next record **/
+		
+		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
+		Boolean isAnswerTypeCurated = false;
+		Boolean isOutOfScopeCurated = false;
+		Boolean isAggregationCurated = false;
+		Boolean isOnlydboCurated = false;
+		Boolean isHybridCurated = false;				
+		
+		String status = "";
+		if (documentItemCorrection.getId() != null) {
+			String languageToQuestionEn = documentItemCorrection.getLanguageToQuestion().get("en").toString();
+			String sprqlQuery = documentItemCorrection.getSparqlQuery();
+			String goldenAnswer = documentItemCorrection.getGoldenAnswer().toString();
+			String aggregation = documentItemCorrection.getAggregation();
+			String answerType = documentItemCorrection.getAnswerType();
+			String onlydbo = documentItemCorrection.getOnlydbo();
+			String hybrid = documentItemCorrection.getHybrid();
+			String outOfScope = documentItemCorrection.getOutOfScope();
+			status = documentItemCorrection.getStatus();
+			int revision = documentItemCorrection.getRevision();
+			String removingTime = documentItemCorrection.getRemovingTime();
+			Map<String, List<String>> languageToKeyword = documentItemCorrection.getLanguageToKeyword();
+			Map<String, String> languageToQuestion = documentItemCorrection.getLanguageToQuestion();
+			String startingTimeCuration = documentItemCorrection.getStartingTimeCuration();
+			String finishingTimeCuration = documentItemCorrection.getFinishingTimeCuration();
+			
+			
+			/** Pretty display of Sparql Query**/
+			SparqlService ss = new SparqlService();
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
+			/** Retrieve answer from Virtuoso current endpoint **/
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}				
+			
+			
+			mav.addObject("languageToQuestionEn", languageToQuestionEn);
+			mav.addObject("sparqlQuery", formatedSparqlQuery);
+			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("aggregation", aggregation);
+			mav.addObject("answerType", answerType);
+			mav.addObject("onlydbo", onlydbo);
+			mav.addObject("hybrid", hybrid);
+			mav.addObject("languageToKeyword", languageToKeyword);
+			mav.addObject("languageToQuestion", languageToQuestion);
+			mav.addObject("outOfScope", outOfScope);
+			mav.addObject("id", id);
+			mav.addObject("datasetVersion", datasetVersion);	
+			mav.addObject("SPARQL", sprqlQuery);
+			mav.addObject("revision", revision);
+			mav.addObject("status", status);
+			if (removingTime != null) {
+				mav.addObject("removingTime", removingTime);
+			}
+			
+			/** Check whether a curated field value is the same with the suggested one **/
+			mav.addObject("isExist", "yes");			
+			//mav.addObject("resultStatus", resultStatus);
+			
+			/** Provide notification for curated fields **/
+			isSparqlQueryCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "sprqlQuery");
+			isKeywordCurated = documentCorrectionDao.isKeywordCurated(documentItemCorrection.getUserId(), id, datasetVersion, "languageToKeyword");
+			isQuestionTranslationCurated = documentCorrectionDao.isQuestionCurated(documentItemCorrection.getUserId(), id, datasetVersion, "languageToQuestion"); 
+			isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "answerType");
+			isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "outOfScope");
+			isAggregationCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "aggregation");
+			isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "onlydbo");
+			isHybridCurated = documentCorrectionDao.isItemCurated(documentItemCorrection.getUserId(), id, datasetVersion, "hybrid");
+			mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+			mav.addObject("isKeywordCurated", isKeywordCurated);
+			mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
+			mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
+			mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
+			mav.addObject("isAggregationCurated", isAggregationCurated);
+			mav.addObject("isOnlydboCurated", isOnlydboCurated);
+			mav.addObject("isHybridCurated", isHybridCurated);		
+						
+			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);
+			//check whether the keywords must be suggested or already exist
+			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
+				//Check whether keywords suggestion has not been accepted
+				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
+					mav.addObject("addKeywordsSuggestionStatus", true);
+					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
+						List<String> listKeywordSuggestion = mapEntry.getValue();
+						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
+					}
+				}else { //keywords suggestion have been accepted					
+					//check whether suggested keywords have not been translated
+					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
+						mav.addObject("addKeywordsTranslationsStatus", true);
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+						//remove english translations from suggestion
+						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
+						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
+							if (!(mapEntry.getKey().equals("en"))) {
+								keywordsTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+							}else {
+								//englishKeywordTranslation.put(mapEntry.getKey(), mapEntry.getValue());
+								String englishKeywordsList = "";
+								for (String element: mapEntry.getValue()) {
+									englishKeywordsList = englishKeywordsList + element + ",";
+								}
+								mav.addObject("englishKeywordTranslation", englishKeywordsList);
+							}
+								
+						}
+						mav.addObject("keywordsTranslations", keywordsTranslations);										
+					}else {
+						//check whether all suggested translations have been accepted completely for 11 targeted languages or not
+						if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "keywords"))) {
+							mav.addObject("addKeywordsTranslationsStatus", true);
+							mav.addObject("keywordsTranslations", documentCorrectionDao.getRestOfKeywordsTranslation(user.getId(), id, datasetVersion, "UserDatasetCorrection", "keywordsSuggestionsTranslations", startingTimeCuration, finishingTimeCuration));
+						}						
+					}
+				}
+			}else {
+				//check whether the keywords have not been translated
+				if (!(documentCorrectionDao.haveKeywordsBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
+					if (translations != null) {
+					mav.addObject("addKeywordsTranslationsStatus", true);
+					mav.addObject("keywordsTranslations", translations.getLanguageToKeyword());
+					}
+				}else {
+					//check whether all keywords translations have been accepted completely for 11 targeted languages or not
+					if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "keywords"))) {
+						mav.addObject("addKeywordsTranslationsStatus", true);
+						mav.addObject("keywordsTranslations", documentCorrectionDao.getRestOfKeywordsTranslationNotSuggestion(user.getId(), id, datasetVersion, "UserDatasetCorrection", languageToQuestionEn, startingTimeCuration, finishingTimeCuration));
+					}
+				}
+			}							
+					
+			//Check whether the question has not been translated either for all or added translations			
+			if (!(documentCorrectionDao.hasQuestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
+				
+				if (translations != null) {
+					mav.addObject("addQuestionTranslationsStatus", true);
+					mav.addObject("questionTranslation", translations.getLanguageToQuestion());
+				}				
+			}else {
+				//check whether all question translations have been accepted completely for 11 targeted languages or not
+				if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "question"))) {
+					mav.addObject("addQuestionTranslationsStatus", true);
+					mav.addObject("questionTranslation", documentCorrectionDao.getRestOfQuestionTranslation(user.getId(), id, datasetVersion, "UserDatasetCorrection", languageToQuestionEn, startingTimeCuration, finishingTimeCuration));
+				}
+			}
+		}
+		return mav;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1930,7 +2178,6 @@ public class DocumentController {
 				mav.addObject("onlineAnswer", results);
 			}				
 			
-			
 			mav.addObject("languageToQuestionEn", languageToQuestionEn);
 			mav.addObject("sparqlQuery", formatedSparqlQuery);
 			mav.addObject("goldenAnswer", goldenAnswer);
@@ -1968,8 +2215,7 @@ public class DocumentController {
 			mav.addObject("isOnlydboCurated", isOnlydboCurated);
 			mav.addObject("isHybridCurated", isHybridCurated);
 			mav.addObject("SPARQL",sprqlQuery);
-			mav.addObject("stageStatus","onlyDisplay");
-			
+			mav.addObject("stageStatus","onlyDisplay");			
 		}else {
 			mav.addObject("isExist", "no");
 			mav.addObject("id", id);
@@ -2530,6 +2776,272 @@ public class DocumentController {
 		mav.addObject("isOnlydboCurated", isOnlydboCurated);
 		mav.addObject("isHybridCurated", isHybridCurated);	
 		mav.addObject("revision", nextRevision);
+		return mav;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/document-list/start-correction-manual-checking/{userId}/{id}/{datasetVersion}", method = RequestMethod.GET)
+	public ModelAndView StartCorrectionOnManualChecking (@PathVariable("userId") int userId, @PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+		Cookie[] cks = request.getCookies();
+		CookieDAO cookieDao = new CookieDAO();
+		
+		if (!cookieDao.isValidate(cks)) {
+			redirectAttributes.addFlashAttribute("message","Session Expired.");
+			ModelAndView mav = new ModelAndView("redirect:/login");
+			return mav;
+		}
+		
+		//retrieve User
+		UserDAO userDao = new UserDAO();
+		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
+		
+		UserDatasetCorrectionDAO documentCorrectionDao = new UserDatasetCorrectionDAO();
+		ModelAndView mav = new ModelAndView("document-detail-curate");
+		mav.addObject("disabledForm", "");
+		mav.addObject("startButton", "Correction Process");
+		mav.addObject("startButtonDisabled", "disabled");
+		mav.addObject("displayStatus", "");
+		
+		//Check whether there is an unfinishfed curation process		
+		documentCorrectionDao.checkUnfinishedCuration(user.getId());
+		
+		UserDatasetCorrection documentItem = documentCorrectionDao.getDocument(user.getId(), id, datasetVersion);
+		/** Setting previous and next record **/
+		int idCurrent = Integer.parseInt(id);
+		@SuppressWarnings("unused")
+		String previousStatus = "";
+		int idNext = idCurrent+1;
+		int idPrevious;
+		if (idCurrent==1) {
+			previousStatus = "disabled";
+			idPrevious = 1;
+		}else {
+			idPrevious = idCurrent - 1;
+		}
+		String statusNoChangeChk="";
+		
+		// initial is curated = false
+		Boolean isSparqlQueryCurated = false;
+		Boolean isKeywordCurated = false;
+		Boolean isQuestionTranslationCurated = false;
+		Boolean isAnswerTypeCurated = false;
+		Boolean isOutOfScopeCurated = false;
+		Boolean isAggregationCurated = false;
+		Boolean isOnlydboCurated = false;
+		Boolean isHybridCurated = false;
+		
+		int nextRevision = 0;
+		int currentRevision = 0;
+		String curatedStatus;
+		if (documentItem.getId()!=null) { //document has been curated or has set as no need changes
+			//record starting time of curation
+			//check in what revision the current curated one is. Make sure it is not the cancel curated one
+			currentRevision = documentItem.getRevision();			
+			if ((documentItem.getStatus().equals("curated")) || (documentItem.getStatus().equals("noNeedChanges"))) 
+			{				
+				nextRevision = currentRevision+1;
+			}				
+			statusNoChangeChk = "style='display:none'";
+			String languageToQuestionEn = documentItem.getLanguageToQuestion().get("en").toString();
+			String sprqlQuery = documentItem.getSparqlQuery();
+			String goldenAnswer = documentItem.getGoldenAnswer().toString();
+			String aggregation = documentItem.getAggregation();
+			String answerType = documentItem.getAnswerType();
+			String onlydbo = documentItem.getOnlydbo();
+			String hybrid = documentItem.getHybrid();
+			String outOfScope = documentItem.getOutOfScope();
+			Map<String, List<String>> languageToKeyword = documentItem.getLanguageToKeyword();
+			Map<String, String> languageToQuestion = documentItem.getLanguageToQuestion();
+			String startingTimeCuration = documentItem.getStartingTimeCuration();
+			String finishingTimeCuration = documentItem.getFinishingTimeCuration();
+					
+			/** Pretty display of Sparql Query**/
+			SparqlService ss = new SparqlService();
+			String formatedSparqlQuery = ss.getQueryFormated(sprqlQuery);	
+			Set<String> results = new HashSet();
+			/** Retrieve answer from Virtuoso current endpoint **/
+			if (ss.isASKQuery(languageToQuestionEn)) {
+				String result = ss.getResultAskQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", result);
+			}else {				
+				results = ss.getQuery(sprqlQuery);
+				mav.addObject("onlineAnswer", results);
+			}			
+			mav.addObject("sparqlQuery", sprqlQuery);		
+			mav.addObject("languageToQuestionEn", languageToQuestionEn);
+			mav.addObject("sparqlQuery", formatedSparqlQuery);
+			mav.addObject("goldenAnswer", goldenAnswer);
+			mav.addObject("aggregation", aggregation);
+			mav.addObject("answerType", answerType);
+			mav.addObject("onlydbo", onlydbo);
+			mav.addObject("hybrid", hybrid);
+			mav.addObject("languageToKeyword", languageToKeyword);
+			mav.addObject("languageToQuestion", languageToQuestion);
+			mav.addObject("outOfScope", outOfScope);
+			mav.addObject("id", id);
+			mav.addObject("datasetVersion", datasetVersion);			
+			mav.addObject("idPrevious", idPrevious);
+			mav.addObject("idNext", idNext);
+			
+			//Store details of current curated/noNeedChanges question into temporary table, UserDatasetCorrection
+			UserDatasetCorrectionTemp udcTemp = new UserDatasetCorrectionTemp();
+			udcTemp.setAggregation(aggregation);
+			udcTemp.setAnswerType(answerType);
+			udcTemp.setDatasetVersion(datasetVersion);
+			udcTemp.setGoldenAnswer(results);
+			udcTemp.setHybrid(hybrid);
+			udcTemp.setId(id);
+			udcTemp.setLanguageToKeyword(languageToKeyword);
+			udcTemp.setLanguageToQuestion(languageToQuestion);
+			udcTemp.setOnlydbo(onlydbo);
+			udcTemp.setOutOfScope(outOfScope);
+			udcTemp.setPseudoSparqlQuery(documentItem.getPseudoSparqlQuery());
+			udcTemp.setSparqlQuery(sprqlQuery);
+			udcTemp.setUserId(user.getId());
+			documentCorrectionDao.addDocumentInTempTable(udcTemp);
+			
+			
+			/** Provide suggestion **/
+			curatedStatus = "curated";
+			DatasetSuggestionModel documentItemSugg = documentCorrectionDao.implementCorrection(id, datasetVersion, curatedStatus, user.getId());
+			String answerTypeSugg = documentItemSugg.getAnswerTypeSugg();		
+			String aggregationSugg = documentItemSugg.getAggregationSugg();		
+			String onlyDboSugg = documentItemSugg.getOnlyDboSugg();
+			String hybridSugg = documentItemSugg.getHybridSugg();
+			String outOfScopeSugg = documentItemSugg.getOutOfScopeSugg();
+			Map<String,List<String>> sparqlAndCaseSugg = documentItemSugg.getSparqlAndCaseList();
+			//get only the sparql and sparql case
+			String sparqlCaseOnly = "";
+			String sparqlOnly ="";
+			if (sparqlAndCaseSugg != null) {
+				for(Map.Entry <String,List<String>> mapEntry : sparqlAndCaseSugg.entrySet()) {
+					sparqlOnly = mapEntry.getKey();				
+					for (String element : mapEntry.getValue()) {
+						sparqlCaseOnly = sparqlCaseOnly + element + ", ";
+					}
+					sparqlCaseOnly = sparqlCaseOnly.substring(0, sparqlCaseOnly.length() - 1);				
+				}
+			}
+			
+			Set<String> answerFromVirtuosoList = documentItemSugg.getAnswerFromVirtuosoList();
+			String resultStatus = documentItemSugg.getResultStatus();	
+						
+			mav.addObject("sparqlAndCaseSugg", sparqlAndCaseSugg);
+			mav.addObject("sparqlOnly", sparqlOnly);
+			mav.addObject("sparqlCaseOnly", sparqlCaseOnly);			
+			mav.addObject("answerFromVirtuosoList", answerFromVirtuosoList);
+			mav.addObject("answerTypeSugg", answerTypeSugg);
+			mav.addObject("aggregationSugg", aggregationSugg);
+			mav.addObject("onlyDboSugg", onlyDboSugg);
+			mav.addObject("hybridSugg", hybridSugg);
+			mav.addObject("outOfScopeSugg", outOfScopeSugg);
+			mav.addObject("isExist", "yes");
+			mav.addObject("resultStatus", resultStatus);
+			
+			/** is Curated ? **/
+			isSparqlQueryCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "sprqlQuery");
+			isKeywordCurated = documentCorrectionDao.isKeywordCurated(documentItem.getUserId(), id, datasetVersion, "languageToKeyword");
+			isQuestionTranslationCurated = documentCorrectionDao.isQuestionCurated(documentItem.getUserId(), id, datasetVersion, "languageToQuestion"); 
+			isAnswerTypeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "answerType");
+			isOutOfScopeCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "outOfScope");
+			isAggregationCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "aggregation");
+			isOnlydboCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "onlydbo");
+			isHybridCurated = documentCorrectionDao.isItemCurated(documentItem.getUserId(), id, datasetVersion, "hybrid");
+			mav.addObject("isSparqlQueryCurated", isSparqlQueryCurated);
+			mav.addObject("isKeywordCurated", isKeywordCurated);
+			mav.addObject("isQuestionTranslationCurated", isQuestionTranslationCurated);
+			mav.addObject("isAnswerTypeCurated", isAnswerTypeCurated);
+			mav.addObject("isOutOfScopeCurated", isOutOfScopeCurated);
+			mav.addObject("isAggregationCurated", isAggregationCurated);
+			mav.addObject("isOnlydboCurated", isOnlydboCurated);
+			mav.addObject("isHybridCurated", isHybridCurated);
+			
+			DocumentDAO documentDao = new DocumentDAO();
+			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);
+				
+			
+			//check whether the keywords must be suggested or already exist
+			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
+				//Check whether keywords suggestion has not been accepted
+				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration,currentRevision))) {
+					mav.addObject("addKeywordsSuggestionStatus", true);
+					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
+						List<String> listKeywordSuggestion = mapEntry.getValue();
+						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
+					}					
+				}else { //keywords suggestion have been accepted 
+					//check whether suggested keywords have not been translated
+					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, currentRevision))) {
+						mav.addObject("addKeywordsTranslationsStatus", true);
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);
+						//remove english translations from suggestion
+						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
+						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
+							if (!(mapEntry.getKey().equals("en"))) {
+								keywordsTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+							}else {
+								//send english translations to view page in a string format						
+								String englishKeywordsList = "";
+								for (String element: mapEntry.getValue()) {
+									englishKeywordsList = englishKeywordsList + element + ",";
+								}
+								mav.addObject("englishKeywordTranslation", englishKeywordsList);
+							}								
+						}
+						mav.addObject("keywordsTranslations", keywordsTranslations);																
+					}else {
+						//check whether all suggested keywords translations have been accepted completely for 11 targeted languages or not
+						if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "keywords"))) {
+							mav.addObject("addKeywordsTranslationsStatus", true);
+							mav.addObject("keywordsTranslations", documentCorrectionDao.getRestOfKeywordsTranslation(user.getId(), id, datasetVersion, "UserDatasetCorrection", "keywordsSuggestionsTranslations", startingTimeCuration, finishingTimeCuration));
+						}						
+					}
+				}
+			}else {
+				//check whether the keywords have not been translated
+				if (!(documentCorrectionDao.haveKeywordsBeenTranslated(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, nextRevision))) {
+					if (translations != null) {
+					mav.addObject("addKeywordsTranslationsStatus", true);
+					//remove english translations from suggestion
+					Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
+					for (Map.Entry<String, List<String>> mapEntry : translations.getLanguageToKeyword().entrySet()) {
+						if (!(mapEntry.getKey().equals("en"))) {
+							keywordsTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+						}						
+					}
+					mav.addObject("keywordsTranslations", keywordsTranslations);
+					}
+				}else {
+					//check whether all keywords translations have been accepted completely for 11 targeted languages or not
+					if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "keywords"))) {
+						mav.addObject("addKeywordsTranslationsStatus", true);
+						mav.addObject("keywordsTranslations", documentCorrectionDao.getRestOfKeywordsTranslationNotSuggestion(user.getId(), id, datasetVersion, "UserDatasetCorrection", languageToQuestionEn, startingTimeCuration, finishingTimeCuration));
+					}
+				}
+			}							
+					
+			//Check whether the question has not been translated either for all or added translations			
+			if (!(documentCorrectionDao.hasQuestionBeenTranslated(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, nextRevision))) {
+				
+				if (translations != null) {
+					mav.addObject("addQuestionTranslationsStatus", true);
+					Map<String, String> questionTranslation = new HashMap<String, String>();
+					for (Map.Entry<String, String> mapEntry : translations.getLanguageToQuestion().entrySet()) {
+						if (!(mapEntry.getKey().equals("en"))) {
+							questionTranslation.put(mapEntry.getKey(), mapEntry.getValue());
+						}
+					}
+					mav.addObject("questionTranslation", questionTranslation);				
+				}				
+			}else {
+				//check whether all question translations have been accepted completely for 11 targeted languages or not
+				if (!(documentCorrectionDao.areTranslationsComplete(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, "question"))) {
+					mav.addObject("addQuestionTranslationsStatus", true);
+					mav.addObject("questionTranslation", documentCorrectionDao.getRestOfQuestionTranslation(user.getId(), id, datasetVersion, "UserDatasetCorrection", languageToQuestionEn, startingTimeCuration, finishingTimeCuration));
+				}
+			}	
+		}
 		return mav;
 	}
 	

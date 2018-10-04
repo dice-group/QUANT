@@ -9,7 +9,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 public class DatasetModel {
-	
+	int userId;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	String id;
 	String datasetVersion;
 	String answerType;
