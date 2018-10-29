@@ -1,4 +1,4 @@
- GNU AFFERO GENERAL PUBLIC LICENSE
+                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
@@ -629,7 +629,7 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    Fuseki-sample-setup - contains sample code for setting up a fuseki server  
+    QUANT -  Question Answering Benchmark Curator 
     Copyright (C) 2018 - today Data Science Research Group at http://dice-research.org/
 
     This program is free software: you can redistribute it and/or modify
