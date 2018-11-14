@@ -1,0 +1,9 @@
+target/
+log/
+bin/
+.classpath
+.settings/
+.project
+.idea/
+.metadata
+webqald.iml
