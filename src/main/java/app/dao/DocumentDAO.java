@@ -257,11 +257,10 @@ public class DocumentDAO {
 		 List<DocumentList> tasks = new ArrayList<DocumentList>();
 		 	Dataset dataset = new Dataset();
 		 	List<DatasetList> listDataset = dataset.getDatasetVersionLists();
-		 	BasicDBObject sortObj = new BasicDBObject();
-			//sortObj.put("id",1);
+		 	BasicDBObject sortObj = new BasicDBObject();			
 		 	sortObj.put("datasetVersion", 1);
-			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();					 	
-			
+			UserDatasetCorrectionDAO udcDao = new UserDatasetCorrectionDAO();
+					 				
 			if ((role.equals("administrator")) || (role.equals("evaluator"))){
 				for (int x=0; x<listDataset.size(); x++) {
 					try {
@@ -303,17 +302,24 @@ public class DocumentDAO {
 									collectionName = "RemovedQuestions";	
 								}else if (userName.equals("annotator13")) {
 									collectionName = "QuestiosWithDifferentCurationResult";
-								}
+								}else if (userName.equals("annotator14")) {
+									collectionName = "ResultQald9TestDataFalseOOS";
+								}else if (userName.equals("annotator15")) {
+									collectionName = "CurationForQALD9TestData";
+								}else if (userName.equals("annotator16")) {
+									collectionName = "Dataset3";
+								}else if (userName.equals("tester1")) {
+									collectionName = "Dataset3";
+								}else if (userName.equals("tester2")) {
+									collectionName = "Dataset5";
+								}	
 					try {
 						BasicDBObject sortObj1 = new BasicDBObject();
-						sortObj1.put("datasetVersion", 1);
+						//sortObj1.put("datasetVersion", 1);						
 						sortObj1.put("id",1);
 						DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
 						DBCollection coll = db.getCollection(collectionName); //Collection
-						DBCursor cursor = coll.find().sort(sortObj1); //Find All sort by id ascending
-						Map<String, List<String>> sampleKeywords = new HashMap<>();
-						List<String> keywords = new ArrayList<>();						
-						sampleKeywords.put("en", keywords);
+						DBCursor cursor = coll.find().sort(sortObj1); //Find All sort by id ascending						
 						while (cursor.hasNext()) {
 							DBObject dbobj = cursor.next();
 							Gson gson = new GsonBuilder().create();
@@ -326,9 +332,12 @@ public class DocumentDAO {
 								//check whether the keywords exist
 								if (q.getLanguageToKeyword().size() == 0) {
 									if (!(udcDao.getDocument(userId, q.getId(), q.getDatasetVersion()).equals(null))) {
-										item.setKeywords(udcDao.getDocument(userId, q.getId(), q.getDatasetVersion()).getLanguageToKeyword());
+										UserDatasetCorrection ok = udcDao.getDocument(userId, q.getId(), q.getDatasetVersion());
+										item.setKeywords(ok.getLanguageToKeyword());
 									}								
-								}								
+								}else {
+									item.setKeywords(q.getLanguageToKeyword());
+								}
 							}else {
 								item.setKeywords(q.getLanguageToKeyword());
 							}							
@@ -1627,6 +1636,11 @@ public class DocumentDAO {
 		case 17 : datasetName = "FinalResult4MoreVariables"; break;
 		case 18 : datasetName = "RemovedQuestions"; break;
 		case 19 : datasetName = "QuestiosWithDifferentCurationResult";
+		case 20 : datasetName = "ResultQald9TestDataFalseOOS";
+		case 21 : datasetName = "QALD9TestData";
+		case 22 : datasetName = "Dataset3";	
+		case 23:  datasetName = "Dataset3";
+		case 24:  datasetName = "Dataset5";
 		}
 		return datasetName;
 	}
