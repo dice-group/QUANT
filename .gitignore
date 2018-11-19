@@ -6,4 +6,4 @@ bin/
 .project
 .idea/
 .metadata
-webqald.iml
+*.iml
