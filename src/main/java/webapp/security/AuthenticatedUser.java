@@ -10,14 +10,17 @@ import java.util.Collection;
 public class AuthenticatedUser extends User implements UserDetails {
     protected AuthenticatedUser(User user) {
         super(user.getEmail(),user.getPassword(),user.getRole());
+        this.setId(user.getId());
     }
+
+
     @Override
     public String getUsername(){
         return this.getEmail();
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(this.getRole().toString());
+        return AuthorityUtils.createAuthorityList("ROLE_"+this.getRole().toString());
     }
 
     @Override
