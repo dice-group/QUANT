@@ -36,8 +36,10 @@ public class TranslatorService {
 		if(lang.equals("hi_IN")) {
 			lang = "hi"; 
 		}
-		
-		String finalCommand = command + lang + " " + text ;
+		//for linux
+		//String finalCommand = command + lang + " " + "\"" + text + "\"" ;
+		//for Windows
+		String finalCommand = "C:\\cygwin64\\bin\\bash.exe --login -c \"" + command + lang + " '" + text + "'\"";
 		//System.out.println(finalCommand);
 		
 		StringBuffer output = new StringBuffer();
@@ -79,6 +81,20 @@ public class TranslatorService {
         	}
         }
         return result;
+	}
+	
+	//translate the question to a particular language
+	public String translateQuestionToParticularLanguage(String question, String lang){        
+        return (executeCommand("trans -b :", lang, question));        	
+	}
+	
+	//translate the question to a particular language
+	public List<String> translateKeywordsToParticularLanguage(List<String> englishKeywordsList, String lang){        
+	    List<String> translatedKeywords = new ArrayList<String>();
+		for (String englishKeyword: englishKeywordsList) {
+			translatedKeywords.add(executeCommand("trans -b :", lang, englishKeyword));
+	    }		
+		return translatedKeywords;
 	}
 	
 	/**

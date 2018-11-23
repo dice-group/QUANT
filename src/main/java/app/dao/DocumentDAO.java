@@ -39,9 +39,12 @@ import app.model.DatasetModel;
 import app.model.DatasetSuggestionModel;
 import app.model.DocumentList;
 import app.model.QALD9TrainData;
+import app.model.TargetLanguages;
+import app.model.TargetLanguagesList;
 import app.model.UserDatasetCorrection;
 import app.model.UserDatasetCorrectionTemp;
 import app.sparql.SparqlService;
+import app.util.TranslatorService;
 
 public class DocumentDAO {
 	
@@ -309,9 +312,9 @@ public class DocumentDAO {
 								}else if (userName.equals("annotator16")) {
 									collectionName = "Dataset3";
 								}else if (userName.equals("tester1")) {
-									collectionName = "Dataset3";
+									collectionName = "Dataset1";
 								}else if (userName.equals("tester2")) {
-									collectionName = "Dataset5";
+									collectionName = "Dataset3";
 								}	
 					try {
 						BasicDBObject sortObj1 = new BasicDBObject();
@@ -1154,7 +1157,11 @@ public class DocumentDAO {
 	}
 	
 	//get generated keywords suggestion for question that does not have keywords
-	public Map<String, List<String>> getGeneratedKeywords (String id, String datasetVersion, String question){
+	public List<String> getGeneratedKeywords (String question) throws FileNotFoundException, IOException{
+		return generateKeywords(question);
+		
+	}
+	/*public Map<String, List<String>> getGeneratedKeywords (String id, String datasetVersion, String question){
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("id", id);
 		searchObj.put("datasetVersion", datasetVersion);
@@ -1172,7 +1179,7 @@ public class DocumentDAO {
 			cursor.close();
 		}catch (Exception e) {}
 		return null;
-	}
+	}*/
 	//generate keywords from question that does not have keywords 
 	public List<String> generateKeywords(String question) throws FileNotFoundException, IOException{	
 		//read a file that contains English stopwords		
@@ -1341,6 +1348,129 @@ public class DocumentDAO {
 			return false;
 		}
 		
+	//provide a real time generated keywords translations using Translate Shell
+	public Map<String, List<String>> getRealTimeGeneratedKeywordsTranslations (List<String> englishKeywords){
+		TranslatorService trans = new TranslatorService();
+		TargetLanguagesList targetLangList = new TargetLanguagesList();
+		List<TargetLanguages> theList = targetLangList.getTheList();
+		Map<String, List<String>> newKTranslations = new HashMap<String, List<String>>();
+		String langId;
+		for (TargetLanguages element: theList) {
+			if (element.getLangId().equals("hi")) {
+				langId = "hi_IN";
+			}else {
+				langId = element.getLangId();
+			}
+			if (!langId.equals("en")) {
+				newKTranslations.put(langId, trans.translateKeywordsToParticularLanguage(englishKeywords, element.getLangId()));
+			}						
+		}
+		return newKTranslations;
+	}
+		
+	//provide a real time question translations using Translate Shell
+	public DatasetModel getRealTimeQuestionTranslations (String id, String datasetVersion, String question) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);		
+		searchObj.put("languageToQuestion.en", question);
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection(datasetVersion); //Collection
+			DBCursor cursor = coll.find(searchObj).limit(1);
+			if (cursor.hasNext()) {
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				DatasetModel q = gson.fromJson(dbobj.toString(), DatasetModel.class);
+				TranslatorService trans = new TranslatorService();
+				
+				//check for missing question translations and get the translations
+				TargetLanguagesList targetLangList = new TargetLanguagesList();
+				List<TargetLanguages> theList = targetLangList.getTheList();
+				Map<String, String> newQTranslations = new HashMap<String, String>();
+				String langId;				
+				if (q.getLanguageToQuestion().size() == 1) {										
+					for (TargetLanguages element: theList) {
+						if (element.getLangId().equals("hi")) {
+							langId = "hi_IN";
+						}else {
+							langId = element.getLangId();
+						}
+						if (!langId.equals("en")) {
+							newQTranslations.put(langId, trans.translateQuestionToParticularLanguage(q.getLanguageToQuestion().get("en"), element.getLangId()));
+						}						
+					}					
+				}else if (q.getLanguageToQuestion().size() > 1){					
+					for (TargetLanguages element: theList) {
+						if (element.getLangId().equals("hi")) {
+							langId = "hi_IN";
+						}else {
+							langId = element.getLangId();
+						}					
+						for (Map.Entry<String, String> mapEntryQ: q.getLanguageToQuestion().entrySet()) {	
+							if (!langId.equals("en")) {
+								if (langId.equals(mapEntryQ.getKey())) {								
+									if (!mapEntryQ.getValue().equals(null)) {
+										newQTranslations.put(mapEntryQ.getKey(), mapEntryQ.getValue());
+									}else {									
+										newQTranslations.put(langId, trans.translateQuestionToParticularLanguage(q.getLanguageToQuestion().get("en"), element.getLangId()));
+									}
+									break;
+								}
+							}
+						}												
+						//Particular translation does not exist
+						newQTranslations.put(langId, trans.translateQuestionToParticularLanguage(q.getLanguageToQuestion().get("en"), element.getLangId()));
+					}
+				}					
+				q.setLanguageToQuestion(newQTranslations);
+				
+				//Check for missing keywords translations and get the translations
+				Map<String, List<String>> newKTranslations = new HashMap<String, List<String>>();
+				if (!q.getLanguageToKeyword().equals(null)) {
+					if (q.getLanguageToKeyword().size() == 1) {										
+						for (TargetLanguages element: theList) {
+							if (element.getLangId().equals("hi")) {
+								langId = "hi_IN";
+							}else {
+								langId = element.getLangId();
+							}
+							if (!langId.equals("en")) {
+								newKTranslations.put(langId, trans.translateKeywordsToParticularLanguage(q.getLanguageToKeyword().get("en"), element.getLangId()));
+							}						
+						}					
+					}else if (q.getLanguageToKeyword().size() > 1){					
+						for (TargetLanguages element: theList) {
+							if (element.getLangId().equals("hi")) {
+								langId = "hi_IN";
+							}else {
+								langId = element.getLangId();
+							}					
+							for (Map.Entry<String, List<String>> mapEntryQ: q.getLanguageToKeyword().entrySet()) {	
+								if (!langId.equals("en")) {
+									if (langId.equals(mapEntryQ.getKey())) {								
+										if (!mapEntryQ.getValue().equals(null)) {
+											newKTranslations.put(mapEntryQ.getKey(), mapEntryQ.getValue());
+										}else {									
+											newKTranslations.put(langId, trans.translateKeywordsToParticularLanguage(q.getLanguageToKeyword().get("en"), element.getLangId()));
+										}
+										break;
+									}
+								}
+							}												
+							//Particular translation does not exist
+							newKTranslations.put(langId, trans.translateKeywordsToParticularLanguage(q.getLanguageToKeyword().get("en"), element.getLangId()));
+						}
+					}
+				}				
+				q.setLanguageToKeyword(newKTranslations);
+				return q;
+			}	
+			cursor.close();
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
 	//provide question translations for the one that needs all translations
 	public DatasetModel getQuestionTranslations (String id, String datasetVersion, String question) {
 		BasicDBObject searchObj = new BasicDBObject();
@@ -1512,7 +1642,50 @@ public class DocumentDAO {
 	}
 	
 	//provide keywords translations for question that has keywords suggestion. This process will get data from keywordsSuggestionsTranslations collection
-	public Map<String, List<String>> getTranslationsOfSuggestedKeywords (String id, String datasetVersion, String question) {
+	public Map<String, List<String>> getTranslationsOfSuggestedKeywords (String id, String datasetVersion, String question, int userId) {
+		BasicDBObject searchObj = new BasicDBObject();
+		searchObj.put("id", id);
+		searchObj.put("datasetVersion", datasetVersion);		
+		searchObj.put("userId", userId);
+		BasicDBObject sortObj = new BasicDBObject();
+		sortObj.put("revision", -1);		
+		try {
+			DB db = MongoDBManager.getDB("QaldCuratorFiltered"); //Database Name
+			DBCollection coll = db.getCollection("UserDatasetCorrection"); //Collection
+			DBCursor cursor = coll.find(searchObj).sort(sortObj).limit(1);			
+			if (cursor.hasNext()) {
+				DBObject dbobj = cursor.next();
+				Gson gson = new GsonBuilder().create();
+				UserDatasetCorrection q = gson.fromJson(dbobj.toString(), UserDatasetCorrection.class);
+				if (q.getLanguageToKeyword() != null) {
+					return getRealTimeGeneratedKeywordsTranslations(q.getLanguageToKeyword().get("en"));
+				}else {
+					try {	
+						BasicDBObject searchObj1 = new BasicDBObject();
+						searchObj1.put("id", id);
+						searchObj1.put("datasetVersion", datasetVersion);
+						searchObj1.put("languageToQuestion.en", question);
+						searchObj1.put("userId", userId);
+						DBCollection coll1 = db.getCollection("UserDatasetCorrectionTemp"); //Collection
+						DBCursor cursor1 = coll1.find(searchObj1);			
+						if (cursor1.hasNext()) {
+							DBObject dbobj1 = cursor1.next();
+							Gson gson1 = new GsonBuilder().create();
+							UserDatasetCorrection q1 = gson1.fromJson(dbobj1.toString(), UserDatasetCorrection.class);
+							return getRealTimeGeneratedKeywordsTranslations(q1.getLanguageToKeyword().get("en"));
+						}
+						cursor1.close();
+					}catch (Exception e) {				
+						}
+				}			
+				cursor.close();
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	/*public Map<String, List<String>> getTranslationsOfSuggestedKeywords (String id, String datasetVersion, String question) {
 		BasicDBObject searchObj = new BasicDBObject();
 		searchObj.put("id", id);
 		searchObj.put("datasetVersion", datasetVersion);
@@ -1548,7 +1721,7 @@ public class DocumentDAO {
 				// TODO: handle exception
 			}
 		return null;		
-	}
+	}*/
 	
 	//reverse characters in Persian Translations
 	public String reverseString(String data)
@@ -1639,8 +1812,8 @@ public class DocumentDAO {
 		case 20 : datasetName = "ResultQald9TestDataFalseOOS";
 		case 21 : datasetName = "QALD9TestData";
 		case 22 : datasetName = "Dataset3";	
-		case 23:  datasetName = "Dataset3";
-		case 24:  datasetName = "Dataset5";
+		case 23:  datasetName = "Dataset1";
+		case 24:  datasetName = "Dataset3";
 		}
 		return datasetName;
 	}

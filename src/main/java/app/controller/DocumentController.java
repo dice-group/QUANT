@@ -100,6 +100,7 @@ public class DocumentController {
 			ModelAndView mav = new ModelAndView("redirect:/login");
 			return mav;
 		}
+		
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getUserByUsername(cookieDao.getAuth(cks));
 		int userId = user.getId();
@@ -170,7 +171,7 @@ public class DocumentController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/document-list/detail/{id}/{datasetVersion}", method = RequestMethod.GET)
-	public ModelAndView showDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -336,7 +337,7 @@ public class DocumentController {
 			//check whether the keywords must be suggested or already exist. Provide menu to get suggestion or do translation
 			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
 				mav.addObject("addKeywordsSuggestionStatus", true);
-				mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn));		
+				mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));		
 			}else {		
 				if (documentDao.doesNeedKeywordsTranslations(id, datasetVersion, languageToQuestionEn)) {
 					
@@ -435,16 +436,17 @@ public class DocumentController {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}
+					}*/
 				}else { //keywords suggestion have been accepted					
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, user.getId());						
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -514,7 +516,7 @@ public class DocumentController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/document-list-manual-checking/detail/{userId}/{id}/{datasetVersion}", method = RequestMethod.GET)
-	public ModelAndView showDocumentListDetailManualChecking(@PathVariable("userId") int userId, @PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showDocumentListDetailManualChecking(@PathVariable("userId") int userId, @PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -684,16 +686,17 @@ public class DocumentController {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}
+					}*/
 				}else { //keywords suggestion have been accepted					
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, userId);						
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -754,7 +757,7 @@ public class DocumentController {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/document-list/detail/{id}/{datasetVersion}/prev", method = RequestMethod.GET)
-	public ModelAndView showPrevDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showPrevDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -915,7 +918,7 @@ public class DocumentController {
 			//check whether the keywords must be suggested or already exist. Provide menu to get suggestion or do translation
 			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
 				mav.addObject("addKeywordsSuggestionStatus", true);
-				mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn));		
+				mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));		
 			}else {		
 				if (documentDao.doesNeedKeywordsTranslations(id, datasetVersion, languageToQuestionEn)) {
 					if (translations != null) {
@@ -1014,16 +1017,17 @@ public class DocumentController {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}
+					}*/
 				}else { //keywords suggestion have been accepted					
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, user.getId());						
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -1097,10 +1101,12 @@ public class DocumentController {
 	 * @param response
 	 * @param redirectAttributes
 	 * @return
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/document-list/detail/{id}/{datasetVersion}/next", method = RequestMethod.GET)
-	public ModelAndView showNextDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showNextDocumentListDetail(@PathVariable("id") String id,@PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		if (!cookieDao.isValidate(cks)) {
@@ -1268,7 +1274,7 @@ public class DocumentController {
 					//check whether the keywords must be suggested or already exist. Provide menu to get suggestion or do translation
 					if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
 						mav.addObject("addKeywordsSuggestionStatus", true);
-						mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn));		
+						mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));		
 					}else {		
 						if (documentDao.doesNeedKeywordsTranslations(id, datasetVersion, languageToQuestionEn)) {
 							
@@ -1369,16 +1375,17 @@ public class DocumentController {
 						//Check whether keywords suggestion has not been accepted
 						if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 							mav.addObject("addKeywordsSuggestionStatus", true);
-							Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+							mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+							/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 							for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 								List<String> listKeywordSuggestion = mapEntry.getValue();
 								mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-							}
+							}*/
 						}else { //keywords suggestion have been accepted					
 							//check whether suggested keywords have not been translated
 							if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(user.getId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, revision))) {
 								mav.addObject("addKeywordsTranslationsStatus", true);
-								Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+								Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, user.getId());						
 								//remove english translations from suggestion
 								Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 								for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -2567,7 +2574,7 @@ public class DocumentController {
 			mav.addObject("isHybridCurated", isHybridCurated);
 			
 			DocumentDAO documentDao = new DocumentDAO();
-			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);
+			DatasetModel translations= documentDao.getRealTimeQuestionTranslations(id, datasetVersion, languageToQuestionEn);
 				
 			
 			//check whether the keywords must be suggested or already exist
@@ -2575,16 +2582,17 @@ public class DocumentController {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration,currentRevision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}					
+					}*/					
 				}else { //keywords suggestion have been accepted 
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, currentRevision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, user.getId());
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -2716,20 +2724,20 @@ public class DocumentController {
 			mav.addObject("isExist", "yes");
 			mav.addObject("resultStatus", resultStatus);
 			
-			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);			
+			DatasetModel translations= documentDao.getRealTimeQuestionTranslations(id, datasetVersion, languageToQuestionEn);			
 			
 			//check whether the keywords must be suggested or already exist. Provide menu to get suggestion or do translation
 			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
 				mav.addObject("addKeywordsSuggestionStatus", true);
-				Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn); 
+				mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+				/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn); 
 				for (Map.Entry<String, List<String>> mapEntry : suggestedKeywords.entrySet()) {
 					List<String> listKeywordSuggestion = mapEntry.getValue();
 					mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-				}
+				}*/
 						
 			}else {			
-				if (documentDao.doesNeedKeywordsTranslations(id, datasetVersion, languageToQuestionEn)) {
-					
+				if (documentDao.doesNeedKeywordsTranslations(id, datasetVersion, languageToQuestionEn)) {					
 					//remove english translations from suggestion					
 					if (translations!= null) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
@@ -2957,7 +2965,7 @@ public class DocumentController {
 			mav.addObject("isHybridCurated", isHybridCurated);
 			
 			DocumentDAO documentDao = new DocumentDAO();
-			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);
+			DatasetModel translations= documentDao.getRealTimeQuestionTranslations(id, datasetVersion, languageToQuestionEn);
 				
 			
 			//check whether the keywords must be suggested or already exist
@@ -2965,16 +2973,17 @@ public class DocumentController {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionDao.haveKeywordsSuggestionBeenAccepted(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration,currentRevision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}					
+					}*/					
 				}else { //keywords suggestion have been accepted 
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionDao.haveKeywordsSuggestionBeenTranslated(documentItem.getUserId(), id, datasetVersion, startingTimeCuration, finishingTimeCuration, currentRevision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, userId);
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
 						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
@@ -3046,7 +3055,7 @@ public class DocumentController {
 	}
 	
 	@RequestMapping (value = "/document-list/curate/curation-process/{id}/{datasetVersion}", method = RequestMethod.GET)
-	public ModelAndView showCurationProcess (@PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public ModelAndView showCurationProcess (@PathVariable("id") String id, @PathVariable("datasetVersion") String datasetVersion, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		Cookie[] cks = request.getCookies();
 		CookieDAO cookieDao = new CookieDAO();
 		
@@ -3172,41 +3181,45 @@ public class DocumentController {
 			mav.addObject("isHybridCurated", isHybridCurated);
 			
 			DocumentDAO documentDao = new DocumentDAO();
-			DatasetModel translations= documentDao.getQuestionTranslations(id, datasetVersion, languageToQuestionEn);
+			DatasetModel translations= documentDao.getRealTimeQuestionTranslations(id, datasetVersion, languageToQuestionEn);
 			
 			//check whether the keywords must be suggested or already exist
 			if (documentDao.doesNeedKeywordSuggestions(id, languageToQuestionEn, datasetVersion)) {
 				//Check whether keywords suggestion has not been accepted
 				if (!(documentCorrectionTempDao.haveKeywordsSuggestionBeenAcceptedDuringCurationProcess(user.getId(), id, datasetVersion, revision))) {
 					mav.addObject("addKeywordsSuggestionStatus", true);
-					Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
+					mav.addObject("listKeywordSuggestion", documentDao.getGeneratedKeywords(languageToQuestionEn));
+					/*Map<String, List<String>> suggestedKeywords = documentDao.getGeneratedKeywords(id, datasetVersion, languageToQuestionEn);
 					for (Map.Entry<String, List<String>> mapEntry: suggestedKeywords.entrySet()) {
 						List<String> listKeywordSuggestion = mapEntry.getValue();
 						mav.addObject("listKeywordSuggestion", listKeywordSuggestion);
-					}
+					}*/
 				}else { //keywords suggestion have been accepted					
 					//check whether suggested keywords have not been translated
 					if (!(documentCorrectionTempDao.haveKeywordsSuggestionBeenTranslatedDuringCurationProcess(user.getId(), id, datasetVersion, revision))) {
 						mav.addObject("addKeywordsTranslationsStatus", true);
-						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn);						
+						Map<String, List<String>> suggestedKeywordsTranslations = documentDao.getTranslationsOfSuggestedKeywords(id, datasetVersion, languageToQuestionEn, user.getId());						
 						//remove english translations from suggestion
 						Map<String, List<String>> keywordsTranslations = new HashMap<String, List<String>>();
-						for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
-							if (!(mapEntry.getKey().equals("en"))) {
-								keywordsTranslations.put(mapEntry.getKey(), mapEntry.getValue());
-							}else {
-								//send english translations to view page in a string format
-								Map<String, List<String>> englishKeywordTranslation = new HashMap<String, List<String>>();
-								//englishKeywordTranslation.put(mapEntry.getKey(), mapEntry.getValue());
-								String englishKeywordsList = "";
-								for (String element: mapEntry.getValue()) {
-									englishKeywordsList = englishKeywordsList + element + ",";
+						if (suggestedKeywordsTranslations != null) {
+							for (Map.Entry<String, List<String>> mapEntry : suggestedKeywordsTranslations.entrySet()) {
+								if (!(mapEntry.getKey().equals("en"))) {
+									keywordsTranslations.put(mapEntry.getKey(), mapEntry.getValue());
+								}else {
+									//send english translations to view page in a string format
+									Map<String, List<String>> englishKeywordTranslation = new HashMap<String, List<String>>();
+									//englishKeywordTranslation.put(mapEntry.getKey(), mapEntry.getValue());
+									String englishKeywordsList = "";
+									for (String element: mapEntry.getValue()) {
+										englishKeywordsList = englishKeywordsList + element + ",";
+									}
+									mav.addObject("englishKeywordTranslation", englishKeywordsList);
 								}
-								mav.addObject("englishKeywordTranslation", englishKeywordsList);
+									
 							}
-								
+							mav.addObject("keywordsTranslations", keywordsTranslations);
 						}
-						mav.addObject("keywordsTranslations", keywordsTranslations);										
+																
 					}else {
 						//check whether all suggested translations have been accepted completely for 11 targeted languages or not
 						if (!(documentCorrectionTempDao.areTranslationsCompleteDuringCurationProcess(user.getId(), id, datasetVersion, "keywords"))) {
