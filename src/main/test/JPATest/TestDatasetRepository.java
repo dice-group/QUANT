@@ -20,9 +20,9 @@ import java.util.List;
 @DataJpaTest
 @SpringBootTest(classes = Application.class)
 public class TestDatasetRepository {
-
+    @Autowired
     private DatasetRepository datasetRepository;
-
+    @Autowired
     private UserRepository userRepository;
 
 

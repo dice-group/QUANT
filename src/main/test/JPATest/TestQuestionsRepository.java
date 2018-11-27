@@ -4,18 +4,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import webapp.Application;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
-import webapp.Repository.QuestionRepository;
+import webapp.Repository.TranslationsRepository;
 import webapp.Repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import webapp.model.Dataset;
-import webapp.model.User;
-import webapp.model.Role;
-import webapp.model.Questions;
-import webapp.model.Question;
+import webapp.model.*;
+import webapp.model.Translations;
 
 import java.util.List;
 
@@ -25,14 +22,14 @@ import java.util.List;
 @SpringBootTest(classes = Application.class)
 public class TestQuestionsRepository {
 
-
+    @Autowired
     private DatasetRepository datasetRepository;
-
+    @Autowired
     private UserRepository userRepository;
-
+    @Autowired
     private QuestionsRepository questionsRepository;
-
-    private QuestionRepository questionRepository;
+    @Autowired
+    private TranslationsRepository translationsRepository;
 
 
     @Test
@@ -53,11 +50,11 @@ public class TestQuestionsRepository {
         Questions q = new Questions(d,"String",false,false,false,true, peter,1);
         questionsRepository.save(q);
 
-        Question frage = new Question ( q,"de", "Auto, BMW, schnell", "Wer baut den M5?");
-        questionRepository.save(frage);
+        Translations frage = new Translations( q,"de", "Auto, BMW, schnell", "Wer baut den M5?");
+        translationsRepository.save(frage);
 
         List<Dataset> datasets=datasetRepository.findAll();
-        List<Question> question = questionRepository.findAll();
+        List<Translations> translations = translationsRepository.findAll();
         List<Questions> questions = questionsRepository.findAll();
         for(Dataset dataset:datasets) {
             System.out.println("----------------");
@@ -69,11 +66,12 @@ public class TestQuestionsRepository {
         for(Questions item:questions){
             System.out.println("Questions Output");
             System.out.println(item.getTimestamp());
+            System.out.println(item.getId());
 
         }
 
-        for(Question item:question) {
-            System.out.println("Question Output");
+        for(Translations item: translations) {
+            System.out.println("Translations Output");
             System.out.println(item.getLang());
         }
     }

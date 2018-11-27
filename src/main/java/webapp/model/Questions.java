@@ -11,6 +11,14 @@ import java.util.Date;
 public class Questions implements Serializable{
 
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
@@ -35,9 +43,17 @@ public class Questions implements Serializable{
     private User anotatorUser;
 
     @OneToMany (mappedBy = "qid")
-    private List<Question> questionList;
+    private List<Translations> translationsList;
 
     protected Questions() {}
+
+    public Dataset getDatasetQuestion() {
+        return datasetQuestion;
+    }
+
+    public void setDatasetQuestion(Dataset datasetQuestion) {
+        this.datasetQuestion = datasetQuestion;
+    }
 
     public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original, User user, int version)
     {
@@ -142,12 +158,12 @@ public class Questions implements Serializable{
         this.anotatorUser = anotatorUser;
     }
 
-    public List<Question> getQuestionList() {
-        return questionList;
+    public List<Translations> getTranslationsList() {
+        return translationsList;
     }
 
-    public void setQuestionList(List<Question> questionList) {
-        this.questionList = questionList;
+    public void setTranslationsList(List<Translations> translationsList) {
+        this.translationsList = translationsList;
     }
 
 }
