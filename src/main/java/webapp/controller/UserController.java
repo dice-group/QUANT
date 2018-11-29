@@ -7,9 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 public class UserController {
 
     @RequestMapping("/")
@@ -38,6 +39,11 @@ public class UserController {
                                  @RequestParam("confirm-password")String passwordConfirm,@RequestParam("role")String role){
         ModelAndView model=new ModelAndView("register");
         return model;
+    }
+    @RequestMapping(value="/testString", method = RequestMethod.GET)
+    public String testString(){
+        //ModelAndView model=new ModelAndView("register");
+        return "TestString";
     }
 
 }
