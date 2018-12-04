@@ -1,6 +1,7 @@
 package JPATest;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import webapp.Application;
 import webapp.Repository.UserRepository;
 import org.junit.Test;
@@ -20,9 +21,10 @@ import java.util.List;
 public class TestUserRepository {
     @Autowired
     private UserRepository userRepository;
+    BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
     @Test
     public void creationTest(){
-        User u = new User("test@test.de","password", Role.ADMIN);
+        User u = new User("test@test.de",bCryptPasswordEncoder.encode("password"), Role.ADMIN);
         userRepository.save(u);
         List<User> users=userRepository.findAll();
         for(User user:users)

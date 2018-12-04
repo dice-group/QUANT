@@ -35,14 +35,13 @@ public class User {
 
     @OneToMany(mappedBy = "anotatorUser")
     private List<Questions> anotator;
-   // @Autowired
-   // private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     protected User(){}
 
     public User(String email,String password, Role role){
         this.email=email;
-        this.password= new BCryptPasswordEncoder().encode(password);
+        this.password = password;
         this.role=role;
     }
     public void setId(long id) {
@@ -66,7 +65,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
+        this.password = password;
     }
 
     public Role getRole() {

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository <User,Integer>{
 
-        User findByEmail(String lastName); // sollte da nicht nach email gesucht werden? "String email"
+        User findByEmail(String email);
 
 }

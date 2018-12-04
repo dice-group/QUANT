@@ -1,6 +1,7 @@
 package JPATest;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import webapp.Application;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
@@ -31,17 +32,18 @@ public class TestQuestionsRepository {
     @Autowired
     private TranslationsRepository translationsRepository;
 
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Test
     public void creationTest(){
 
-        User peter = new User("peter@heidi.de", "herbert", Role.ADMIN);
+        User peter = new User("peter@heidi.de", bCryptPasswordEncoder.encode("herbert"), Role.ADMIN);
         userRepository.save(peter);
 
-        User marie = new User("marie@gmail.com", "SonnenscheininderNacht", Role.USER);
+        User marie = new User("marie@gmail.com", bCryptPasswordEncoder.encode("herbert"), Role.USER);
         userRepository.save(marie);
 
-        Dataset d = new Dataset(peter, "qald1", "Test Dataset");
+        Dataset d = new Dataset(peter, bCryptPasswordEncoder.encode("herbert"), "Test Dataset");
         datasetRepository.save(d);
 
         Dataset f = new Dataset(marie, "quald5", "Dataset Quald5 vom 12.2.2222");
