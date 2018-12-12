@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import webapp.Application;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
-import webapp.Repository.TranslationsRepository;
+//import webapp.Repository.TranslationsRepository;
 import webapp.Repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import webapp.model.*;
-import webapp.model.Translations;
+//import webapp.model.Translations;
 
 import java.util.List;
 
@@ -29,8 +29,8 @@ public class TestQuestionsRepository {
     private UserRepository userRepository;
     @Autowired
     private QuestionsRepository questionsRepository;
-    @Autowired
-    private TranslationsRepository translationsRepository;
+   // @Autowired
+    //private TranslationsRepository translationsRepository;
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -52,11 +52,11 @@ public class TestQuestionsRepository {
         Questions q = new Questions(d,"String",false,false,false,true, peter,1);
         questionsRepository.save(q);
 
-        Translations frage = new Translations( q,"de", "Auto, BMW, schnell", "Wer baut den M5?");
-        translationsRepository.save(frage);
+        //Translations frage = new Translations( q,"de", "Auto, BMW, schnell", "Wer baut den M5?");
+        //translationsRepository.save(frage);
 
         List<Dataset> datasets=datasetRepository.findAll();
-        List<Translations> translations = translationsRepository.findAll();
+        //List<Translations> translations = translationsRepository.findAll();
         List<Questions> questions = questionsRepository.findAll();
         for(Dataset dataset:datasets) {
             System.out.println("----------------");
@@ -72,9 +72,9 @@ public class TestQuestionsRepository {
 
         }
 
-        for(Translations item: translations) {
+       /* for(Translations item: translations) {
             System.out.println("Translations Output");
             System.out.println(item.getLang());
-        }
+        }*/
     }
 }
