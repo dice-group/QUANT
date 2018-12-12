@@ -27,10 +27,8 @@ public class Application {
     InitializingBean sendDatabase() {
         return () -> {
             userRepository.deleteAll();
-            userRepository.save(new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.USER));
-            System.out.println("");
-            //userRepository.deleteAll();
-            //userRepository.save(new User("test@test.com","password",Role.ADMIN));
+            User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
+            userRepository.save(u);
         };
     }
 }

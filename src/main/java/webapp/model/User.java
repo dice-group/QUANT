@@ -1,5 +1,6 @@
 package webapp.model;
 
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -14,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private int id;
 
     @Column(name = "email")
     @Email(message = "*Please provide a valid Email")
@@ -28,6 +29,10 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "activated",columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean activated;
 
     // Jans Änderung
     @OneToMany(mappedBy = "datasetUser")
@@ -43,12 +48,13 @@ public class User {
         this.email=email;
         this.password = password;
         this.role=role;
+        this.activated=true;
     }
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -74,5 +80,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

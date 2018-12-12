@@ -15,14 +15,19 @@
 </head>
 <body class="text-center">
 <form method="POST" action="/changePassword" style="max-width: 300px">
-    <h1 class="h3 mb-3 font-weight-normal">ChangePassword of user ${logedInAs}</h1>
-
-    <label for="oldpassword" class="sr-only">Password</label>
-    <input type="password" name="old-password" id="oldpassword" class="form-control" placeholder="Old Password" required>
-    <label for="newpassword" class="sr-only">Password</label>
-    <input type="password" name="new-password" id="newpassword" class="form-control" placeholder="New Password" required>
-    <label for="confirm-password" class="sr-only">Confirm Password</label>
-    <input type="password" name="confirm-password" id="confirm-password" class="form-control" placeholder="Confirm new Password" required>
+    <h1 class="h3 mb-3 font-weight-normal">Change password of ${logedInAs}</h1>
+    <div class="form-group">
+        <label for="oldpassword" class="sr-only">Password</label>
+        <input type="password" name="old-password" id="oldpassword" class="form-control" placeholder="Old Password" required>
+    </div>
+    <div class="form-group">
+        <label for="newpassword" class="sr-only">Password</label>
+        <input type="password" name="new-password" id="newpassword" class="form-control" placeholder="New Password" required>
+    </div>
+    <div class="form-group">
+        <label for="confirm-password" class="sr-only">Confirm Password</label>
+        <input type="password" name="confirm-password" id="confirm-password" class="form-control" placeholder="Confirm new Password" required>
+    </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Change</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
 </form>

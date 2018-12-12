@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!-- charset utf-8 for apply encoding multilingual -->
 <%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,16 +13,14 @@
     <title>QUANT-User List</title>
 
     <!-- Bootstrap Core CSS -->
+
+    <link rel="stylesheet" href="webjars/datatables/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
     <link href="../resources/css/main.css" rel="stylesheet" type="text/css">
-    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
-    <script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -37,31 +34,36 @@
             <div class="table-responsive">
 
 
-                <table id="mytable" class="table table-bordred table-striped">
+                <table id="table_id" class="display" style="width:100%" > <!--class="table table-bordred table-striped-->
 
                     <thead>
-
-                    <th><input type="checkbox" id="checkall" /></th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Edit</th>
-
-                    <th>Delete</th>
-                    <th>Activate</th>
+                    <tr>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Edit</th>
+                        <th>Reset Password</th>
+                        <th>Activate</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${Users}" var="user">
                         <tr class="user-row" data-user-id=${user.id}>
-                            <td><input type="checkbox" class="checkthis" /></td>
                             <td>${user.email}</td>
                             <td>${user.role}</td>
                             <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" id="edit-button" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-                            <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+                            <td><p data-placement="top" data-toggle="tooltip" title="Reset Password"><button class="btn btn-danger btn-xs" data-title="reset-password" data-toggle="modal" data-target="#reset-password" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
                             <td>
-                                <div class="material-switch pull-right">
-                                    <input id="someSwitchOptionPrimary" name="someSwitchOption001" type="checkbox" checked/>
-                                    <label for="someSwitchOptionPrimary" class="label-primary"></label>
-                                </div>
+                                    <div class="material-switch pull-right">
+                                        <c:choose>
+                                            <c:when test="${user.activated}">
+                                                <input id="someSwitchOptionPrimary/${user.id}" name="someSwitchOption001" type="checkbox" checked/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input id="someSwitchOptionPrimary/${user.id}" name="someSwitchOption001" type="checkbox"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <label for="someSwitchOptionPrimary/${user.id}" class="label-primary"></label>
+                                    </div>
                             </td>
                         </tr>
 
@@ -111,56 +113,120 @@
                     </div>
                 </form>
             </div>
-
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
 
 
 
-<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+<div class="modal fade" id="reset-password" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>-->
+                <h4 class="modal-title custom_align" id="Heading-Reset"></h4>
             </div>
-            <div class="modal-body">
+            <form method="POST" action="/resetPassword">
+                <div class="modal-body">
+                    <input id="id-input-reset" name="id-input" type="hidden" >
+                    <div class="form-group">
+                        <label for="new-password" class="sr-only">Admin Password</label>
+                        <input type="password" name="new-password" id="new-password" class="form-control" placeholder="New Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-new-password" class="sr-only">Admin Password</label>
+                        <input type="password" name="confirm-new-password" id="confirm-new-password" class="form-control" placeholder="Confirm new Password" required>
+                    </div>
 
-                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete this Record?</div>
-
-            </div>
-            <div class="modal-footer ">
-                <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
-            </div>
+                    <div class="form-group">
+                        <label for="admin-password-reset" class="sr-only">Admin Password</label>
+                        <input type="password" name="admin-password" id="admin-password-reset" class="form-control" placeholder="Admin password" required>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button  type="submit" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                </div>
+            </form>
         </div>
+
         <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
+
 </div>
 </body>
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script>
-    $("#edit-button").click(function() {
-        var $row = $(this).closest("tr");
-        var $id = $row.data("user-id");// Find the row
-        var $email = $($row.find("td").get(1)).text();
-        var $role = $($row.find("td").get(2)).text();
-        $("#edit-username").val($email);
-        $('#id-input').val($id);
-        $('select option[value='+$role+']').attr("selected",true);
-        console.log($id);
-        console.log($email);
-        console.log($role);
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+        $("button[data-title='Edit']").click(function() {
+            var $row = $(this).closest("tr");
+            $("#edit-username").val($($row.find("td").get(0)).text());
+            $('#id-input').val($row.data("user-id"));
+            if($($row.find("td").get(1)).text() == 'ADMIN') {
+                $('select option[value=ADMIN]').attr("selected", true);
+                $('select option[value=USER]').attr("selected", false);
+            }
+            if($($row.find("td").get(1)).text() == 'USER') {
+                $('select option[value=ADMIN]').attr("selected", false);
+                $('select option[value=USER]').attr("selected", true);
+            }
+        });
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+        $("button[data-title='reset-password']").click(function() {
+            var $row = $(this).closest("tr");
+            $("#Heading-Reset").text('Reset password of '+$($row.find("td").get(0)).text());
+            $('#id-input-reset').val($row.data("user-id"));
+        });
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+        $('.label-primary').click(function() {
+            var $row = $(this).closest("tr");
+            var $email = $($row.find("td").get(0)).text();
+            var $checkbox = $(this).parent().find('input:checkbox:first');
+            console.log($checkbox)
 
-    });
-    $('#someSwitchOptionPrimary').click(function() {
-        if($(this).prop('checked')) {
-            console.log("Checked Box Selected");
-        } else {
-            console.log("Checked Box deselect");
-        }
-    });
+            if(!$checkbox.prop('checked')) {
+
+                console.log("Checked Box Selected");
+                console.log($email);
+                $.post("/setActivation",
+                    {
+                        name: $email,
+                        action: "activate"
+                    },
+                    function(data, status){
+                        if(status != 'success') {
+                            $checkbox.prop('checked',false);
+                            console.log("Data: " + data + "\nStatus: " + status);
+                        }
+                    });
+
+            } else {
+                console.log("Checked Box DeSelected");
+                console.log($email);
+                $.post("/setActivation",
+                    {
+                        name: $email,
+                        action: "deactivate"
+                    },
+                    function(data, status){
+                        if(status != 'success') {
+                            $checkbox.prop('checked',true);
+                            console.log("Data: " + data + "\nStatus: " + status);
+                        }
+                    });
+            }
+        });
+    } );
 </script>
 </html>

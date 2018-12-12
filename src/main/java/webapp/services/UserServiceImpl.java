@@ -1,13 +1,17 @@
 package webapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import webapp.Repository.UserRepository;
 import webapp.model.Role;
 import webapp.model.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -37,11 +41,26 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void modifyUser(int id, String email, String password, String role) {
+    public String modifyUser(User admin,int id, String email, String adminPassword, String role) {
+        if(!bCryptPasswordEncoder.matches(adminPassword,admin.getPassword()))
+            return "wrong Password";
         User user = userRepository.getOne(id);
         user.setEmail(email);
-        user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setRole(Role.valueOf(role));
+        userRepository.save(user);
+        return "User successfully modified";
+    }
+
+    @Override
+    public String modifyUserPassword(User admin, int id, String newPassword, String confirmNewPassword, String adminPassword) {
+        if(!bCryptPasswordEncoder.matches(adminPassword,admin.getPassword()))
+            return "wrong Password";
+        if(!newPassword.equals(confirmNewPassword))
+            return "Password not matches confirm password";
+        User user = userRepository.getOne(id);
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return "Password successfully reset";
     }
 
     @Override
@@ -57,7 +76,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String changePassword(User user, String oldPassword, String newPassword, String confirmPassword) {
-        String encryptedPassword=bCryptPasswordEncoder.encode(oldPassword);
         if(!bCryptPasswordEncoder.matches(oldPassword,user.getPassword()))
             return "wrong Password";
         if (!newPassword.equals(confirmPassword))
@@ -70,12 +88,23 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public void deactivateUser(String email, String password, String confirmpassword, String role) {
+    public ResponseEntity<?> deactivateUser(User user, User principal) {
+        if(user.getId()==principal.getId()){
+            return new ResponseEntity<>("Self deactivation not allowed",HttpStatus.NOT_MODIFIED);
+        }
+        user.setActivated(false);
+        userRepository.save(user);
 
+        return new ResponseEntity<>("User successfully deactivated",HttpStatus.OK);
     }
 
     @Override
-    public void activateUser(String email, String password, String confirmpassword, String role) {
-
+    public ResponseEntity<?> activateUser(User user) {
+        Map<String, Object>result = new HashMap<String, Object>();
+        user.setActivated(true);
+        userRepository.save(user);
+        result.put("result","success");
+        result.put("message","User successfully activated");
+        return new ResponseEntity<>("User successfully activated",HttpStatus.OK);
     }
 }

@@ -22,8 +22,8 @@ public class AuthenticatedUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         List<User> users=userRepository.findAll();
         User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("The user " + email + " does not exist");
+        if (user == null||!user.isActivated()) {
+            throw new UsernameNotFoundException("The user " + email + " does not exist or is deactivated");
         }
         AuthenticatedUser aUser= new AuthenticatedUser(user);
         return new AuthenticatedUser(aUser);

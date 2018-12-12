@@ -1,16 +1,15 @@
 package webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import webapp.services.UserService;
 
-@Controller
+
+@RestController
 public class UserController {
     @Autowired
     UserService userService;
@@ -33,8 +32,8 @@ public class UserController {
 
     @RequestMapping("/register")
     public ModelAndView addNewUser(){
-        ModelAndView model=new ModelAndView("register");
-        return model;
+            ModelAndView model=new ModelAndView("register");
+            return model;
     }
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public ModelAndView register(@RequestParam("email")String email,@RequestParam("password")String password,
@@ -85,7 +84,7 @@ public class UserController {
 
     @RequestMapping(value="/userlist",method = RequestMethod.GET)
     public ModelAndView userList(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         ModelAndView model = new ModelAndView("/userlist");
         model.addObject("Users",userService.getAllUsers());
         return model;
@@ -93,8 +92,35 @@ public class UserController {
     @RequestMapping(value="/editUser", method = RequestMethod.POST)
     public ModelAndView editUser(@RequestParam("user-name")String username,@RequestParam("id-input")String id,
                                        @RequestParam("role")String role,@RequestParam("admin-password")String adminPassword){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String message=userService.modifyUser(userService.getByEmail(auth.getName()),Integer.parseInt(id),username,adminPassword,role);
+        ModelAndView model=new ModelAndView("redirect:/userlist");
+        model.addObject("Users",userService.getAllUsers());
+        model.addObject("message",message);
+        return(model);
 
-        return null;
+    }
+    @RequestMapping(value="/resetPassword", method = RequestMethod.POST)
+    public ModelAndView resetPassword(@RequestParam("id-input")String id,@RequestParam("new-password")String newPassword,@RequestParam("confirm-new-password")String confirmNewPassword,
+                                      @RequestParam("admin-password")String adminPassword){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String message=userService.modifyUserPassword(userService.getByEmail(auth.getName()),Integer.parseInt(id),newPassword,confirmNewPassword,adminPassword);
+        ModelAndView model=new ModelAndView("redirect:/userlist");
+        model.addObject("Users",userService.getAllUsers());
+        model.addObject("message",message);
+        return(model);
+
+    }
+    @RequestMapping(value="/setActivation", method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity<?> setActivated(@RequestParam("name") String name, @RequestParam("action") String action){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ResponseEntity<?> result;
+
+        if("activate".equals(action)) {
+            result = userService.activateUser(userService.getByEmail(name));
+        }
+        else result = userService.deactivateUser(userService.getByEmail(name), userService.getByEmail(auth.getName()));
+        return result;
     }
 
 
