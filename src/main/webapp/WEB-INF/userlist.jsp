@@ -24,11 +24,9 @@
     <![endif]-->
 </head>
 <body>
-
+<%@include file="navbar.jsp"%>
 <div class="container">
     <div class="row">
-
-
         <div class="col-md-12">
             <h4>User List</h4>
             <div class="table-responsive">

@@ -20,10 +20,10 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping("/admin")
+    @RequestMapping("/dashboard")
     public ModelAndView admin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ModelAndView model=new ModelAndView("/admin");
+        ModelAndView model=new ModelAndView("/dashboard");
         auth.getPrincipal();
         model.addObject("user",auth.getName());
         return model;

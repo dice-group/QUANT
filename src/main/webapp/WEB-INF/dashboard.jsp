@@ -15,7 +15,10 @@
     <!-- Custom fonts for this template -->
 </head>
 <body>
-<h1>${user}</h1>
+<%@include file="navbar.jsp"%>
+    <div class="container">
+        <h1>Welcome ${user}</h1>
+    </div>
 <!-- Bootstrap core JavaScript -->
 <script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!-- Plugin JavaScript -->
