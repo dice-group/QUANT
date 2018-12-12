@@ -42,8 +42,8 @@ public class Questions implements Serializable{
     @JoinColumn(name = "ANOTATOR_ID", nullable =false)
     private User anotatorUser;
 
-   // @OneToMany (mappedBy = "qid")
-    //private List<Translations> translationsList;
+    @OneToMany (mappedBy = "qid")
+    private List<Translations> translationsList;
 
     protected Questions() {}
 
@@ -158,12 +158,12 @@ public class Questions implements Serializable{
         this.anotatorUser = anotatorUser;
     }
 
-    //public List<Translations> getTranslationsList() {
-        //return translationsList;
-    //}
+    public List<Translations> getTranslationsList() {
+        return translationsList;
+    }
 
-    //public void setTranslationsList(List<Translations> translationsList) {
-    //    this.translationsList = translationsList;
-    //}
+    public void setTranslationsList(List<Translations> translationsList) {
+        this.translationsList = translationsList;
+    }
 
 }
