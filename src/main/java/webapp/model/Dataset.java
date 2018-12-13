@@ -17,17 +17,17 @@ public class Dataset implements Serializable {
     private User datasetUser;
 
     private String name;
-    private String meta;
+
 
 //   @OneToMany(mappedBy = "datasetQuestion")
   //  private List<Questions> questionsList;
 
     protected Dataset() {}
 
-    public Dataset(User user, String name, String meta) {
+    public Dataset(User user, String name) {
         this.datasetUser = user;
         this.name = name;
-         this.meta = meta;
+
 
     }
 
@@ -55,11 +55,4 @@ public class Dataset implements Serializable {
         this.name = name;
     }
 
-    public String getMeta() {
-        return meta;
-    }
-
-    public void setMeta(String meta) {
-        this.meta = meta;
-    }
 }

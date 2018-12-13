@@ -12,10 +12,8 @@ import webapp.Repository.UserRepository;
 import webapp.model.Role;
 import webapp.model.User;
 
-
 @SpringBootApplication
-@ComponentScan(basePackages = {"datahandler","webapp"})
-
+@ComponentScan(basePackages = {"datahandler", "webapp"})
 public class Application {
 
     @Autowired
