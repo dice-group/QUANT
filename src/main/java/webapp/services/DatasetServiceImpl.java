@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import webapp.Repository.DatasetRepository;
 import webapp.model.Dataset;
 
+import java.util.List;
+
 @Service
-public class DatasetServiceImpl implements DataService {
+public class DatasetServiceImpl implements DatasetService {
 
     @Autowired
     DatasetRepository datasetRepository;
@@ -16,4 +18,10 @@ public class DatasetServiceImpl implements DataService {
         datasetRepository.save(dataset);
         return "Dataset successfully saved";
     }
+
+    @Override
+    public List<Dataset> getAllDatasets() {return datasetRepository.findAll();}
+
+    @Override
+    public Dataset findDatasetByID(long id) {return datasetRepository.findDatasetById(id);}
 }

@@ -15,6 +15,9 @@
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </li>
+            <li class ="nav-item">
+                <a class = "nav-link" href="/datasetlist">Datasets</a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#">Example <span class="sr-only">(current)</span></a>
             </li>

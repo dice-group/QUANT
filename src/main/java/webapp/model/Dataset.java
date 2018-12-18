@@ -13,7 +13,7 @@ public class Dataset implements Serializable {
     private long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable =false)
+    @JoinColumn(name = "USER_FID", nullable =false)
     private User datasetUser;
 
     private String name;

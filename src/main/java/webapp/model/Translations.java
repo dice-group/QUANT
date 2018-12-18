@@ -18,21 +18,17 @@ public class Translations implements Serializable {
     private long id;
     private String lang;
 
-    public List getKeywords() {
-        return keywords;
-    }
 
-    public void setKeywords(List keywords) {
-        this.keywords = keywords;
-    }
 
     @ElementCollection
     private List<String> keywords;
 
     private String questionString;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRANSLATIONS_ID", nullable =false)
+    @JoinColumn(name = "QUESTIONS_FID", nullable =false)
     private Questions qid;
+
     protected Translations(){}
 
     public Translations(Questions qid, String lang, List keywords, String frage)
@@ -75,5 +71,12 @@ public class Translations implements Serializable {
 
     public void setQid(Questions qid) {
         this.qid = qid;
+    }
+    public List getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List keywords) {
+        this.keywords = keywords;
     }
 }

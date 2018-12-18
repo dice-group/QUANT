@@ -25,12 +25,12 @@ public class Application {
         SpringApplication.run(Application.class, args);
 
     }
-    @Bean
-    InitializingBean sendDatabase() {
-        return () -> {
-            userRepository.deleteAll();
-            User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
-            userRepository.save(u);
-        };
-    }
+   // @Bean
+  //  InitializingBean sendDatabase() {
+  //      return () -> {
+          //  userRepository.deleteAll();
+          //  User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
+          //  userRepository.save(u);
+  //      };
+  //  }
 }

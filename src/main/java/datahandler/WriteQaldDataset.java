@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import webapp.Repository.TranslationsServiceImpl;
+import webapp.services.TranslationsServiceImpl;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import webapp.model.Translations;
@@ -49,7 +49,7 @@ public class WriteQaldDataset {
             List<IQuestion> questions = readQaldDataset.readJson(file);
 
             for (IQuestion d: questions) {
-                Questions q = new Questions(dataset, d.getAnswerType(), d.getAggregation(), d.getOnlydbo(), d.getHybrid(), true, user, 0);
+                Questions q = new Questions(dataset, d.getAnswerType(), d.getAggregation(), d.getOnlydbo(), d.getHybrid(), true, true, user, 0, d.getId());
                 questionsService.saveQuestions(q);
 
                 Set<String> keys=d.getLanguageToQuestion().keySet();
