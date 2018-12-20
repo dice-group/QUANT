@@ -31,4 +31,7 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Override
     public  List<Questions> findQuestionsByQuestionSetId(String id){return questionsRepository.findQuestionsByQuestionSetId(id);}
+
+    @Override
+    public Questions findDistinctById(long id) {return questionsRepository.findDistinctById(id);}
 }

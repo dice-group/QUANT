@@ -16,4 +16,5 @@ public interface QuestionsService {
    // List<Questions> findByDatasetQuestion(Dataset id);
     List<Questions> findQuestionsByDatasetQuestion_Id(long id);
     List<Questions> findQuestionsByQuestionSetId(String id);
+    Questions findDistinctById(long id);
 }

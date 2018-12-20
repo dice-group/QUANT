@@ -27,6 +27,6 @@
 </head>
 <body>
 <%@include file="navbar.jsp"%>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12  pt-2">

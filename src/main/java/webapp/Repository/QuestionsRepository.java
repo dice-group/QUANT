@@ -10,4 +10,6 @@ public interface QuestionsRepository extends JpaRepository<Questions,Integer>{
         List<Questions> findQuestionsByDatasetQuestion_Id(long id);
 
         List<Questions> findQuestionsByQuestionSetId(String id);
+
+        Questions findDistinctById(long id);
 }

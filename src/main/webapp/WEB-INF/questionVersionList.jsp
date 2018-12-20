@@ -1,7 +1,7 @@
 <% request.setCharacterEncoding("utf-8"); %>
 <%@include file="layout.jsp" %>
 
-<h4>Version history from Dataset: ${DatasetName} </h4>
+<h4>Version history</h4>
 <div class ="table-responsive">
     <table id="table_id" class="display" style="width:100%" > <!--class="table table-bordred table-striped-->
         <thead>
@@ -31,7 +31,7 @@
                 <td>${question.getVersion()} </td>
                 <c:choose>
                     <c:when test="${question.isActiveVersion()}">
-                        <td><i style="color: darkseagreen" class="fa fa-circle fa-lg"  aria-hidden="true"></i></td>
+                        <td><a href="anotate/${question.getQuestionSetId()}"><i style="color: darkseagreen" class="fa fa-circle fa-lg"  aria-hidden="true"></i></a></td>
                     </c:when>
                     <c:otherwise>
                         <td><i style="color: lightgrey" class="fa fa-circle fa-lg"  aria-hidden="true"></i></td>

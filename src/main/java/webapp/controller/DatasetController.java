@@ -31,8 +31,7 @@ public class DatasetController {
         model.addObject("Title", "QUANT- Dataset Übersicht");
         return model;
     }
-    @RequestMapping(value="/datasetlist/{id}",method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(value="/questionslist/{id}",method = RequestMethod.GET)
     public ModelAndView questionList(@PathVariable("id") long id){
         ModelAndView model = new ModelAndView("/questionslist");
         model.addObject("Questions",questionsService.findQuestionsByDatasetQuestion_Id(id));
@@ -42,10 +41,17 @@ public class DatasetController {
     }
 
     @RequestMapping(value="/questionVersionList/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView questionVersionList(@PathVariable("id") String id){
         ModelAndView model = new ModelAndView("/questionVersionList");
+
         model.addObject("Questions", questionsService.findQuestionsByQuestionSetId(id));
+        return model;
+    }
+
+    @RequestMapping(value="/anotate/{id}",method=RequestMethod.GET)
+    public ModelAndView anotate(@PathVariable("id") long id) {
+        ModelAndView model = new ModelAndView("/anotate");
+        model.addObject("Question", questionsService.findDistinctById(id));
         return model;
     }
 }

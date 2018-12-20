@@ -43,7 +43,7 @@
                     <c:forEach items="${Datasets}" var="dataset">
                         <tr class="dataset-row" dataset-id=${dataset.getId()}>
                         <td>${dataset.getId()}</td>
-                            <td><a href="/datasetlist/${dataset.getId()}">${dataset.getName()}</a> </td>
+                            <td><a href="/questionslist/${dataset.getId()}">${dataset.getName()}</a> </td>
                         </tr>
                     </c:forEach>
                 </tbody>
