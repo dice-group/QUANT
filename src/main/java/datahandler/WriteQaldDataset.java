@@ -49,7 +49,7 @@ public class WriteQaldDataset {
             List<IQuestion> questions = readQaldDataset.readJson(file);
 
             for (IQuestion d: questions) {
-                Questions q = new Questions(dataset, d.getAnswerType(), d.getAggregation(), d.getOnlydbo(), d.getHybrid(), true, true, user, 0, d.getId());
+                Questions q = new Questions(dataset, d.getAnswerType(), d.getAggregation(), d.getOnlydbo(), d.getHybrid(), true, true, user, 0, false, d.getId());
                 questionsService.saveQuestions(q);
 
                 Set<String> keys=d.getLanguageToQuestion().keySet();

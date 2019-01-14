@@ -32,8 +32,8 @@ public class TestWriteQaldDataset {
         User peter = new User("peter@heidi.de", bCryptPasswordEncoder.encode("herbert"), Role.ADMIN);
         userRepository.save(peter);
 
-        File file = new File("src/test/resources/qualdTest.json");
-
+        //File file = new File("src/test/resources/qaldTest.json");
+        File file = new File("src/test/resources/wikidata-train-7.json");
 
         w.qaldWriter(peter, file);
 

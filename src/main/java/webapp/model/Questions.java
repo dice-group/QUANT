@@ -28,6 +28,7 @@ public class Questions implements Serializable{
     private boolean original;
     private boolean removed;
     private boolean activeVersion;
+    private boolean outOfScope;
     private Timestamp timestamp;
     private String sparqlQuery;
     private String answer;
@@ -44,7 +45,7 @@ public class Questions implements Serializable{
 
 
 
-    public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original, boolean activeVersion, User user, int version, String questionSetId)
+    public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original, boolean activeVersion, User user, int version, boolean outOfScope, String questionSetId)
     {
         this.datasetQuestion = datasetQuestion;
         this.answertype = answertype;
@@ -58,6 +59,7 @@ public class Questions implements Serializable{
         this.onlydb = onlydb;
         this.removed = false;
         this.version = version;
+        this.outOfScope = outOfScope;
         this.questionSetId = questionSetId;
         }
 
@@ -182,4 +184,11 @@ public class Questions implements Serializable{
         this.datasetQuestion = datasetQuestion;
     }
 
+    public boolean isOutOfScope() {
+        return outOfScope;
+    }
+
+    public void setOutOfScope(boolean outOfScope) {
+        this.outOfScope = outOfScope;
+    }
 }

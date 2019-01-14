@@ -15,8 +15,8 @@ public class Dataset implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "USER_FID", nullable =false)
     private User datasetUser;
-
     private String name;
+    private String endpoint;
 
 
 //   @OneToMany(mappedBy = "datasetQuestion")
@@ -53,6 +53,14 @@ public class Dataset implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
 }
