@@ -28,7 +28,7 @@
                 </c:otherwise>
                 </c:choose>
 
-                <td align="center"><a href="/questionVersionList/${question.questionSetId}"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></a> </td>
+                <td align="center"><a href="/questionVersionList/${question.datasetQuestion.id}/${question.questionSetId}"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></a> </td>
                 <td align="center"><a href ="/anotate/${question.id}"><i class="fa fa-pencil-square-o fa-lg"></i></a></td>
             </tr>
         </c:forEach>

@@ -27,6 +27,9 @@ public class QuestionsServiceImpl implements QuestionsService {
     public List<Questions> getAllQuestions() {return questionsRepository.findAll();}
 
     @Override
+    public List<Questions> findAllQuestionsByDatasetQuestion_Id(long id) {return questionsRepository.findAllQuestionsByDatasetQuestion_Id(id);}
+
+    @Override
     public List<Questions> findQuestionsByDatasetQuestion_Id(long id) {return questionsRepository.findQuestionsByDatasetQuestion_Id(id);}
 
     @Override
@@ -34,4 +37,8 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Override
     public Questions findDistinctById(long id) {return questionsRepository.findDistinctById(id);}
+
+    @Override
+    public List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, String id) {return questionsRepository.findQuestionsByDatasetQuestionIdAndQuestionSetId(setId, id);}
+
 }

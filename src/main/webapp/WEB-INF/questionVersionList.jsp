@@ -17,21 +17,21 @@
         <tbody>
 
         <c:forEach items="${Questions}" var="question">
-            <tr class="dataset-row" dataset-id=${question.getId()}>
-                <td>${question.getQuestionSetId()}</td>
+            <tr class="dataset-row" dataset-id=${question.id}>
+                <td>${question.questionSetId}</td>
                 <c:choose>
-                    <c:when test="${!empty question.getTranslationsList()[0].getQuestionString()}">
-                        <td>${question.getTranslationsList()[0].getQuestionString()}</td>
+                    <c:when test="${!empty question.translationsList[0].questionString}">
+                        <td>${question.translationsList[0].questionString}</td>
                     </c:when>
                     <c:otherwise>
                         <td>empty</td>
                     </c:otherwise>
                 </c:choose>
 
-                <td>${question.getVersion()} </td>
+                <td>${question.version} </td>
                 <c:choose>
-                    <c:when test="${question.isActiveVersion()}">
-                        <td><a href="anotate/${question.getQuestionSetId()}"><i style="color: darkseagreen" class="fa fa-circle fa-lg"  aria-hidden="true"></i></a></td>
+                    <c:when test="${question.activeVersion}">
+                        <td><a href="anotate/${question.questionSetId}"><i style="color: darkseagreen" class="fa fa-circle fa-lg"  aria-hidden="true"></i></a></td>
                     </c:when>
                     <c:otherwise>
                         <td><i style="color: lightgrey" class="fa fa-circle fa-lg"  aria-hidden="true"></i></td>

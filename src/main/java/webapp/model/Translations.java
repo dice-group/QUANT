@@ -31,12 +31,12 @@ public class Translations implements Serializable {
 
     protected Translations(){}
 
-    public Translations(Questions qid, String lang, List keywords, String frage)
+    public Translations(Questions qid, String lang, List keywords, String questionString)
     {
         this.qid = qid;
         this.lang = lang;
         this.keywords = keywords;
-        this.questionString = frage;
+        this.questionString = questionString;
     }
 
     public long getId() {

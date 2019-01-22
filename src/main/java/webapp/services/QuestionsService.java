@@ -12,9 +12,9 @@ public interface QuestionsService {
     String saveQuestions(Questions questions);
 
     List<Questions> getAllQuestions();
-
-   // List<Questions> findByDatasetQuestion(Dataset id);
+    List<Questions> findAllQuestionsByDatasetQuestion_Id(long id);
     List<Questions> findQuestionsByDatasetQuestion_Id(long id);
     List<Questions> findQuestionsByQuestionSetId(String id);
+    List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, String id);
     Questions findDistinctById(long id);
 }

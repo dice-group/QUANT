@@ -1,10 +1,14 @@
 package webapp.model;
 
 import javax.persistence.*;
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Date;
+import java.util.Set;
+
+import webapp.services.QuestionsServiceImpl;
 
 @Entity
 @Table(name="QUESTIONS")
@@ -30,8 +34,11 @@ public class Questions implements Serializable{
     private boolean activeVersion;
     private boolean outOfScope;
     private Timestamp timestamp;
+    @Lob
     private String sparqlQuery;
-    private String answer;
+    @ElementCollection
+    private Set<String> answer;
+
 
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -41,11 +48,12 @@ public class Questions implements Serializable{
     @OneToMany (mappedBy = "qid")
     private List<Translations> translationsList;
 
-    protected Questions() {}
+    public Questions() {}
 
 
 
-    public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original, boolean activeVersion, User user, int version, boolean outOfScope, String questionSetId)
+    public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original,
+                     boolean activeVersion, User user, int version, boolean outOfScope, String questionSetId, String sparqlQuery, Set answer)
     {
         this.datasetQuestion = datasetQuestion;
         this.answertype = answertype;
@@ -61,8 +69,22 @@ public class Questions implements Serializable{
         this.version = version;
         this.outOfScope = outOfScope;
         this.questionSetId = questionSetId;
+        this.sparqlQuery = sparqlQuery;
+        this.answer = answer;
+
         }
 
+    public long getNext(List<Questions> liste){
+        int index = liste.indexOf(this);
+        if (index < 0 || index +1 ==liste.size()) return -1;
+
+        return liste.get(index+1).getId();
+    }
+
+    public String getAnswerAsString(){
+        String answerString = String.join("\n", this.answer);
+        return answerString;
+    }
     public String getAnswertype() {
         return answertype;
     }
@@ -135,11 +157,11 @@ public class Questions implements Serializable{
         this.sparqlQuery = sparqlQuery;
     }
 
-    public String getAnswer() {
+    public Set getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(Set answer) {
         this.answer = answer;
     }
 
@@ -191,4 +213,6 @@ public class Questions implements Serializable{
     public void setOutOfScope(boolean outOfScope) {
         this.outOfScope = outOfScope;
     }
+
+
 }
