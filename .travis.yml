@@ -9,3 +9,7 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+env:
+  global:
+  - CODECOV_TOKEN=:2ee9fd07-7bbb-41ea-b0b9-1a82fc24c738
