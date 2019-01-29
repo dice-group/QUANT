@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <form method="POST" action="/" style="max-width: 300px">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Ä Please sign in</h1>
             <div class="form-group">
                 <label for="email" class="sr-only">Email address</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Email address" required autofocus>

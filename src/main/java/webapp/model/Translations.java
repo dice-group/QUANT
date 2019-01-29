@@ -1,8 +1,12 @@
 package webapp.model;
 
 
+import org.apache.jena.tdb.store.Hash;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -13,21 +17,30 @@ public class Translations implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     private String lang;
-    private String keywords;
+
+    @ElementCollection
+    private List<String> keywords;
+
     private String questionString;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRANSLATIONS_ID", nullable =false)
+    @JoinColumn(name = "QUESTIONS_FID", nullable =false)
     private Questions qid;
 
     protected Translations(){}
 
-    public Translations(Questions qid, String lang, String keywords, String frage)
+    public Translations(Questions qid, String lang, List keywords, String questionString)
     {
         this.qid = qid;
         this.lang = lang;
         this.keywords = keywords;
-        this.questionString = frage;
+        this.questionString = questionString;
+    }
+
+    public String getKeywordsAsString()
+    {
+        String result = String.join(", ", this.keywords);
+        return result;
     }
 
     public long getId() {
@@ -46,14 +59,6 @@ public class Translations implements Serializable {
         this.lang = lang;
     }
 
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-
     public String getQuestionString() {
         return questionString;
     }
@@ -68,5 +73,12 @@ public class Translations implements Serializable {
 
     public void setQid(Questions qid) {
         this.qid = qid;
+    }
+
+    public List getKeywords() {
+        return keywords;
+    }
+    public void setKeywords(List keywords) {
+        this.keywords = keywords;
     }
 }

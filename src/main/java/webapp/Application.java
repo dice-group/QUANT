@@ -12,10 +12,8 @@ import webapp.Repository.UserRepository;
 import webapp.model.Role;
 import webapp.model.User;
 
-
 @SpringBootApplication
-@ComponentScan(basePackages = {"datahandler","webapp"})
-
+@ComponentScan(basePackages = {"datahandler", "webapp"})
 public class Application {
 
     @Autowired
@@ -27,12 +25,12 @@ public class Application {
         SpringApplication.run(Application.class, args);
 
     }
-    @Bean
-    InitializingBean sendDatabase() {
-        return () -> {
-            userRepository.deleteAll();
-            User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
-            userRepository.save(u);
-        };
-    }
+   // @Bean
+  //  InitializingBean sendDatabase() {
+  //      return () -> {
+          //  userRepository.deleteAll();
+          //  User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
+          //  userRepository.save(u);
+  //      };
+  //  }
 }

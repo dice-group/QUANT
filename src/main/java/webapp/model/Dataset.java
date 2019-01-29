@@ -13,21 +13,21 @@ public class Dataset implements Serializable {
     private long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable =false)
+    @JoinColumn(name = "USER_FID", nullable =false)
     private User datasetUser;
-
     private String name;
-    private String meta;
+    private String endpoint;
+
 
 //   @OneToMany(mappedBy = "datasetQuestion")
   //  private List<Questions> questionsList;
 
     protected Dataset() {}
 
-    public Dataset(User user, String name, String meta) {
+    public Dataset(User user, String name) {
         this.datasetUser = user;
         this.name = name;
-         this.meta = meta;
+
 
     }
 
@@ -55,11 +55,12 @@ public class Dataset implements Serializable {
         this.name = name;
     }
 
-    public String getMeta() {
-        return meta;
+    public String getEndpoint() {
+        return endpoint;
     }
 
-    public void setMeta(String meta) {
-        this.meta = meta;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
+
 }
