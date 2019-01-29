@@ -1,6 +1,7 @@
 package JPATest;
 
 import datahandler.WriteQaldDataset;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import webapp.Application;
 import webapp.Repository.UserRepository;
@@ -14,7 +15,7 @@ import java.io.File;
 
 
 @RunWith(SpringRunner.class)
-//@DataJpaTest()
+@DataJpaTest()
 @SpringBootTest(classes = Application.class)
 
 public class TestWriteQaldDataset {
