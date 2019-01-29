@@ -67,7 +67,6 @@ public class QuerySuggestor {
         }
         return queryString;
     }
-
     private String generateQueryPredicates(String queryString, List<Node>missingPredicates, PrefixMapping prefixMapping, String endpoint, List<Var>vars, List<Binding>bindings){
         String oldQuery = queryString;
         Map<Node,String>missingPredicateMapping = new HashMap<>();
