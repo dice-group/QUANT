@@ -18,8 +18,6 @@ public class Translations implements Serializable {
     private long id;
     private String lang;
 
-
-
     @ElementCollection
     private List<String> keywords;
 
@@ -39,6 +37,12 @@ public class Translations implements Serializable {
         this.questionString = questionString;
     }
 
+    public String getKeywordsAsString()
+    {
+        String result = String.join(", ", this.keywords);
+        return result;
+    }
+
     public long getId() {
         return id;
     }
@@ -55,8 +59,6 @@ public class Translations implements Serializable {
         this.lang = lang;
     }
 
-
-
     public String getQuestionString() {
         return questionString;
     }
@@ -72,10 +74,10 @@ public class Translations implements Serializable {
     public void setQid(Questions qid) {
         this.qid = qid;
     }
+
     public List getKeywords() {
         return keywords;
     }
-
     public void setKeywords(List keywords) {
         this.keywords = keywords;
     }

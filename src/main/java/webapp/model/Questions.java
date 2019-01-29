@@ -1,14 +1,12 @@
 package webapp.model;
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Date;
 import java.util.Set;
 
-import webapp.services.QuestionsServiceImpl;
 
 @Entity
 @Table(name="QUESTIONS")
@@ -23,7 +21,7 @@ public class Questions implements Serializable{
     @JoinColumn(name = "DATASET_FID", nullable =false)
     private Dataset datasetQuestion;
 
-    private String questionSetId;
+    private long questionSetId;
     private String answertype;
     private boolean aggregation;
     private boolean onlydb;
@@ -31,6 +29,7 @@ public class Questions implements Serializable{
     private int version;
     private boolean original;
     private boolean removed;
+    private boolean anotated;
     private boolean activeVersion;
     private boolean outOfScope;
     private Timestamp timestamp;
@@ -38,6 +37,7 @@ public class Questions implements Serializable{
     private String sparqlQuery;
     @ElementCollection
     private Set<String> answer;
+    private String originalId;
 
 
 
@@ -50,15 +50,40 @@ public class Questions implements Serializable{
 
     public Questions() {}
 
-
-
+    //Constructor for uploaded datasets and newly created questions
     public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original,
-                     boolean activeVersion, User user, int version, boolean outOfScope, String questionSetId, String sparqlQuery, Set answer)
+                     boolean activeVersion, boolean anotated, User user, int version, boolean outOfScope, String sparqlQuery, Set answer, String originalId)
     {
         this.datasetQuestion = datasetQuestion;
         this.answertype = answertype;
         this.original = original;
         this.activeVersion = activeVersion;
+        this.anotated = anotated;
+        this.anotatorUser = user;
+        Date date = new Date();
+        this.timestamp = new Timestamp((date.getTime()));
+        this.aggregation = aggregation;
+        this.hybrid =hybrid;
+        this.onlydb = onlydb;
+        this.removed = false;
+        this.version = version;
+        this.outOfScope = outOfScope;
+        this.questionSetId = this.id;
+        this.sparqlQuery = sparqlQuery;
+        this.answer = answer;
+        this.originalId = originalId;
+
+
+    }
+
+    public Questions(Dataset datasetQuestion, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean original,
+                     boolean activeVersion, boolean anotated, User user, int version, boolean outOfScope, long questionSetId, String sparqlQuery, Set answer)
+    {
+        this.datasetQuestion = datasetQuestion;
+        this.answertype = answertype;
+        this.original = original;
+        this.activeVersion = activeVersion;
+        this.anotated = anotated;
         this.anotatorUser = user;
         Date date = new Date();
         this.timestamp = new Timestamp((date.getTime()));
@@ -71,6 +96,7 @@ public class Questions implements Serializable{
         this.questionSetId = questionSetId;
         this.sparqlQuery = sparqlQuery;
         this.answer = answer;
+        this.originalId = "0";
 
         }
 
@@ -161,9 +187,12 @@ public class Questions implements Serializable{
         return answer;
     }
 
-    public void setAnswer(Set answer) {
-        this.answer = answer;
-    }
+//    public void setAnswer(Set answer) {
+//        this.answer = answer;
+//    }
+    public void setAnswer(Set<String> answer) {
+    this.answer = answer;
+}
 
     public User getAnotatorUser() {
         return anotatorUser;
@@ -184,6 +213,7 @@ public class Questions implements Serializable{
     public long getId() {return id;}
 
     public void setId(long id) {this.id = id;}
+
     public boolean isActiveVersion() {
         return activeVersion;
     }
@@ -191,13 +221,15 @@ public class Questions implements Serializable{
     public void setActiveVersion(boolean activeVersion) {
         this.activeVersion = activeVersion;
     }
-    public String getQuestionSetId() {
+
+    public long getQuestionSetId() {
         return questionSetId;
     }
 
-    public void setQuestionSetId(String questionSetId) {
+    public void setQuestionSetId(long questionSetId) {
         this.questionSetId = questionSetId;
     }
+
     public Dataset getDatasetQuestion() {
         return datasetQuestion;
     }
@@ -212,6 +244,14 @@ public class Questions implements Serializable{
 
     public void setOutOfScope(boolean outOfScope) {
         this.outOfScope = outOfScope;
+    }
+
+    public boolean isAnotated() {
+        return anotated;
+    }
+
+    public void setAnotated(boolean anotated) {
+        this.anotated = anotated;
     }
 
 

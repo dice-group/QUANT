@@ -28,16 +28,16 @@ public class TestWriteQaldDataset {
 
     @Test
     public void creationTest() {
-       // User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
-        User peter2 = new User("peter2@heidi.de", bCryptPasswordEncoder.encode("herbert"), Role.ADMIN);
-        userRepository.save(peter2);
+       // User peter= new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
+        User peter = new User("peter@heidi.de", bCryptPasswordEncoder.encode("herbert"), Role.ADMIN);
+        userRepository.save(peter);
 
         //File file = new File("src/test/resources/qaldTest.json");
         File file = new File("src/test/resources/wikidata-train-7.json");
         File file2 = new File("src/test/resources/qald-8-train-multilingual.json");
 
      //   w.qaldWriter(peter, file);
-        w.qaldWriter(peter2,file2);
+        w.qaldWriter(peter,file);
 
 
 

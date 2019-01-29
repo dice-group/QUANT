@@ -18,12 +18,13 @@
     <link rel="stylesheet" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/resources/css/main.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/resources/css/open-iconic-bootstrap.css" rel = "stylesheet">
 
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="/resources/js/quant.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/quant.js"></script>
 
     <script>
         $(document).ready( function () {

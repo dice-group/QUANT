@@ -10,13 +10,17 @@ public interface QuestionsRepository extends JpaRepository<Questions,Integer>{
 
         List<Questions> findQuestionsByDatasetQuestion_Id(long id);
 
-        List<Questions> findQuestionsByQuestionSetId(String id);
+        List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed);
+
+        List<Questions> findQuestionsByQuestionSetId(long id);
 
         List<Questions> findAll();
 
         List<Questions> findAllQuestionsByDatasetQuestion_Id(long id);
 
-        List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, String id);
+        List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, long id);
         Questions findDistinctById(long id);
+        Questions findTop1VersionByQuestionSetIdOrderByVersionDesc(long Id);
+
 
 }

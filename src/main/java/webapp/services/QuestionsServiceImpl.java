@@ -33,12 +33,14 @@ public class QuestionsServiceImpl implements QuestionsService {
     public List<Questions> findQuestionsByDatasetQuestion_Id(long id) {return questionsRepository.findQuestionsByDatasetQuestion_Id(id);}
 
     @Override
-    public  List<Questions> findQuestionsByQuestionSetId(String id){return questionsRepository.findQuestionsByQuestionSetId(id);}
+    public  List<Questions> findQuestionsByQuestionSetId(long id){return questionsRepository.findQuestionsByQuestionSetId(id);}
 
     @Override
     public Questions findDistinctById(long id) {return questionsRepository.findDistinctById(id);}
 
     @Override
-    public List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, String id) {return questionsRepository.findQuestionsByDatasetQuestionIdAndQuestionSetId(setId, id);}
+    public List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, long id) {return questionsRepository.findQuestionsByDatasetQuestionIdAndQuestionSetId(setId, id);}
 
+    @Override
+    public List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed) {return questionsRepository.findByDatasetQuestion_IdAndVersionAndRemoved(id, version, removed);}
 }

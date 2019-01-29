@@ -36,6 +36,10 @@
                 <tr>
                     <th>ID</th>
                     <th>Dataset Name</th>
+                    <th>Anotate</th>
+                    <c:if test="${User.role =='ADMIN'}">
+                    <th>Manage</th>
+                    </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,7 +47,11 @@
                     <c:forEach items="${Datasets}" var="dataset">
                         <tr class="dataset-row" dataset-id=${dataset.getId()}>
                         <td>${dataset.getId()}</td>
-                            <td><a href="/questionslist/${dataset.getId()}">${dataset.getName()}</a> </td>
+                        <td>${dataset.getName()}</td>
+                            <td><a href="/questionslist/${dataset.getId()}"><button class="btn btn-outline-info btn-sm">Anotate</button></a></td>
+                        <c:if test="${User.role =='ADMIN'}">
+                            <td><a href="/manageDataset/${dataset.getId()}"><button class="btn btn-outline-info btn-sm">Manage</button></a></td>
+                        </c:if>
                         </tr>
                     </c:forEach>
                 </tbody>

@@ -50,22 +50,27 @@ public class WriteQaldDataset {
 
             for (IQuestion d: questions) {
                 Questions q = new Questions(dataset, d.getAnswerType(), d.getAggregation(), d.getOnlydbo(), d.getHybrid(),
-                        true, true, user, 0, false, d.getId(), d.getSparqlQuery(), d.getGoldenAnswers());
+                        true, true, false, user, 0, false, d.getSparqlQuery(), d.getGoldenAnswers(), d.getId());
+                questionsService.saveQuestions(q);
+                q.setQuestionSetId(q.getId());
                 questionsService.saveQuestions(q);
 
                 Set<String> keys=d.getLanguageToQuestion().keySet();
                 for(String key:keys){
+                    String frage;
+                    List keywords;
 
                     if(d.getLanguageToQuestion().get(key) != null)
-                    {String frage = d.getLanguageToQuestion().get(key);}
-                    else {String frage = "";}
+                    {frage = d.getLanguageToQuestion().get(key);}
+                    else {frage = "";}
 
                     if(d.getLanguageToKeywords().get(key) != null)
-                    {List keywords = d.getLanguageToKeywords().get(key);}
-                    else {List keywords = new ArrayList();}
+                    { keywords = d.getLanguageToKeywords().get(key);}
+                    else { keywords = new ArrayList();}
 
-                    //  Translations t = new Translations(q, d.getLanguageToKeywords(),d.get);
-                    Translations t = new Translations(q,key,d.getLanguageToKeywords().get(key),d.getLanguageToQuestion().get(key));
+                   // Translations t = new Translations(q,key,d.getLanguageToKeywords().get(key),d.getLanguageToQuestion().get(key));
+
+                    Translations t = new Translations(q, key, keywords, frage);
                     translationsService.saveTranslations(t);
 
                 }

@@ -23,7 +23,7 @@
             data: {query: sparqlQuery},
             dataType: "json",
             //url: "http://dbpedia.org/sparql",
-            url: "${Question.datasetQuestion.endpoint}"
+            url: "${Dataset.endpoint}"
         })
             .done(function (data) {
                 writeAnswers(data)
@@ -82,24 +82,24 @@
         setRadioButton('opthybrid', ${Question.hybrid});
     } );
 </script>
-<form method="POST" id="anotate1" action ="/anotate/${Question.id}" modelAttribute="formQuestion">
+<form method="POST" id="saveNewQuestion" action ="/newQuestion/${Dataset.id}" modelAttribute="formQuestion">
+<input type ="hidden" id ="user" name="user" value="${User.id}">
+    <div class="row ">
+        <div class=" col-3">
+            <span class="h4">Add new Question:</span>
 
-<div class="row ">
-    <div class=" col">
-        <span class="h4">Anotate Question:</span>
-        <mark>ID: ${Question.id} - ${Question.translationsList[0].questionString}</mark>
+            <button type="submit" class="btn btn-success btn-sm ml-2">Save Question</button>
+            <a class="small text-muted" href="/manageDataset/${Dataset.id}">Back to Overview</a>
+        </div>
+        <div class="col">
+            <c:if test="${error != null}">
+                <span class="alert alert-danger">${error}</span></c:if>
+            <c:if test="${success != null}">
+                <span class="alert alert-success">${success}</span></c:if>
+        </div>
     </div>
-    <c:if test="${errorMessage}" var="eMessage">
-    <span class="alert alert-danger">${Message}</span></c:if>
 
-    <div class=" col">
-            <button type="submit" class="btn btn-success btn-sm ml-2">Save changes</button>
-        <a class="small text-muted" href="/questionslist/${Question.datasetQuestion.id}">Back to Overview</a> |
-        <a class="small text-muted" href="/anotate/${nextQuestion}">Next Question </a>
-    </div>
-</div>
-
-<hr/>
+    <hr/>
 
     <div class="form-group row mt-2">
         <div class="col-2">
@@ -136,18 +136,18 @@
         <div class="col">
             <div class="col">
                 <label for="sparql">SPARQL:</label>
-                <textarea rows="11" class="form-control" id="sparql" name ="sparql" form="anotate1" onchange=" sparqlQuery(document.getElementById('sparql').value)">${Question.sparqlQuery}</textarea>
+                <textarea rows="11" class="form-control" id="sparql" name ="sparql" onchange=" sparqlQuery(document.getElementById('sparql').value)">${Question.sparqlQuery}</textarea>
             </div>
         </div>
         <div class="col">
             <div class="col">
                 <label for="file_answer">Answer from File:</label>
-                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" form="anotate1">${GoldenAnswer}</textarea>
+                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer">${GoldenAnswer}</textarea>
             </div>
 
             <div class="col">
-                <label for="endpoint_answer">Answer from Endpoint: ${Question.datasetQuestion.endpoint}</label>
-                <textarea rows="4" class="form-control" id="endpoint_answer" form="anotate1"></textarea>
+                <label for="endpoint_answer">Answer from Endpoint: ${Dataset.endpoint}</label>
+                <textarea rows="4" class="form-control" id="endpoint_answer"></textarea>
             </div>
 
 
@@ -155,10 +155,10 @@
         </div>
     </div>
 
-        <hr/>
+    <hr/>
     <input type ="button" class="btn-sm btn-outline-info" id ="button_add_row" onclick="addTranslationRow()" value ="Add Row">
     <div id ="trans_wrapper">
-        <div class="form-group row mt-2" id="trans_wrapper1">
+        <div class="form-group row mt-2" id="trans_1">
 
             <div class="col-1">
                 Language:
@@ -171,21 +171,20 @@
             </div>
             <%-- Textfelder für Lang, Question, Keywords --%>
 
-            <c:forEach items="${Question.translationsList}" var="translation">
-            <div class="col-1">
-                <input type ="text" class="form-control" name ="trans_lang" id ="${'lang_' +=translation.id}" value="${translation.lang}" />
-            </div>
-            <div class="col-5">
-                <input type ="text" class="form-control" name ="trans_question" id ="${'questionString_' +=translation.id}" value="${translation.questionString}" />
-            </div>
+                <div class="col-1">
+                    <input type ="text" class="form-control" name ="trans_lang" value="en" />
+                </div>
+                <div class="col-5">
+                    <input type ="text" class="form-control" name ="trans_question" />
+                </div>
 
                 <div class="col-6">
-                <input type ="text" class="form-control" name ="trans_keywords" id ="${'keyword_' +=translation.id}" value="${translation.getKeywordsAsString()}" />
+                    <input type ="text" class="form-control" name ="trans_keywords" />
                 </div>
-            </c:forEach>
 
         </div>
     </div>
+
 
 </form>
 
