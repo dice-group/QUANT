@@ -58,7 +58,7 @@ public class Suggestions {
         }while (correctionFound);
         return false;
     }
-    public QuerySuggestions testQuery(String queryString, String endpoint, List<Var>vars, List<Binding>bindings) {
+    public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, List<Var>vars, List<Binding>bindings) {
         QuerySuggestions suggestions = new QuerySuggestions();
         if(needsCorrections(suggestions,queryString,endpoint)) {
             QuerySuggestor querySuggestor = new QuerySuggestor();
