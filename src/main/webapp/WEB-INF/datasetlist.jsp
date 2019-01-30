@@ -46,8 +46,8 @@
 
                     <c:forEach items="${Datasets}" var="dataset">
                         <tr class="dataset-row" dataset-id=${dataset.getId()}>
-                        <td>${dataset.getId()}</td>
-                        <td>${dataset.getName()}</td>
+                            <td><c:out value="${dataset.getId()}"></c:out></td>
+                        <td><c:out value="${dataset.getName()}"></c:out></td>
                             <td><a href="/questionslist/${dataset.getId()}"><button class="btn btn-outline-info btn-sm">Anotate</button></a></td>
                         <c:if test="${User.role =='ADMIN'}">
                             <td><a href="/manageDataset/${dataset.getId()}"><button class="btn btn-outline-info btn-sm">Manage</button></a></td>

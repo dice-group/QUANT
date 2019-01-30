@@ -87,10 +87,10 @@
 <div class="row ">
     <div class=" col">
         <span class="h4">Anotate Question:</span>
-        <mark>ID: ${Question.id} - ${Question.translationsList[0].questionString}</mark>
+        <mark>ID: <c:out value="${Question.id} - ${Question.translationsList[0].questionString}"></c:out></mark>
     </div>
     <c:if test="${errorMessage}" var="eMessage">
-    <span class="alert alert-danger">${Message}</span></c:if>
+    <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
 
     <div class=" col">
             <button type="submit" class="btn btn-success btn-sm ml-2">Save changes</button>
@@ -136,17 +136,17 @@
         <div class="col">
             <div class="col">
                 <label for="sparql">SPARQL:</label>
-                <textarea rows="11" class="form-control" id="sparql" name ="sparql" form="anotate1" onchange=" sparqlQuery(document.getElementById('sparql').value)">${Question.sparqlQuery}</textarea>
+                <textarea rows="11" class="form-control" id="sparql" name ="sparql" form="anotate1" onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out value="${Question.sparqlQuery}"></c:out></textarea>
             </div>
         </div>
         <div class="col">
             <div class="col">
                 <label for="file_answer">Answer from File:</label>
-                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" form="anotate1">${GoldenAnswer}</textarea>
+                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" form="anotate1"><c:out value="${GoldenAnswer}"></c:out></textarea>
             </div>
 
             <div class="col">
-                <label for="endpoint_answer">Answer from Endpoint: ${Question.datasetQuestion.endpoint}</label>
+                <label for="endpoint_answer">Answer from Endpoint: <c:out value="${Question.datasetQuestion.endpoint}"></c:out></label>
                 <textarea rows="4" class="form-control" id="endpoint_answer" form="anotate1"></textarea>
             </div>
 

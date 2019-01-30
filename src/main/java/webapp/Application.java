@@ -16,10 +16,10 @@ import webapp.model.User;
 @ComponentScan(basePackages = {"datahandler", "webapp"})
 public class Application {
 
-    @Autowired
-    private UserRepository userRepository;
+  //  @Autowired
+   // private UserRepository userRepository;
 
-   private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+  // private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
