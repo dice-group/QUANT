@@ -1,6 +1,6 @@
 <%@include file="layout.jsp" %>
 
-<h4>Questions from Dataset: ${DatasetName} </h4>
+<h4>Questions from Dataset: <c:out value="${DatasetName}"></c:out> </h4>
 <div class ="table-responsive">
     <table id="table_id" class="display" style="width:100%" > <!--class="table table-bordered table-striped-->
         <thead>
@@ -16,11 +16,11 @@
 
         <c:forEach items="${Questions}" var="question">
             <tr class="dataset-row" dataset-id=${question.id}>
-                <td>${question.id}</td>
+                <td><c:out value="${question.id}"></c:out></td>
                 <c:choose>
                 <c:when test="${!empty question.translationsList[0].questionString}">
 
-                    <td>${question.translationsList[0].questionString}</td>
+                    <td><c:out value="${question.translationsList[0].questionString}"></c:out></td>
 
                 </c:when>
                 <c:otherwise>

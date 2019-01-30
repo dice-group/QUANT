@@ -25,10 +25,10 @@
 
         <c:forEach items="${Questions}" var="question">
             <tr class="dataset-row" dataset-id=${question.id}>
-                <td>${question.id}</td>
+                <td><c:out value="${question.id}"></c:out></td>
                 <c:choose>
                     <c:when test="${!empty question.translationsList[0].questionString}">
-                        <td>${question.translationsList[0].questionString}</td>
+                        <td><c:out value="${question.translationsList[0].questionString}"></c:out></td>
                     </c:when>
                     <c:otherwise>
                         <td>empty</td>

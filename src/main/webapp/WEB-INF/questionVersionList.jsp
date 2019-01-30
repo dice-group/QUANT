@@ -25,14 +25,14 @@
                 <c:choose>
                     <c:when test="${!empty question.translationsList[0].questionString}">
 
-                        <td>${question.translationsList[0].questionString}</td>
+                        <td><c:out value="${question.translationsList[0].questionString}"></c:out></td>
                     </c:when>
                     <c:otherwise>
                         <td>empty</td>
                     </c:otherwise>
                 </c:choose>
 
-                <td>${question.version}</td>
+                <td><c:out value="${question.version}"></c:out></td>
                 <c:choose>
                     <c:when test="${question.activeVersion}">
                         <c:set var = "wasActive" value = "${question.id}"/>
