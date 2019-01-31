@@ -1,13 +1,17 @@
 package webapp.controller;
 
 
+import datahandler.WriteQaldDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
 import webapp.Repository.TranslationsRepository;
 import webapp.model.Dataset;
@@ -18,6 +22,8 @@ import webapp.services.DatasetService;
 import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +38,9 @@ public class DatasetController {
     TranslationsRepository translationsRepository;
 
     @Autowired
+    DatasetRepository datasetRepository;
+
+    @Autowired
     DatasetService datasetService;
 
     @Autowired
@@ -42,6 +51,9 @@ public class DatasetController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    WriteQaldDataset w;
 
 
     @RequestMapping(value = "/datasetlist", method = RequestMethod.GET)
@@ -55,6 +67,31 @@ public class DatasetController {
         model.addObject("User", user);
         return model;
     }
+
+    @RequestMapping(value = "/datasetlist", method = RequestMethod.POST)
+    public String uploadDataset(@RequestParam ("file") MultipartFile file,
+                                      @RequestParam("endpoint") String endpoint,
+                                RedirectAttributes attributes)
+    {
+        ModelAndView model = new ModelAndView("/uploadDataset");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+
+        try {
+
+            w.datsetWriter(user, file, endpoint);
+            attributes.addFlashAttribute("success", "Dataset has been saved successfully!");
+            return "redirect:/datasetlist";
+        }
+        catch (Exception e){
+            attributes.addFlashAttribute("error", "An Error occured while saving the database!");
+            return "redirect:/datasetlist";
+        }
+
+    }
+
 
     @RequestMapping(value="manageDataset/{id}", method = RequestMethod.GET)
     public ModelAndView manageDataset(@PathVariable ("id") long id){
@@ -134,6 +171,10 @@ public class DatasetController {
         model.addObject("Questions", questionsService.findByDatasetQuestion_IdAndVersionAndRemoved(id, 0, false));
         model.addObject("DatasetName", datasetService.findDatasetByID(id).getName());
         model.addObject("Title", "QUANT - Dataset Questions");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
         return model;
     }
 
@@ -190,11 +231,11 @@ public class DatasetController {
 
             q.setAnotated(true);
             questionsService.saveQuestions(q);
-            System.out.println( "Successfully saved new question version to Database");
+            System.out.println( "Successfully saved new question version to Database!");
             return anotate(nextQuestion);
         }
         catch(Exception e) {
-            model.addObject("errorMessage","Something went wrong");
+            model.addObject("errorMessage","Something went wrong!");
             return model;
         }
     }
@@ -212,7 +253,7 @@ public class DatasetController {
 
         try {
             if(q.isActiveVersion()) {
-                attributes.addFlashAttribute("error", "Deleting a question, that is marked as active, is not allowed!");
+                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question', is not allowed!");
                 System.out.println("is active");
                 return "redirect:/manageDataset/"+ datasetId;
             }
@@ -222,14 +263,49 @@ public class DatasetController {
                     translationsRepository.delete(item);}
 
                 questionsRepository.delete(q);
-                attributes.addFlashAttribute("success", "Question has been deleted successfully.");
+                attributes.addFlashAttribute("success", "Question has been deleted successfully!");
                 return "redirect:/manageDataset/" + datasetId;
             }
     }
         catch(Exception e) {
-            attributes.addFlashAttribute("error", "An Error occured while deleting the question.");
+            attributes.addFlashAttribute("error", "An error occured while deleting the question!");
             return "redirect:/manageDataset/" + datasetId;
     }
+    }
+
+    @RequestMapping(value = "/deleteDataset", method=RequestMethod.POST)
+    public String deleteDataset(@RequestParam("datasetId") long datasetId,
+                                 RedirectAttributes attributes)
+    {
+        //ModelAndView model=new ModelAndView("/deleteDataset");
+
+        try{
+            Dataset dataset = datasetService.findDatasetByID(datasetId);
+
+            List<Questions> questionList = questionsService.findAllQuestionsByDatasetQuestion_Id(datasetId);
+            for (Questions q : questionList)
+            {
+                questionsRepository.delete(q);
+
+                List<Translations> translationList = translationsRepository.findByQid(q);
+                for (Translations t : translationList) {
+                    translationsRepository.delete(t);
+                }
+
+            }
+            datasetRepository.delete(dataset);
+
+            attributes.addFlashAttribute("success", "Dataset has been deleted successfully!");
+            return "redirect:/datasetlist";
+        }
+
+        catch(Exception e) {
+
+            attributes.addFlashAttribute("error", "An error occured while deleting the dataset!");
+            return "redirect:/datasetlist";
+        }
+
+
     }
 
 }
