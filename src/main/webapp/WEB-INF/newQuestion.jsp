@@ -17,6 +17,8 @@
     }
 
 
+
+
     function sparqlQuery(sparqlQuery){
         console.log(sparqlQuery)
         $.ajax({
@@ -59,14 +61,14 @@
         var div = document.createElement('div');
         div.className ='form-group row mt-2';
         div.innerHTML ='<div class="col-1">\n' +
-            '            <input type ="text" class="form-control" name ="trans_lang"  value="">\n' +
+            '            <input type ="text" class="form-control" name ="trans_lang"  value=""required >\n' +
             '        </div>\n' +
             '        <div class="col-5">\n' +
-            '            <input type ="text" class="form-control" name ="trans_question"  value="">\n' +
+            '            <input type ="text" class="form-control" name ="trans_question"  value="" required >\n' +
             '        </div>\n' +
             '\n' +
             '            <div class="col-6">\n' +
-            '                <input type ="text" class="form-control" name ="trans_keywords"  value="">\n' +
+            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" required >\n' +
             '            </div>'
         document.getElementById('trans_wrapper').appendChild(div);
     }
@@ -80,12 +82,13 @@
         setRadioButton('optaggregation', ${Question.aggregation});
         setRadioButton('optdbpedia', ${Question.onlydb});
         setRadioButton('opthybrid', ${Question.hybrid});
+
     } );
 </script>
 <form method="POST" id="saveNewQuestion" action ="/newQuestion/${Dataset.id}" modelAttribute="formQuestion">
 <input type ="hidden" id ="user" name="user" value="${User.id}">
     <div class="row ">
-        <div class=" col-3">
+        <div class=" col-6">
             <span class="h4">Add new Question:</span>
 
             <button type="submit" class="btn btn-success btn-sm ml-2">Save Question</button>
@@ -104,7 +107,14 @@
     <div class="form-group row mt-2">
         <div class="col-2">
             <label for="answertype">Answertype:</label>
-            <input type="text" class="form-control mb-2" id="answertype" name="answertype" value="${Question.answertype}" />
+            <select class="form-control mb-2" id="answertype" name="answertype" required>
+                <option value=""></option>
+                <option value ="resource">resource</option>
+                <option value ="number">number</option>
+                <option value ="boolean">boolean</option>
+                <option value ="date">date</option>
+
+            </select>
 
             <div>
                 Out of Scope:
@@ -136,13 +146,13 @@
         <div class="col">
             <div class="col">
                 <label for="sparql">SPARQL:</label>
-                <textarea rows="11" class="form-control" id="sparql" name ="sparql" onchange=" sparqlQuery(document.getElementById('sparql').value)">${Question.sparqlQuery}</textarea>
+                <textarea rows="11" class="form-control" id="sparql" name ="sparql" onchange=" sparqlQuery(document.getElementById('sparql').value)" required></textarea>
             </div>
         </div>
         <div class="col">
             <div class="col">
                 <label for="file_answer">Answer from File:</label>
-                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer">${GoldenAnswer}</textarea>
+                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" required></textarea>
             </div>
 
             <div class="col">
@@ -172,14 +182,14 @@
             <%-- Textfelder für Lang, Question, Keywords --%>
 
                 <div class="col-1">
-                    <input type ="text" class="form-control" name ="trans_lang" value="en" />
+                    <input type ="text" class="form-control" name ="trans_lang" value="en" required />
                 </div>
                 <div class="col-5">
-                    <input type ="text" class="form-control" name ="trans_question" />
+                    <input type ="text" class="form-control" name ="trans_question" required />
                 </div>
 
                 <div class="col-6">
-                    <input type ="text" class="form-control" name ="trans_keywords" />
+                    <input type ="text" class="form-control" name ="trans_keywords" required />
                 </div>
 
         </div>

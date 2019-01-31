@@ -17,6 +17,13 @@
     }
 
 
+    function setSelectAnswertype(answertype) {
+       // $('answertype').val(answertype);
+        document.getElementById('answertype').value= answertype;
+        console.log(answertype)
+
+    }
+
     function sparqlQuery(sparqlQuery){
         console.log(sparqlQuery)
         $.ajax({
@@ -59,14 +66,14 @@
         var div = document.createElement('div');
         div.className ='form-group row mt-2';
         div.innerHTML ='<div class="col-1">\n' +
-            '            <input type ="text" class="form-control" name ="trans_lang"  value="">\n' +
+            '            <input type ="text" class="form-control" name ="trans_lang"  value="" required>\n' +
             '        </div>\n' +
             '        <div class="col-5">\n' +
-            '            <input type ="text" class="form-control" name ="trans_question"  value="">\n' +
+            '            <input type ="text" class="form-control" name ="trans_question"  value="" required>\n' +
             '        </div>\n' +
             '\n' +
             '            <div class="col-6">\n' +
-            '                <input type ="text" class="form-control" name ="trans_keywords"  value="">\n' +
+            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" required>\n' +
             '            </div>'
         document.getElementById('trans_wrapper').appendChild(div);
     }
@@ -80,6 +87,8 @@
         setRadioButton('optaggregation', ${Question.aggregation});
         setRadioButton('optdbpedia', ${Question.onlydb});
         setRadioButton('opthybrid', ${Question.hybrid});
+        setSelectAnswertype("${Question.answertype}");
+
     } );
 </script>
 <form method="POST" id="anotate1" action ="/anotate/${Question.id}" modelAttribute="formQuestion">
@@ -104,12 +113,20 @@
     <div class="form-group row mt-2">
         <div class="col-2">
             <label for="answertype">Answertype:</label>
-            <input type="text" class="form-control mb-2" id="answertype" name="answertype" value="${Question.answertype}" />
+
+            <select class="form-control mb-2" id="answertype" name="answertype" required>
+
+                <option value ="resource">resource</option>
+                <option value ="number">number</option>
+                <option value ="boolean">boolean</option>
+                <option value ="date">date</option>
+
+            </select>
 
             <div>
                 Out of Scope:
                 <label  class="radio-inline"><input type ="radio" class="mr-1" name="optscope" id="optscope_true" value ="true">True</label>
-                <label  class="radio-inline"><input type ="radio" class="mr-1" name="optscope" id="optscope_false" value="false">False</label>
+                <label  class="radio-inline"><input type ="radio" class="mr-1" name="optscope" id="optscope_false" value="false" >False</label>
             </div>
 
             <div>
@@ -136,13 +153,13 @@
         <div class="col">
             <div class="col">
                 <label for="sparql">SPARQL:</label>
-                <textarea rows="11" class="form-control" id="sparql" name ="sparql" form="anotate1" onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out value="${Question.sparqlQuery}"></c:out></textarea>
+                <textarea rows="11" class="form-control" id="sparql" name ="sparql" required onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out value="${Question.sparqlQuery}"></c:out></textarea>
             </div>
         </div>
         <div class="col">
             <div class="col">
                 <label for="file_answer">Answer from File:</label>
-                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" form="anotate1"><c:out value="${GoldenAnswer}"></c:out></textarea>
+                <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer" required><c:out value="${GoldenAnswer}"></c:out></textarea>
             </div>
 
             <div class="col">
@@ -173,14 +190,14 @@
 
             <c:forEach items="${Question.translationsList}" var="translation">
             <div class="col-1">
-                <input type ="text" class="form-control" name ="trans_lang" id ="${'lang_' +=translation.id}" value="${translation.lang}" />
+                <input type ="text" class="form-control" name ="trans_lang" id ="${'lang_' +=translation.id}" value="${translation.lang}" required />
             </div>
             <div class="col-5">
-                <input type ="text" class="form-control" name ="trans_question" id ="${'questionString_' +=translation.id}" value="${translation.questionString}" />
+                <input type ="text" class="form-control" name ="trans_question" id ="${'questionString_' +=translation.id}" value="${translation.questionString}" required />
             </div>
 
                 <div class="col-6">
-                <input type ="text" class="form-control" name ="trans_keywords" id ="${'keyword_' +=translation.id}" value="${translation.getKeywordsAsString()}" />
+                <input type ="text" class="form-control" name ="trans_keywords" id ="${'keyword_' +=translation.id}" value="${translation.getKeywordsAsString()}" required/>
                 </div>
             </c:forEach>
 

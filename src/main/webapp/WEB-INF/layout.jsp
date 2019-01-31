@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" type="text/css">
-    <link href="${pageContext.request.contextPath}/resources/css/open-iconic-bootstrap.css" rel = "stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>

@@ -35,8 +35,8 @@
                     </c:otherwise>
                 </c:choose>
 
-                <td align="center"><c:if test="${question.activeVersion}"><span class="oi oi-check" title="check" aria-hidden="true"></span></c:if></td>
-                <td align="center"><c:if test="${question.anotated}"><span class="oi oi-check" title="check" aria-hidden="true"></span></c:if></td>
+                <td align="center"><c:if test="${question.activeVersion}"><i class="material-icons" >check_circle</i></c:if></td>
+                <td align="center"><c:if test="${question.anotated}"><i class="material-icons" >check_circle</i></c:if></td>
                 <td align="center"><button type="submit" class="btn btn-danger btn-sm" id="deleteId" name="deleteId" value="${question.id}">Delete</button></td>
 
             </tr>
