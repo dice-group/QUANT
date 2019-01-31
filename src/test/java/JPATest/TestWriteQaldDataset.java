@@ -38,7 +38,7 @@ public class TestWriteQaldDataset {
         File file2 = new File("src/test/resources/qald-8-train-multilingual.json");
 
      //   w.qaldWriter(peter, file);
-        w.qaldWriter(peter,file);
+        w.qaldWriter(peter,file, "empty");
 
 
 

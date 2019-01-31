@@ -24,9 +24,16 @@ public class Dataset implements Serializable {
 
     protected Dataset() {}
 
+    public Dataset(User user, String name, String endpoint) {
+        this.datasetUser = user;
+        this.name = name;
+        this.endpoint = endpoint;
+    }
+
     public Dataset(User user, String name) {
         this.datasetUser = user;
         this.name = name;
+        this.endpoint = "";
 
 
     }

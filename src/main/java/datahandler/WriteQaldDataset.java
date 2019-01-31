@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import webapp.services.TranslationsServiceImpl;
 import webapp.model.Dataset;
 import webapp.model.Questions;
@@ -14,10 +15,7 @@ import webapp.model.User;
 import webapp.services.DatasetServiceImpl;
 import webapp.services.QuestionsServiceImpl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +31,26 @@ public class WriteQaldDataset {
     @Autowired
     TranslationsServiceImpl translationsService;
 
-    public void qaldWriter(User user, File file) {
+    public File convert(MultipartFile file) throws IllegalStateException, IOException
+    {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fStream = new FileOutputStream(convFile);
+        fStream.write(file.getBytes());
+        fStream.close();
+        return convFile;
+    }
+
+    public void datsetWriter(User user, MultipartFile file, String endpoint)
+    {
+        try {
+            qaldWriter(user, convert(file), endpoint);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void qaldWriter(User user, File file, String endpoint) {
 
         //get Dataset ID and save to database
         try {
@@ -41,7 +58,7 @@ public class WriteQaldDataset {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(file));
             JSONObject g = (JSONObject) jsonObject.get("dataset");
             String datasetId = (String) g.get("id");
-            Dataset dataset = new Dataset(user, datasetId);
+            Dataset dataset = new Dataset(user, datasetId, endpoint);
             datasetService.saveDataset(dataset);
 
             //get Questions and save to database
