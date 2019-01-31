@@ -58,12 +58,13 @@ public class Suggestions {
         }while (correctionFound);
         return false;
     }
-    public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, List<Var>vars, List<Binding>bindings) {
+    //public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, String result)
+    public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, String result) {
         QuerySuggestions suggestions = new QuerySuggestions();
         if(needsCorrections(suggestions,queryString,endpoint)) {
             QuerySuggestor querySuggestor = new QuerySuggestor();
             suggestions.setIs_correct(false);
-            querySuggestor.correct(suggestions,queryString,endpoint,vars,bindings);
+            querySuggestor.correct(suggestions,queryString,endpoint,result);
             if(suggestions.getCorrectedQuery()!=null)
                 needsCorrections(suggestions,suggestions.getCorrectedQuery(),endpoint);
         }

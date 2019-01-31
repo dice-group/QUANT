@@ -1,11 +1,13 @@
 package suggestion.query;
 
 import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.query.*;
 import org.apache.jena.shared.PrefixMapping;
 import org.apache.jena.sparql.core.TriplePath;
 import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.engine.binding.Binding;
+import org.apache.jena.sparql.engine.binding.BindingFactory;
 import org.apache.jena.sparql.syntax.ElementPathBlock;
 import org.apache.jena.sparql.syntax.ElementVisitorBase;
 import org.apache.jena.sparql.syntax.ElementWalker;
@@ -67,7 +69,7 @@ public class QuerySuggestor {
         }
         return queryString;
     }
-    private String generateQueryPredicates(String queryString, List<Node>missingPredicates, PrefixMapping prefixMapping, String endpoint, List<Var>vars, List<Binding>bindings){
+    private String generateQueryPredicates(String queryString, List<Node>missingPredicates, PrefixMapping prefixMapping, String endpoint,String result /*List<Var>vars, List<Binding>bindings*/){
         String oldQuery = queryString;
         Map<Node,String>missingPredicateMapping = new HashMap<>();
         queryString = queryString.replace("DISTINCT","");
@@ -79,6 +81,16 @@ public class QuerySuggestor {
             else queryString = queryString.replace(predicate.toString(prefixMapping), varname);
         }
         Query q = QueryFactory.create(queryString);
+        q.getResultVars().get(0);
+        List<Var>vars= new ArrayList<Var>();
+        Var uri =Var.alloc(q.getResultVars().get(0));
+        vars.add(uri);
+        List<Binding> bindings=new ArrayList<Binding>();
+        if(result.contains("http://")||result.contains("https://"))
+            bindings.add(BindingFactory.binding(uri, NodeFactory.createURI(result)));
+        else {
+            bindings.add(BindingFactory.binding(uri, NodeFactory.createLiteral(result)));
+        }
         q.setValuesDataBlock(vars,bindings);
         for(String var:missingPredicateMapping.values())
             q.addResultVar(var);
@@ -111,7 +123,7 @@ public class QuerySuggestor {
         }
         return score;
     }
-    public void correct(QuerySuggestions suggestions, String queryString, String endpoint, List<Var>vars, List<Binding>bindings){
+    public void correct(QuerySuggestions suggestions, String queryString, String endpoint, String result){
         PredicateSuggestor predicateSuggestor=new PredicateSuggestor();
         EntitySuggestor entitySuggestor=new EntitySuggestor();
         Query query = QueryFactory.create(queryString);
@@ -165,7 +177,7 @@ public class QuerySuggestor {
         if(correctedResources.size()>0||missingPredicates.size() > 0) {
             String correctedQueryString = generateQueryResources(query.toString(), correctedResources);
             if (missingPredicates.size() > 0)
-                suggestions.setCorrectedQuery(generateQueryPredicates(correctedQueryString, missingPredicates, query.getPrefixMapping(), endpoint,vars, bindings));
+                suggestions.setCorrectedQuery(generateQueryPredicates(correctedQueryString, missingPredicates, query.getPrefixMapping(), endpoint,result));
             else suggestions.setCorrectedQuery(correctedQueryString);
         }
     }
