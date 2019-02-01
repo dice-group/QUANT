@@ -35,10 +35,11 @@ public class TestWriteQaldDataset {
 
         //File file = new File("src/test/resources/qaldTest.json");
         File file = new File("src/test/resources/wikidata-train-7.json");
-        File file2 = new File("src/test/resources/qald-8-train-multilingual.json");
+      //  File file2 = new File("src/test/resources/qald-8-train-multilingual.json");
+        String endpoint = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
 
      //   w.qaldWriter(peter, file);
-        w.qaldWriter(peter,file, "empty");
+        w.qaldWriter(peter,file, endpoint);
 
 
 

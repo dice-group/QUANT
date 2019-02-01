@@ -2,6 +2,7 @@ package webapp.controller;
 
 
 import datahandler.WriteQaldDataset;
+import org.apache.jena.query.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import suggestion.Suggestions;
+import suggestion.query.QuerySuggestions;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
 import webapp.Repository.TranslationsRepository;
@@ -24,9 +27,7 @@ import webapp.services.TranslationsService;
 import webapp.services.UserService;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class DatasetController {
@@ -55,6 +56,7 @@ public class DatasetController {
     @Autowired
     WriteQaldDataset w;
 
+    Suggestions suggestions = new Suggestions();
 
     @RequestMapping(value = "/datasetlist", method = RequestMethod.GET)
     public ModelAndView datasetList() {
@@ -183,18 +185,47 @@ public class DatasetController {
     @RequestMapping(value = "/anotate/{id}", method = RequestMethod.GET)
     public ModelAndView anotate(@PathVariable("id") long id) {
         ModelAndView model = new ModelAndView("/anotate");
-        model.addObject("Question", questionsService.findDistinctById(id));
-        model.addObject("GoldenAnswer", questionsService.findDistinctById(id).getAnswerAsString());
-        model.addObject("nextQuestion", questionsService.findDistinctById(id).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId())));
+        Questions q = questionsService.findDistinctById(id);
+        model.addObject("Question", q);
+        model.addObject("GoldenAnswer", q.getAnswerAsString());
+        model.addObject("nextQuestion", q.getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId())));
         model.addObject("formQuestion", new Questions());
 
+        QuerySuggestions qs =new QuerySuggestions();
+        if (!q.getAnswer().isEmpty()) {
+           String setElement = (String)q.getAnswer().iterator().next();
+           qs= suggestions.gernerateQuerySuggestions(q.getSparqlQuery(),q.getDatasetQuestion().getEndpoint(),setElement);
+        }
 
-        return model;
+        Set<String> set=new HashSet();
+        if (qs.getAnswers().isPresent()) {
+            while (qs.getAnswers().get().hasNext()) {
+                qs.getAnswers().ifPresent(answer -> {
+                    List<String> vars = answer.getResultVars();
+
+                    for (String item : vars) {
+                        set.add(answer.next().get(item).toString());
+                    }
+                });
+
+
+            }
+        }
+        else if (qs.getBooleanAnswer().isPresent())
+        {
+            set.add(qs.getBooleanAnswer().toString());
+           // qs.getBooleanAnswer().ifPresent(bool -> bool.booleanValue()); //Type boolean not String!
+            //Ausgabe: Optional[false]; wird im view als "false" angezeigt.
+        }
+
+       model.addObject("Suggestion", qs);
+       model.addObject("EndpointAnswer", String.join("\n", set));
+       return model;
     }
 
 
     @RequestMapping(value = "/anotate/{id}", method=RequestMethod.POST)
-    public ModelAndView newVersion(@PathVariable("id") long id, @RequestParam("answertype") String answertype, @RequestParam("optscope") boolean outOfScope,
+    public String newVersion(@PathVariable("id") long id, @RequestParam("answertype") String answertype, @RequestParam("optscope") boolean outOfScope,
                                    @RequestParam("optaggregation")boolean aggregation, @RequestParam("optdbpedia")boolean onlydb,
                                    @RequestParam("opthybrid") boolean hybrid, @RequestParam("sparql") String sparqlQuery,
                                    @RequestParam("file_answer") Set<String> answer, @RequestParam("trans_lang") List<String> trans_lang,
@@ -211,6 +242,7 @@ public class DatasetController {
         boolean original =q.isOriginal();
         Questions v = questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(questionSetId);
         int version = v.getVersion() +1;
+
 
         try {
             // save Question in neuer Version
@@ -232,11 +264,11 @@ public class DatasetController {
             q.setAnotated(true);
             questionsService.saveQuestions(q);
             System.out.println( "Successfully saved new question version to Database!");
-            return anotate(nextQuestion);
+            return "redirect:/anotate/"+nextQuestion;
         }
         catch(Exception e) {
             model.addObject("errorMessage","Something went wrong!");
-            return model;
+            return "redirect:/anotate/"+id;
         }
     }
 
@@ -263,7 +295,7 @@ public class DatasetController {
                     translationsRepository.delete(item);}
 
                 questionsRepository.delete(q);
-                attributes.addFlashAttribute("success", "Question has been deleted successfully!");
+                attributes.addFlashAttribute("success", "The question was successfully deleted!");
                 return "redirect:/manageDataset/" + datasetId;
             }
     }

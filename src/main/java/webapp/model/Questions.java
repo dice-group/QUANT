@@ -35,7 +35,9 @@ public class Questions implements Serializable{
     private Timestamp timestamp;
     @Lob
     private String sparqlQuery;
+
     @ElementCollection
+    @Lob
     private Set<String> answer;
     private String originalId;
 
