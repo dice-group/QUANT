@@ -17,7 +17,6 @@
 
 
     function setSelectAnswertype(answertype) {
-        // $('answertype').val(answertype);
         document.getElementById('answertype').value = answertype;
         console.log(answertype)
 
@@ -28,7 +27,6 @@
         $.ajax({
             data: {query: sparqlQuery},
             dataType: "json",
-            //url: "http://dbpedia.org/sparql",
             url: "${Question.datasetQuestion.endpoint}"
         })
             .done(function (data) {
@@ -58,6 +56,7 @@
         }
         $("#endpoint_answer").val(resultList.join('\n'));
 
+
     }
 
     function addTranslationRow() {
@@ -77,7 +76,6 @@
     }
 
     function setSparqlSuggestion() {
-        // $('#sparql').val('#suggestedSparql');
         var newSuggestion = document.getElementById('suggestedSparql').innerText;
         document.getElementById('sparql').value = newSuggestion;
         sparqlQuery(newSuggestion)
@@ -93,6 +91,7 @@
         setRadioButton('optdbpedia', ${Question.onlydb});
         setRadioButton('opthybrid', ${Question.hybrid});
         setSelectAnswertype("${Question.answertype}");
+
 
     });
 </script>
@@ -180,9 +179,11 @@
                 <textarea rows="6" class="form-control" id="sparql" name="sparql" required
                           onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out
                         value="${Question.sparqlQuery}"></c:out></textarea>
+
                 <a href="#" onclick="setSparqlSuggestion()" class="text-success">Load Suggestion: </a><br/>
                 <span class="text-secondary" id="suggestedSparql"><c:out
                         value=" ${Suggestion.correctedQuery}"> </c:out></span>
+
             </div>
         </div>
         <div class="col">
@@ -195,7 +196,7 @@
             <div class="col">
                 <label for="endpoint_answer">Answer from Endpoint: <c:out
                         value="${Question.datasetQuestion.endpoint}"></c:out></label>
-                <textarea rows="4" class="form-control" id="endpoint_answer" form="anotate1">${EndpointAnswer}</textarea>
+                <textarea rows="4" class="form-control" id="endpoint_answer">${EndpointAnswer}</textarea>
             </div>
 
 

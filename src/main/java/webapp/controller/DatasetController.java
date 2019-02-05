@@ -198,7 +198,13 @@ public class DatasetController {
         }
 
         Set<String> set=new HashSet();
-        if (qs.getAnswers().isPresent()) {
+        qs.getAnswers().ifPresent(rs -> {
+            while (rs.hasNext()){
+                        String var = rs.getResultVars().get(0);
+                        set.add(rs.next().get(var).toString());
+                    }
+            });
+        /*if (qs.getAnswers().isPresent()) {
             while (qs.getAnswers().get().hasNext()) {
                 qs.getAnswers().ifPresent(answer -> {
                     List<String> vars = answer.getResultVars();
@@ -210,13 +216,8 @@ public class DatasetController {
 
 
             }
-        }
-        else if (qs.getBooleanAnswer().isPresent())
-        {
-            set.add(qs.getBooleanAnswer().toString());
-           // qs.getBooleanAnswer().ifPresent(bool -> bool.booleanValue()); //Type boolean not String!
-            //Ausgabe: Optional[false]; wird im view als "false" angezeigt.
-        }
+        }*/
+        qs.getBooleanAnswer().ifPresent(val->set.add(val.toString()));
 
        model.addObject("Suggestion", qs);
        model.addObject("EndpointAnswer", String.join("\n", set));

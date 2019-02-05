@@ -11,6 +11,7 @@
         <tr>
             <th>ID</th>
             <th>Question</th>
+            <th>Anotator</th>
             <th class="text-center">Version Nr.</th>
             <th class="text-center">Active</th>
 
@@ -31,8 +32,9 @@
                         <td>empty</td>
                     </c:otherwise>
                 </c:choose>
+                <td><c:out value=" ${question.anotatorUser.email}"></c:out></td>
+                <td class="text-center"><c:out value="${question.version}"></c:out></td>
 
-                <td><c:out value="${question.version}"></c:out></td>
                 <c:choose>
                     <c:when test="${question.activeVersion}">
                         <c:set var = "wasActive" value = "${question.id}"/>
