@@ -38,6 +38,9 @@ public class KeyWordSuggestor {
         return Optional.empty();
 
     }
+    public boolean hasStopwords(String lang){
+        return stopWordMap.containsKey(lang);
+    }
     public List<String> suggestKeywords(String question, String lang){
         Set<String> stopwords = stopWordMap.get(lang);
         String[] words = question.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
