@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import webapp.model.User;
 import webapp.services.UserService;
 
 
@@ -24,25 +25,32 @@ public class UserController {
     public ModelAndView admin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView model=new ModelAndView("/dashboard");
-        auth.getPrincipal();
-        model.addObject("user",auth.getName());
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         return model;
 
     }
 
     @RequestMapping("/register")
     public ModelAndView addNewUser(){
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             ModelAndView model=new ModelAndView("register");
+            User user = userService.getByEmail(auth.getName());
+            model.addObject("User",user);
             return model;
     }
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public ModelAndView register(@RequestParam("email")String email,@RequestParam("password")String password,
                                  @RequestParam("confirm-password")String confirmPassword,@RequestParam("role")String role){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String message=userService.addUser(email,password,confirmPassword,role);
         ModelAndView model=new ModelAndView("/register");
         if(!"User successfully added".equals(message))
             model.addObject("errorMessage",message);
         else model.addObject("successMessage",message);
+        auth.getPrincipal();
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         return model;
     }
 
@@ -51,6 +59,8 @@ public class UserController {
         ModelAndView model=new ModelAndView("changePassword");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addObject("logedInAs",auth.getName());
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         return model;
     }
     @RequestMapping(value="/changePassword", method = RequestMethod.POST)
@@ -62,13 +72,17 @@ public class UserController {
         if(!"Password successfully changed".equals(message))
             model.addObject("errorMessage",message);
         else model.addObject("successMessage",message);
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         return model;
     }
     @RequestMapping("/changeEmail")
     public ModelAndView modifyEmail(){
         ModelAndView model=new ModelAndView("changeEmail");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addObject("logedInAs",auth.getName());
+        model.addObject("logedInAs",auth.getName());User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
+
         return model;
     }
     @RequestMapping(value="/changeEmail", method = RequestMethod.POST)
@@ -76,6 +90,8 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String message=userService.changeEmail(userService.getByEmail(auth.getName()),newEmail,password);
         ModelAndView model=new ModelAndView("/register");
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         if(!"Email successfully changed".equals(message))
             model.addObject("errorMessage",message);
         else model.addObject("successMessage",message);
@@ -84,8 +100,10 @@ public class UserController {
 
     @RequestMapping(value="/userlist",method = RequestMethod.GET)
     public ModelAndView userList(){
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView model = new ModelAndView("/userlist");
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         model.addObject("Users",userService.getAllUsers());
         return model;
     }
@@ -95,6 +113,8 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String message=userService.modifyUser(userService.getByEmail(auth.getName()),Integer.parseInt(id),username,adminPassword,role);
         ModelAndView model=new ModelAndView("redirect:/userlist");
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         model.addObject("Users",userService.getAllUsers());
         model.addObject("message",message);
         return(model);
@@ -106,6 +126,8 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String message=userService.modifyUserPassword(userService.getByEmail(auth.getName()),Integer.parseInt(id),newPassword,confirmNewPassword,adminPassword);
         ModelAndView model=new ModelAndView("redirect:/userlist");
+        User user = userService.getByEmail(auth.getName());
+        model.addObject("User",user);
         model.addObject("Users",userService.getAllUsers());
         model.addObject("message",message);
         return(model);

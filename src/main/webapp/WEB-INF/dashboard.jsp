@@ -17,7 +17,7 @@
 <body>
 <%@include file="navbar.jsp"%>
     <div class="container">
-        <h1>Welcome ${user}</h1>
+        <h1>Welcome ${User.email}</h1>
     </div>
 <!-- Bootstrap core JavaScript -->
 <script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>

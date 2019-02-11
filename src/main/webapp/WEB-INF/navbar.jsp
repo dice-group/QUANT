@@ -11,8 +11,10 @@
                 <div class="dropdown-menu" aria-labelledby="dropdown09">
                     <a class="dropdown-item" href="/changeEmail">Change Email Adress</a>
                     <a class="dropdown-item" href="/changePassword">Change Password</a>
-                    <a class="dropdown-item" href="/register">Register</a>
-                    <a class="dropdown-item" href="/userlist">User List</a>
+                    <c:if test="${User.role =='ADMIN'}">
+                        <a class="dropdown-item" href="/register">Register</a>
+                        <a class="dropdown-item" href="/userlist">User List</a>
+                    </c:if>
                     <a class="dropdown-item" href="/logout">Logout</a>
                 </div>
             </li>
