@@ -1,5 +1,21 @@
 <%@include file="layout.jsp" %>
 
+<script>
+    function deleteQuestion(form)
+    {
+
+       if( window.confirm("Are you sure, you want to delete this question?"))
+       {
+           form.submit();
+       }
+       else {return false;}
+
+
+
+    }
+
+
+</script>
 <p class="h4">Manage Dataset: ${DatasetName}
     <a href="/newQuestion/${Dataset.id}"><button class="ml-2 btn btn-success btn-sm"> Add new Question</button></a>
 
@@ -9,7 +25,7 @@
         <span class="alert alert-success">${success}</span></c:if>
 </p>
 <div class ="table-responsive">
-    <form id ="manageDatasetForm" action="/manageDataset/${Dataset.id}" method="POST">
+    <form id ="manageDatasetForm" action="/manageDataset/${Dataset.id}" method="POST" onSubmit="return confirm('Are you sure you wish to delete?')">
 
     <table id="table_id" class="display" style="width:100%" >
         <thead>

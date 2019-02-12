@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import suggestion.Suggestions;
+import suggestion.keywords.KeyWordSuggestor;
 import suggestion.query.QuerySuggestions;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
@@ -27,6 +28,7 @@ import webapp.services.TranslationsService;
 import webapp.services.UserService;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -56,7 +58,9 @@ public class DatasetController {
     @Autowired
     WriteQaldDataset w;
 
+
     Suggestions suggestions = new Suggestions();
+    KeyWordSuggestor k = new KeyWordSuggestor();
 
     @RequestMapping(value = "/datasetlist", method = RequestMethod.GET)
     public ModelAndView datasetList() {
@@ -73,6 +77,7 @@ public class DatasetController {
     @RequestMapping(value = "/datasetlist", method = RequestMethod.POST)
     public String uploadDataset(@RequestParam ("file") MultipartFile file,
                                       @RequestParam("endpoint") String endpoint,
+                                @RequestParam("defaultLanguage") String defaultLanguage,
                                 RedirectAttributes attributes)
     {
         ModelAndView model = new ModelAndView("/uploadDataset");
@@ -83,7 +88,7 @@ public class DatasetController {
 
         try {
 
-            w.datsetWriter(user, file, endpoint);
+            w.datsetWriter(user, file, endpoint, defaultLanguage);
             attributes.addFlashAttribute("success", "Dataset has been saved successfully!");
             return "redirect:/datasetlist";
         }
@@ -94,78 +99,6 @@ public class DatasetController {
 
     }
 
-
-    @RequestMapping(value="manageDataset/{id}", method = RequestMethod.GET)
-    public ModelAndView manageDataset(@PathVariable ("id") long id){
-        ModelAndView model = new ModelAndView("/manageDataset");
-        model.addObject("Dataset", datasetService.findDatasetByID(id));
-        model.addObject("Questions", questionsService.findAllQuestionsByDatasetQuestion_Id(id));
-        return model;
-    }
-
-    @RequestMapping(value="/newQuestion/{datasetId}" , method =RequestMethod.GET)
-    public ModelAndView newQuestion(@PathVariable ("datasetId") long datasetId) {
-        ModelAndView model =new ModelAndView("newQuestion");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        User user = userService.getByEmail(username);
-        model.addObject("User", user);
-        model.addObject("Dataset", datasetService.findDatasetByID(datasetId));
-    return model;
-    }
-
-    @RequestMapping(value="/newQuestion/{datasetId}" , method =RequestMethod.POST)
-    public String saveNewQuestion(@PathVariable("datasetId") long datasetId,
-                                  @RequestParam("user") User user,
-                                  @RequestParam("answertype") String answertype,
-                                  @RequestParam("optscope") boolean outOfScope,
-                                  @RequestParam("optaggregation") boolean aggregation,
-                                  @RequestParam("optdbpedia") boolean onlydb,
-                                  @RequestParam("opthybrid") boolean hybrid,
-                                  @RequestParam("sparql") String sparqlQuery,
-                                  @RequestParam("file_answer") Set<String> answer,
-                                  @RequestParam("trans_lang") List<String> trans_lang,
-                                  @RequestParam("trans_question") List<String> trans_question,
-                                  @RequestParam("trans_keywords") List<String> trans_keywords,
-
-                                  RedirectAttributes attributes)
-    {
-        Dataset dataset = datasetService.findDatasetByID(datasetId);
-        long questionSetId = 0;
-        boolean original = false;
-        int version = 0;
-        boolean anotated = true;
-        boolean activeVersion = true;
-
-        try {
-            // save Question in neuer Version
-            Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery, answer);
-            questionsService.saveQuestions(newQuestion);
-            newQuestion.setQuestionSetId(newQuestion.getId());
-            questionsService.saveQuestions(newQuestion);
-
-            // dann Schleife über "trans_lang" - jedes Element erzeugt neuen Datensatz
-            for (int i = 0; i < trans_lang.size(); i++) {
-                String keywords[] = new String[trans_lang.size()];
-                keywords[i] = trans_keywords.get(i);
-                List<String> keyword_list = Arrays.asList(keywords[i]);
-
-                //  List<String> keywordList = (List)trans_keywords.get(i);
-                Translations translations = new Translations(newQuestion, trans_lang.get(i), keyword_list, trans_question.get(i));
-                translationsService.saveTranslations(translations);
-            }
-
-            attributes.addFlashAttribute("success", "Question has been saved successfully.");
-            return "redirect:/newQuestion/" + datasetId;
-        }
-
-        catch (Exception e) {
-            attributes.addFlashAttribute("error", "An error occured while saving the question.");
-            return "redirect:/newQuestion/" + datasetId;
-        }
-
-
-    }
 
     @RequestMapping(value = "/questionslist/{id}", method = RequestMethod.GET)
     public ModelAndView questionList(@PathVariable("id") long id) {
@@ -190,6 +123,28 @@ public class DatasetController {
         model.addObject("GoldenAnswer", q.getAnswerAsString());
         model.addObject("nextQuestion", q.getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId())));
         model.addObject("formQuestion", new Questions());
+        model.addObject("LanguageKeys", translationsService.getQuestionsByLang(q).keySet());
+
+        HashMap<String, String> questionStrings = translationsService.getQuestionsByLang(q);
+        model.addObject("TranslationMap", questionStrings);
+
+        HashMap<String, String> keywordMap = translationsService.getKeywordsByLang(q);
+        model.addObject("KeywordMap", keywordMap);
+
+        ArrayList<String> lang = translationsService.getLanguages(q);
+        model.addObject("Language", lang);
+
+        String dL = q.getDatasetQuestion().getDefaultLanguage();
+        String defaultLang ="";
+        if (!"".equals(dL))
+        {
+            defaultLang = dL;
+        }
+        else {
+            defaultLang = lang.get(0);
+        }
+        model.addObject("DefaultLanguage", defaultLang);
+
 
         QuerySuggestions qs =new QuerySuggestions();
         if (!q.getAnswer().isEmpty()) {
@@ -204,33 +159,43 @@ public class DatasetController {
                         set.add(rs.next().get(var).toString());
                     }
             });
-        /*if (qs.getAnswers().isPresent()) {
-            while (qs.getAnswers().get().hasNext()) {
-                qs.getAnswers().ifPresent(answer -> {
-                    List<String> vars = answer.getResultVars();
 
-                    for (String item : vars) {
-                        set.add(answer.next().get(item).toString());
-                    }
-                });
-
-
-            }
-        }*/
         qs.getBooleanAnswer().ifPresent(val->set.add(val.toString()));
 
        model.addObject("Suggestion", qs);
        model.addObject("EndpointAnswer", String.join("\n", set));
+
+
+       Map<String, String> keywordSuggestionsMap = new HashMap<String, String>();
+
+       for(String item: lang) {
+
+           if (questionStrings.containsKey(item) && k.hasStopwords(item) && keywordMap.get(item).isEmpty() )
+           {
+               String keywordString = String.join(",", k.suggestKeywords(questionStrings.get(item), item));
+               keywordSuggestionsMap.put(item,keywordString);
+
+           }
+
+       }
+
+
+        model.addObject("KeywordSuggestion", keywordSuggestionsMap);
        return model;
     }
 
 
     @RequestMapping(value = "/anotate/{id}", method=RequestMethod.POST)
-    public String newVersion(@PathVariable("id") long id, @RequestParam("answertype") String answertype, @RequestParam("optscope") boolean outOfScope,
-                                   @RequestParam("optaggregation")boolean aggregation, @RequestParam("optdbpedia")boolean onlydb,
-                                   @RequestParam("opthybrid") boolean hybrid, @RequestParam("sparql") String sparqlQuery,
-                                   @RequestParam("file_answer") Set<String> answer, @RequestParam("trans_lang") List<String> trans_lang,
-                                   @RequestParam("trans_question") List<String> trans_question, @RequestParam("trans_keywords") List<String> trans_keywords)
+    public String newVersion(@PathVariable("id") long id, @RequestParam("answertype") String answertype,
+                             @RequestParam("optscope") boolean outOfScope,
+                                   @RequestParam("optaggregation")boolean aggregation,
+                             @RequestParam("optdbpedia")boolean onlydb,
+                                   @RequestParam("opthybrid") boolean hybrid,
+                             @RequestParam("sparql") String sparqlQuery,
+                                   @RequestParam("file_answer") Set<String> answer,
+                             @RequestParam("trans_lang") List<String> trans_lang,
+                                   @RequestParam("trans_question") List<String> trans_question,
+                                   @RequestParam("trans_keywords") List<String> trans_keywords)
         {
         ModelAndView model=new ModelAndView("/newVersion");
         long nextQuestion = questionsService.findDistinctById(id).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
@@ -251,16 +216,33 @@ public class DatasetController {
             questionsService.saveQuestions(newQuestionVersion);
 
             // dann Schleife über "trans_lang" - jedes Element erzeugt neuen Datensatz
-            for (int i = 0; i < trans_lang.size(); i++) {
-                String keywords[] = new String[trans_lang.size()];
-                keywords[i] = trans_keywords.get(i);
-                List<String> keyword_list = Arrays.asList(keywords[i]);
 
-                //  List<String> keywordList = (List)trans_keywords.get(i);
-                Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), keyword_list, trans_question.get(i));
-                translationsService.saveTranslations(translations);
 
-            }
+                for (int i = 0; i < trans_lang.size(); i++) {
+                    List<String> keywords = null;
+
+                    if(!trans_keywords.get(i).isEmpty())
+
+                    {
+                        if  (trans_lang.size()>1)
+                        {
+
+                            keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
+                        }
+
+                        else
+                        {
+                                keywords = trans_keywords;
+                        }
+                    }
+
+                    if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
+                        Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), keywords, trans_question.get(i));
+                        translationsService.saveTranslations(translations);
+                    }
+                }
+
+
 
             q.setAnotated(true);
             questionsService.saveQuestions(q);
@@ -271,6 +253,16 @@ public class DatasetController {
             model.addObject("errorMessage","Something went wrong!");
             return "redirect:/anotate/"+id;
         }
+    }
+
+
+    @RequestMapping(value="manageDataset/{id}", method = RequestMethod.GET)
+    public ModelAndView manageDataset(@PathVariable ("id") long id){
+        ModelAndView model = new ModelAndView("/manageDataset");
+        model.addObject("Dataset", datasetService.findDatasetByID(id));
+        model.addObject("Questions", questionsService.findAllQuestionsByDatasetQuestion_Id(id));
+
+        return model;
     }
 
     @RequestMapping(value = "/manageDataset/{id}", method=RequestMethod.POST)
@@ -306,40 +298,7 @@ public class DatasetController {
     }
     }
 
-    @RequestMapping(value = "/deleteDataset", method=RequestMethod.POST)
-    public String deleteDataset(@RequestParam("datasetId") long datasetId,
-                                 RedirectAttributes attributes)
-    {
-        //ModelAndView model=new ModelAndView("/deleteDataset");
 
-        try{
-            Dataset dataset = datasetService.findDatasetByID(datasetId);
-
-            List<Questions> questionList = questionsService.findAllQuestionsByDatasetQuestion_Id(datasetId);
-            for (Questions q : questionList)
-            {
-                questionsRepository.delete(q);
-
-                List<Translations> translationList = translationsRepository.findByQid(q);
-                for (Translations t : translationList) {
-                    translationsRepository.delete(t);
-                }
-
-            }
-            datasetRepository.delete(dataset);
-
-            attributes.addFlashAttribute("success", "Dataset has been deleted successfully!");
-            return "redirect:/datasetlist";
-        }
-
-        catch(Exception e) {
-
-            attributes.addFlashAttribute("error", "An error occured while deleting the dataset!");
-            return "redirect:/datasetlist";
-        }
-
-
-    }
 
 }
 

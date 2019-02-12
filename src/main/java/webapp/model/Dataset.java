@@ -17,6 +17,7 @@ public class Dataset implements Serializable {
     private User datasetUser;
     private String name;
     private String endpoint;
+    private String defaultLanguage;
 
 
 //   @OneToMany(mappedBy = "datasetQuestion")
@@ -24,17 +25,18 @@ public class Dataset implements Serializable {
 
     protected Dataset() {}
 
-    public Dataset(User user, String name, String endpoint) {
+    public Dataset(User user, String name, String endpoint, String defaultLanguage) {
         this.datasetUser = user;
         this.name = name;
         this.endpoint = endpoint;
+        this.defaultLanguage = defaultLanguage;
     }
 
     public Dataset(User user, String name) {
         this.datasetUser = user;
         this.name = name;
         this.endpoint = "";
-
+        this.defaultLanguage="en"; //Fallback
 
     }
 
@@ -69,5 +71,11 @@ public class Dataset implements Serializable {
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
 
+    public void setDefaultLanguage(String defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
 }

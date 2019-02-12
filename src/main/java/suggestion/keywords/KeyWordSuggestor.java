@@ -43,7 +43,7 @@ public class KeyWordSuggestor {
     }
     public List<String> suggestKeywords(String question, String lang){
         Set<String> stopwords = stopWordMap.get(lang);
-        String[] words = question.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        String[] words = question.replaceAll("[\\-.?¿!]", "").toLowerCase().split("\\s+"); //[\\p{Alnum},\\s#\\-.]
         List<String>keywords = new ArrayList<>();
         for (String word : words)
             if (!stopwords.contains(word))

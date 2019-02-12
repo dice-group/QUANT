@@ -1,12 +1,12 @@
 package webapp.model;
 
 
-import org.apache.jena.tdb.store.Hash;
+import webapp.services.QuestionsService;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
+
 
 
 @Entity
@@ -29,6 +29,12 @@ public class Translations implements Serializable {
 
     protected Translations(){}
 
+    public Translations(Questions qid, String lang, String questionString)
+    {
+        this.qid = qid;
+        this.lang = lang;
+        this.questionString = questionString;
+    }
     public Translations(Questions qid, String lang, List keywords, String questionString)
     {
         this.qid = qid;

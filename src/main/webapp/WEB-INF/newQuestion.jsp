@@ -189,7 +189,7 @@
                 </div>
 
                 <div class="col-6">
-                    <input type ="text" class="form-control" name ="trans_keywords" required />
+                    <input type ="text" class="form-control" name ="trans_keywords" />
                 </div>
 
         </div>

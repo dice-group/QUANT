@@ -61,18 +61,20 @@
 
     function addTranslationRow() {
         var div = document.createElement('div');
+
         div.className = 'form-group row mt-2';
         div.innerHTML = '<div class="col-1">\n' +
-            '            <input type ="text" class="form-control" name ="trans_lang"  value="" required>\n' +
+            '            <input type ="text" class="form-control" name ="trans_lang" value="" >\n' +
             '        </div>\n' +
             '        <div class="col-5">\n' +
-            '            <input type ="text" class="form-control" name ="trans_question"  value="" required>\n' +
+            '            <input type ="text" class="form-control" name ="trans_question"   value="" >\n' +
             '        </div>\n' +
             '\n' +
             '            <div class="col-6">\n' +
-            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" required>\n' +
+            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" >\n' +
             '            </div>'
         document.getElementById('trans_wrapper').appendChild(div);
+
     }
 
     function setSparqlSuggestion() {
@@ -100,7 +102,9 @@
     <div class="row ">
         <div class=" col">
             <span class="h4">Anotate Question:</span>
-            <mark>ID: <c:out value="${Question.id} - ${Question.translationsList[0].questionString}"></c:out></mark>
+
+                <mark>ID: <c:out value="  ${Question.id} - ${TranslationMap[DefaultLanguage]}"></c:out></mark>
+
         </div>
         <c:if test="${errorMessage}" var="eMessage">
             <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
@@ -218,28 +222,37 @@
             <div class="col-6">
                 Keywords: (comma separated)
             </div>
-            <%-- Textfelder für Lang, Question, Keywords --%>
+                <c:forEach items="${Language}" var="entry">
+                    <c:set var="key">${entry}</c:set>
 
-            <c:forEach items="${Question.translationsList}" var="translation">
-                <div class="col-1">
-                    <input type="text" class="form-control" name="trans_lang" id="${'lang_' +=translation.id}"
-                           value="${translation.lang}" required/>
-                </div>
-                <div class="col-5">
-                    <input type="text" class="form-control" name="trans_question"
-                           id="${'questionString_' +=translation.id}" value="${translation.questionString}" required/>
-                </div>
+                    <div class="col-1">
+                        <input type="text" class="form-control" name="trans_lang" id="${'lang_' +=entry}"
+                               value="${entry}" required/>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" class="form-control" name="trans_question"
+                               id="${'questionString_' +=entry}" value="${TranslationMap[entry]}" required/>
+                    </div>
 
-                <div class="col-6">
-                    <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=translation.id}"
-                           value="${translation.getKeywordsAsString()}" required/>
-                </div>
-            </c:forEach>
+                    <div class="col-6">
+                        <c:choose>
+                            <c:when test="${KeywordMap[entry]==''}"><c:set var="keywords" value="${KeywordSuggestion.get(entry)}"></c:set>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="keywords" value="${KeywordMap[entry]}"></c:set>
+                            </c:otherwise>
+                        </c:choose>
+                        <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=entry}"
+                               value="${keywords}" required/>
+                    </div>
+
+                </c:forEach>
 
         </div>
     </div>
 
 </form>
+
 
 
 <%@include file="footer.jsp" %>

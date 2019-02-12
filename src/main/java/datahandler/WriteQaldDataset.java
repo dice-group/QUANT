@@ -41,16 +41,16 @@ public class WriteQaldDataset {
         return convFile;
     }
 
-    public void datsetWriter(User user, MultipartFile file, String endpoint)
+    public void datsetWriter(User user, MultipartFile file, String endpoint, String defaultLanguage)
     {
         try {
-            qaldWriter(user, convert(file), endpoint);
+            qaldWriter(user, convert(file), endpoint, defaultLanguage);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void qaldWriter(User user, File file, String endpoint) {
+    public void qaldWriter(User user, File file, String endpoint, String defaultLanguage) {
 
         //get Dataset ID and save to database
         try {
@@ -58,7 +58,7 @@ public class WriteQaldDataset {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(file));
             JSONObject g = (JSONObject) jsonObject.get("dataset");
             String datasetId = (String) g.get("id");
-            Dataset dataset = new Dataset(user, datasetId, endpoint);
+            Dataset dataset = new Dataset(user, datasetId, endpoint, defaultLanguage);
             datasetService.saveDataset(dataset);
 
             //get Questions and save to database

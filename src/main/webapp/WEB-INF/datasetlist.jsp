@@ -52,9 +52,9 @@
                             <td><a href="/questionslist/${dataset.id}"><button class="btn btn-outline-info btn-sm">Anotate</button></a></td>
                         <c:if test="${User.role =='ADMIN'}">
                             <td><a href="/manageDataset/${dataset.id}"><button class="btn btn-outline-info btn-sm">Manage</button></a></td>
-                            <form id ="deleteDataset" action="/deleteDataset" method="post">
+                            <form id ="deleteDataset" action="/deleteDataset" method="post" onSubmit="return confirm('Are you sure you wish to delete?')">
                                 <input type ="hidden" name="datasetId" id ="datasetId" value ="${dataset.id}">
-                            <td><button type ="submit" class="btn btn-danger btn-sm">Delete</button></td>
+                            <td><button type ="submit"  class="btn btn-danger btn-sm">Delete</button></td>
                             </form>
                         </c:if>
                         </tr>
@@ -77,8 +77,20 @@
                     </div>
                     <div class="form-group row">
                         <label for ="endpoint" class="col-sm-2 col-form-label" >Endpoint:</label>
-                        <div clas="col-sm-10">
+                        <div class="col-sm-3">
                         <input type ="text" class= "form-control" name ="endpoint" id ="endpoint" placeholder="http://dbpedia.org/sparql" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for ="defaultLanguage" class="col-sm-2 col-form-label">Default Language: </label>
+                        <div class="col-sm-3">
+                           <select class="form-control" name ="defaultLanguage" id ="defaultLanguage" required>
+                            <option value="en">English</option>
+                            <option value="de">Deutsch</option>
+                            <option value="es">Espanol</option>
+                            <option value="fr">Francais</option>
+                           </select>
+
                         </div>
                     </div>
                         <button type ="submit" class ="btn btn-primary">Submit</button>
