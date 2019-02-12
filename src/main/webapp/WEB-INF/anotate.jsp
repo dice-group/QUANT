@@ -106,8 +106,10 @@
                 <mark>ID: <c:out value="  ${Question.id} - ${TranslationMap[DefaultLanguage]}"></c:out></mark>
 
         </div>
-        <c:if test="${errorMessage}" var="eMessage">
+        <c:if test="${errorMessage}" var="Message">
             <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
+        <c:if test="${successMessage}" var ="Message">
+            <span class="alert alert-success"><c:out value="${Message}"></c:out></span></c:if>
 
         <div class=" col">
             <button type="submit" class="btn btn-success btn-sm ml-2">Save changes</button>
@@ -236,10 +238,10 @@
 
                     <div class="col-6">
                         <c:choose>
-                            <c:when test="${KeywordMap[entry]==''}"><c:set var="keywords" value="${KeywordSuggestion.get(entry)}"></c:set>
+                            <c:when test="${KeywordMap[entry]==''}"><c:set var="keywords" value="suggestion, ${KeywordSuggestion.get(entry)}"></c:set>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="keywords" value="${KeywordMap[entry]}"></c:set>
+                                <c:set var="keywords" value="${KeywordMap[entry]} "></c:set>
                             </c:otherwise>
                         </c:choose>
                         <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=entry}"

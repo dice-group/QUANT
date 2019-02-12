@@ -68,7 +68,7 @@
             '        </div>\n' +
             '\n' +
             '            <div class="col-6">\n' +
-            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" required >\n' +
+            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" >\n' +
             '            </div>'
         document.getElementById('trans_wrapper').appendChild(div);
     }
