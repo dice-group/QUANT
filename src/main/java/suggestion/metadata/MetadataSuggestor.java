@@ -49,7 +49,7 @@ public class MetadataSuggestor {
             //Assumes, taht all answers have the smae type, and there is only one uri to be matched
             ResultSet rs = QueryExecutionFactory.sparqlService(endpoint, query).execSelect();
             if(rs.hasNext()){
-                metadataSuggestions.setOutOfScope(true);
+                metadataSuggestions.setOutOfScope(false);
                 QuerySolution solution = rs.next();
                 if(solution.get(solution.varNames().next()).isResource())
                     metadataSuggestions.setAnswerType("resource");

@@ -23,15 +23,9 @@
         <c:forEach items="${Questions}" var="question">
             <tr class="dataset-row" id="${question.id}">
                 <td>${question.id}</td>
-                <c:choose>
-                    <c:when test="${!empty question.translationsList[0].questionString}">
 
-                        <td><c:out value="${question.translationsList[0].questionString}"></c:out></td>
-                    </c:when>
-                    <c:otherwise>
-                        <td>empty</td>
-                    </c:otherwise>
-                </c:choose>
+                        <td><c:out value="${question.getDefaultTranslation()}"></c:out></td>
+
                 <td><c:out value=" ${question.anotatorUser.email}"></c:out></td>
                 <td class="text-center"><c:out value="${question.version}"></c:out></td>
 
