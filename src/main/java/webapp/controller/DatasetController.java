@@ -209,7 +209,6 @@ public class DatasetController {
         Questions v = questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(questionSetId);
         int version = v.getVersion() +1;
 
-
         try {
             // save Question in neuer Version
             Questions newQuestionVersion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, false, true, user, version, outOfScope, questionSetId, sparqlQuery, answer);
@@ -220,22 +219,17 @@ public class DatasetController {
 
                 for (int i = 0; i < trans_lang.size(); i++) {
                     List<String> keywords = null;
-
                     if(!trans_keywords.get(i).isEmpty())
-
                     {
                         if  (trans_lang.size()>1)
                         {
-
                             keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
                         }
-
                         else
                         {
                                 keywords = trans_keywords;
                         }
                     }
-
                     if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
                         Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), keywords, trans_question.get(i));
                         translationsService.saveTranslations(translations);
@@ -243,11 +237,19 @@ public class DatasetController {
                 }
 
 
-
             q.setAnotated(true);
             questionsService.saveQuestions(q);
             System.out.println( "Successfully saved new question version to Database!");
-            return "redirect:/anotate/"+nextQuestion;
+
+            if (questionsService.findDistinctById(nextQuestion).getVersion()==0)
+            {
+                return "redirect:/anotate/"+nextQuestion;
+            }
+            else {
+                model.addObject("successMessage", "This was the last question!");
+                return "redirect:/anotate/"+id;
+            }
+
         }
         catch(Exception e) {
             model.addObject("errorMessage","Something went wrong!");
