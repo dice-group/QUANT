@@ -5,6 +5,7 @@ import org.aksw.qa.commons.datastructure.Question;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import java.util.List;
+import java.util.Map;
 
 
 public interface QuestionsService {
@@ -18,4 +19,5 @@ public interface QuestionsService {
     List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, long id);
     List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed);
     Questions findDistinctById(long id);
+    public Map<String,List<String>> generateMergingTranslationsMap(long setId, long id);
 }

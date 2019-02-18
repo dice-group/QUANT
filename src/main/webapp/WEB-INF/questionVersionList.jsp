@@ -54,6 +54,9 @@
         <input type = "hidden" id ="nowActive" name="nowActive" value="">
         <input type="hidden" id="wasActive" name="wasActive" value="${wasActive}">
     </form>
+    <c:if test="${(User.role =='ADMIN') and Questions.size()>1}">
+        <a href="/merge/${Set}/${Id}"><button class="btn btn-outline-info btn-sm">Merge</button></a>
+    </c:if>
 </div>
 <script>
 
