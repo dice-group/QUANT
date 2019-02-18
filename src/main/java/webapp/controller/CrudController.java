@@ -1,5 +1,6 @@
 package webapp.controller;
 
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -174,6 +175,38 @@ public class CrudController {
         }
     }
 
+    @RequestMapping(value ="/deleteQuestionVersion/{SetId}/{Id}", method=RequestMethod.POST)
+    public String deleteQuestionVersion(@PathVariable("SetId") long SetId,
+                                        @PathVariable("Id") long Id,
+                                        @RequestParam("deleteId") long deleteId,
+                                        RedirectAttributes attributes)
+    {
+        System.out.println("Question to delete: " + deleteId);
+        Questions q = questionsService.findDistinctById(deleteId);
+        List<Translations> t = translationsRepository.findByQid(q);
+
+        try {
+            if(q.isActiveVersion() || q.isOriginal()) {
+                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
+                System.out.println("is active or original");
+                return "redirect:/questionVersionList/"+SetId + "/" + Id;
+            }
+            else {
+                for (Translations item :t){
+
+                    translationsRepository.delete(item);}
+
+                questionsRepository.delete(q);
+                attributes.addFlashAttribute("success", "The question was successfully deleted!");
+                return "redirect:/questionVersionList/" + SetId + "/" + Id;
+            }
+        }
+        catch(Exception e) {
+            attributes.addFlashAttribute("error", "An error occured while deleting the question!");
+            return "redirect:/questionVersionList/" + SetId + "/" + Id;
+        }
+
+    }
 
 
 }

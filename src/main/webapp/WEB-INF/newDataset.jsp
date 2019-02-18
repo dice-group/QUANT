@@ -1,17 +1,20 @@
 <%@include file="layout.jsp" %>
 
 <h3>Add new Dataset</h3>
+<p class="mb-2"><mark>Add a new empty Dataset or Upload an existing!</mark></p>
 
 <form id="formUpload" action = "#" method="post" enctype="multipart/form-data">
     <div class="form-group row">
-
         <label for ="file" class="col-sm-2 col-form-label">Upload Dataset:</label>
         <div class="col-sm-4">
             <input type ="file" class="form-control-file" name="file" id ="file" value="" required>
         </div>
+    </div>
+    <div class="form-group row">
         <label for ="datasetName" class=" col-sm-2 col-form-label">Dataset name:</label>
-            <div class="col-sm-4">
-                <input type ="text" class="form-control" name="datasetName" id="datasetName" value="" required>
+            <div class="col-sm-3">
+                <input type ="text" class="form-control" name="datasetName" id="datasetName" value="" placeholder="Only for empty datasets!" required>
+
             </div>
 
     </div>

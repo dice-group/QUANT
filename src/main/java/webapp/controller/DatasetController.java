@@ -230,7 +230,7 @@ public class DatasetController {
         User user = userService.getByEmail(username);
         Dataset dataset = q.getDatasetQuestion() ;
         long questionSetId = q.getQuestionSetId();
-        boolean original =q.isOriginal();
+        boolean original =false;
         Questions v = questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(questionSetId);
         int version = v.getVersion() +1;
 
@@ -304,9 +304,9 @@ public class DatasetController {
         System.out.println("Question to delete: " + deleteId);
 
         try {
-            if(q.isActiveVersion()) {
-                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question', is not allowed!");
-                System.out.println("is active");
+            if(q.isActiveVersion() || q.isOriginal()) {
+                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
+                System.out.println("is active or original");
                 return "redirect:/manageDataset/"+ datasetId;
             }
             else {
