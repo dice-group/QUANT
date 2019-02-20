@@ -1,13 +1,16 @@
 package webapp.controller;
 
 
+import datahandler.WriteJsonFileFromDataset;
 import datahandler.WriteQaldDataset;
-import org.apache.jena.query.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,8 +30,7 @@ import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
 
-import java.io.File;
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -57,6 +59,9 @@ public class DatasetController {
 
     @Autowired
     WriteQaldDataset w;
+
+    @Autowired
+    WriteJsonFileFromDataset downloadGenerator;
 
 
     Suggestions suggestions = new Suggestions();
@@ -298,6 +303,19 @@ public class DatasetController {
             attributes.addFlashAttribute("error", "An error occured while deleting the question!");
             return "redirect:/manageDataset/" + datasetId;
     }
+    }
+    @RequestMapping(path = "/download/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ByteArrayResource> download(@PathVariable ("id") long id) throws IOException {
+
+        // ...
+        byte[] file = downloadGenerator.generateJsonFileFromDataset(id);
+        ByteArrayResource resource = new ByteArrayResource(file);
+        HttpHeaders headers = new HttpHeaders(); headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=datasetdownload_"+id+".json");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
 

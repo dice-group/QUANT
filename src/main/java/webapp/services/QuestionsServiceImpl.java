@@ -31,6 +31,9 @@ public class QuestionsServiceImpl implements QuestionsService {
     public List<Questions> findAllQuestionsByDatasetQuestion_Id(long id) {return questionsRepository.findAllQuestionsByDatasetQuestion_Id(id);}
 
     @Override
+    public List<Questions> findAllQuestionsByDatasetQuestion_IdAndActivation(long id,boolean activation) {return questionsRepository.findQuestionsByDatasetQuestion_IdAndActiveVersion(id,activation);}
+
+    @Override
     public List<Questions> findQuestionsByDatasetQuestion_Id(long id) {return questionsRepository.findQuestionsByDatasetQuestion_Id(id);}
 
     @Override

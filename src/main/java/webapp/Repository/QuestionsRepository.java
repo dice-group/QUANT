@@ -14,6 +14,8 @@ public interface QuestionsRepository extends JpaRepository<Questions,Integer>{
 
         List<Questions> findQuestionsByQuestionSetId(long id);
 
+        List<Questions> findQuestionsByDatasetQuestion_IdAndActiveVersion(long id, boolean activated);
+
         List<Questions> findAll();
 
         List<Questions> findAllQuestionsByDatasetQuestion_Id(long id);

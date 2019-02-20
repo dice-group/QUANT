@@ -17,7 +17,8 @@ public interface QuestionsService {
     List<Questions> findQuestionsByDatasetQuestion_Id(long id);
     List<Questions> findQuestionsByQuestionSetId(long id);
     List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, long id);
+    List<Questions> findAllQuestionsByDatasetQuestion_IdAndActivation(long id,boolean activation);
     List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed);
     Questions findDistinctById(long id);
-    public Map<String,List<String>> generateMergingTranslationsMap(long setId, long id);
+    Map<String,List<String>> generateMergingTranslationsMap(long setId, long id);
 }

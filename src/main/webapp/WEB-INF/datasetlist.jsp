@@ -37,6 +37,7 @@
                     <th>ID</th>
                     <th>Dataset Name</th>
                     <th>Anotate</th>
+                    <th>Download</th>
                     <c:if test="${User.role =='ADMIN'}">
                     <th>Manage</th>
                     <th>Delete</th>
@@ -50,6 +51,7 @@
                             <td><c:out value="${dataset.id}"></c:out></td>
                         <td><c:out value="${dataset.getName()}"></c:out></td>
                             <td><a href="/questionslist/${dataset.id}"><button class="btn btn-outline-info btn-sm">Anotate</button></a></td>
+                            <td><a href="/download/${dataset.id}"><button class="btn btn-success btn-sm">Download</button></a></td>
                         <c:if test="${User.role =='ADMIN'}">
                             <td><a href="/manageDataset/${dataset.id}"><button class="btn btn-outline-info btn-sm">Manage</button></a></td>
                             <form id ="deleteDataset" action="/deleteDataset" method="post" onSubmit="return confirm('Are you sure you wish to delete?')">
