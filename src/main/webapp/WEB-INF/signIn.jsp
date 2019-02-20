@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container">
-        <form method="POST" action="/" style="max-width: 300px">
+        <form method="POST" action="/signIn" style="max-width: 300px">
             <h1 class="h3 mb-3 font-weight-normal">Ä Please sign in</h1>
             <div class="form-group">
                 <label for="email" class="sr-only">Email address</label>

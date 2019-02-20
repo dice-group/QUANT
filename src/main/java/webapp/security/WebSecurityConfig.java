@@ -28,13 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/webjars/**","/","/resources/css/**").permitAll()
+                .antMatchers("/webjars/**","/resources/css/**","/").permitAll()
                 .antMatchers("/register","/userlist","/merge/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/").usernameParameter("email").permitAll()
-                .successForwardUrl("/dashboard")
+                .loginPage("/signIn").usernameParameter("email").permitAll()
+                .successForwardUrl("/")
                 .and()
                 .httpBasic().and()
                 .logout()

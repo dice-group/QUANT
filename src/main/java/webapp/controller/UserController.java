@@ -15,18 +15,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/")
-    public ModelAndView index() {
-        ModelAndView model=new ModelAndView("/index");
+    @RequestMapping("/signIn")
+    public ModelAndView login() {
+        ModelAndView model=new ModelAndView("/signIn");
         return model;
     }
 
-    @RequestMapping("/dashboard")
-    public ModelAndView admin(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ModelAndView model=new ModelAndView("/dashboard");
-        User user = userService.getByEmail(auth.getName());
-        model.addObject("User",user);
+    @RequestMapping("/")
+    public  ModelAndView index(){
+        ModelAndView model=new ModelAndView("redirect:/datasetlist");
         return model;
 
     }
