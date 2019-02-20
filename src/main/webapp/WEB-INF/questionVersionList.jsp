@@ -14,6 +14,7 @@
             <th>Anotator</th>
             <th class="text-center">Version Nr.</th>
             <th class="text-center">Active</th>
+            <c:if test="${User.role =='ADMIN'}"><th class="text-center">Delete</th></c:if>
 
 
         </tr>
@@ -23,15 +24,9 @@
         <c:forEach items="${Questions}" var="question">
             <tr class="dataset-row" id="${question.id}">
                 <td>${question.id}</td>
-                <c:choose>
-                    <c:when test="${!empty question.translationsList[0].questionString}">
 
-                        <td><c:out value="${question.translationsList[0].questionString}"></c:out></td>
-                    </c:when>
-                    <c:otherwise>
-                        <td>empty</td>
-                    </c:otherwise>
-                </c:choose>
+                        <td><c:out value="${question.getDefaultTranslation()}"></c:out></td>
+
                 <td><c:out value=" ${question.anotatorUser.email}"></c:out></td>
                 <td class="text-center"><c:out value="${question.version}"></c:out></td>
 
@@ -45,7 +40,11 @@
                         <td class="form-check text-center"><input type="radio" class="form-check-input" id="version_${question.id}" name="versionControl" onchange="changeActiveVersion(${question.id})"></td>
                     </c:otherwise>
                 </c:choose>
-
+                <c:if test="${User.role =='ADMIN'}">
+                <form id ="deleteQuestionVersion" action="/deleteQuestionVersion/${Set}/${Id}" method="POST" onSubmit="return confirm('Are you sure you wish to delete?')">
+                <td class="text-center"><button type ="submit" class="btn btn-danger btn-sm" id="deleteId" name="deleteId" value="${question.id}">Delete</button></td>
+                </form>
+                </c:if>
             </tr>
 
         </c:forEach>

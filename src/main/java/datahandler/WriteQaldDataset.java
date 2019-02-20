@@ -41,6 +41,16 @@ public class WriteQaldDataset {
         return convFile;
     }
 
+    public void emptyDatasetWriter(User user, String name, String endpoint, String defaultLanguage)
+    {
+        try {
+            Dataset dataset = new Dataset(user, name, endpoint, defaultLanguage);
+            datasetService.saveDataset(dataset);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void datsetWriter(User user, MultipartFile file, String endpoint, String defaultLanguage)
     {
         try {
@@ -49,6 +59,7 @@ public class WriteQaldDataset {
             e.printStackTrace();
         }
     }
+
 
     public void qaldWriter(User user, File file, String endpoint, String defaultLanguage) {
 

@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import suggestion.Suggestions;
 import suggestion.keywords.KeyWordSuggestor;
+import suggestion.metadata.MetadataSuggestions;
+import suggestion.metadata.MetadataSuggestor;
 import suggestion.query.QuerySuggestions;
 import webapp.Repository.DatasetRepository;
 import webapp.Repository.QuestionsRepository;
@@ -66,6 +68,7 @@ public class DatasetController {
 
     Suggestions suggestions = new Suggestions();
     KeyWordSuggestor k = new KeyWordSuggestor();
+    MetadataSuggestor m = new MetadataSuggestor();
 
     @RequestMapping(value = "/datasetlist", method = RequestMethod.GET)
     public ModelAndView datasetList() {
@@ -79,13 +82,25 @@ public class DatasetController {
         return model;
     }
 
-    @RequestMapping(value = "/datasetlist", method = RequestMethod.POST)
-    public String uploadDataset(@RequestParam ("file") MultipartFile file,
+    @RequestMapping(value = "/newDataset", method = RequestMethod.GET)
+    public ModelAndView newDataset() {
+        ModelAndView model = new ModelAndView("/newDataset");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+        return model;
+    }
+
+
+    @RequestMapping(value = "/newDataset", method = RequestMethod.POST)
+    public String newDataset(@RequestParam ("file") MultipartFile file,
                                       @RequestParam("endpoint") String endpoint,
                                 @RequestParam("defaultLanguage") String defaultLanguage,
+                                @RequestParam("datasetName") String datasetName,
                                 RedirectAttributes attributes)
     {
-        ModelAndView model = new ModelAndView("/uploadDataset");
+        ModelAndView model = new ModelAndView("/newDataset");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.getByEmail(username);
@@ -93,13 +108,19 @@ public class DatasetController {
 
         try {
 
+            if (!file.isEmpty()){
+
             w.datsetWriter(user, file, endpoint, defaultLanguage);
-            attributes.addFlashAttribute("success", "Dataset has been saved successfully!");
             return "redirect:/datasetlist";
+            }
+            else {
+                w.emptyDatasetWriter(user, datasetName, endpoint, defaultLanguage);
+                return "redirect:/datasetlist";
+
+            }
         }
         catch (Exception e){
-            attributes.addFlashAttribute("error", "An Error occured while saving the database!");
-            return "redirect:/datasetlist";
+            return "redirect:/newDataset";
         }
 
     }
@@ -108,13 +129,16 @@ public class DatasetController {
     @RequestMapping(value = "/questionslist/{id}", method = RequestMethod.GET)
     public ModelAndView questionList(@PathVariable("id") long id) {
         ModelAndView model = new ModelAndView("/questionslist");
-        model.addObject("Questions", questionsService.findByDatasetQuestion_IdAndVersionAndRemoved(id, 0, false));
+        Dataset d = datasetService.findDatasetByID(id);
+        List<Questions> qL = questionsService.findByDatasetQuestion_IdAndVersionAndRemoved(id, 0, false);
+        model.addObject("Questions", qL);
         model.addObject("DatasetName", datasetService.findDatasetByID(id).getName());
         model.addObject("Title", "QUANT - Dataset Questions");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.getByEmail(username);
         model.addObject("User", user);
+
         return model;
     }
 
@@ -138,7 +162,6 @@ public class DatasetController {
 
         ArrayList<String> lang = translationsService.getLanguages(q);
         model.addObject("Language", lang);
-
         String dL = q.getDatasetQuestion().getDefaultLanguage();
         String defaultLang ="";
         if (!"".equals(dL))
@@ -183,9 +206,11 @@ public class DatasetController {
            }
 
        }
+       model.addObject("KeywordSuggestion", keywordSuggestionsMap);
+       MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(),q.getDatasetQuestion().getEndpoint() );
+       model.addObject("MetadataSuggestion", s);
 
 
-        model.addObject("KeywordSuggestion", keywordSuggestionsMap);
        return model;
     }
 
@@ -210,7 +235,7 @@ public class DatasetController {
         User user = userService.getByEmail(username);
         Dataset dataset = q.getDatasetQuestion() ;
         long questionSetId = q.getQuestionSetId();
-        boolean original =q.isOriginal();
+        boolean original =false;
         Questions v = questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(questionSetId);
         int version = v.getVersion() +1;
 
@@ -284,9 +309,9 @@ public class DatasetController {
         System.out.println("Question to delete: " + deleteId);
 
         try {
-            if(q.isActiveVersion()) {
-                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question', is not allowed!");
-                System.out.println("is active");
+            if(q.isActiveVersion() || q.isOriginal()) {
+                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
+                System.out.println("is active or original");
                 return "redirect:/manageDataset/"+ datasetId;
             }
             else {

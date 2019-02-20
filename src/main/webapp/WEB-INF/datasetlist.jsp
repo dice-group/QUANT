@@ -29,6 +29,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <c:if test="${error}" var="Message">
+                <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
+        <c:if test="${success}" var ="Message">
+            <span class="alert alert-success"><c:out value="${Message}"></c:out></span></c:if>
             <h4>Dataset List</h4>
             <div class ="table-responsive">
                 <table id="table_id" class="display" style="width:100%" > <!--class="table table-bordred table-striped-->
@@ -67,40 +71,9 @@
             <div class="row mt-4">
 
                 <div class="col-md-10">
-                    <hr />
-                    <h4>Upload new Dataset</h4>
 
-                <form id="formUpload" action = "#" method="post" enctype="multipart/form-data">
-                    <div class="form-group row">
-                        <label for ="file" class="col-sm-2 col-form-label">Upload Dataset:</label>
-                        <div class="col-sm-10">
-                        <input type ="file" class="form-control-file" name="file" id ="file" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for ="endpoint" class="col-sm-2 col-form-label" >Endpoint:</label>
-                        <div class="col-sm-3">
-                        <input type ="text" class= "form-control" name ="endpoint" id ="endpoint" placeholder="http://dbpedia.org/sparql" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for ="defaultLanguage" class="col-sm-2 col-form-label">Default Language: </label>
-                        <div class="col-sm-3">
-                           <select class="form-control" name ="defaultLanguage" id ="defaultLanguage" required>
-                            <option value="en">English</option>
-                            <option value="de">Deutsch</option>
-                            <option value="es">Espanol</option>
-                            <option value="fr">Francais</option>
-                           </select>
+                    <a href="/newDataset"><button class="btn btn-success">New Dataset</button></a>
 
-                        </div>
-                    </div>
-                        <button type ="submit" class ="btn btn-primary">Submit</button>
-                    <c:if test="${error != null}">
-                        <span class="alert alert-danger">${error}</span></c:if>
-                    <c:if test="${success != null}">
-                        <span class="alert alert-success">${success}</span></c:if>
-                </form>
                 </div>
             </div>
             </div>

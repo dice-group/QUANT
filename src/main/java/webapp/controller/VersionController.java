@@ -50,6 +50,28 @@ public class VersionController {
 
         return model;
     }
+
+    @RequestMapping(value = "/questionVersionList/{setId}/{qsId}", method = RequestMethod.POST)
+    public String updateActiveVersion(@PathVariable("setId") long setId, @PathVariable("qsId") long qsId, @RequestParam("wasActive") long wq, @RequestParam("nowActive") long nq) {
+
+        System.out.println("now active ID: " + nq + " was active ID: " + wq);
+
+        try {
+            Questions wasActive = questionsService.findDistinctById(wq);
+            wasActive.setActiveVersion(false);
+            questionsService.saveQuestions(wasActive);
+
+            Questions nowActive = questionsService.findDistinctById(nq);
+            nowActive.setActiveVersion(true);
+            questionsService.saveQuestions(nowActive);
+            System.out.println("Update: Active version successfully saved to database.");
+            return "redirect:/questionVersionList/" + setId + "/" + qsId;
+        }
+        catch (Exception e) {
+            return "Error while saving new active version";
+        }
+    }
+
     @RequestMapping(value = "/merge/{setId}/{qsId}", method = RequestMethod.POST)
     public String mergePost(@PathVariable("setId") long setId, @PathVariable("qsId") long qsId,
                                                 @RequestParam("query")long queryUserId,
@@ -102,24 +124,5 @@ public class VersionController {
 
 
 
-    @RequestMapping(value = "/questionVersionList/{setId}/{qsId}", method = RequestMethod.POST)
-        public String updateActiveVersion(@PathVariable("setId") long setId, @PathVariable("qsId") long qsId, @RequestParam("wasActive") long wq, @RequestParam("nowActive") long nq) {
 
-        System.out.println("now active ID: " + nq + " was active ID: " + wq);
-
-        try {
-            Questions wasActive = questionsService.findDistinctById(wq);
-            wasActive.setActiveVersion(false);
-            questionsService.saveQuestions(wasActive);
-
-            Questions nowActive = questionsService.findDistinctById(nq);
-            nowActive.setActiveVersion(true);
-            questionsService.saveQuestions(nowActive);
-            System.out.println("Update active version successfully saved to database.");
-            return "redirect:/questionVersionList/" + setId + "/" + qsId;
-        }
-        catch (Exception e) {
-        return "Error while saving new active version";
-        }
-        }
     }

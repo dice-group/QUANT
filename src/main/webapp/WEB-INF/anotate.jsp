@@ -1,4 +1,3 @@
-<% request.setCharacterEncoding("utf-8"); %>
 <%@include file="layout.jsp" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
@@ -103,7 +102,7 @@
         <div class=" col">
             <span class="h4">Anotate Question:</span>
 
-                <mark>ID: <c:out value="  ${Question.id} - ${TranslationMap[DefaultLanguage]}"></c:out></mark>
+                <mark>ID: <c:out value="  ${Question.id} - ${Question.getDefaultTranslation()}"></c:out></mark>
 
         </div>
         <c:if test="${errorMessage}" var="Message">
@@ -125,7 +124,7 @@
             <div class="row mb-2">
 
                 <div class="col-5">
-                    <label for="answertype">Answertype:</label>
+                    <label for="answertype">Answertype: <span class="alert-success"><c:out value="${MetadataSuggestion.answerType}"></c:out></span> </label>
                 </div>
                 <div class="col-7">
                     <select class="form-control mb-2" id="answertype" name="answertype" required>
@@ -142,11 +141,14 @@
 
             <div class="row">
                 <div class="col-5">Out of Scope:</div>
-                <div class="col-7"><label class="radio-inline"><input type="radio" class="mr-1" name="optscope"
-                                                                    id="optscope_true" value="true">True</label>
-                    <label class="radio-inline"><input type="radio" class="mr-1" name="optscope" id="optscope_false"
-                                                       value="false">False</label>
+                <div class="col-7">
+                    <label class="radio-inline">
+                    <input type="radio" class="mr-1" name="optscope" id="optscope_true" value="true">True</label>
+                    <label class="radio-inline">
+                        <input type="radio" class="mr-1" name="optscope" id="optscope_false" value="false">False</label>
+                    <span class="alert-success"><c:out value="${MetadataSuggestion.outOfScope}"></c:out> </span>
                 </div>
+
             </div>
 
             <div class="row">
@@ -155,6 +157,7 @@
                                                                     id="optaggregation_true" value="true">True</label>
                     <label class="radio-inline"><input type="radio" class="mr-1" name="optaggregation"
                                                        id="optaggregation_false" value="false">False</label>
+                    <span class="alert-success"><c:out value="${MetadataSuggestion.aggregation}"></c:out> </span>
                 </div>
             </div>
 
@@ -164,6 +167,7 @@
                                                                     id="optdbpedia_true" value="true">True</label>
                     <label class="radio-inline"><input type="radio" class="mr-1" name="optdbpedia" id="optdbpedia_false"
                                                        value="false">False</label>
+                    <span class="alert-success"><c:out value="${MetadataSuggestion.onlyDbo}"></c:out> </span>
                 </div>
             </div>
 
@@ -173,6 +177,7 @@
                                                                      id="opthybrid_true" value="true">True</label>
                     <label class="radio-inline "><input type="radio" class="mr-1" name="opthybrid" id="opthybrid_false"
                                                         value="false">False</label>
+                    <span class="alert-success"><c:out value="${MetadataSuggestion.hybrid}"></c:out> </span>
                 </div>
             </div>
             <script></script>
@@ -186,10 +191,11 @@
                           onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out
                         value="${Question.sparqlQuery}"></c:out></textarea>
 
+                <c:if test="${!empty Suggestion.correctedQuery}">
                 <a href="#" onclick="setSparqlSuggestion()" class="text-success">Load Suggestion: </a><br/>
                 <span class="text-secondary" id="suggestedSparql"><c:out
-                        value=" ${Suggestion.correctedQuery}"> </c:out></span>
-
+                        value="${Suggestion.correctedQuery}"> </c:out></span>
+                </c:if>
             </div>
         </div>
         <div class="col">

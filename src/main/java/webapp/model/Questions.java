@@ -257,4 +257,14 @@ public class Questions implements Serializable{
     }
 
 
+    public String getDefaultTranslation(){
+        String defaultLanguage = this.datasetQuestion.getDefaultLanguage();
+        this.translationsList.get(0).getQuestionString();
+        for(Translations t: this.translationsList){
+            if(defaultLanguage.equals(t.getLang())){
+                return t.getQuestionString();
+            }
+        }
+        return this.translationsList.get(0).getQuestionString();
+    }
 }
