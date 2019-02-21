@@ -16,6 +16,9 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Autowired
     QuestionsRepository questionsRepository;
 
+    @Autowired
+    QuestionsService questionsService;
+
 
     @Override
     public String saveQuestions(Questions questions){
@@ -48,6 +51,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed) {return questionsRepository.findByDatasetQuestion_IdAndVersionAndRemoved(id, version, removed);}
 
+
     public  Map<String,List<String>> generateMergingTranslationsMap(long setId, long id) {
         List<Questions>versions = questionsRepository.findQuestionsByDatasetQuestionIdAndQuestionSetId(setId, id);
         Map<String,List<String>> mergingTranslationsMap =new HashMap<String, List<String>>();
@@ -70,5 +74,27 @@ public class QuestionsServiceImpl implements QuestionsService {
                 mergingTranslationsMap.get(key).add(null);
         }
         return mergingTranslationsMap;
+    }
+
+    @Override
+    public String updateQuestions(Questions aQ, String answertype, boolean aggregation, boolean onlydb, boolean hybrid, boolean outOfScope, String sparqlQuery, Set<String> answer)
+    {
+        aQ.setAnswertype(answertype);
+        aQ.setAggregation(aggregation);
+        aQ.setOnlydb(onlydb);
+        aQ.setHybrid(hybrid);
+        aQ.setOutOfScope(outOfScope);
+        aQ.setSparqlQuery(sparqlQuery);
+        aQ.setAnswer(answer);
+
+        questionsService.saveQuestions(aQ);
+
+        return "Question version successfully updated!";
+    }
+
+    @Override
+    public Questions findQuestionSetIdById(long id)
+    {
+        return questionsRepository.findQuestionSetIdById(id);
     }
 }

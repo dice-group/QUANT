@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webapp.Repository.QuestionsRepository;
 import webapp.Repository.TranslationsRepository;
 import webapp.model.Questions;
@@ -38,7 +39,8 @@ public class VersionController {
     UserService userService;
 
     @RequestMapping(value = "/questionVersionList/{setId}/{qsId}", method = RequestMethod.GET)
-    public ModelAndView questionVersionList(@PathVariable("setId") long setId, @PathVariable("qsId") long qsId) {
+    public ModelAndView questionVersionList(@PathVariable("setId") long setId,
+                                            @PathVariable("qsId") long qsId){
         ModelAndView model = new ModelAndView("/questionVersionList");
         model.addObject("Questions", questionsService.findQuestionsByDatasetQuestionIdAndQuestionSetId(setId, qsId));
         model.addObject("Set", setId);
@@ -52,7 +54,11 @@ public class VersionController {
     }
 
     @RequestMapping(value = "/questionVersionList/{setId}/{qsId}", method = RequestMethod.POST)
-    public String updateActiveVersion(@PathVariable("setId") long setId, @PathVariable("qsId") long qsId, @RequestParam("wasActive") long wq, @RequestParam("nowActive") long nq) {
+    public String updateActiveVersion(@PathVariable("setId") long setId,
+                                      @PathVariable("qsId") long qsId,
+                                      @RequestParam("wasActive") long wq,
+                                      @RequestParam("nowActive") long nq,
+                                      RedirectAttributes attributes) {
 
         System.out.println("now active ID: " + nq + " was active ID: " + wq);
 
@@ -65,10 +71,12 @@ public class VersionController {
             nowActive.setActiveVersion(true);
             questionsService.saveQuestions(nowActive);
             System.out.println("Update: Active version successfully saved to database.");
+            attributes.addFlashAttribute("success", "Successfully changed the active question!");
             return "redirect:/questionVersionList/" + setId + "/" + qsId;
         }
         catch (Exception e) {
-            return "Error while saving new active version";
+            attributes.addFlashAttribute("error", "An error occured while changing the active version!");
+            return "Error changing the active version";
         }
     }
 

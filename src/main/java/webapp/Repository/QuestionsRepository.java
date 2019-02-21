@@ -3,6 +3,7 @@ package webapp.Repository;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
+import webapp.model.User;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public interface QuestionsRepository extends JpaRepository<Questions,Integer>{
         List<Questions> findQuestionsByDatasetQuestionIdAndQuestionSetId(long setId, long id);
         Questions findDistinctById(long id);
         Questions findTop1VersionByQuestionSetIdOrderByVersionDesc(long Id);
+        Questions findTop1QuestionByQuestionSetIdAndAnotatorUserAndVersionGreaterThan(long id, User user, int v);
+        Questions findQuestionSetIdById(long id);
+
 
 
 

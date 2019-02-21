@@ -94,28 +94,20 @@ public class CrudController {
             questionsService.saveQuestions(newQuestion);
 
             // dann Schleife über "trans_lang" - jedes Element erzeugt neuen Datensatz
-
-
             for (int i = 0; i < trans_lang.size(); i++) {
                 List<String> keywords = null;
                 if(!trans_keywords.isEmpty()) {
-
-
                     if(!trans_keywords.get(i).isEmpty())
-
                     {
                         if  (trans_lang.size()>1)
                         {
-
                             keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
                         }
-
                         else
                         {
                             keywords = trans_keywords;
                         }
                     }
-
                     if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
                         Translations translations = new Translations(newQuestion, trans_lang.get(i), keywords, trans_question.get(i));
                         translationsService.saveTranslations(translations);
@@ -182,8 +174,10 @@ public class CrudController {
                                         RedirectAttributes attributes)
     {
         System.out.println("Question to delete: " + deleteId);
+        Questions originalQ = questionsService.findDistinctById(Id);
         Questions q = questionsService.findDistinctById(deleteId);
         List<Translations> t = translationsRepository.findByQid(q);
+
 
         try {
             if(q.isActiveVersion() || q.isOriginal()) {
@@ -197,6 +191,14 @@ public class CrudController {
                     translationsRepository.delete(item);}
 
                 questionsRepository.delete(q);
+
+                List<Questions> qVersions = questionsService.findQuestionsByDatasetQuestionIdAndQuestionSetId(SetId, Id);
+                if(qVersions.size() ==1)
+                {
+                    originalQ.setAnotated(false);
+                    questionsRepository.save(originalQ);
+                    System.out.println("SetAnotated to false:" +originalQ.getId());
+                }
                 attributes.addFlashAttribute("success", "The question was successfully deleted!");
                 return "redirect:/questionVersionList/" + SetId + "/" + Id;
             }

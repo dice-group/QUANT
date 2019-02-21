@@ -1,5 +1,8 @@
 package webapp.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import webapp.Repository.QuestionsRepository;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -8,10 +11,14 @@ import java.util.Date;
 import java.util.Set;
 
 
+
 @Entity
 @Table(name="QUESTIONS")
 public class Questions implements Serializable{
 
+    @Autowired
+    @Transient
+    QuestionsRepository questionsRepository;
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -267,4 +274,5 @@ public class Questions implements Serializable{
         }
         return this.translationsList.get(0).getQuestionString();
     }
+
 }

@@ -102,18 +102,18 @@
         <div class=" col">
             <span class="h4">Anotate Question:</span>
 
-                <mark>ID: <c:out value="  ${Question.id} - ${Question.getDefaultTranslation()}"></c:out></mark>
+                <mark>ID: <c:out value="  ${Question.questionSetId} - ${Question.getDefaultTranslation()}"></c:out></mark>
 
         </div>
-        <c:if test="${errorMessage}" var="Message">
-            <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
-        <c:if test="${successMessage}" var ="Message">
-            <span class="alert alert-success"><c:out value="${Message}"></c:out></span></c:if>
+        <c:if test="${error != null}" var="Message">
+            <span class="alert alert-danger"><c:out value="${error}"></c:out></span></c:if>
+        <c:if test="${success != null}" var ="Message">
+            <span class="alert alert-success"><c:out value="${success}"></c:out></span></c:if>
 
         <div class=" col">
             <button type="submit" class="btn btn-success btn-sm ml-2">Save changes</button>
             <a class="small text-muted" href="/questionslist/${Question.datasetQuestion.id}">Back to Overview</a> |
-            <a class="small text-muted" href="/anotate/${nextQuestion}">Next Question </a>
+
         </div>
     </div>
 
@@ -235,11 +235,11 @@
 
                     <div class="col-1">
                         <input type="text" class="form-control" name="trans_lang" id="${'lang_' +=entry}"
-                               value="${entry}" required/>
+                               value="${entry}" />
                     </div>
                     <div class="col-5">
                         <input type="text" class="form-control" name="trans_question"
-                               id="${'questionString_' +=entry}" value="${TranslationMap[entry]}" required/>
+                               id="${'questionString_' +=entry}" value="${TranslationMap[entry]}" />
                     </div>
 
                     <div class="col-6">
@@ -251,7 +251,7 @@
                             </c:otherwise>
                         </c:choose>
                         <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=entry}"
-                               value="${keywords}" required/>
+                               value="${keywords}" />
                     </div>
 
                 </c:forEach>
@@ -260,8 +260,6 @@
     </div>
 
 </form>
-
-
 
 <%@include file="footer.jsp" %>
 
