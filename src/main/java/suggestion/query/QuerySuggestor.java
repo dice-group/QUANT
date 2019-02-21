@@ -18,17 +18,24 @@ import java.util.*;
 
 public class QuerySuggestor {
     //default: DBpedia Redirect
-    private String sameAsEdge = "<http://dbpedia.org/ontology/wikiPageRedirects>";
+    private Map<String,String> sameAsEdges = new HashMap<String,String>();
+            //"<http://dbpedia.org/ontology/wikiPageRedirects>";
     //default
     private Boolean useWikicat = true;
     public QuerySuggestor(){
-        Properties prop = new Properties();
+
         try {
+            Properties prop = new Properties();
             prop.load(new FileInputStream("src/main/resources/quant.properties"));
-            String envsameAsEdge = System.getenv("QUANT_SAME_AS_EDGE");
-            sameAsEdge = envsameAsEdge != null ? envsameAsEdge : prop.getProperty("sameAsEdge");
+            /*String envsameAsEdge = System.getenv("QUANT_SAME_AS_EDGE");
+            sameAsEdge = envsameAsEdge != null ? envsameAsEdge : prop.getProperty("sameAsEdge");*/
             String envUseWikicat = System.getenv("QUANT_USE_WIKICAT");
             useWikicat = Boolean.valueOf(envUseWikicat != null ? envUseWikicat : prop.getProperty("useWikikat"));
+            Properties sameAsproperties = new Properties();
+            sameAsproperties.load(new FileInputStream("src/main/resources/sameAs.properties"));
+            for(String sameAs:sameAsproperties.stringPropertyNames()){
+                sameAsEdges.put(sameAs,sameAsproperties.getProperty(sameAs));
+            }
         }
         catch (IOException ex) {
             System.out.println("QUANT properties not found use default settings");
@@ -146,8 +153,8 @@ public class QuerySuggestor {
                             correctedResources.put(triple.getSubject().toString(query.getPrefixMapping()), "http://dbpedia.org/class/yago/Wikicat" + triple.getSubject().getLocalName());
                             correctionPossible =true;
                         }else return;
-                    } else if(!correctionPossible){
-                        String candidatesResource = entitySuggestor.generateCandidateEntitiesNew(triple.getSubject(), query.getPrefixMapping().getNsPrefixMap(), endpoint, sameAsEdge);
+                    } else if(!correctionPossible&&sameAsEdges.containsKey(endpoint)){
+                        String candidatesResource = entitySuggestor.generateCandidateEntitiesNew(triple.getSubject(), query.getPrefixMapping().getNsPrefixMap(), endpoint, sameAsEdges.get(endpoint));
                         if (candidatesResource != null) {
                             correctedResources.put(triple.getSubject().toString(query.getPrefixMapping()), candidatesResource);
                             correctionPossible=true;
@@ -162,8 +169,8 @@ public class QuerySuggestor {
                             correctionPossible = true;
                         } else return;
                     }
-                    else if(!correctionPossible) {
-                        String candidatesResource = entitySuggestor.generateCandidateEntitiesNew(triple.getObject(), query.getPrefixMapping().getNsPrefixMap(), endpoint, sameAsEdge);
+                    else if(!correctionPossible&&sameAsEdges.containsKey(endpoint)) {
+                        String candidatesResource = entitySuggestor.generateCandidateEntitiesNew(triple.getObject(), query.getPrefixMapping().getNsPrefixMap(), endpoint, sameAsEdges.get(endpoint));
                         if (candidatesResource != null) {
                             correctedResources.put(triple.getObject().toString(query.getPrefixMapping()), candidatesResource);
                             correctionPossible=true;
