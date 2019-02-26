@@ -1,33 +1,7 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page language="java" contentType="text/html;charset=UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>QUANT-User List</title>
-
-    <!-- Bootstrap Core CSS -->
-
-    <link rel="stylesheet" href="webjars/datatables/1.10.19/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link href="../resources/css/main.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <![endif]-->
-</head>
-<body>
-<%@include file="navbar.jsp"%>
-<div class="container">
+<%@include file="templates/layout.jsp" %>
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12  pt-2">
             <h4>User List</h4>
             <div class="table-responsive">
 
@@ -51,7 +25,7 @@
                             <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" id="edit-button" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                             <td><p data-placement="top" data-toggle="tooltip" title="Reset Password"><button class="btn btn-danger btn-xs" data-title="reset-password" data-toggle="modal" data-target="#reset-password" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
                             <td>
-                                    <div class="material-switch pull-right">
+
                                         <c:choose>
                                             <c:when test="${user.activated}">
                                                 <input id="someSwitchOptionPrimary/${user.id}" name="someSwitchOption001" type="checkbox" checked/>
@@ -60,8 +34,8 @@
                                                 <input id="someSwitchOptionPrimary/${user.id}" name="someSwitchOption001" type="checkbox"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        <label for="someSwitchOptionPrimary/${user.id}" class="label-primary"></label>
-                                    </div>
+                                        <label for="someSwitchOptionPrimary/${user.id}" class="label-primary" name ="label-primary"></label>
+
                             </td>
                         </tr>
 
@@ -76,9 +50,7 @@
 
             </div>
 
-        </div>
-    </div>
-</div>
+
 
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -107,7 +79,7 @@
                         </div>
                     </div>
                     <div class="modal-footer ">
-                        <button  type="submit" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                        <button  type="submit" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Update</button>
                     </div>
                 </form>
             </div>
@@ -141,7 +113,7 @@
                     </div>
                 </div>
                 <div class="modal-footer ">
-                    <button  type="submit" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                    <button  type="submit" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Update</button>
                 </div>
             </form>
         </div>
@@ -150,15 +122,11 @@
     </div>
 
 </div>
-</body>
-<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
-<script src="webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready( function () {
-        $('#table_id').DataTable();
-    } );
-</script>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(document).ready( function () {
         $("button[data-title='Edit']").click(function() {
@@ -187,13 +155,15 @@
 </script>
 <script>
     $(document).ready( function () {
-        $('.label-primary').click(function() {
+        console.log("doc ready")
+        $('input[type=checkbox]').click(function() {
+            console.log("label-primary")
             var $row = $(this).closest("tr");
             var $email = $($row.find("td").get(0)).text();
             var $checkbox = $(this).parent().find('input:checkbox:first');
             console.log($checkbox)
 
-            if(!$checkbox.prop('checked')) {
+            if($checkbox.prop('checked')) {
 
                 console.log("Checked Box Selected");
                 console.log($email);
@@ -227,4 +197,4 @@
         });
     } );
 </script>
-</html>
+<%@include file="templates/footer.jsp" %>

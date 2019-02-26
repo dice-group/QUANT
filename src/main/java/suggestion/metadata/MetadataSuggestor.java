@@ -39,40 +39,43 @@ public class MetadataSuggestor {
         MetadataSuggestions metadataSuggestions = new MetadataSuggestions();
         if(queryString.contains("text:query")||queryString.contains("bif:contains"))
             metadataSuggestions.setHybrid(true);
-        Query query = QueryFactory.create(queryString);
-        if(query.getAggregators().size()>0)
-            metadataSuggestions.setAggregation(true);
-        metadataSuggestions.setOnlyDbo(onlyDbo(query));
-        if(query.isAskType())
-            metadataSuggestions.setAnswerType("boolean");
-        else {
-            //Assumes, taht all answers have the smae type, and there is only one uri to be matched
-            ResultSet rs = QueryExecutionFactory.sparqlService(endpoint, query).execSelect();
-            if(rs.hasNext()){
-                metadataSuggestions.setOutOfScope(false);
-                QuerySolution solution = rs.next();
-                if(solution.get(solution.varNames().next()).isResource())
-                    metadataSuggestions.setAnswerType("resource");
-                else {
-                    if(solution.get(solution.varNames().next()).isLiteral()) {
-                        String l = solution.get(solution.varNames().next()).asLiteral().getDatatypeURI();
-                        if (l.equals("http://www.w3.org/2001/XMLSchema#date"))
-                            metadataSuggestions.setAnswerType("date");
-                        else if (l.equals("http://www.w3.org/2001/XMLSchema#decimal")||
-                                l.equals("http://www.w3.org/2001/XMLSchema#int")||
-                                l.equals("http://www.w3.org/2001/XMLSchema#integer")||
-                                l.equals("http://www.w3.org/2001/XMLSchema#long"))
-                            metadataSuggestions.setAnswerType("number");
-                        else metadataSuggestions.setAnswerType("string");
+        try {
+            Query query = QueryFactory.create(queryString);
+            if (query.getAggregators().size() > 0)
+                metadataSuggestions.setAggregation(true);
+            metadataSuggestions.setOnlyDbo(onlyDbo(query));
+            if (query.isAskType())
+                metadataSuggestions.setAnswerType("boolean");
+            else {
+                //Assumes, taht all answers have the smae type, and there is only one uri to be matched
+                ResultSet rs = QueryExecutionFactory.sparqlService(endpoint, query).execSelect();
+                if (rs.hasNext()) {
+                    metadataSuggestions.setOutOfScope(false);
+                    QuerySolution solution = rs.next();
+                    if (solution.get(solution.varNames().next()).isResource())
+                        metadataSuggestions.setAnswerType("resource");
+                    else {
+                        if (solution.get(solution.varNames().next()).isLiteral()) {
+                            String l = solution.get(solution.varNames().next()).asLiteral().getDatatypeURI();
+                            if (l.equals("http://www.w3.org/2001/XMLSchema#date"))
+                                metadataSuggestions.setAnswerType("date");
+                            else if (l.equals("http://www.w3.org/2001/XMLSchema#decimal") ||
+                                    l.equals("http://www.w3.org/2001/XMLSchema#int") ||
+                                    l.equals("http://www.w3.org/2001/XMLSchema#integer") ||
+                                    l.equals("http://www.w3.org/2001/XMLSchema#long"))
+                                metadataSuggestions.setAnswerType("number");
+                            else metadataSuggestions.setAnswerType("string");
+                        } else metadataSuggestions.setAnswerType("unknown");
                     }
-                    else metadataSuggestions.setAnswerType("unknown");
+                } else {
+                    metadataSuggestions.setAnswerType("unknown");
+                    metadataSuggestions.setOutOfScope(true);
                 }
             }
-            else {
-                metadataSuggestions.setAnswerType("unknown");
-                metadataSuggestions.setOutOfScope(true);
-            }
+            return metadataSuggestions;
+        }catch  (QueryParseException e){
+            metadataSuggestions.setOutOfScope(true);
+            return metadataSuggestions;
         }
-        return metadataSuggestions;
     }
 }

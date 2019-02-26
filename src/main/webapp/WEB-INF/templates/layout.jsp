@@ -26,7 +26,7 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/quant.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/quant.js"></script>
 
 
 
@@ -43,6 +43,4 @@
 </head>
 <body>
 <%@include file="navbar.jsp"%>
-<div class="container-fluid">
-  <!--  <div class="row">-->
-        <div class="col-md-12  pt-2">
+

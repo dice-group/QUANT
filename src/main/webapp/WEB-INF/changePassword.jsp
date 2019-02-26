@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>QUANT-Question Answering Curator</title>
-    <link rel="stylesheet" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
-    <script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-</head>
-<body>
-<%@include file="navbar.jsp"%>
-    <div class="container">
+<%@include file="templates/layout.jsp" %>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 pt-2">
         <form method="POST" action="/changePassword" style="max-width: 300px">
             <h1 class="h3 mb-3 font-weight-normal">Change password of ${logedInAs}</h1>
             <div class="form-group">
@@ -33,8 +19,6 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit">Change</button>
         </form>
     </div>
-<!-- Plugin JavaScript -->
-</body>
-<!-- Bootstrap core JavaScript -->
-
-</html>
+        </div>
+    </div>
+<%@include file="templates/footer.jsp" %>

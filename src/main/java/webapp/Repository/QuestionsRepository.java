@@ -1,6 +1,5 @@
 package webapp.Repository;
 
-import webapp.model.Dataset;
 import webapp.model.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import webapp.model.User;

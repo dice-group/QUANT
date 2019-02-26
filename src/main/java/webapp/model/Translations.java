@@ -1,12 +1,8 @@
 package webapp.model;
 
-
-import webapp.services.QuestionsService;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
 
 
 @Entity

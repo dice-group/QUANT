@@ -1,6 +1,6 @@
 package webapp.controller;
 
-import org.junit.runner.RunWith;
+import datahandler.WriteQaldDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webapp.Repository.DatasetRepository;
@@ -22,7 +23,6 @@ import webapp.services.DatasetService;
 import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +51,9 @@ public class CrudController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    WriteQaldDataset w;
 
     @RequestMapping(value="/newQuestion/{datasetId}" , method =RequestMethod.GET)
     public ModelAndView newQuestion(@PathVariable("datasetId") long datasetId) {
@@ -133,6 +136,45 @@ public class CrudController {
 
     }
 
+    @RequestMapping(value = "/newDataset", method = RequestMethod.GET)
+    public ModelAndView newDataset() {
+        ModelAndView model = new ModelAndView("/newDataset");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+        return model;
+    }
+
+
+    @RequestMapping(value = "/newDataset", method = RequestMethod.POST)
+    public String newDataset(@RequestParam("file") MultipartFile file,
+                             @RequestParam("endpoint") String endpoint,
+                             @RequestParam("defaultLanguage") String defaultLanguage,
+                             @RequestParam("datasetName") String datasetName,
+                             RedirectAttributes attributes) {
+        ModelAndView model = new ModelAndView("/newDataset");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+
+        try {
+
+            if (!file.isEmpty()) {
+
+                w.datsetWriter(user, file, endpoint, defaultLanguage);
+                return "redirect:/datasetlist";
+            } else {
+                w.emptyDatasetWriter(user, datasetName, endpoint, defaultLanguage);
+                return "redirect:/datasetlist";
+
+            }
+        } catch (Exception e) {
+            return "redirect:/newDataset";
+        }
+
+    }
 
 
     @RequestMapping(value = "/deleteDataset", method= RequestMethod.POST)
