@@ -1,14 +1,12 @@
 package webapp.services;
 
 
-import org.apache.jena.atlas.iterator.Iter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import webapp.Repository.TranslationsRepository;
+import webapp.repository.TranslationsRepository;
 import webapp.model.Questions;
 import webapp.model.Translations;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 

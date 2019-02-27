@@ -1,13 +1,10 @@
 package webapp.services;
 
-import org.apache.jena.tdb.store.Hash;
 import webapp.model.Questions;
 import webapp.model.Translations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public interface TranslationsService {
 

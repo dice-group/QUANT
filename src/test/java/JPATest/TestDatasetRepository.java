@@ -2,8 +2,8 @@ package JPATest;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import webapp.Application;
-import webapp.Repository.DatasetRepository;
-import webapp.Repository.UserRepository;
+import webapp.repository.DatasetRepository;
+import webapp.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

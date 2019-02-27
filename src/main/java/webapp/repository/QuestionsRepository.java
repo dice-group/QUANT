@@ -1,4 +1,4 @@
-package webapp.Repository;
+package webapp.repository;
 
 import webapp.model.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;

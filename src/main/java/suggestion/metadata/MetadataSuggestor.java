@@ -59,10 +59,10 @@ public class MetadataSuggestor {
                             String l = solution.get(solution.varNames().next()).asLiteral().getDatatypeURI();
                             if (l.equals("http://www.w3.org/2001/XMLSchema#date"))
                                 metadataSuggestions.setAnswerType("date");
-                            else if (l.equals("http://www.w3.org/2001/XMLSchema#decimal") ||
-                                    l.equals("http://www.w3.org/2001/XMLSchema#int") ||
-                                    l.equals("http://www.w3.org/2001/XMLSchema#integer") ||
-                                    l.equals("http://www.w3.org/2001/XMLSchema#long"))
+                            else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(l) ||
+                                    "http://www.w3.org/2001/XMLSchema#int".equals(l) ||
+                                    "http://www.w3.org/2001/XMLSchema#integer".equals(l) ||
+                                    "http://www.w3.org/2001/XMLSchema#long".equals(l))
                                 metadataSuggestions.setAnswerType("number");
                             else metadataSuggestions.setAnswerType("string");
                         } else metadataSuggestions.setAnswerType("unknown");

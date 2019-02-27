@@ -1,8 +1,6 @@
 package webapp.services;
 
 
-import org.aksw.qa.commons.datastructure.Question;
-import webapp.model.Dataset;
 import webapp.model.Questions;
 import java.util.List;
 import java.util.Map;

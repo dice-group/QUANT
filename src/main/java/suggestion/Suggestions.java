@@ -1,8 +1,6 @@
 package suggestion;
 
 import org.apache.jena.query.*;
-import org.apache.jena.sparql.core.Var;
-import org.apache.jena.sparql.engine.binding.Binding;
 import suggestion.query.QuerySuggestions;
 import suggestion.query.QuerySuggestor;
 

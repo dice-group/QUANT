@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webapp.Repository.DatasetRepository;
-import webapp.Repository.QuestionsRepository;
-import webapp.Repository.TranslationsRepository;
+import webapp.repository.DatasetRepository;
+import webapp.repository.QuestionsRepository;
+import webapp.repository.TranslationsRepository;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import webapp.model.Translations;
@@ -82,7 +82,6 @@ public class DatasetController {
         String username = auth.getName();
         User user = userService.getByEmail(username);
         model.addObject("User", user);
-        Dataset d = datasetService.findDatasetByID(id);
         List<Questions> qL = questionsService.findByDatasetQuestion_IdAndVersionAndRemoved(id, 0, false);
         List<Questions> finalList = new ArrayList<>();
         for (Questions item: qL)
@@ -120,7 +119,6 @@ public class DatasetController {
     public String deleteQuestion(@RequestParam("deleteId") long deleteId,
                                  @PathVariable("id") long datasetId,
                                  RedirectAttributes attributes) {
-        ModelAndView model = new ModelAndView("/deleteQuestion");
         Questions q = questionsService.findDistinctById(deleteId);
         List<Translations> t = translationsRepository.findByQid(q);
         Questions originalQ = questionsService.findDistinctById(q.getQuestionSetId());

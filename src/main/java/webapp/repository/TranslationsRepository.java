@@ -1,4 +1,4 @@
-package webapp.Repository;
+package webapp.repository;
 
 import webapp.model.Questions;
 import webapp.model.Translations;
