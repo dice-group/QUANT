@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import webapp.Repository.UserRepository;
+import webapp.repository.UserRepository;
 import webapp.model.Role;
 import webapp.model.User;
 
