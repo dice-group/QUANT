@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col-md-12 pt-2">
         <form method="POST" action="/changeEmail" style="max-width: 300px">
-            <h1 class="h3 mb-3 font-weight-normal">Change email of ${logedInAs}</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Change email of <c:out value="${logedInAs}"></c:out> </h1>
             <div class="form-group">
                 <label for="newEmail" class="sr-only">Password</label>
-                <input type="email" name="new-email" id="newEmail" class="form-control" placeholder=${logedInAs} required>
+                <input type="email" name="new-email" id="newEmail" class="form-control" placeholder=<c:out value="${logedInAs}"></c:out> required>
             </div>
             <div class="form-group">
                 <label for="password" class="sr-only">Password</label>

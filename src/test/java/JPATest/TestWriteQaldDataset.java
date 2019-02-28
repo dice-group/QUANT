@@ -4,7 +4,7 @@ import datahandler.WriteQaldDataset;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import webapp.Application;
-import webapp.Repository.UserRepository;
+import webapp.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

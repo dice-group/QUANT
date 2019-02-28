@@ -1,7 +1,7 @@
 package webapp.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import webapp.Repository.QuestionsRepository;
+import webapp.repository.QuestionsRepository;
 
 import javax.persistence.*;
 import java.io.Serializable;

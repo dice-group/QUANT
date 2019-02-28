@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12 pt-2">
         <form method="POST" action="/changePassword" style="max-width: 300px">
-            <h1 class="h3 mb-3 font-weight-normal">Change password of ${logedInAs}</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Change password of <c:out value="${logedInAs}"></c:out></h1>
             <div class="form-group">
                 <label for="oldpassword" class="sr-only">Password</label>
                 <input type="password" name="old-password" id="oldpassword" class="form-control" placeholder="Old Password" required>

@@ -1,21 +1,18 @@
 package JPATest;
 
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import webapp.Application;
-import webapp.Repository.DatasetRepository;
-import webapp.Repository.QuestionsRepository;
-import webapp.Repository.TranslationsRepository;
-import webapp.Repository.UserRepository;
+import webapp.repository.DatasetRepository;
+import webapp.repository.QuestionsRepository;
+import webapp.repository.TranslationsRepository;
+import webapp.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import webapp.model.*;
-import webapp.model.Translations;
-import java.util.ArrayList;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -28,10 +25,10 @@ public class TestAddQuestion {
     private DatasetRepository datasetRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
+    /*@Autowired
     private QuestionsRepository questionsRepository;
     @Autowired
-    private TranslationsRepository translationsRepository;
+    private TranslationsRepository translationsRepository;*/
 
     //Outdated Test
     @Test

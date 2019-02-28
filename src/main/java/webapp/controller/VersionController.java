@@ -8,8 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webapp.Repository.QuestionsRepository;
-import webapp.Repository.TranslationsRepository;
+import webapp.repository.QuestionsRepository;
+import webapp.repository.TranslationsRepository;
 import webapp.model.Questions;
 import webapp.model.Translations;
 import webapp.model.User;
@@ -96,7 +96,6 @@ public class VersionController {
         String username = auth.getName();
         User user = userService.getByEmail(username);
         Set answers = new HashSet();
-        Boolean pres = setActive.isPresent();
         answers.addAll(metaQuestion.getAnswer());
         Questions mergedQuestionVersion = new Questions(metaQuestion.getDatasetQuestion(), answertype, aggregation, onlydb, hybrid, metaQuestion.isOriginal(), setActive.isPresent(), true, user, questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(metaQuestion.getQuestionSetId()).getVersion()+1, outOfScope, metaQuestion.getQuestionSetId(), query,answers);
         questionsService.saveQuestions(mergedQuestionVersion);

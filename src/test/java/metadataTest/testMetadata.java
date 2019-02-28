@@ -1,17 +1,12 @@
 package metadataTest;
 
-import org.apache.jena.graph.NodeFactory;
-import org.apache.jena.sparql.core.Var;
-import org.apache.jena.sparql.engine.binding.Binding;
-import org.apache.jena.sparql.engine.binding.BindingFactory;
+
 import org.junit.Test;
-import suggestion.Suggestions;
 import suggestion.metadata.MetadataSuggestions;
 import suggestion.metadata.MetadataSuggestor;
-import suggestion.query.QuerySuggestions;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertNotNull;
+
 
 public class testMetadata {
     @Test
@@ -28,7 +23,7 @@ public class testMetadata {
                 "?film onto:starring ?actors .\n" +
                 "?actors foaf:homepage ?uri .\n" +
                 "}", "http://dbpedia.org/sparql");
-        System.out.println();
+        assertNotNull(s);
     }
     @Test
     public void test2()
@@ -42,6 +37,6 @@ public class testMetadata {
                 "select distinct ?dt where {\n"+
                 "dbr:Barack_Obama dbo:birthDate  ?dt\n"+
                 "} LIMIT 100", "http://dbpedia.org/sparql");
-        System.out.println();
+        assertNotNull(s);
     }
 }

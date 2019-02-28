@@ -2,15 +2,13 @@ package generateJsonTest;
 
 
 import datahandler.WriteJsonFileFromDataset;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import webapp.Application;
-import webapp.Repository.DatasetRepository;
-import webapp.Repository.QuestionsRepository;
+import webapp.repository.DatasetRepository;
 import webapp.model.Dataset;
 
 import java.util.List;

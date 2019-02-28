@@ -1,4 +1,4 @@
-package webapp.Repository;
+package webapp.repository;
 
 import webapp.model.Dataset;
 import org.springframework.data.jpa.repository.JpaRepository;

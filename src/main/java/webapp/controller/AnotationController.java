@@ -14,9 +14,9 @@ import suggestion.keywords.KeyWordSuggestor;
 import suggestion.metadata.MetadataSuggestions;
 import suggestion.metadata.MetadataSuggestor;
 import suggestion.query.QuerySuggestions;
-import webapp.Repository.DatasetRepository;
-import webapp.Repository.QuestionsRepository;
-import webapp.Repository.TranslationsRepository;
+import webapp.repository.DatasetRepository;
+import webapp.repository.QuestionsRepository;
+import webapp.repository.TranslationsRepository;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import webapp.model.Translations;
@@ -141,7 +141,6 @@ public class AnotationController {
                              @RequestParam("trans_question") List<String> trans_question,
                              @RequestParam("trans_keywords") List<String> trans_keywords,
                              RedirectAttributes attributes) {
-        ModelAndView model = new ModelAndView("/newVersion");
         long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
         long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
         Questions q = questionsService.findDistinctById(id);
