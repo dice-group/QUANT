@@ -16,21 +16,25 @@ import webapp.model.User;
 @ComponentScan(basePackages = {"datahandler", "webapp"})
 public class Application {
 
-  //  @Autowired
-   // private UserRepository userRepository;
+   @Autowired
+   private UserRepository userRepository;
 
-  // private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+   private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
 
     }
-   // @Bean
-  //  InitializingBean sendDatabase() {
-  //      return () -> {
-          //  userRepository.deleteAll();
-          //  User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
-          //  userRepository.save(u);
-  //      };
-  //  }
+    @Bean
+    InitializingBean sendDatabase() {
+        return () -> {
+            if(userRepository.findAll().size()==0){
+
+           userRepository.deleteAll();
+            User u = new User("test@test.com",bCryptPasswordEncoder.encode("password"),Role.ADMIN);
+            userRepository.save(u);
+            }
+
+        };
+    }
 }
