@@ -66,7 +66,10 @@ public class QuerySuggestor {
         queryStr.append(" ");
         queryStr.appendNode(triple.getObject());
         queryStr.append(" }");
-        return QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery()).execAsk();
+        QueryExecution qe=QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery());
+        boolean exists = qe.execAsk();
+        qe.close();
+        return exists;
     }
     private String generateQueryResources(String queryString,HashMap<String,String>correctedResources){
         for(String resource:correctedResources.keySet()){
@@ -101,7 +104,9 @@ public class QuerySuggestor {
         q.setValuesDataBlock(vars,bindings);
         for(String var:missingPredicateMapping.values())
             q.addResultVar(var);
-        ResultSet rs = QueryExecutionFactory.sparqlService(endpoint, q).execSelect();
+        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, q);
+        ResultSet rs = ResultSetFactory.copyResults(qe.execSelect());
+        qe.close();
         if(rs.hasNext()){
             QuerySolution bestFitting = rs.next();
             int maxscore=getNumberOfFittingPredicates(bestFitting,missingPredicateMapping);

@@ -99,7 +99,7 @@ public class AnotationController {
         QuerySuggestions qs = new QuerySuggestions();
         if (!q.getAnswer().isEmpty()) {
             String setElement = (String) q.getAnswer().iterator().next();
-            qs = suggestions.gernerateQuerySuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint(), setElement);
+            qs = suggestions.generateQuerySuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint(), setElement);
         }
         Set<String> set = new HashSet();
         qs.getAnswers().ifPresent(rs -> {
@@ -142,6 +142,7 @@ public class AnotationController {
                              @RequestParam("trans_keywords") List<String> trans_keywords,
                              RedirectAttributes attributes) {
         long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
+        sparqlQuery = sparqlQuery.replaceAll("\r\n", "");
         long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
         Questions q = questionsService.findDistinctById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

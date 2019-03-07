@@ -86,7 +86,7 @@
 
 <script>
     $(document).ready(function () {
-        sparqlQuery("${Question.sparqlQuery}");
+        sparqlQuery("<c:out value='${Question.sparqlQuery}'></c:out>");
         setRadioButton('optscope', ${Question.outOfScope});
         setRadioButton('optaggregation', ${Question.aggregation});
         setRadioButton('optdbpedia', ${Question.onlydb});
@@ -258,7 +258,7 @@
                             </div>
                             <div class="col-5">
                                 <input type="text" class="form-control" name="trans_question"
-                                       id="${'questionString_' +=entry}" value="${TranslationMap[entry]}"/>
+                                       id="${'questionString_' +=entry}" value=" <c:out value='${TranslationMap[entry]}' ></c:out>"/>
                             </div>
 
                             <div class="col-6">

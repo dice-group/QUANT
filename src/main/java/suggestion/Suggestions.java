@@ -23,20 +23,24 @@ public class Suggestions {
     }
     private boolean needsCorrections (QuerySuggestions suggestions, String queryString, String endpoint){
         boolean correctionFound=false;
+
         do {
             try {
                 Query query = QueryFactory.create(queryString);
                 QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
                 if(query.isAskType()) {
                     suggestions.setBooleanAnswer(qe.execAsk());
+                    qe.close();
                     return false;
                 }
                 else{
-                    ResultSet rs = qe.execSelect();
+                    ResultSet rs = ResultSetFactory.copyResults(qe.execSelect());
+                    qe.close();
                     if(rs.hasNext()){
                         suggestions.setAnswers(rs);
                         return false;
                     }
+                    qe.close();
                     return true;
                 }
             }catch(QueryParseException e){
@@ -56,8 +60,8 @@ public class Suggestions {
         }while (correctionFound);
         return false;
     }
-    //public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, String result)
-    public QuerySuggestions gernerateQuerySuggestions(String queryString, String endpoint, String result) {
+    //public QuerySuggestions generateQuerySuggestions(String queryString, String endpoint, String result)
+    public QuerySuggestions generateQuerySuggestions(String queryString, String endpoint, String result) {
         QuerySuggestions suggestions = new QuerySuggestions();
         if(needsCorrections(suggestions,queryString,endpoint)) {
             QuerySuggestor querySuggestor = new QuerySuggestor();

@@ -112,6 +112,7 @@
                                 <select class="form-control mb-2" id="answertype" name="answertype" required>
                                     <option value=""></option>
                                     <option value="resource">resource</option>
+                                    <option value="resource">string</option>
                                     <option value="number">number</option>
                                     <option value="boolean">boolean</option>
                                     <option value="date">date</option>

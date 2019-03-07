@@ -89,9 +89,10 @@ public class CrudController {
         boolean anotated = true;
         boolean activeVersion = true;
 
+
         try {
             // save Question in neuer Version
-            Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery, answer);
+            Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery.replaceAll("\r\n", ""), answer);
             questionsService.saveQuestions(newQuestion);
             newQuestion.setQuestionSetId(newQuestion.getId());
             questionsService.saveQuestions(newQuestion);

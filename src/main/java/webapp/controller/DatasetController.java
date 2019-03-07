@@ -109,6 +109,10 @@ public class DatasetController {
     @RequestMapping(value = "manageDataset/{id}", method = RequestMethod.GET)
     public ModelAndView manageDataset(@PathVariable("id") long id) {
         ModelAndView model = new ModelAndView("/manageDataset");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
         model.addObject("Dataset", datasetService.findDatasetByID(id));
         model.addObject("Questions", questionsService.findAllQuestionsByDatasetQuestion_Id(id));
 

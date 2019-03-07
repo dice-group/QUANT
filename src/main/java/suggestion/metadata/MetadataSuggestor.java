@@ -48,7 +48,10 @@ public class MetadataSuggestor {
                 metadataSuggestions.setAnswerType("boolean");
             else {
                 //Assumes, taht all answers have the smae type, and there is only one uri to be matched
-                ResultSet rs = QueryExecutionFactory.sparqlService(endpoint, query).execSelect();
+                QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
+                ResultSet rs = ResultSetFactory.copyResults(qe.execSelect());
+                qe.close();
+
                 if (rs.hasNext()) {
                     metadataSuggestions.setOutOfScope(false);
                     QuerySolution solution = rs.next();

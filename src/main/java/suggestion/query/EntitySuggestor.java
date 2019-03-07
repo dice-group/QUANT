@@ -14,7 +14,10 @@ public class EntitySuggestor {
         queryStr.append("?p ?o . }UNION{?s ?p ");
         queryStr.appendNode(resource);
         queryStr.append(". }}");
-        return QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery()).execAsk();
+        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery());
+        boolean exists=qe.execAsk();
+        qe.close();
+        return exists;
     }
     protected boolean isWikicat(Node resource, Map<String,String> prefixes, String endpoint){
         ParameterizedSparqlString queryStr = new ParameterizedSparqlString();
@@ -26,7 +29,10 @@ public class EntitySuggestor {
         queryStr.append(" ?p ?o . } UNION {?s ?p ");
         queryStr.append("yago:Wikicat"+resource.getLocalName());
         queryStr.append(". } }");
-        return QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery()).execAsk();
+        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery());
+        boolean exists=qe.execAsk();
+        qe.close();
+        return exists;
     }
     private ResultSet getRedirects(Node resource, Map<String,String> prefixes, String endpoint,String sameAsPredicate){
         ParameterizedSparqlString queryStr = new ParameterizedSparqlString();
@@ -34,7 +40,10 @@ public class EntitySuggestor {
         queryStr.append("select ?redirect where {");
         queryStr.appendNode(resource);
         queryStr.append(" "+sameAsPredicate+" ?redirect . }");
-        return QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery()).execSelect();
+        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery());
+        ResultSet rs =ResultSetFactory.copyResults(qe.execSelect());
+        qe.close();
+        return rs;
     }
     protected String generateCandidateEntitiesNew(Node node, Map<String,String> prefixes, String endpoint,String sameAsPredicate){
         ResultSet candidates=getRedirects(node,prefixes,endpoint,sameAsPredicate);

@@ -13,7 +13,10 @@ public class PredicateSuggestor {
         queryStr.append("ASK WHERE { ?s ");
         queryStr.appendNode(predicate);
         queryStr.append(" ?o . }");
-        return QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery()).execAsk();
+        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, queryStr.asQuery());
+        boolean exists=qe.execAsk();
+        qe.close();
+        return exists;
     }
 
 
