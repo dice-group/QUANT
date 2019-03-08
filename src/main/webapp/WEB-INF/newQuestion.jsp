@@ -124,7 +124,7 @@
                             <div class="col-5">Out of Scope:</div>
                             <div class="col-7">
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optscope"
-                                                                   id="optscope_true" value="true">True</label>
+                                                                   id="optscope_true" value="true" required>True</label>
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optscope"
                                                                    id="optscope_false" value="false">False</label>
                             </div>
@@ -134,7 +134,7 @@
                             <div class="col-5">Aggregation:</div>
                             <div class="col-7">
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optaggregation"
-                                                                   id="optaggregation_true" value="true">True</label>
+                                                                   id="optaggregation_true" value="true" required>True</label>
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optaggregation"
                                                                    id="optaggregation_false" value="false">False</label>
                             </div>
@@ -144,7 +144,7 @@
                             <div class="col-5">Only DBPedia:</div>
                             <div class="col-7">
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optdbpedia"
-                                                                   id="optdbpedia_true" value="true">True</label>
+                                                                   id="optdbpedia_true" value="true" required>True</label>
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optdbpedia"
                                                                    id="optdbpedia_false" value="false">False</label>
                             </div>
@@ -154,7 +154,7 @@
                             <div class="col-5">Hybrid:</div>
                             <div class="col-7">
                                 <label class="radio-inline "><input type="radio" class="mr-1" name="opthybrid"
-                                                                    id="opthybrid_true" value="true">True</label>
+                                                                    id="opthybrid_true" value="true" required>True</label>
                                 <label class="radio-inline "><input type="radio" class="mr-1" name="opthybrid"
                                                                     id="opthybrid_false" value="false">False</label>
                             </div>
@@ -177,7 +177,7 @@
                         </div>
 
                         <div class="col">
-                            <label for="endpoint_answer">Answer from Endpoint: ${Dataset.endpoint}</label>
+                            <label for="endpoint_answer">Answer from Endpoint: <c:out value='${Dataset.endpoint}'></c:out></label>
                             <textarea rows="4" class="form-control" id="endpoint_answer"></textarea>
                         </div>
 
@@ -204,7 +204,7 @@
                         <%-- Textfelder für Lang, Question, Keywords --%>
 
                         <div class="col-1">
-                            <input type="text" class="form-control" name="trans_lang" value="en" required/>
+                            <input type="text" class="form-control" name="trans_lang" value="<c:out value='${Dataset.defaultLanguage}'></c:out>" required/>
                         </div>
                         <div class="col-5">
                             <input type="text" class="form-control" name="trans_question" required/>
