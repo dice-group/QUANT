@@ -21,6 +21,7 @@ public interface QuestionsService {
     List<Questions> findByDatasetQuestion_IdAndVersionAndRemoved(long id, int version, boolean removed);
     Questions findDistinctById(long id);
     public Map<String,List<String>> generateMergingTranslationsMap(long setId, long id);
+    public String getBeautifiedQuery(String query);
 
 
 }

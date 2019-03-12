@@ -1,5 +1,7 @@
 package webapp.services;
 
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import webapp.repository.QuestionsRepository;
@@ -94,5 +96,17 @@ public class QuestionsServiceImpl implements QuestionsService {
     public Questions findQuestionSetIdById(long id)
     {
         return questionsRepository.findQuestionSetIdById(id);
+    }
+
+    @Override
+    public String getBeautifiedQuery(String query){
+        try {
+            Query q = QueryFactory.create(query);
+            return q.toString();
+        }catch (Exception e){
+            System.out.println("Query is not correct and could not be beautified");
+            return query;
+        }
+
     }
 }

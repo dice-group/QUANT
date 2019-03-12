@@ -92,7 +92,7 @@ public class CrudController {
 
         try {
             // save Question in neuer Version
-            Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery.replaceAll("\r\n", ""), answer);
+            Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery, answer);
             questionsService.saveQuestions(newQuestion);
             newQuestion.setQuestionSetId(newQuestion.getId());
             questionsService.saveQuestions(newQuestion);
@@ -136,6 +136,58 @@ public class CrudController {
 
 
     }
+
+
+    @RequestMapping(value="/newBulkQuestions/{datasetId}" , method =RequestMethod.GET)
+    public ModelAndView newBulkQuestions(@PathVariable("datasetId") long datasetId) {
+        ModelAndView model =new ModelAndView("newBulkQuestions");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+        model.addObject("Dataset", datasetService.findDatasetByID(datasetId));
+        return model;
+    }
+
+
+    @RequestMapping(value="/newBulkQuestions/{datasetId}" , method =RequestMethod.POST)
+    public String saveBulkQuestions(@PathVariable("datasetId") long datasetId,
+                                  @RequestParam("user") User user,
+                                  @RequestParam("trans_question") List<String> trans_question,
+                                  RedirectAttributes attributes) {
+        Dataset dataset = datasetService.findDatasetByID(datasetId);
+        String dL = dataset.getDefaultLanguage();
+        long questionSetId = 0;
+        boolean original = false;
+        int version = 0;
+        boolean anotated = false;
+        boolean activeVersion = false;
+
+
+        try {
+            for (String item:trans_question) {
+                if (item != "") {
+                    // save Question
+                    Questions newQuestion = new Questions(dataset, original, activeVersion, anotated, user, version);
+                    questionsService.saveQuestions(newQuestion);
+                    newQuestion.setQuestionSetId(newQuestion.getId());
+                    questionsService.saveQuestions(newQuestion);
+
+                    Translations translations = new Translations(newQuestion, dL, item);
+                    translationsService.saveTranslations(translations);
+                }
+            }
+            attributes.addFlashAttribute("success", "Questions have been saved successfully.");
+            return "redirect:/newBulkQuestions/" + datasetId;
+        }
+        catch(Exception e)
+            {
+                attributes.addFlashAttribute("error", "An error occured while saving the questions.");
+                return "redirect:/newBulkQuestions/" + datasetId;
+            }
+
+    }
+
 
     @RequestMapping(value = "/newDataset", method = RequestMethod.GET)
     public ModelAndView newDataset() {
@@ -219,6 +271,7 @@ public class CrudController {
         System.out.println("Question to delete: " + deleteId);
         Questions originalQ = questionsService.findDistinctById(Id);
         Questions q = questionsService.findDistinctById(deleteId);
+        int versions = questionsService.findQuestionsByQuestionSetId(q.getQuestionSetId()).size();
         List<Translations> t = translationsRepository.findByQid(q);
 
 
@@ -226,6 +279,11 @@ public class CrudController {
             if(q.isActiveVersion() || q.isOriginal()) {
                 attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
                 System.out.println("is active or original");
+                return "redirect:/questionVersionList/"+SetId + "/" + Id;
+            }
+            else if(q.getVersion() == 0 && versions > 1){
+                attributes.addFlashAttribute("error", "Deleting a question with version 0, when there are more versions, is not allowed!");
+                System.out.println("Version 0 with more versions available. Amount of versions: " + versions);
                 return "redirect:/questionVersionList/"+SetId + "/" + Id;
             }
             else {

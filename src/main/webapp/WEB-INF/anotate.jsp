@@ -21,6 +21,7 @@
     }
 
     function sparqlQuery(sparqlQuery) {
+
         console.log(sparqlQuery)
         $.ajax({
             data: {query: sparqlQuery},
@@ -86,7 +87,7 @@
 
 <script>
     $(document).ready(function () {
-        sparqlQuery("<c:out value='${Question.sparqlQuery}'></c:out>");
+        sparqlQuery(document.getElementById('sparql').value);
         setRadioButton('optscope', ${Question.outOfScope});
         setRadioButton('optaggregation', ${Question.aggregation});
         setRadioButton('optdbpedia', ${Question.onlydb});
@@ -203,7 +204,7 @@
                             <label for="sparql">SPARQL:</label>
                             <textarea rows="6" class="form-control" id="sparql" name="sparql" required
                                       onchange=" sparqlQuery(document.getElementById('sparql').value)"><c:out
-                                    value="${Question.sparqlQuery}"></c:out></textarea>
+                                    value="${Question.sparqlQuery}" escapeXml="true"></c:out></textarea>
 
                             <c:if test="${!empty Suggestion.correctedQuery}">
                                 <a href="#" onclick="setSparqlSuggestion()" class="text-success">Load
@@ -264,13 +265,13 @@
                             <div class="col-6">
                                 <c:choose>
                                     <c:when test="${KeywordMap[entry]==''}"><c:set var="keywords"
-                                                                                   value="suggestion, ${KeywordSuggestion.get(entry)}"></c:set>
+                                                                                   value=" ${KeywordSuggestion.get(entry)}"></c:set>
                                     </c:when>
                                     <c:otherwise>
                                         <c:set var="keywords" value="${KeywordMap[entry]} "></c:set>
                                     </c:otherwise>
                                 </c:choose>
-                                <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=entry}"
+                                <input type="text" class="form-control" name="trans_keywords" id="${'keyword_' +=entry} "
                                        value="${keywords}"/>
                             </div>
 

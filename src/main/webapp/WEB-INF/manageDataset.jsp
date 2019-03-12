@@ -17,6 +17,9 @@
                 <a href="/newQuestion/${Dataset.id}">
                     <button class="ml-2 btn btn-success btn-sm"> Add new Question</button>
                 </a>
+                <a href ="/newBulkQuestions/${Dataset.id}">
+                    <button clasS="ml-2 btn btn-success btn-sm">Add empty Questions</button>
+                </a>
 
                 <c:if test="${error != null}">
                     <span class="alert alert-danger small">${error}</span></c:if>

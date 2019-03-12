@@ -109,6 +109,16 @@ public class Questions implements Serializable{
 
         }
 
+        public Questions(Dataset datasetQuestion, boolean original, boolean activeVersion, boolean anotated, User user, int version)
+        {
+            this.datasetQuestion = datasetQuestion;
+            this.original = original;
+            this.activeVersion = activeVersion;
+            this.anotated = anotated;
+            this.anotatorUser =user;
+            this.version = version;
+        }
+
     public long getNext(List<Questions> liste){
         int index = liste.indexOf(this);
         if (index < 0 || index +1 ==liste.size()) return -1;

@@ -25,6 +25,7 @@ import webapp.services.DatasetService;
 import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
+
 import java.util.*;
 
 
@@ -58,7 +59,6 @@ public class AnotationController {
     WriteJsonFileFromDataset downloadGenerator;
 
 
-
     Suggestions suggestions = new Suggestions();
     KeyWordSuggestor k = new KeyWordSuggestor();
     MetadataSuggestor m = new MetadataSuggestor();
@@ -77,14 +77,10 @@ public class AnotationController {
             q = x;
         }
         model.addObject("Question", q);
-        model.addObject("GoldenAnswer", q.getAnswerAsString());
-        model.addObject("nextQuestion", q.getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId())));
-        model.addObject("formQuestion", new Questions());
+        q.setSparqlQuery(questionsService.getBeautifiedQuery(q.getSparqlQuery()));
         model.addObject("LanguageKeys", translationsService.getQuestionsByLang(q).keySet());
         HashMap<String, String> questionStrings = translationsService.getQuestionsByLang(q);
         model.addObject("TranslationMap", questionStrings);
-        HashMap<String, String> keywordMap = translationsService.getKeywordsByLang(q);
-        model.addObject("KeywordMap", keywordMap);
         ArrayList<String> lang = translationsService.getLanguages(q);
         model.addObject("Language", lang);
         String dL = q.getDatasetQuestion().getDefaultLanguage();
@@ -95,33 +91,41 @@ public class AnotationController {
             defaultLang = lang.get(0);
         }
         model.addObject("DefaultLanguage", defaultLang);
+        model.addObject("nextQuestion", q.getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId())));
+        model.addObject("formQuestion", new Questions());
 
-        QuerySuggestions qs = new QuerySuggestions();
-        if (!q.getAnswer().isEmpty()) {
-            String setElement = (String) q.getAnswer().iterator().next();
-            qs = suggestions.generateQuerySuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint(), setElement);
-        }
-        Set<String> set = new HashSet();
-        qs.getAnswers().ifPresent(rs -> {
-            while (rs.hasNext()) {
-                String var = rs.getResultVars().get(0);
-                set.add(rs.next().get(var).toString());
-            }
-        });
-        qs.getBooleanAnswer().ifPresent(val -> set.add(val.toString()));
-        model.addObject("Suggestion", qs);
-        model.addObject("EndpointAnswer", String.join("\n", set));
-        Map<String, String> keywordSuggestionsMap = new HashMap<String, String>();
-        for (String item : lang) {
+        if(q.getSparqlQuery() != null) {
+            model.addObject("GoldenAnswer", q.getAnswerAsString());
+            HashMap<String, String> keywordMap = translationsService.getKeywordsByLang(q);
+            model.addObject("KeywordMap", keywordMap);
 
-            if (questionStrings.containsKey(item) && k.hasStopwords(item) && keywordMap.get(item).isEmpty()) {
-                String keywordString = String.join(",", k.suggestKeywords(questionStrings.get(item), item));
-                keywordSuggestionsMap.put(item, keywordString);
+            QuerySuggestions qs = new QuerySuggestions();
+            if (!q.getAnswer().isEmpty()) {
+                String setElement = (String) q.getAnswer().iterator().next();
+                qs = suggestions.generateQuerySuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint(), setElement);
             }
+            Set<String> set = new HashSet();
+            qs.getAnswers().ifPresent(rs -> {
+                while (rs.hasNext()) {
+                    String var = rs.getResultVars().get(0);
+                    set.add(rs.next().get(var).toString());
+                }
+            });
+            qs.getBooleanAnswer().ifPresent(val -> set.add(val.toString()));
+            model.addObject("Suggestion", qs);
+            model.addObject("EndpointAnswer", String.join("\n", set));
+            Map<String, String> keywordSuggestionsMap = new HashMap<String, String>();
+            for (String item : lang) {
+
+                if (questionStrings.containsKey(item) && k.hasStopwords(item) && keywordMap.get(item).isEmpty()) {
+                    String keywordString = String.join(",", k.suggestKeywords(questionStrings.get(item), item));
+                    keywordSuggestionsMap.put(item, keywordString);
+                }
+            }
+            model.addObject("KeywordSuggestion", keywordSuggestionsMap);
+            MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint());
+            model.addObject("MetadataSuggestion", s);
         }
-        model.addObject("KeywordSuggestion", keywordSuggestionsMap);
-        MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint());
-        model.addObject("MetadataSuggestion", s);
 
 
         return model;
@@ -142,7 +146,6 @@ public class AnotationController {
                              @RequestParam("trans_keywords") List<String> trans_keywords,
                              RedirectAttributes attributes) {
         long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
-        sparqlQuery = sparqlQuery.replaceAll("\r\n", "");
         long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
         Questions q = questionsService.findDistinctById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -174,7 +177,7 @@ public class AnotationController {
                 //for (String x : trans_lang) {
                 for (int i = 0; i < trans_lang.size(); i++) {
                     List<String> keywords = null;
-                    if (!trans_keywords.get(i).isEmpty()) {
+                    if (trans_keywords.size()>0 && !trans_keywords.get(i).isEmpty()) {
                         if (trans_lang.size() > 1) {
                             keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
                         } else {
@@ -182,15 +185,21 @@ public class AnotationController {
                         }
                     }
                     if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
-                        Translations translations = new Translations(anotatedVersion, trans_lang.get(i), keywords, trans_question.get(i));
-                        translationsService.saveTranslations(translations);
+                        if (keywords == null)
+                        {
+                            Translations translations = new Translations(anotatedVersion, trans_lang.get(i), trans_question.get(i));
+                            translationsService.saveTranslations(translations);
+                        }
+                        else {
+                            Translations translations = new Translations(anotatedVersion, trans_lang.get(i), keywords, trans_question.get(i));
+                            translationsService.saveTranslations(translations);
+                        }
                     }
                 }
                 //}
                 attributes.addFlashAttribute("success", "Updated anotated question!");
                 return "redirect:/anotate/" + nextQuestion;
-            }
-            else {
+            } else {
 
                 try {
                     // save Question in neuer Version
@@ -199,7 +208,7 @@ public class AnotationController {
 
                     for (int i = 0; i < trans_lang.size(); i++) {
                         List<String> keywords = null;
-                        if (!trans_keywords.get(i).isEmpty()) {
+                        if (trans_keywords.size()>0 && !trans_keywords.get(i).isEmpty()) {
                             if (trans_lang.size() > 1) {
                                 keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
                             } else {
@@ -207,19 +216,32 @@ public class AnotationController {
                             }
                         }
                         if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
-                            Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), keywords, trans_question.get(i));
-                            translationsService.saveTranslations(translations);
+                            if(keywords==null)
+                            {
+                                Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), trans_question.get(i));
+                                translationsService.saveTranslations(translations);
+                            }
+                            else
+                            {
+                                Translations translations = new Translations(newQuestionVersion, trans_lang.get(i), keywords, trans_question.get(i));
+                                translationsService.saveTranslations(translations);
+                            }
+
                         }
                     }
 
                     System.out.println("Successfully saved new question version to Database!");
 
-                    if (questionsService.findDistinctById(nextQuestion).getVersion() == 0) {
-                        return "redirect:/anotate/" + nextQuestion;
-                    } else {
-                        attributes.addFlashAttribute("success", "This was the last question!");
-                        return "redirect:/anotate/" + id;
+                    if (nextQuestion ==-1)
+                    {
+                        attributes.addFlashAttribute("success", "No more questions!");
+                        return "redirect:/questionslist/" + dataset.getId();
                     }
+                    else  //(questionsService.findDistinctById(nextQuestion).getVersion() == 0)
+                    {
+                        return "redirect:/anotate/" + nextQuestion;
+                    }
+
 
                 } catch (Exception e) {
                     attributes.addFlashAttribute("error", "Something went wrong!");
@@ -228,7 +250,6 @@ public class AnotationController {
             }
         }
     }
-
 
 
 }
