@@ -61,7 +61,7 @@ public class DatasetController {
 
 
     @RequestMapping(value = "/datasetlist", method = RequestMethod.GET)
-    public ModelAndView datasetList() {
+    public ModelAndView datasetlist(RedirectAttributes attributes) {
         ModelAndView model = new ModelAndView("/datasetlist");
         model.addObject("Datasets", datasetService.getAllDatasets());
         model.addObject("Title", "QUANT- Dataset Übersicht");

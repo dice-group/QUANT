@@ -93,10 +93,7 @@
                         <a class="small text-muted" href="/manageDataset/${Dataset.id}">Back to Overview</a>
                     </div>
                     <div class="col">
-                        <c:if test="${error != null}">
-                            <span class="alert alert-danger">${error}</span></c:if>
-                        <c:if test="${success != null}">
-                            <span class="alert alert-success">${success}</span></c:if>
+
                     </div>
                 </div>
 
@@ -171,7 +168,7 @@
                     </div>
                     <div class="col">
                         <div class="col">
-                            <label for="file_answer">Answer from File:</label>
+                            <label for="file_answer">Expected answer:</label>
                             <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer"
                                       required></textarea>
                         </div>

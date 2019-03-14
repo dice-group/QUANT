@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-12  pt-2">
         <form method="POST" action="/signIn" style="max-width: 300px">
+
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <div class="form-group">
                 <label for="email" class="sr-only">Email address</label>

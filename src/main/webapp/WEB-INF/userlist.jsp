@@ -1,8 +1,9 @@
 <%@include file="templates/layout.jsp" %>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12  pt-2">
-            <h4>User List</h4>
+        <div class="col-md-12  pt-2 mb-2">
+            <span class="h4">User List</span>
+
             <div class="table-responsive">
 
 

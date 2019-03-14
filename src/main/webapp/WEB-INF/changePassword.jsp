@@ -3,6 +3,9 @@
         <div class="row">
             <div class="col-md-12 pt-2">
         <form method="POST" action="/changePassword" style="max-width: 300px">
+
+                <span class="alert alert-success mb-4"><c:out value="${success}"></c:out></span>
+
             <h1 class="h3 mb-3 font-weight-normal">Change password of <c:out value="${logedInAs}"></c:out></h1>
             <div class="form-group">
                 <label for="oldpassword" class="sr-only">Password</label>

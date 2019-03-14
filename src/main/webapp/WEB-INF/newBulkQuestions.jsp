@@ -18,7 +18,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12  pt-2">
-            <form method="POST" id="saveNewQuestion" action="/newBulkQuestions/${Dataset.id}" modelAttribute="formQuestion">
+            <form method="POST" id="saveNewQuestion" action="/newBulkQuestions/${Dataset.id}"
+                  modelAttribute="formQuestion">
                 <input type="hidden" id="user" name="user" value="${User.id}">
                 <div class="row ">
                     <div class=" col-6">
@@ -27,12 +28,7 @@
                         <button type="submit" class="btn btn-success btn-sm ml-2">Save Questions</button>
                         <a class="small text-muted" href="/manageDataset/${Dataset.id}">Back to Overview</a>
                     </div>
-                    <div class="col">
-                        <c:if test="${error != null}">
-                            <span class="alert alert-danger">${error}</span></c:if>
-                        <c:if test="${success != null}">
-                            <span class="alert alert-success">${success}</span></c:if>
-                    </div>
+
                 </div>
                 <hr/>
                 <input type="button" class="btn-sm btn-outline-info" id="button_add_row"
@@ -46,18 +42,19 @@
                         </div>
                     </div>
 
-                        <div class="form-group row mt-2">
+                    <div class="form-group row mt-2">
                         <div class="col-6">
-                            <input type="text" class="form-control" name="trans_question" placeholder="Your Question" required/>
+                            <input type="text" class="form-control" name="trans_question" placeholder="Your Question"
+                                   required/>
                         </div>
 
-                        </div>
                     </div>
                 </div>
 
-            </form>
-        </div>
+
+        </form>
     </div>
+</div>
 </div>
 
 <%@include file="templates/footer.jsp" %>

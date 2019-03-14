@@ -2,12 +2,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12  pt-2">
-            <h4>Version history
-                <c:if test="${error != null}">
-                    <span class="alert alert-danger">${error}</span></c:if>
-                <c:if test="${success != null}">
-                    <span class="alert alert-success">${success}</span></c:if>
-            </h4>
+            <h4>Version history</h4>
             <div class="table-responsive">
 
 

@@ -3,11 +3,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 pt-2">
-            <c:if test="${error}" var="Message">
-                <span class="alert alert-danger"><c:out value="${Message}"></c:out></span></c:if>
-            <c:if test="${success}" var="Message">
-                <span class="alert alert-success"><c:out value="${Message}"></c:out></span></c:if>
+
             <h4>Dataset List</h4>
+
             <div class="table-responsive">
                 <table id="table_id" class="display" style="width:100%"> <!--class="table table-bordred table-striped-->
                     <thead>

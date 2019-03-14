@@ -3,6 +3,7 @@ package webapp.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import webapp.repository.UserRepository;
@@ -41,48 +42,51 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String modifyUser(User admin,int id, String email, String adminPassword, String role) {
-        if(!bCryptPasswordEncoder.matches(adminPassword,admin.getPassword()))
-            return "wrong Password";
+    public String modifyUser(Authentication admin, int id, String email, String adminPassword, String role) {
+        User adminUser =userRepository.findByEmail(admin.getName());
+        if(!bCryptPasswordEncoder.matches(adminPassword,adminUser.getPassword()))
+            return "-1";
         User user = userRepository.getOne(id);
+        if (user.getId()==adminUser.getId())
+            admin.setAuthenticated(false);
         user.setEmail(email);
         user.setRole(Role.valueOf(role));
         userRepository.save(user);
-        return "User successfully modified";
+        return "1";
     }
 
     @Override
     public String modifyUserPassword(User admin, int id, String newPassword, String confirmNewPassword, String adminPassword) {
         if(!bCryptPasswordEncoder.matches(adminPassword,admin.getPassword()))
-            return "wrong Password";
+            return "-1";
         if(!newPassword.equals(confirmNewPassword))
-            return "Password not matches confirm password";
+            return "-2";
         User user = userRepository.getOne(id);
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
-        return "Password successfully reset";
+        return "1";
     }
 
     @Override
     public String changeEmail(User user, String newEmail, String password) {
         if(userRepository.findByEmail(newEmail)!=null)
-            return "Mail Address already in use";
+            return "-2";
         if(!bCryptPasswordEncoder.matches(password,user.getPassword()))
-            return "wrong Password";
+            return "-1";
         user.setEmail(newEmail);
         userRepository.save(user);
-        return "Email successfully changed";
+        return "1";
     }
 
     @Override
     public String changePassword(User user, String oldPassword, String newPassword, String confirmPassword) {
         if(!bCryptPasswordEncoder.matches(oldPassword,user.getPassword()))
-            return "wrong Password";
+            return "-1";
         if (!newPassword.equals(confirmPassword))
-            return "new Password does not match confirm password";
+            return "-2";
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
-        return "Password successfully changed";
+        return "1";
     }
 
 

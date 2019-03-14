@@ -110,10 +110,6 @@
                                 value="  ${Question.questionSetId} - ${Question.getDefaultTranslation()}"></c:out></mark>
 
                     </div>
-                    <c:if test="${error != null}" var="Message">
-                        <span class="alert alert-danger"><c:out value="${error}"></c:out></span></c:if>
-                    <c:if test="${success != null}" var="Message">
-                        <span class="alert alert-success"><c:out value="${success}"></c:out></span></c:if>
 
                     <div class=" col">
                         <button type="submit" class="btn btn-success btn-sm ml-2">Save changes</button>
@@ -137,10 +133,11 @@
                                 <select class="form-control mb-2" id="answertype" name="answertype" required>
 
                                     <option value="resource">resource</option>
+                                    <option value="string">string</option>
                                     <option value="number">number</option>
                                     <option value="boolean">boolean</option>
                                     <option value="date">date</option>
-                                    <option value="string">String</option>
+
 
                                 </select>
                             </div>
@@ -151,7 +148,7 @@
                             <div class="col-5">Out of Scope:</div>
                             <div class="col-7">
                                 <label class="radio-inline">
-                                    <input type="radio" class="mr-1" name="optscope" id="optscope_true" value="true">True</label>
+                                    <input type="radio" class="mr-1" name="optscope" id="optscope_true" value="true" required>True</label>
                                 <label class="radio-inline">
                                     <input type="radio" class="mr-1" name="optscope" id="optscope_false" value="false">False</label>
                                 <span class="alert-success"><c:out
@@ -164,7 +161,7 @@
                             <div class="col-5">Aggregation:</div>
                             <div class="col-7"><label class="radio-inline"><input type="radio" class="mr-1"
                                                                                   name="optaggregation"
-                                                                                  id="optaggregation_true" value="true">True</label>
+                                                                                  id="optaggregation_true" value="true" required>True</label>
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optaggregation"
                                                                    id="optaggregation_false" value="false">False</label>
                                 <span class="alert-success"><c:out
@@ -176,7 +173,7 @@
                             <div class="col-5">Only DBPedia:</div>
                             <div class="col-7"><label class="radio-inline"><input type="radio" class="mr-1"
                                                                                   name="optdbpedia"
-                                                                                  id="optdbpedia_true" value="true">True</label>
+                                                                                  id="optdbpedia_true" value="true" required>True</label>
                                 <label class="radio-inline"><input type="radio" class="mr-1" name="optdbpedia"
                                                                    id="optdbpedia_false"
                                                                    value="false">False</label>
@@ -189,7 +186,7 @@
                             <div class="col-5">Hybrid:</div>
                             <div class="col-7"><label class="radio-inline "><input type="radio" class="mr-1"
                                                                                    name="opthybrid"
-                                                                                   id="opthybrid_true" value="true">True</label>
+                                                                                   id="opthybrid_true" value="true" required>True</label>
                                 <label class="radio-inline "><input type="radio" class="mr-1" name="opthybrid"
                                                                     id="opthybrid_false"
                                                                     value="false">False</label>
@@ -216,7 +213,7 @@
                     </div>
                     <div class="col">
                         <div class="col">
-                            <label for="file_answer">Answer from File:</label>
+                            <label for="file_answer">Expected answer:</label>
                             <textarea rows="4" class="form-control mb-2" id="file_answer" name="file_answer"
                                       required><c:out
                                     value="${GoldenAnswer}"></c:out></textarea>
