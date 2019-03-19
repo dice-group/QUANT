@@ -113,6 +113,7 @@ public class AnotationController {
             });
             qs.getBooleanAnswer().ifPresent(val -> set.add(val.toString()));
             model.addObject("Suggestion", qs);
+            System.out.println(set);
             model.addObject("EndpointAnswer", String.join("\n", set));
             Map<String, String> keywordSuggestionsMap = new HashMap<String, String>();
             for (String item : lang) {
@@ -145,8 +146,7 @@ public class AnotationController {
                              @RequestParam("trans_question") List<String> trans_question,
                              @RequestParam("trans_keywords") List<String> trans_keywords,
                              RedirectAttributes attributes) {
-        long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
-        long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
+
         Questions q = questionsService.findDistinctById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -157,10 +157,14 @@ public class AnotationController {
         Questions v = questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(questionSetId);
         int version = v.getVersion() + 1;
         Questions anotatedVersion = questionsRepository.findTop1QuestionByQuestionSetIdAndAnotatorUserAndVersionGreaterThan(q.getQuestionSetId(), user, 0);
-
         Set<String> answer = new HashSet<>(Arrays.asList(answerString.split("\r\n")));
-
         String dL = q.getDatasetQuestion().getDefaultLanguage();
+        long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
+        long nextQuestion2 = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
+        long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsRepository.findByIdEqualsQuestionSetId(q.getDatasetQuestion()));
+        // long idTest = questionsRepository.findAllQuestions()
+
+        System.out.println("nextQuestion: " + nextQuestion + " nextQuestion2: " +nextQuestion2);
         if (!trans_lang.contains(dL)) {
             attributes.addFlashAttribute("error", "There must be at least a translation in the default language'" + dL + "'!");
             return "redirect:/anotate/" + id;
@@ -174,7 +178,7 @@ public class AnotationController {
                     translationsRepository.delete(item);
                 }
 
-                //for (String x : trans_lang) {
+
                 for (int i = 0; i < trans_lang.size(); i++) {
                     List<String> keywords = null;
                     if (trans_keywords.size()>0 && !trans_keywords.get(i).isEmpty()) {
@@ -196,10 +200,18 @@ public class AnotationController {
                         }
                     }
                 }
-                //}
-                attributes.addFlashAttribute("success", "Updated anotated question!");
-                return "redirect:/anotate/" + nextQuestion;
-            } else {
+             // if last question stop!
+                if(nextQuestion ==-1) {
+                    attributes.addFlashAttribute("success", "Updated anotade question. No more questions in list!");
+                    return "redirect:/questionslist/" + dataset.getId();
+                }
+                else {
+                    attributes.addFlashAttribute("success", "Updated anotated question!");
+                    return "redirect:/anotate/" + nextQuestion;
+                }
+            }
+
+            else {
 
                 try {
                     // save Question in neuer Version

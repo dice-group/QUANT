@@ -1,5 +1,8 @@
 package webapp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import webapp.model.Dataset;
 import webapp.model.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import webapp.model.User;
@@ -26,6 +29,8 @@ public interface QuestionsRepository extends JpaRepository<Questions,Integer>{
         Questions findTop1QuestionByQuestionSetIdAndAnotatorUserAndVersionGreaterThan(long id, User user, int v);
         Questions findQuestionSetIdById(long id);
 
+        @Query("select e from Questions e where e.id = e.questionSetId and e.datasetQuestion = :datasetId")
+        List<Questions> findByIdEqualsQuestionSetId(@Param("datasetId") Dataset datasetId);
 
 
 

@@ -1,6 +1,9 @@
 package webapp.services;
 
 
+import org.aksw.qa.commons.datastructure.Question;
+import org.springframework.data.repository.query.Param;
+import webapp.model.Dataset;
 import webapp.model.Questions;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,7 @@ public interface QuestionsService {
     Questions findDistinctById(long id);
     public Map<String,List<String>> generateMergingTranslationsMap(long setId, long id);
     public String getBeautifiedQuery(String query);
+
 
 
 }
