@@ -47,6 +47,7 @@
                             <input type="text" class="form-control" name="trans_question" placeholder="Your Question"
                                    required/>
                         </div>
+                        <input type ="hidden" name="trans_question" value="">
 
                     </div>
                 </div>
