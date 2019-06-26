@@ -6,3 +6,9 @@ Question answering engines have become one of the most popular type of applicati
 [![BCH compliance](https://bettercodehub.com/edge/badge/dice-group/QUANT?branch=development)](https://bettercodehub.com/results/dice-group/QUANT)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f8a738a15b894bfd851f052673567ce8)](https://www.codacy.com/app/lukasbluebaumb94/QUANT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dice-group/QUANT&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/dice-group/QUANT/branch/development/graph/badge.svg)](https://codecov.io/gh/dice-group/QUANT)
+
+## Start QUANT
+* Use mvn spring-boot:run to start the application
+
+## Installing Verion [v1.0](https://github.com/dice-group/QUANT/releases/tag/v1.0):
+see [https://github.com/dice-group/QUANT/wiki/QUANT-v1.0](https://github.com/dice-group/QUANT/wiki/QUANT-v1.0)
