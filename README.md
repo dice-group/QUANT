@@ -12,5 +12,5 @@ Question answering engines have become one of the most popular type of applicati
 mvn spring-boot:run
 ```
 
-## Installing Verion [v1.0](https://github.com/dice-group/QUANT/releases/tag/v1.0):
+## Installing Version [v1.0](https://github.com/dice-group/QUANT/releases/tag/v1.0):
 see [https://github.com/dice-group/QUANT/wiki/QUANT-v1.0](https://github.com/dice-group/QUANT/wiki/QUANT-v1.0)
