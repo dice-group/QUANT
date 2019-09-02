@@ -2,7 +2,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12  pt-2">
-            <h4>Version history</h4>
+            <span class="h4">Version history
+            <a href="/questionslist/${Set}"><button class="ml-2 btn btn-success btn-sm">Back to question list</button></a>
+            </span>
             <div class="table-responsive">
 
 

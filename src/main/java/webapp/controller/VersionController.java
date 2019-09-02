@@ -68,6 +68,7 @@ public class VersionController {
 
             Questions nowActive = questionsService.findDistinctById(nq);
             nowActive.setActiveVersion(true);
+
             questionsService.saveQuestions(nowActive);
             System.out.println("Update: Active version successfully saved to database.");
             attributes.addFlashAttribute("success", "Successfully changed the active question!");

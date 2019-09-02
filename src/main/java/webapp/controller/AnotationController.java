@@ -26,6 +26,10 @@ import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.*;
 
 
@@ -63,10 +67,14 @@ public class AnotationController {
     KeyWordSuggestor k = new KeyWordSuggestor();
     MetadataSuggestor m = new MetadataSuggestor();
 
+
     @RequestMapping(value = "/anotate/{id}", method = RequestMethod.GET)
     public ModelAndView anotate(@PathVariable("id") long id,
                                 RedirectAttributes attributes) {
         ModelAndView model = new ModelAndView("/anotate");
+        Instant zeit = Instant.now();
+        long milli = zeit.toEpochMilli();
+        model.addObject("beginn",milli);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.getByEmail(username);
@@ -135,6 +143,8 @@ public class AnotationController {
 
     @RequestMapping(value = "/anotate/{id}", method = RequestMethod.POST)
     public String newVersion(@PathVariable("id") long id,
+                             @RequestParam("js_duration") String js_duration,
+                             @RequestParam("beginn") String beginn,
                              @RequestParam("answertype") String answertype,
                              @RequestParam("optscope") boolean outOfScope,
                              @RequestParam("optaggregation") boolean aggregation,
@@ -146,6 +156,23 @@ public class AnotationController {
                              @RequestParam("trans_question") List<String> trans_question,
                              @RequestParam("trans_keywords") List<String> trans_keywords,
                              RedirectAttributes attributes) {
+        Instant zeit = Instant.now();
+        long ende = zeit.toEpochMilli();
+        long start = Long.parseLong(beginn);
+        long duration2;
+        long duration;
+        try{
+            duration = Long.parseLong(js_duration);
+            System.out.println("Zeitdauer laut Javascript: " + duration + " Millisekunden");
+            duration2 = ende - start;
+            System.out.println("Zeitraum laut Controller: " + duration2 + " Millisekunden");
+            }
+        catch (Exception e)
+        {
+            duration = -1;
+            duration2 = -1;
+            System.out.println("Die Zeit konnte nicht gemessen werden.");
+        }
 
         Questions q = questionsService.findDistinctById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -202,7 +229,7 @@ public class AnotationController {
                 }
              // if last question stop!
                 if(nextQuestion ==-1) {
-                    attributes.addFlashAttribute("success", "Updated anotade question. No more questions in list!");
+                    attributes.addFlashAttribute("success", "Updated anotated question. No more questions in list!");
                     return "redirect:/questionslist/" + dataset.getId();
                 }
                 else {

@@ -161,7 +161,7 @@ public class CrudController {
         boolean original = false;
         int version = 0;
         boolean anotated = false;
-        boolean activeVersion = false;
+        boolean activeVersion = true;
 
 
         try {

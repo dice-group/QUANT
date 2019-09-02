@@ -87,6 +87,7 @@
 
 <script>
     $(document).ready(function () {
+        start();
         sparqlQuery(document.getElementById('sparql').value);
         setRadioButton('optscope', ${Question.outOfScope});
         setRadioButton('optaggregation', ${Question.aggregation});
@@ -100,8 +101,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12  pt-2">
-            <form method="POST" id="anotate1" action="/anotate/${Question.id}" modelAttribute="formQuestion">
-
+            <form method="POST" id="anotate1" action="/anotate/${Question.id}" onsubmit="end()" modelAttribute="formQuestion">
+            <input type ="hidden" id="js_duration" name="js_duration" value="">
+                <input type ="hidden" id="beginn" name="beginn" value="${beginn}">
                 <div class="row ">
                     <div class=" col">
                         <span class="h4">Anotate Question:</span>

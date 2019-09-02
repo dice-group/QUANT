@@ -9,7 +9,7 @@ public class TestQuery {
     @Test
     public void ReadQaldTest() {
         Suggestions Suggestions = new Suggestions();
-        QuerySuggestions q= Suggestions.gernerateQuerySuggestions("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+        QuerySuggestions q= Suggestions.generateQuerySuggestions("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                 "select distinct ?Concept where {?Concept <http://www.w3.org/1999/02/22-rdf-syntax-ns#typefa> <http://xmlns.com/foaf/0.1/Person>} LIMIT 100","http://dbpedia.org/sparql","http://dbpedia.org/resource/Abbie_Hoffman");
@@ -25,7 +25,7 @@ public class TestQuery {
     @Test
     public void ReadQaldTest2() {
         Suggestions Suggestions = new Suggestions();
-        QuerySuggestions q = Suggestions.gernerateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        QuerySuggestions q = Suggestions.generateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                 "PREFIX onto: <http://dbpedia.org/ontology/>\n" +
@@ -47,7 +47,7 @@ public class TestQuery {
     @Test
     public void ReadQaldTest3() {
         Suggestions Suggestions = new Suggestions();
-        QuerySuggestions q = Suggestions.gernerateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        QuerySuggestions q = Suggestions.generateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                 "PREFIX onto: <http://dbpedia.org/ontology/>\n" +
@@ -65,7 +65,7 @@ public class TestQuery {
     @Test
     public void ReadQaldTest4() {
         Suggestions Suggestions = new Suggestions();
-        QuerySuggestions q = Suggestions.gernerateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        QuerySuggestions q = Suggestions.generateQuerySuggestions("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
                 "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
