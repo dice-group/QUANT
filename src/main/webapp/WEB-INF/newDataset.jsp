@@ -42,6 +42,13 @@
 
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <span id="endpoint-error" class="alert alert-danger d-none">The endpoint you have entered is not reachable!</span>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <c:if test="${error != null}">
                     <span class="alert alert-danger">${error}</span></c:if>
@@ -62,6 +69,16 @@
         });
     });
 
+    jQuery('#formUpload').submit(function(event){
+        var endpointUrl = $('#endpoint').val();
+        var valid = validateEndpoint(endpointUrl);
+
+        if(!valid){
+            event.preventDefault();
+            $('#endpoint-error').removeClass('d-none');
+            $('#endpoint-error').addClass('d-block');
+        }
+    });
 </script>
 
 <%@include file="templates/footer.jsp" %>

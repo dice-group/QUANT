@@ -13,3 +13,19 @@ function end() {
     document.getElementById("js_duration").value = timeDiff;
 
 };
+
+function validateEndpoint(endpoint)
+{
+    valid = false;
+
+    $.ajax({
+        type: "GET", url: endpoint, async: false, timeout:1000,
+        statusCode: {
+            200: function() {
+                valid = true;
+            }
+        }
+    });
+
+    return valid;
+}

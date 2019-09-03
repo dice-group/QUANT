@@ -20,8 +20,9 @@
                 <a href ="/newBulkQuestions/${Dataset.id}">
                     <button clasS="ml-2 btn btn-success btn-sm">Add empty Questions</button>
                 </a>
-
-
+                <a href ="/changeEndpoint/${Dataset.id}">
+                    <button clasS="ml-2 btn btn-success btn-sm">Change Endpoint</button>
+                </a>
             </p>
             <div class="table-responsive">
                 <form id="manageDatasetForm" action="/manageDataset/${Dataset.id}" method="POST"

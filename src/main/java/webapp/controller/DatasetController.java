@@ -170,6 +170,31 @@ public class DatasetController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }
+
+    @RequestMapping(value = "changeEndpoint/{id}", method = RequestMethod.GET)
+    public ModelAndView changeEndpoint(@PathVariable("id") long id) {
+        ModelAndView model = new ModelAndView("/changeEndpoint");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userService.getByEmail(username);
+        model.addObject("User", user);
+        model.addObject("Dataset", datasetService.findDatasetByID(id));
+
+        return model;
+    }
+
+    @RequestMapping(value = "/changeEndpoint/{id}", method = RequestMethod.POST)
+    public String changeEndpoint(@RequestParam("endpoint") String endpoint,
+                                 @PathVariable("id") long datasetId,
+                                 RedirectAttributes attributes) {
+
+        Dataset dataset = datasetService.findDatasetByID(datasetId);
+        dataset.setEndpoint(endpoint);
+        datasetService.saveDataset(dataset);
+
+        attributes.addFlashAttribute("success", "The endpoint was successfully changed!");
+        return "redirect:/manageDataset/" + datasetId;
+    }
 }
 
 
