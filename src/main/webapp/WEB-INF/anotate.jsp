@@ -80,7 +80,11 @@
     function setSparqlSuggestion() {
         var newSuggestion = document.getElementById('suggestedSparql').innerText;
         document.getElementById('sparql').value = newSuggestion;
-        sparqlQuery(newSuggestion)
+        $('#sugg_sparql').val($('#sparql').val()); // Doing it to avoid spacial characters, so that comparison in backend is easy
+        sparqlQuery(newSuggestion);
+
+        // logging
+        document.getElementById('sparql_loaded').value = "true";
 
     }
 </script>
@@ -103,7 +107,19 @@
         <div class="col-md-12  pt-2">
             <form method="POST" id="anotate1" action="/anotate/${Question.id}" onsubmit="end()" modelAttribute="formQuestion">
             <input type ="hidden" id="js_duration" name="js_duration" value="">
-                <input type ="hidden" id="beginn" name="beginn" value="${beginn}">
+            <input type ="hidden" id="beginn" name="beginn" value="${beginn}">
+
+            <!–– logging attributes start ––>
+            <input type ="hidden" id="sugg_answertype" name="sugg_answertype" value="${MetadataSuggestion.answerType}">
+            <input type ="hidden" id="sugg_optscope" name="sugg_optscope" value="${MetadataSuggestion.outOfScope}">
+            <input type ="hidden" id="sugg_optaggregation" name="sugg_optaggregation" value="${MetadataSuggestion.aggregation}">
+            <input type ="hidden" id="sugg_optdbpedia" name="sugg_optdbpedia" value="${MetadataSuggestion.onlyDbo}">
+            <input type ="hidden" id="sugg_opthybrid" name="sugg_opthybrid" value="${MetadataSuggestion.hybrid}">
+            <c:set var="suggested_sparql" value="${Suggestion.correctedQuery == null ? '': Suggestion.correctedQuery}"/>
+            <input type ="hidden" id="sugg_sparql" name="sugg_sparql" value="${suggested_sparql}">
+            <input type ="hidden" id="sparql_loaded" name="sparql_loaded" value="false">
+            <!–– logging attributes end ––>
+
                 <div class="row ">
                     <div class=" col">
                         <span class="h4">Anotate Question:</span>
@@ -251,6 +267,7 @@
                         </div>
                         <c:forEach items="${Language}" var="entry">
                             <c:set var="key">${entry}</c:set>
+                            <input type="hidden" name="sugg_trans_keywords" value="${KeywordSuggestion.get(entry)}">
 
                             <div class="col-1">
                                 <input type="text" class="form-control" name="trans_lang" id="${'lang_' +=entry}"

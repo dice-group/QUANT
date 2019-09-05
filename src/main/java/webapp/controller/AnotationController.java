@@ -1,12 +1,17 @@
 package webapp.controller;
 
+import com.google.common.collect.Sets;
 import datahandler.WriteJsonFileFromDataset;
 import datahandler.WriteQaldDataset;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import suggestion.Suggestions;
@@ -14,22 +19,18 @@ import suggestion.keywords.KeyWordSuggestor;
 import suggestion.metadata.MetadataSuggestions;
 import suggestion.metadata.MetadataSuggestor;
 import suggestion.query.QuerySuggestions;
-import webapp.repository.DatasetRepository;
-import webapp.repository.QuestionsRepository;
-import webapp.repository.TranslationsRepository;
 import webapp.model.Dataset;
 import webapp.model.Questions;
 import webapp.model.Translations;
 import webapp.model.User;
-import webapp.services.DatasetService;
-import webapp.services.QuestionsService;
-import webapp.services.TranslationsService;
-import webapp.services.UserService;
+import webapp.repository.DatasetRepository;
+import webapp.repository.QuestionsRepository;
+import webapp.repository.TranslationsRepository;
+import webapp.services.*;
 
-import java.sql.Timestamp;
-import java.time.Duration;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.*;
 
 
@@ -61,6 +62,12 @@ public class AnotationController {
 
     @Autowired
     WriteJsonFileFromDataset downloadGenerator;
+
+    @Autowired
+    SuggestionsLogger suggestionsLogger;
+
+    @Value("${suggestions.logging.active}")
+    private boolean loggingActive;
 
 
     Suggestions suggestions = new Suggestions();
@@ -150,23 +157,32 @@ public class AnotationController {
                              @RequestParam("optaggregation") boolean aggregation,
                              @RequestParam("optdbpedia") boolean onlydb,
                              @RequestParam("opthybrid") boolean hybrid,
+                             @RequestParam("sugg_answertype") String sugg_answertype,
+                             @RequestParam("sugg_optscope") boolean sugg_outOfScope,
+                             @RequestParam("sugg_optaggregation") boolean sugg_aggregation,
+                             @RequestParam("sugg_optdbpedia") boolean sugg_onlydb,
+                             @RequestParam("sugg_opthybrid") boolean sugg_hybrid,
                              @RequestParam("sparql") String sparqlQuery,
+                             @RequestParam("sugg_sparql") String sugg_sparqlQuery,
+                             @RequestParam("sparql_loaded") boolean sparqlLoaded,
                              @RequestParam("file_answer") String answerString,
                              @RequestParam("trans_lang") List<String> trans_lang,
                              @RequestParam("trans_question") List<String> trans_question,
                              @RequestParam("trans_keywords") List<String> trans_keywords,
+                             @RequestParam("sugg_trans_keywords") List<String> sugg_trans_keywords,
                              RedirectAttributes attributes) {
         Instant zeit = Instant.now();
         long ende = zeit.toEpochMilli();
         long start = Long.parseLong(beginn);
         long duration2;
-        long duration;
+        long duration = 0;
+
         try{
             duration = Long.parseLong(js_duration);
             System.out.println("Zeitdauer laut Javascript: " + duration + " Millisekunden");
             duration2 = ende - start;
             System.out.println("Zeitraum laut Controller: " + duration2 + " Millisekunden");
-            }
+        }
         catch (Exception e)
         {
             duration = -1;
@@ -191,10 +207,12 @@ public class AnotationController {
         long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsRepository.findByIdEqualsQuestionSetId(q.getDatasetQuestion()));
         // long idTest = questionsRepository.findAllQuestions()
 
+        String redirect;
+
         System.out.println("nextQuestion: " + nextQuestion + " nextQuestion2: " +nextQuestion2);
         if (!trans_lang.contains(dL)) {
             attributes.addFlashAttribute("error", "There must be at least a translation in the default language'" + dL + "'!");
-            return "redirect:/anotate/" + id;
+            redirect = "redirect:/anotate/" + id;
         } else {
 
             if (anotatedVersion != null) {
@@ -230,11 +248,11 @@ public class AnotationController {
              // if last question stop!
                 if(nextQuestion ==-1) {
                     attributes.addFlashAttribute("success", "Updated anotated question. No more questions in list!");
-                    return "redirect:/questionslist/" + dataset.getId();
+                    redirect = "redirect:/questionslist/" + dataset.getId();
                 }
                 else {
                     attributes.addFlashAttribute("success", "Updated anotated question!");
-                    return "redirect:/anotate/" + nextQuestion;
+                    redirect = "redirect:/anotate/" + nextQuestion;
                 }
             }
 
@@ -274,21 +292,83 @@ public class AnotationController {
                     if (nextQuestion ==-1)
                     {
                         attributes.addFlashAttribute("success", "No more questions!");
-                        return "redirect:/questionslist/" + dataset.getId();
+                        redirect = "redirect:/questionslist/" + dataset.getId();
                     }
                     else  //(questionsService.findDistinctById(nextQuestion).getVersion() == 0)
                     {
-                        return "redirect:/anotate/" + nextQuestion;
+                        redirect = "redirect:/anotate/" + nextQuestion;
                     }
 
 
                 } catch (Exception e) {
                     attributes.addFlashAttribute("error", "Something went wrong!");
-                    return "redirect:/anotate/" + id;
+                    redirect = "redirect:/anotate/" + id;
                 }
             }
         }
+
+        // Logging the annotation stats in the CSV
+        if(loggingActive) {
+            long finalDuration = duration;
+            boolean sparqlSuggested = sugg_sparqlQuery != null && !sugg_sparqlQuery.trim().isEmpty();
+
+            Map<String, Object> loggingParameters = new HashMap<String, Object>(){{
+                put(SuggestionsLogger.HEADER.QUESTION_ID.getName(), questionSetId);
+                put(SuggestionsLogger.HEADER.ANSWER_TYPE.getName(), answertype.equalsIgnoreCase(sugg_answertype));
+                put(SuggestionsLogger.HEADER.OUT_OF_SCOPE.getName(), outOfScope == sugg_outOfScope);
+                put(SuggestionsLogger.HEADER.AGGREGATION.getName(), aggregation == sugg_aggregation);
+                put(SuggestionsLogger.HEADER.DBPEDIA_ONLY.getName(), onlydb == sugg_onlydb);
+                put(SuggestionsLogger.HEADER.HYBRID.getName(), hybrid == sugg_hybrid);
+                put(SuggestionsLogger.HEADER.SPARQL_SUGGESTED.getName(), sparqlSuggested);
+                put(SuggestionsLogger.HEADER.SPARQL_LOADED.getName(), sparqlSuggested ? sparqlLoaded : "");
+                put(SuggestionsLogger.HEADER.SPARQL_UNCHANGED.getName(), sparqlSuggested && sparqlLoaded ? sparqlQuery.equalsIgnoreCase(sugg_sparqlQuery) : "");
+                put(SuggestionsLogger.HEADER.TIME_TAKEN_MILLIS.getName(), finalDuration);
+                put(SuggestionsLogger.HEADER.TIMESTAMP.getName(), new Date().toString());
+            }};
+
+            // keywords suggestions
+            for(String lang : translationsService.getLanguages(q)) // Get all the supported languages
+            {
+                SuggestionsLogger.HEADER forLang = SuggestionsLogger.HEADER.getForLang(lang); // Get the HEADER reference for the language
+                if(forLang != null) {
+                    if (trans_lang.contains(lang)) { // Check if the supported lang was submitted through request params
+                        int index = trans_lang.indexOf(lang);
+
+                        if("".equals(sugg_trans_keywords.get(index))) { // Check if the system provided suggestions for the language
+                            loggingParameters.put(forLang.getName(), "");
+                        }
+                        else { // If the suggestions were provided by the system then compare the submitted keywords against suggested keywords
+                            Set<String> submitted = this.cleanupKeywords(trans_keywords.get(index).trim().split(","));
+                            Set<String> suggested = this.cleanupKeywords(sugg_trans_keywords.get(index).trim().split(","));
+
+                            int pickedSuggestions = Sets.intersection(submitted, suggested).size();
+                            int totalSuggested = suggested.size();
+
+                            loggingParameters.put(forLang.getName(), new BigDecimal((double)pickedSuggestions/totalSuggested).setScale(2, RoundingMode.HALF_UP).doubleValue());
+                        }
+                    } else { // If not, log an empty value
+                        loggingParameters.put(forLang.getName(), "");
+                    }
+                }
+            }
+
+            suggestionsLogger.log(q, loggingParameters);
+        }
+
+        return redirect;
+
     }
 
+    private Set<String> cleanupKeywords(String[] keywords)
+    {
+        Set<String> keywordsSet = new HashSet<>();
+        for(String kw : keywords)
+        {
+            String trimmed = kw.trim();
+            if(!trimmed.isEmpty())
+                keywordsSet.add(trimmed);
+        }
+        return keywordsSet;
+    }
 
 }
