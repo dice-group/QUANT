@@ -2,6 +2,7 @@ package webapp.services;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import webapp.model.Questions;
@@ -21,6 +22,8 @@ public class SuggestionsLogger {
 
     @Value("${suggestions.logging.filepath}")
     private String logfilePath;
+
+    private static final Logger logger = Logger.getLogger(SuggestionsLogger.class.getName());
 
     private static Map<Integer, String> HEADER_POSITION_MAP = new HashMap<>();
     private static int TOTAL_COLS;
@@ -61,6 +64,7 @@ public class SuggestionsLogger {
                 }
             }
 
+            logger.info("CSV header not found for language " + lang);
             return null;
         }
 
@@ -128,22 +132,19 @@ public class SuggestionsLogger {
                 csvFile.printRecord(values);
 
             } catch (IOException e) {
-                System.out.println("Could not log the suggestions stats: " + e.getLocalizedMessage());
+                logger.error("Could not log the suggestions stats for question id: " + questions.getQuestionSetId());
+                logger.error(e.getLocalizedMessage());
             } finally {
                 if (out != null) {
                     try {
                         out.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (IOException ignored) { }
                 }
 
                 if (csvFile != null) {
                     try {
                         csvFile.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (IOException ignored) { }
                 }
             }
         });

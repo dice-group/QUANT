@@ -124,16 +124,41 @@ public class DatasetController {
                                  @PathVariable("id") long datasetId,
                                  RedirectAttributes attributes) {
         Questions q = questionsService.findDistinctById(deleteId);
+        long questionSetId = q.getQuestionSetId();
         List<Translations> t = translationsRepository.findByQid(q);
-        Questions originalQ = questionsService.findDistinctById(q.getQuestionSetId());
+        Questions originalQ = questionsService.findDistinctById(questionSetId);
         System.out.println("Question to delete: " + deleteId);
 
+        boolean delete;
         try {
-            if (q.isActiveVersion() || q.isOriginal()) {
-                attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
-                System.out.println("is active or original");
-                return "redirect:/manageDataset/" + datasetId;
-            } else {
+            if (q.isActiveVersion()) {
+                boolean otherVersionsExist = questionsService.findQuestionsByDatasetQuestionIdAndQuestionSetId(datasetId, questionSetId).size() != 1;
+                if(!otherVersionsExist)
+                {
+                    delete = true;
+                }
+                else {
+                    delete = false;
+                    attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
+                    System.out.println("is active or original");
+                }
+            }
+            else if (q.isOriginal()) {
+                if(q.isActiveVersion()) {
+                    delete = false;
+                    attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
+                    System.out.println("is active or original");
+                }
+                else {
+                    delete = true;
+                }
+            }
+            else {
+                delete = true;
+            }
+
+            if(delete)
+            {
                 for (Translations item : t) {
 
                     translationsRepository.delete(item);
@@ -141,7 +166,7 @@ public class DatasetController {
 
                 questionsRepository.delete(q);
 
-                List<Questions> qVersions = questionsService.findQuestionsByDatasetQuestionIdAndQuestionSetId(datasetId, q.getQuestionSetId());
+                List<Questions> qVersions = questionsService.findQuestionsByDatasetQuestionIdAndQuestionSetId(datasetId, questionSetId);
                 if(qVersions.size() ==1)
                 {
                     originalQ.setAnotated(false);
@@ -149,8 +174,10 @@ public class DatasetController {
                     System.out.println("SetAnotated to false:" +originalQ.getId());
                 }
                 attributes.addFlashAttribute("success", "The question was successfully deleted!");
-                return "redirect:/manageDataset/" + datasetId;
             }
+
+            return "redirect:/manageDataset/" + datasetId;
+
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "An error occured while deleting the question!");
             return "redirect:/manageDataset/" + datasetId;

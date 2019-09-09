@@ -3,6 +3,7 @@ package webapp.controller;
 import com.google.common.collect.Sets;
 import datahandler.WriteJsonFileFromDataset;
 import datahandler.WriteQaldDataset;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -36,6 +37,9 @@ import java.util.*;
 
 @Controller
 public class AnotationController {
+
+    private static final Logger logger = Logger.getLogger(AnotationController.class.getName());
+
     @Autowired
     QuestionsRepository questionsRepository;
 
@@ -349,6 +353,8 @@ public class AnotationController {
                     } else { // If not, log an empty value
                         loggingParameters.put(forLang.getName(), "");
                     }
+                } else {
+                    logger.warn("Header not found for language: " + lang + ". Suggestions stats will not be logged. Please add the header for the language in SuggestionsLogger.HEADER");
                 }
             }
 
