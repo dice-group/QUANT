@@ -146,8 +146,10 @@ public class AnotationController {
             MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint());
             model.addObject("MetadataSuggestion", s);
         }
-
-
+        else {
+            MetadataSuggestions s = new MetadataSuggestions();
+            model.addObject("MetadataSuggestion", s);
+        }
         return model;
     }
 
