@@ -24,6 +24,7 @@ import webapp.services.QuestionsService;
 import webapp.services.TranslationsService;
 import webapp.services.UserService;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -75,7 +76,7 @@ public class CrudController {
                                   @RequestParam("optdbpedia") boolean onlydb,
                                   @RequestParam("opthybrid") boolean hybrid,
                                   @RequestParam("sparql") String sparqlQuery,
-                                  @RequestParam("file_answer") Set<String> answer,
+                                  @RequestParam("file_answer") String answerString,
                                   @RequestParam("trans_lang") List<String> trans_lang,
                                   @RequestParam("trans_question") List<String> trans_question,
                                   @RequestParam("trans_keywords") List<String> trans_keywords,
@@ -91,6 +92,7 @@ public class CrudController {
 
 
         try {
+            Set<String> answer = new HashSet<>(Arrays.asList(answerString.split("\r\n")));
             // save Question in neuer Version
             Questions newQuestion = new Questions(dataset, answertype, aggregation, onlydb, hybrid, original, activeVersion, anotated, user, version, outOfScope, questionSetId, sparqlQuery, answer);
             questionsService.saveQuestions(newQuestion);
