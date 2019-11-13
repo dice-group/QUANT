@@ -87,7 +87,7 @@ public class CrudController {
         long questionSetId = 0;
         boolean original = false;
         int version = 0;
-        boolean anotated = true;
+        boolean anotated = false;
         boolean activeVersion = true;
 
 

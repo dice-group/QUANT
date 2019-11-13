@@ -336,7 +336,7 @@ public class AnotationController {
             for(String lang : translationsService.getLanguages(q)) // Get all the supported languages
             {
                 SuggestionsLogger.HEADER forLang = SuggestionsLogger.HEADER.getForLang(lang); // Get the HEADER reference for the language
-                if(forLang != null) {
+                if(forLang != null && !sugg_trans_keywords.isEmpty()) {
                     if (trans_lang.contains(lang)) { // Check if the supported lang was submitted through request params
                         int index = trans_lang.indexOf(lang);
 
