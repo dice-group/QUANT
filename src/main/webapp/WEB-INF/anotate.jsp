@@ -109,7 +109,7 @@
             <input type ="hidden" id="js_duration" name="js_duration" value="">
             <input type ="hidden" id="beginn" name="beginn" value="${beginn}">
 
-            <!–– logging attributes start ––>
+            <!-- logging attributes start -->
             <input type ="hidden" id="sugg_answertype" name="sugg_answertype" value="${MetadataSuggestion.answerType}">
             <input type ="hidden" id="sugg_optscope" name="sugg_optscope" value="${MetadataSuggestion.outOfScope}">
             <input type ="hidden" id="sugg_optaggregation" name="sugg_optaggregation" value="${MetadataSuggestion.aggregation}">
@@ -118,7 +118,7 @@
             <c:set var="suggested_sparql" value="${Suggestion.correctedQuery == null ? '': Suggestion.correctedQuery}"/>
             <input type ="hidden" id="sugg_sparql" name="sugg_sparql" value="${suggested_sparql}">
             <input type ="hidden" id="sparql_loaded" name="sparql_loaded" value="false">
-            <!–– logging attributes end ––>
+            <!-- logging attributes end -->
 
                 <div class="row ">
                     <div class=" col">
@@ -275,8 +275,9 @@
                             </div>
                             <div class="col-5">
                                 <input type="text" class="form-control" name="trans_question"
-                                       id="${'questionString_' +=entry}" value=" <c:out value='${TranslationMap[entry]}' ></c:out>"/>
+                                       id="${'questionString_' +=entry}" value="<c:out value='${TranslationMap[entry]}' ></c:out>"/>
                             </div>
+
 
                             <div class="col-6">
                                 <c:choose>
@@ -292,6 +293,7 @@
                             </div>
 
                         </c:forEach>
+                        <input type ="hidden" name="trans_question" value="">
 
                     </div>
                 </div>
