@@ -9,6 +9,7 @@ import java.util.Optional;;
 public class QuerySuggestions {
     private List<String> prefixSuggestions;
     private String error;
+    private Boolean endpointReachable;
     private boolean is_correct = true;
     private List<String> missingResources = new ArrayList<String>();
     private List<String> missingPredicates = new ArrayList<String>();
@@ -17,6 +18,7 @@ public class QuerySuggestions {
     private Optional<Boolean> booleanAnswer =Optional.empty();
     public QuerySuggestions(){
         prefixSuggestions=new ArrayList<String>();
+        endpointReachable=true;
     }
     public void addPrefixSuggestions(String prefix){
         prefixSuggestions.add(prefix);
@@ -69,5 +71,13 @@ public class QuerySuggestions {
 
     public void setIs_correct(boolean is_correct) {
         this.is_correct = is_correct;
+    }
+
+    public Boolean getEndpointReachable() {
+        return endpointReachable;
+    }
+
+    public void setEndpointReachable(Boolean endpointReachable) {
+        this.endpointReachable = endpointReachable;
     }
 }

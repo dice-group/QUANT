@@ -71,7 +71,7 @@
 
     jQuery('#formUpload').submit(function(event){
         var endpointUrl = $('#endpoint').val();
-        var valid = validateEndpoint(endpointUrl);
+        var valid=validateEndpoint(endpointUrl);
 
         if(!valid){
             event.preventDefault();

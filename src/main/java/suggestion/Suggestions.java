@@ -6,6 +6,7 @@ import suggestion.query.QuerySuggestor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.*;
 
 public class Suggestions {
@@ -28,6 +29,7 @@ public class Suggestions {
             try {
                 Query query = QueryFactory.create(queryString);
                 QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
+                qe.setTimeout(5000);
                 if(query.isAskType()) {
                     suggestions.setBooleanAnswer(qe.execAsk());
                     qe.close();
@@ -56,6 +58,10 @@ public class Suggestions {
                     }
                 }
                 else suggestions.setError(e.getMessage());
+            }catch (Exception e){
+                e.printStackTrace();
+                suggestions.setEndpointReachable(false);
+                return false;
             }
         }while (correctionFound);
         return false;

@@ -26,7 +26,8 @@
         $.ajax({
             data: {query: sparqlQuery},
             dataType: "json",
-            url: "${Question.datasetQuestion.endpoint}"
+            url: "${Question.datasetQuestion.endpoint}",
+            timeoutSeconds:5
         })
             .done(function (data) {
                 writeAnswers(data)
@@ -238,8 +239,15 @@
                         </div>
 
                         <div class="col">
-                            <label for="endpoint_answer">Answer from Endpoint: <c:out
-                                    value="${Question.datasetQuestion.endpoint}"></c:out></label>
+                            <c:choose>
+                                <c:when test="${Suggestion.endpointReachable==false}">
+                                    <label for="endpoint_answer" class="alert-warning">Endpoint not reachable</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label for="endpoint_answer">Answer from Endpoint: <c:out
+                                            value="${Question.datasetQuestion.endpoint}"></c:out></label>
+                                </c:otherwise>
+                            </c:choose>
                             <textarea rows="4" class="form-control" id="endpoint_answer">${EndpointAnswer}</textarea>
                         </div>
 

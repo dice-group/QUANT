@@ -22,7 +22,7 @@ public class testMetadata {
                 "?film rdfs:label 'Charmed'@en .\n" +
                 "?film onto:starring ?actors .\n" +
                 "?actors foaf:homepage ?uri .\n" +
-                "}", "http://dbpedia.org/sparql");
+                "}", "http://dbpedia.org/sparql",true);
         assertNotNull(s);
     }
     @Test
@@ -36,7 +36,7 @@ public class testMetadata {
                 "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
                 "select distinct ?dt where {\n"+
                 "dbr:Barack_Obama dbo:birthDate  ?dt\n"+
-                "} LIMIT 100", "http://dbpedia.org/sparql");
+                "} LIMIT 100", "http://dbpedia.org/sparql",true);
         assertNotNull(s);
     }
 }
