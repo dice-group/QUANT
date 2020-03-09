@@ -14,10 +14,9 @@ function end() {
 
 };
 
-function validateEndpoint(endpoint)
+function validateEndpoint(endpoint,callback)
 {
     valid = false;
-
     $.ajax({
         type: "GET", url: endpoint, async: false, timeout:1000,
         statusCode: {
@@ -26,6 +25,21 @@ function validateEndpoint(endpoint)
             }
         }
     });
+    if(!valid){
+        var pathArray = endpoint.split('/');
+        var protocol = pathArray[0];
+        var host = pathArray[2];
+        var url = protocol + '//' + host;
+        $.ajax({
+            type: "GET", url: url, async: false, timeout:1000,
+            statusCode: {
+                200: function() {
+                    valid = true;
+                }
+            }
+        });
 
+    }
     return valid;
 }
+

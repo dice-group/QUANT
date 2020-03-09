@@ -143,7 +143,7 @@ public class AnotationController {
                 }
             }
             model.addObject("KeywordSuggestion", keywordSuggestionsMap);
-            MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint());
+            MetadataSuggestions s = m.getMetadataSuggestions(q.getSparqlQuery(), q.getDatasetQuestion().getEndpoint(),qs.getEndpointReachable());
             model.addObject("MetadataSuggestion", s);
         }
         else {

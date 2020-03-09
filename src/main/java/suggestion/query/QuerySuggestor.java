@@ -105,9 +105,14 @@ public class QuerySuggestor {
         for(String var:missingPredicateMapping.values())
             q.addResultVar(var);
         QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, q);
-        ResultSet rs = ResultSetFactory.copyResults(qe.execSelect());
+        ResultSet rs=null;
+        try {
+            rs = ResultSetFactory.copyResults(qe.execSelect());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         qe.close();
-        if(rs.hasNext()){
+        if(rs!=null&&rs.hasNext()){
             QuerySolution bestFitting = rs.next();
             int maxscore=getNumberOfFittingPredicates(bestFitting,missingPredicateMapping);
             while (rs.hasNext()) {

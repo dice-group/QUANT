@@ -9,6 +9,7 @@ import org.apache.jena.sparql.syntax.ElementWalker;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MetadataSuggestor {
     private boolean onlyDbo(Query query) {
@@ -35,7 +36,7 @@ public class MetadataSuggestor {
         );
         return notDboURIs.size()>0;
     }
-    public MetadataSuggestions getMetadataSuggestions(String queryString, String endpoint ){
+    public MetadataSuggestions getMetadataSuggestions(String queryString, String endpoint,boolean endpointReachable ){
         MetadataSuggestions metadataSuggestions = new MetadataSuggestions();
         if(queryString.contains("text:query")||queryString.contains("bif:contains"))
             metadataSuggestions.setHybrid(true);
@@ -47,12 +48,22 @@ public class MetadataSuggestor {
             if (query.isAskType())
                 metadataSuggestions.setAnswerType("boolean");
             else {
-                //Assumes, taht all answers have the smae type, and there is only one uri to be matched
-                QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
-                ResultSet rs = ResultSetFactory.copyResults(qe.execSelect());
-                qe.close();
+                //Assumes, that all answers have the same type, and there is only one uri to be matched
+                ResultSet rs=null;
+                if(endpointReachable) {
+                    try {
+                        QueryExecution qe = QueryExecutionFactory.sparqlService(endpoint, query);
+                        qe.setTimeout(5000);
+                        rs = ResultSetFactory.copyResults(qe.execSelect());
+                        qe.close();
+                    } catch (Exception e) {
+                        endpointReachable=false;
+                        e.printStackTrace();
+                    }
+                }
 
-                if (rs.hasNext()) {
+
+                if (endpointReachable&&rs.hasNext()) {
                     metadataSuggestions.setOutOfScope(false);
                     QuerySolution solution = rs.next();
                     if (solution.get(solution.varNames().next()).isResource())
