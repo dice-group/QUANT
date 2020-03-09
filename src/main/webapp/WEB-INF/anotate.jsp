@@ -275,7 +275,7 @@
                             </div>
                             <div class="col-5">
                                 <input type="text" class="form-control" name="trans_question"
-                                       id="${'questionString_' +=entry}" value="<c:out value='${TranslationMap[entry]}' ></c:out>"/>
+                                       id="${'questionString_' +=entry}" value="<c:out value='${TranslationMap[entry]}' ></c:out>" required/>
                             </div>
 
 
