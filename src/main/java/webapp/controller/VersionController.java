@@ -55,17 +55,18 @@ public class VersionController {
     @RequestMapping(value = "/questionVersionList/{setId}/{qsId}", method = RequestMethod.POST)
     public String updateActiveVersion(@PathVariable("setId") long setId,
                                       @PathVariable("qsId") long qsId,
-                                      @RequestParam("wasActive") long wq,
+                                      @RequestParam("wasActive") Optional<Long> wq,
                                       @RequestParam("nowActive") long nq,
                                       RedirectAttributes attributes) {
 
         System.out.println("now active ID: " + nq + " was active ID: " + wq);
 
         try {
-            Questions wasActive = questionsService.findDistinctById(wq);
-            wasActive.setActiveVersion(false);
-            questionsService.saveQuestions(wasActive);
-
+            wq.ifPresent(wid->{
+                Questions wasActive = questionsService.findDistinctById(wid);
+                wasActive.setActiveVersion(false);
+                questionsService.saveQuestions(wasActive);
+            });
             Questions nowActive = questionsService.findDistinctById(nq);
             nowActive.setActiveVersion(true);
 
@@ -95,9 +96,21 @@ public class VersionController {
         boolean outOfScope = metaQuestion.isOutOfScope();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+
         User user = userService.getByEmail(username);
         Set answers = new HashSet();
         answers.addAll(metaQuestion.getAnswer());
+        setActive.ifPresent(bool->{
+            List<Questions>qs=questionsService.findQuestionsByQuestionSetId(qsId);
+            for(Questions q:qs){
+                if(q.isActiveVersion()){
+                    q.setActiveVersion(false);
+                    questionsService.saveQuestions(q);
+                }
+
+            }
+
+        });
         Questions mergedQuestionVersion = new Questions(metaQuestion.getDatasetQuestion(), answertype, aggregation, onlydb, hybrid, metaQuestion.isOriginal(), setActive.isPresent(), true, user, questionsRepository.findTop1VersionByQuestionSetIdOrderByVersionDesc(metaQuestion.getQuestionSetId()).getVersion()+1, outOfScope, metaQuestion.getQuestionSetId(), query,answers);
         questionsService.saveQuestions(mergedQuestionVersion);
         for(String translation:translations){

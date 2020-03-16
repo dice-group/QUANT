@@ -65,14 +65,14 @@
 
         div.className = 'form-group row mt-2';
         div.innerHTML = '<div class="col-1">\n' +
-            '            <input type ="text" class="form-control" name ="trans_lang" value="" >\n' +
+            '            <input type ="text" class="form-control" name ="trans_lang" value="" required>\n' +
             '        </div>\n' +
             '        <div class="col-5">\n' +
-            '            <input type ="text" class="form-control" name ="trans_question"   value="" >\n' +
+            '            <input type ="text" class="form-control" name ="trans_question"   value="" required>\n' +
             '        </div>\n' +
             '\n' +
             '            <div class="col-6">\n' +
-            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" >\n' +
+            '                <input type ="text" class="form-control" name ="trans_keywords"  value="" required>\n' +
             '            </div>'
         document.getElementById('trans_wrapper').appendChild(div);
 
@@ -275,15 +275,15 @@
                         </div>
                         <c:forEach items="${Language}" var="entry">
                             <c:set var="key">${entry}</c:set>
-                            <input type="hidden" name="sugg_trans_keywords" value="${KeywordSuggestion.get(entry)}">
+                            <input type="hidden" name="sugg_trans_keywords" value="${KeywordSuggestion.get(entry)}"required>
 
                             <div class="col-1">
                                 <input type="text" class="form-control" name="trans_lang" id="${'lang_' +=entry}"
-                                       value="${entry}"/>
+                                       value="${entry}" required/>
                             </div>
                             <div class="col-5">
                                 <input type="text" class="form-control" name="trans_question"
-                                       id="${'questionString_' +=entry}" value="<c:out value='${TranslationMap[entry]}' ></c:out>" required/>
+                                       id="${'questionString_' +=entry}" value="<c:out value='${TranslationMap[entry]}'></c:out>" required/>
                             </div>
 
 
@@ -301,7 +301,9 @@
                             </div>
 
                         </c:forEach>
+                        <input type ="hidden" name="trans_lang" value="">
                         <input type ="hidden" name="trans_question" value="">
+                        <input type ="hidden" name="trans_keywords" value="">
 
                     </div>
                 </div>

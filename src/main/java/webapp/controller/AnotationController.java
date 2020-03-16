@@ -209,13 +209,13 @@ public class AnotationController {
         Set<String> answer = new HashSet<>(Arrays.asList(answerString.split("\r\n")));
         String dL = q.getDatasetQuestion().getDefaultLanguage();
         long qSetId = questionsService.findDistinctById(id).getQuestionSetId();
-        long nextQuestion2 = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
+        //long nextQuestion2 = questionsService.findQuestionSetIdById(qSetId).getNext(questionsService.findAllQuestionsByDatasetQuestion_Id(questionsService.findDistinctById(id).getDatasetQuestion().getId()));
         long nextQuestion = questionsService.findQuestionSetIdById(qSetId).getNext(questionsRepository.findByIdEqualsQuestionSetId(q.getDatasetQuestion()));
         // long idTest = questionsRepository.findAllQuestions()
 
         String redirect;
 
-        System.out.println("nextQuestion: " + nextQuestion + " nextQuestion2: " +nextQuestion2);
+        //System.out.println("nextQuestion: " + nextQuestion + " nextQuestion2: " +nextQuestion2);
         if (!trans_lang.contains(dL)) {
             attributes.addFlashAttribute("error", "There must be at least a translation in the default language'" + dL + "'!");
             redirect = "redirect:/anotate/" + id;
@@ -231,23 +231,23 @@ public class AnotationController {
 
 
                 for (int i = 0; i < trans_lang.size(); i++) {
-                    List<String> keywords = null;
-                    if (trans_keywords.size()>0 && !trans_keywords.get(i).isEmpty()) {
-                        if (trans_lang.size() > 1) {
-                            keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
-                        } else {
-                            keywords = trans_keywords;
+                    if(!trans_lang.get(i).equals("")){
+                        List<String> keywords = null;
+                        if (trans_keywords.size() > 0 && !trans_keywords.get(i).isEmpty()) {
+                            if (trans_lang.size() > 1) {
+                                keywords = Arrays.asList(trans_keywords.get(i).split(",\\s?"));
+                            } else {
+                                keywords = trans_keywords;
+                            }
                         }
-                    }
-                    if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
-                        if (keywords == null)
-                        {
-                            Translations translations = new Translations(anotatedVersion, trans_lang.get(i), trans_question.get(i));
-                            translationsService.saveTranslations(translations);
-                        }
-                        else {
-                            Translations translations = new Translations(anotatedVersion, trans_lang.get(i), keywords, trans_question.get(i));
-                            translationsService.saveTranslations(translations);
+                        if (!"".equals(trans_lang.get(i)) && !"".equals(trans_question.get(i))) {
+                            if (keywords == null) {
+                                Translations translations = new Translations(anotatedVersion, trans_lang.get(i), trans_question.get(i));
+                                translationsService.saveTranslations(translations);
+                            } else {
+                                Translations translations = new Translations(anotatedVersion, trans_lang.get(i), keywords, trans_question.get(i));
+                                translationsService.saveTranslations(translations);
+                            }
                         }
                     }
                 }

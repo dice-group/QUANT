@@ -278,7 +278,7 @@ public class CrudController {
 
 
         try {
-            if(q.isActiveVersion() || q.isOriginal()) {
+            if((q.isActiveVersion() && versions >1) || (q.isOriginal()&& versions >1)) {
                 attributes.addFlashAttribute("error", "Deleting a question, that is marked as 'active question' or is a original question, is not allowed!");
                 System.out.println("is active or original");
                 return "redirect:/questionVersionList/"+SetId + "/" + Id;
