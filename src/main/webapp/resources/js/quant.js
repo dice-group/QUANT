@@ -17,8 +17,13 @@ function end() {
 function validateEndpoint(endpoint,callback)
 {
     valid = false;
+    var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+
     $.ajax({
-        type: "GET", url: endpoint, async: false, timeout:1000,
+        type: "GET", url: endpoint, timeout:1000,
         statusCode: {
             200: function() {
                 valid = true;
@@ -31,7 +36,7 @@ function validateEndpoint(endpoint,callback)
         var host = pathArray[2];
         var url = protocol + '//' + host;
         $.ajax({
-            type: "GET", url: url, async: false, timeout:1000,
+            type: "GET", url: url, timeout:1000,
             statusCode: {
                 200: function() {
                     valid = true;

@@ -27,6 +27,7 @@
             data: {query: sparqlQuery},
             dataType: "json",
             url: "${Question.datasetQuestion.endpoint}",
+            crossDomain: true,
             timeoutSeconds:5
         })
             .done(function (data) {
